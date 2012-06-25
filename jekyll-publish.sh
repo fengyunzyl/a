@@ -26,11 +26,11 @@ url="svnpenn.github.com/$(git status -s | head -1 | cut -c4-)"
 original=$(wget -qO- $url)
 
 while test "$original" = "$(wget -qO- $url)"; do
-    for i in {1..10}; do
-        # 10 seconds of filler, 10 dots
-        printf '.'
-        sleep 1
-    done
+  for i in {1..10}; do
+    # 10 seconds of filler, 10 dots
+    printf '.'
+    sleep 1
+  done
 done
 
 printf 'Publish complete!'
