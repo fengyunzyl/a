@@ -45,6 +45,7 @@ stream=$(attrget "$video" "stream")
 token=$(attrget "$video" "token")
 app="${server#*//*/}"
 
+set -x
 rtmpdump \
 -W "http://download.hulu.com/huludesktop.swf" \
 -a "$app?${token//&amp;/&}" \
