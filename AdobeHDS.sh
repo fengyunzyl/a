@@ -1,5 +1,5 @@
 #!/bin/bash
-PATH+=":."
+PATH+=":.:C:/php"
 cache="$(cygpath -F28)/*/*/Profiles/*/Cache/_CACHE_0*"
 p="plugin-container.exe"
 
