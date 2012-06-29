@@ -26,8 +26,8 @@ grep -Eaom1 "rtmp[est]*://[\.0-9a-z]+" p.core \
 printf $red 'Press enter to start RtmpSrv, then restart video.
 After capture, press "q, enter" to quit.'; read
 
-while read line; do
-  printf $red "$line" | grep "rtmpdump" && c="$line||$line -v"
+while read; do
+  printf $red "$REPLY" | grep "rtmpdump" && c="$REPLY||$REPLY -v"
 done < <(rtmpsrv)
 
 # Restore hosts file

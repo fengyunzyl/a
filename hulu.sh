@@ -25,17 +25,16 @@ pid "$p" | xargs dumper p &
 sleep 1
 
 # Create array
-while read -d $'\0' line; do
-  ((i++))
-  videos[i]="$line"
+while read -d $'\0'; do
+  videos+=("$REPLY")
 done < <(grep -az "video server" p.core)
 
 # Choose video
-for video in "${videos[@]}"; do
-  ((j++))
+for i in "${!videos[@]}"; do
+  video="${videos[i]}"
   file_type=$(attrget "$video" "file-type")
   cdn=$(attrget "$video" "cdn")
-  printf "%2d\t%9s\t%s\n" "$j" "$file_type" "$cdn"
+  printf "%2d\t%9s\t%s\n" "$i" "$file_type" "$cdn"
 done
 
 printf $red 'Make choice. Avoid level3.'; read
