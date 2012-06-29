@@ -1,6 +1,6 @@
 #!/bin/bash
 PATH+=":."
-cache="$(cygpath -F28)/*/*/Profiles/*/Cache/_*"
+cache="$(cygpath -F28)/*/*/Profiles/*/Cache/_CACHE_0*"
 p="plugin-container.exe"
 
 pid(){
