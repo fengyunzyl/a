@@ -1,5 +1,5 @@
 #!/bin/bash
-PATH+=":."
+export PATH+=":."
 h="$(cygpath -S)/drivers/etc/hosts"
 p="plugin-container.exe"
 red="\e[1;31m%s\e[m\n"

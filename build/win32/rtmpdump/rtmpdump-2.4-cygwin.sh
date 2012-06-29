@@ -11,6 +11,7 @@ cd zlib*
 make install -f win32/Makefile.gcc BINARY_PATH="/bin" \
 	DESTDIR="/usr/$host/sys-root/mingw" INCLUDE_PATH="/include" \
 	LIBRARY_PATH="/lib" PREFIX="$host-"
+cd -
 
 # Determine correct PolarSSL
 git clone git://git.ffmpeg.org/rtmpdump

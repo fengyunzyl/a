@@ -13,8 +13,8 @@ jekyll
 # Liquid error: No such file or directory
 grep -r --color Liquid.error * && exit
 git checkout master
-git rm -r . >/dev/null
-cp -r _site/* .
+git rm -qr .
+cp -r _site/. .
 rm -r _site
 git add -A
 git commit -m "$(git status -s)"
