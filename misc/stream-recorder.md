@@ -27,3 +27,8 @@
 
     Every thing that I put out on the web is the result of intense thought. I
     expect the same of all of you. Think before you post.[/QUOTE]
+
+# Insert code
+
+    [QUOTE][FONT="Lucida Console"]
+    [/FONT][/QUOTE]
