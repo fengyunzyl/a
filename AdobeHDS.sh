@@ -1,6 +1,5 @@
 #!/bin/bash
-PATH+=":.:C:/php"
-cache="$(cygpath -F28)/*/*/Profiles/*/Cache/_CACHE_0*"
+PATH+=":."
 p="plugin-container.exe"
 
 pid(){
@@ -8,7 +7,7 @@ pid(){
 }
 
 binparse(){
-  cat $1 | grep -azm1 "$2" | cut -d "$3" -f "$4"
+  grep -azm1 "$1" p.core
 }
 
 red(){
@@ -17,19 +16,24 @@ red(){
 
 # Clear Firefox cache
 pid "$p" | xargs /bin/kill -f
-: | tee $cache
 red 'Press enter after video starts'; read
 red 'Printing results'
+# Dump flash player
+pid "$p" | xargs dumper p &
+sleep 1
 
 # Script
-read script < <(which AdobeHDS.php | cygpath -mf-)
+read s < <(which AdobeHDS.php | cygpath -mf-)
 
 # Auth
-read auth < <(binparse "$cache" "Seg.*?" "?" "2")
+read a < <(binparse "Frag.?" | cut -d? -f2)
 
 # Manifest
-read manifest < <(binparse "$cache" "f4m?" "/" "3-")
+read m < <(binparse "http.*f4m?")
+
+# Useragent
+read u < <(binparse "Mozilla/5.0")
 
 # Run
 set -x
-php "$script" --auth "$auth" --manifest "$manifest"
+php "$s" --auth "$a" --manifest "$m" --useragent "$u"
