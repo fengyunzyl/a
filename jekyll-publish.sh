@@ -1,6 +1,6 @@
 #!/bin/sh
 # This script will push Jekyll branches.
-cd /c/home/GitHub/svnpenn.github.com
+cd ~/svnpenn.github.com
 
 # Push source branch
 git checkout source
