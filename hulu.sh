@@ -20,7 +20,7 @@ red(){
 # Kill flash player
 pid "$p" | xargs /bin/kill -f
 # Disable protected mode, 32 and 64 bit Windows
-printf "ProtectedMode=0" > "$(cygpath -S)/Macromed/Flash/mms.cfg"
+printf "ProtectedMode=0" > "${COMSPEC%\\*}/Macromed/Flash/mms.cfg"
 red 'Press enter after video starts'; read
 red 'Printing results'
 # Dump flash player
