@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 PATH+=":."
 h="${COMSPEC%\\*}/drivers/etc/hosts"
 p="plugin-container.exe"
@@ -26,15 +26,17 @@ grep -Eaom1 "rtmp[est]*://[\.0-9a-z]+" p.core \
   | tee "$h"
 
 # Start monitoring
-red 'Press enter to start RtmpSrv, then restart video.
-After capture, press "q, enter" to quit.'; read
+red 'Press enter to start RtmpSrv, then restart video.'; read
+coproc rtmpsrv
 
 while read; do
-  red "$REPLY" | grep "rtmpdump" && c="$REPLY||$REPLY -v"
-done < <(rtmpsrv)
+  grep rtmpdump <<< "$REPLY" && break
+done <&${COPROC[0]}
+
+echo q >&${COPROC[1]}
 
 # Restore hosts file
 > "$h"
 
 # Run RtmpDump
-eval "$c"
+eval "$REPLY||$REPLY -v"
