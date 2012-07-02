@@ -3,6 +3,8 @@
 # Open folder via command line/context menu
 # forum.videolan.org/viewtopic.php?p=34321
 
-vlc='C:\Program Files (x86)\VideoLAN\VLC\vlc.exe'
+key='/root/Directory/shell/VLC'
 
-reg add 'HKCR\Directory\shell\VLC\command' -d "$vlc \"%v\""
+regtool add "$key"
+regtool add "$key/command"
+regtool set "$key/command/" "$PROGRAMFILES\VideoLAN\VLC\vlc \"%v\""
