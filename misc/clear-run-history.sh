@@ -1,7 +1,11 @@
 #!/bin/sh
 
-# YES
-reg delete 'HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\TypedURLs'
+keys=(
+  '/user/Software/Microsoft/Internet Explorer/TypedURLs'
+  '/user/Software/Microsoft/Windows/CurrentVersion/Explorer/RunMRU'
+  '/user/Software/Microsoft/Windows/CurrentVersion/Explorer/TypedPaths'
+)
 
-# MAYBE
-reg delete 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU'
+for key in "${keys[@]}"; do
+  regtool remove "$key"
+done
