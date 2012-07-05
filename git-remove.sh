@@ -2,7 +2,7 @@
 # Git remove sensitive data
 # help.github.com/articles/remove-sensitive-data
 
-[ ! $1 ] && echo "Usage: rsd FILE" && return
+[ ! $1 ] && echo "Usage: rsd FILE" && exit
 
 git filter-branch \
   --index-filter "git rm --cached --ignore-unmatch $1" \
