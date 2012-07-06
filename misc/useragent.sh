@@ -12,11 +12,11 @@ wget -qO- "techpatterns.com/downloads/firefox/useragentswitcher.xml" \
   | while read u; do
       printf "${#u}\t$u\n"
     done \
-      | sort -n \
-      | cut -f2 \
-      | while read v; do
-          echo "$v"
-          wget -qO- -U "$v" "youtube.com/watch?v=ReP9pN5jJDY" \
-            | grep -q "videoplayback?" && break
-          sleep .1
-        done
+  | sort -n \
+  | cut -f2 \
+  | while read v; do
+      echo "$v"
+      wget -qO- -U "$v" "youtube.com/watch?v=ReP9pN5jJDY" \
+        | grep -q "videoplayback?" && break
+      sleep .1
+    done
