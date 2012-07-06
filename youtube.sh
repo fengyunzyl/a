@@ -1,5 +1,6 @@
 #!/bin/sh
 # Bash download from YouTube
+# stream-recorder.com/forum/why-youtube-delivering-files-2mb-size-instead-t12117.html
 # youtube.com/watch?v=LHelEIJVxiE
 
 [ ! $1 ] && echo "Usage: ${0##*/} URL" && exit
