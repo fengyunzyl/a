@@ -1,5 +1,6 @@
 #!/bin/sh
 # Bash download from YouTube
+# stackoverflow.com/questions/296536/urlencode-from-a-bash-script
 # stream-recorder.com/forum/why-youtube-delivering-files-2mb-size-instead-t12117.html
 # youtube.com/watch?v=LHelEIJVxiE
 
