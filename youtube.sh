@@ -21,7 +21,7 @@ download(){
     "Host: $host"
     ""
   )
-  printf "%s\r\n" "${headers[@]}" >&3
+  printf "%s\n" "${headers[@]}" >&3
   cat <&3
 }
 
@@ -73,7 +73,8 @@ red 'Make choice.'; read
 video="${videos[REPLY]}"
 echo "$video"
 download "$video" > videoplayback
-wget -O videoplayback2 "$video"
+# stackoverflow.com/questions/11376832/wget-save-headers-and-file-corruption
+
 
 # HTTP/1.1 302 Found
 # Last-Modified: Wed, 02 May 2007 10:26:10 GMT
