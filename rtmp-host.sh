@@ -20,7 +20,8 @@ red 'Press enter after video starts'; read
 pid "$p" | xargs dumper p &
 sleep 1
 
-grep -Eaom1 "rtmp[est]*://[\.0-9a-z]+" p.core \
+tr "\0\"" "\n" < p.core \
+  | grep -Eom1 "rtmp[est]*://[\.0-9a-z]{2,}" \
   | cut -d/ -f3 \
   | xargs printf "127.0.0.1 %s\n" \
   | tee "$h"
