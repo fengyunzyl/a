@@ -73,7 +73,7 @@ red 'Make choice.'; read
 video="${videos[REPLY]}"
 echo "$video"
 download "$video" > videoplayback
-# stackoverflow.com/questions/11376832/wget-save-headers-and-file-corruption
+# tail -c65755 git.jpg > good.jpg
 
 
 # HTTP/1.1 302 Found

@@ -1,4 +1,5 @@
 #!/bin/sh
+[ $1 ] && set -x
 PATH+=":."
 h="${COMSPEC%\\*}/drivers/etc/hosts"
 p="plugin-container.exe"
