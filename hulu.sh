@@ -7,10 +7,8 @@ pid(){
 }
 
 attrget(){
-  s="$1"
-  s="${s#*$2=\"}" # Remove front
-  s="${s%%\"*}" # Remove back
-  printf "$s"
+  : "${1#*$2=\"}" # Remove front
+  echo "${_%%\"*}" # Remove back
 }
 
 red(){
@@ -35,16 +33,16 @@ done < <(grep -az "video server" p.core)
 # Choose video
 for i in "${!videos[@]}"; do
   video="${videos[i]}"
-  file_type=$(attrget "$video" "file-type")
-  cdn=$(attrget "$video" "cdn")
+  read file_type < <(attrget "$video" "file-type")
+  read cdn < <(attrget "$video" "cdn")
   printf "%2d\t%9s\t%s\n" "$i" "$file_type" "$cdn"
 done
 
 red 'Make choice. Avoid level3.'; read
 video="${videos[REPLY]}"
-server=$(attrget "$video" "server")
-stream=$(attrget "$video" "stream")
-token=$(attrget "$video" "token")
+read server < <(attrget "$video" "server")
+read stream < <(attrget "$video" "stream")
+read token < <(attrget "$video" "token")
 app="${server#*//*/}"
 
 set -x
