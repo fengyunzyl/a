@@ -4,10 +4,8 @@
 # http://www.youtube.com/watch?v=LHelEIJVxiE
 
 attrget(){
-  s="$1"
-  s="${s#*$2=}" # Remove front
-  s="${s%%&*}" # Remove back
-  echo "$s"
+  : "${1#*$2=}" # Remove front
+  echo "${_%%&*}" # Remove back
 }
 
 download(){
