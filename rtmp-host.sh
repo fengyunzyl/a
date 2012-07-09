@@ -1,6 +1,4 @@
 #!/bin/sh
-[ $1 ] && set -x
-PATH+=":."
 h="${COMSPEC%\\*}/drivers/etc/hosts"
 p="plugin-container.exe"
 
@@ -32,7 +30,7 @@ red 'Press enter to start RtmpSrv, then restart video.'; read
 coproc rtmpsrv
 
 while read; do
-  grep rtmpdump <<< "$REPLY" && break
+  expr "$REPLY" : rtmpdump && break
 done <&${COPROC[0]}
 
 echo q >&${COPROC[1]}

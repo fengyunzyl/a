@@ -9,9 +9,8 @@ attrget(){
 }
 
 download(){
-  host="$1"
-  host="${host#*//}"
-  host="${host%/*}"
+  : "${1#*//}"
+  host="${_%/*}"
   exec 3<>/dev/tcp/$host/80
   headers=(
     "GET ${1#*$host} HTTP/1.1"
@@ -71,7 +70,6 @@ red 'Make choice.'; read
 video="${videos[REPLY]}"
 echo "$video"
 download "$video" > videoplayback
-# tail -c65755 git.jpg > good.jpg
 
 
 # HTTP/1.1 302 Found
