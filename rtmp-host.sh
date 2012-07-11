@@ -30,7 +30,7 @@ red 'Press enter to start RtmpSrv, then restart video.'; read
 coproc rtmpsrv
 
 while read; do
-  expr "$REPLY" : rtmpdump && break
+  grep rtmpdump <<< "$REPLY" && break
 done <&${COPROC[0]}
 
 echo q >&${COPROC[1]}
