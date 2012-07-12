@@ -3,44 +3,48 @@
 # stream-recorder.com/forum/why-youtube-delivering-files-2mb-size-instead-t12117.html
 # http://www.youtube.com/watch?v=LHelEIJVxiE
 
-attrget(){
-  : "${1#*$2=}" # Remove front
-  echo "${_%%&*}" # Remove back
-}
+qual=(
+  [5]='FLV 240p H.263'
+  [17]='3GP 144p'
+  [18]='MP4 360p H.264 Baseline'
+  [22]='MP4 720p H.264 High'
+  [34]='FLV 360p H.264 Main'
+  [35]='FLV 480p H.264 Main'
+  [36]='3GP 240p'
+  [37]='MP4 1080p H.264 High'
+  [43]='WebM 360p VP8'
+  [44]='WebM 480p VP8'
+  [45]='WebM 720p VP8'
+  [46]='WebM 1080p VP8'
+  [82]='MP4 360p H.264 3D'
+  [84]='MP4 720p H.264 3D'
+  [100]='WebM 360p VP8 3D'
+  [102]='WebM 720p VP8 3D'
+)
 
 download(){
-  : "${1#*//}"
-  host="${_%/*}"
-  exec 3<>/dev/tcp/$host/80
+  read host < <(cut -d/ -f3 <<< "$1")
+  read path < <(cut -d/ -f4- <<< "$1")
   headers=(
-    "GET ${1#*$host} HTTP/1.1"
+    "GET /$path HTTP/1.1"
     "Connection: close"
     "Host: $host"
     ""
   )
+  exec 3<>/dev/tcp/$host/80
   printf "%s\n" "${headers[@]}" >&3
-  cat <&3
-}
-
-get_quality(){
-  read qual < <(attrget "$1" "itag")
-  case "$qual" in
-    5) echo 'FLV 240p H.263';;
-    18) echo 'MP4 360p H.264 Baseline';;
-    22) echo 'MP4 720p H.264 High';;
-    34) echo 'FLV 360p H.264 Main';;
-    35) echo 'FLV 480p H.264 Main';;
-    36) echo '3GP 240p';;
-    37) echo 'MP4 1080p H.264 High';;
-    43) echo 'WebM 360p VP8';;
-    44) echo 'WebM 480p VP8';;
-    45) echo 'WebM 720p VP8';;
-    46) echo 'WebM 1080p VP8';;
-    82) echo 'MP4 360p H.264 3D';;
-    84) echo 'MP4 720p H.264 3D';;
-    100) echo 'WebM 360p VP8 3D';;
-    102) echo 'WebM 720p VP8 3D';;
-  esac
+  # A Redirect will cause this to fail, need to fix
+  sed -b "1,/^\r/d" <&3 &
+  pid=$!
+  read < <(du -b | cut -f1)
+  while [ -e /proc/$pid ]; do
+    sleep .3
+    du -b \
+      | cut -f1 \
+      | xargs -i% expr % - $REPLY \
+      | xargs printf "%'.3d\r" \
+      > /dev/stderr
+  done
 }
 
 red(){
@@ -53,40 +57,20 @@ red(){
 videos=()
 while read; do
   # Raw URL decode
-  # (%25 %) (%26 &) (%2F /) (%3A :) (%3D =) (%3F ?)
   printf -v video "%b" "${REPLY//%/\\x}"
   videos+=("$video")
 done < <(download "$1" | sed "s.[=\].\n.g" | grep "videoplayback%3F")
 
 # Choose video
 for i in "${!videos[@]}"; do
-  # Get quality
-  video="${videos[i]}"
   printf "%s\t" "$i"
-  get_quality "$video"
+  : "${videos[i]}"
+  : "${_#*itag=}"
+  : "${_%%&*}"
+  echo "${qual[_]}"
 done
 
 red 'Make choice.'; read
-video="${videos[REPLY]}"
-echo "$video"
-download "$video" > videoplayback
-
-
-# HTTP/1.1 302 Found
-# Last-Modified: Wed, 02 May 2007 10:26:10 GMT
-# Date: Sat, 07 Jul 2012 05:41:29 GMT
-# Expires: Sat, 07 Jul 2012 05:41:29 GMT
-# Cache-Control: private, max-age=900
-# Location: http://o-o.preferred.dfw06s13.v20.nonxt8.c.youtube.com/videoplayback
-#   ?upn=NPYbmpCzWXU&sparams=algorithm%2Cburst%2Ccp%2Cfactor%2Cid%2Cip%2Cipbits%
-#   2Citag%2Csource%2Cupn%2Cexpire&fexp=918006%2C913602%2C907217%2C907335%2C9216
-#   02%2C919306%2C922600%2C919316%2C920704%2C924500%2C924700%2C913542%2C919324%2
-#   C920706%2C907344%2C912706%2C902518&mt=1341639544&ms=nxu&algorithm=throttle-f
-#   actor&itag=36&ip=76.0.0.0&burst=40&sver=3&signature=8B34EFA6304C9BB2B5582BF7
-#   A03B1D3141C55A36.2369CE0C38950EC9BA3AA8DCDC654DBC09EE0A6E&source=youtube&exp
-#   ire=1341663243&key=yt1&ipbits=8&factor=1.25&cp=U0hTRlZRUV9JTUNOM19OS1VDOml1a
-#   W5iVFk3UVla&id=2c77a5108255c621&redirect_counter=1&cms_redirect=yes
-# Connection: close
-# X-Content-Type-Options: nosniff
-# Content-Type: text/html
-# Server: gvs 1.0
+: "${videos[REPLY]}"
+echo "$_"
+download "$_" > videoplayback
