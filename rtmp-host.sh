@@ -27,13 +27,13 @@ tr "\0\"" "\n" < p.core \
 
 # Start monitoring
 red 'Press enter to start RtmpSrv, then restart video.'; read
-coproc rtmpsrv
+coproc r (rtmpsrv)
 
 while read; do
   grep rtmpdump <<< "$REPLY" && break
-done <&${COPROC[0]}
+done <&${r[0]}
 
-echo q >&${COPROC[1]}
+echo q >&${r[1]}
 
 # Restore hosts file
 > "$h"
