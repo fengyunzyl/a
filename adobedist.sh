@@ -92,9 +92,9 @@ The source code for this project can be found at
   http://github.com/svnpenn/etc
 
 Included with this package
-  Cygwin $(uname -r | cut -d\( -f1)
   AdobeHDS.php $version_php
   AdobeHDS.sh $version_sh
+  Cygwin $(uname -r | cut -d\( -f1)
   PHP $(php -v | head -1 | cut -d\  -f2)
 
 OPERATING INSTRUCTIONS
