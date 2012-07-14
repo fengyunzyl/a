@@ -2,7 +2,7 @@
 p="plugin-container.exe"
 
 binparse(){
-  grep -azm1 "$1" p.core
+  grep -axzm1 "[--Z]*$1[--Z]*" p.core
 }
 
 pidof(){
@@ -21,8 +21,8 @@ pidof "$p" | xargs dumper p &
 sleep 1
 pidof "$p" | xargs /bin/kill -f
 read s < <(which AdobeHDS.php | cygpath -mf-)
-read a < <(binparse "Frag.?" | cut -d? -f2)
-read m < <(binparse "http.*f4m?[--Z]*$")
+read a < <(binparse "Frag" | cut -d? -f2)
+read m < <(binparse "http.*f4m?")
 read u < <(binparse "Mozilla/5.0")
 set -x
 php "$s" --auth "$a" --manifest "$m" --useragent "$u"
