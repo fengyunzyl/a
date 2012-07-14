@@ -49,19 +49,19 @@ Built on $rtmpdump_timestamp
 RtmpDump version $rtmpdump_version
 
 The source code for this RtmpDump build can be found at
-    http://github.com/svnpenn/rtmpdump
+  http://github.com/svnpenn/rtmpdump
 
 This version of RtmpDump was built on
-    Window 7 Ultimate Service Pack 1
-    http://windows.microsoft.com/en-us/windows7/products/home
+  Window 7 Ultimate Service Pack 1
+  http://windows.microsoft.com/en-us/windows7/products/home
 
 The toolchain used to compile this RtmpDump was
-    MinGW-w64: http://mingw-w64.sourceforge.net
+  MinGW-w64: http://mingw-w64.sourceforge.net
 
 The GCC version used to compile this RtmpDump was
-    GCC $gcc_version: http://gcc.gnu.org
+  GCC $gcc_version: http://gcc.gnu.org
 
 The external libraries compiled into this RtmpDump are
-    Zlib $zlib_version http://zlib.net
-    PolarSSL $polarssl_version http://polarssl.org
+  Zlib $zlib_version http://zlib.net
+  PolarSSL $polarssl_version http://polarssl.org
 EOF

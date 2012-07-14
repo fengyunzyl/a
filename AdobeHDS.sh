@@ -1,8 +1,9 @@
 #!/bin/bash
+LANG=
 p="plugin-container.exe"
 
 binparse(){
-  grep -axzm1 "[--Z]*$1[--Z]*" p.core
+  grep -axzm1 "[ -~]*$1[ -~]*" p.core
 }
 
 pidof(){
