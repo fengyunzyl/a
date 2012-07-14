@@ -18,18 +18,18 @@ cd $distdir
 
 # BIN
 binfiles=(
+  /bin/cyggcc_s-1.dll # bash
+  /bin/cygiconv-2.dll # bash
+  /bin/cygintl-8.dll # bash
+  /bin/cygncursesw-10.dll # bash
+  /bin/cygreadline7.dll # bash
+  /bin/cygwin1.dll # bash
+  /bin/cygpcre-0.dll # grep
+  /bin/cygstdc++-6.dll # dumper
+  /bin/cygz.dll # dumper
   /bin/bash.exe
   /bin/cut.exe
-  /bin/cyggcc_s-1.dll
-  /bin/cygiconv-2.dll
-  /bin/cygintl-8.dll
-  /bin/cygncursesw-10.dll
   /bin/cygpath.exe
-  /bin/cygpcre-0.dll
-  /bin/cygreadline7.dll
-  /bin/cygstdc++-6.dll
-  /bin/cygwin1.dll
-  /bin/cygz.dll
   /bin/dumper.exe
   /bin/grep.exe
   /bin/kill.exe
@@ -63,13 +63,13 @@ ulbinfiles=(
   /c/php/php.exe
   /c/php/php5.dll
   /c/php/ssleay32.dll
-  /usr/local/bin/AdobeHDS.php
-  ~/etc/AdobeHDS.sh
 )
 mkdir -p usr/local/bin
 cd usr/local/bin
 for file in ${ulbinfiles[@]}; do cp $file .; done
 echo extension=./php_curl.dll > php.ini
+wget https://raw.github.com/K-S-V/Scripts/master/AdobeHDS.php
+wget https://raw.github.com/svnpenn/etc/master/AdobeHDS.sh
 cd -
 
 # CYGWIN.BAT
