@@ -75,11 +75,6 @@ cd -
 # CYGWIN.BAT
 echo '@start bin\bash -l' > Cygwin.bat
 
-# PACK
-find | while read r; do
-  [ $r = ./bin/bash.exe -o $r = ./bin/xargs.exe ] && continue || upx -9f $r
-done
-
 # README
 cat > README <<EOF
 AdobeHDS.sh by Steven Penny
