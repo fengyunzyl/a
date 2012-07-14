@@ -4,8 +4,7 @@
 version(){
   rm -rf version
   git clone -q "git://github.com/$1.git" version
-  : "${_##*/}"
-  cd "${_%.*}"
+  cd version
   git rev-list HEAD | tail -1 | xargs git tag v
   git describe --tags
   cd ->/dev/null
