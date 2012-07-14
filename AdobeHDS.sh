@@ -22,7 +22,7 @@ sleep 1
 pidof "$p" | xargs /bin/kill -f
 read s < <(which AdobeHDS.php | cygpath -mf-)
 read a < <(binparse "Frag.?" | cut -d? -f2)
-read m < <(binparse "http.*f4m?")
+read m < <(binparse "http.*f4m?[--Z]*$")
 read u < <(binparse "Mozilla/5.0")
 set -x
 php "$s" --auth "$a" --manifest "$m" --useragent "$u"
