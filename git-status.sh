@@ -6,7 +6,7 @@ purple(){
 }
 
 # need trailing slash to filter out files
-for i in ~/*/; do
+for i in /opt/*/; do
   clear
   cd $i
   git status

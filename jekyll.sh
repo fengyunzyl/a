@@ -3,7 +3,7 @@
 
 [ ! $1 ] && echo "Usage: ${0##*/} REPO_NAME" && exit
 
-cd ~/$1
+cd /opt/$1
 
 # Run
 jekyll --auto --server &
