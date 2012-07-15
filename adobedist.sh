@@ -28,14 +28,10 @@ binfiles=(
   /bin/cygstdc++-6.dll # dumper
   /bin/cygz.dll # dumper
   /bin/bash.exe
-  /bin/cut.exe
   /bin/dumper.exe
   /bin/grep.exe
   /bin/kill.exe
   /bin/ps.exe
-  /bin/sleep.exe
-  /bin/which.exe
-  /bin/xargs.exe
 )
 mkdir bin
 cd bin

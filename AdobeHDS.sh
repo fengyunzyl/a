@@ -1,28 +1,29 @@
 #!/bin/bash
 LANG=
-p="plugin-container.exe"
+p=plugin-container.exe
 
 binparse(){
   grep -axzm1 "[ -~]*$1[ -~]*" p.core
 }
 
 pidof(){
-  ps -W | grep "$1" | cut -c-9
+  read -n9 < <(ps -W | grep $1)
 }
 
 red(){
   printf "\e[1;31m%s\e[m\n" "$1"
 }
 
-pidof "$p" | xargs /bin/kill -f
+pidof $p
+/bin/kill -f $REPLY
 printf "ProtectedMode=0" > "${COMSPEC%\\*}/Macromed/Flash/mms.cfg"
 red 'Press enter after video starts'; read
 red 'Printing results'
-pidof "$p" | xargs dumper p &
-sleep 1
-pidof "$p" | xargs /bin/kill -f
-read a < <(binparse "Frag" | cut -d? -f2)
+pidof $p
+timeout 1 dumper p $REPLY
+IFS=? read a1 a2 < <(binparse "Frag")
 read m < <(binparse "http.*f4m?")
 read u < <(binparse "Mozilla/5.0")
 set -x
-php /usr/local/bin/AdobeHDS.php --auth "$a" --manifest "$m" --useragent "$u"
+php /usr/local/bin/AdobeHDS.php --auth "$a2" --manifest "$m" --useragent "$u"
+# PHP Fatal error:  Call to undefined function simplexml_load_string()
