@@ -29,7 +29,6 @@ binfiles=(
   /bin/cygz.dll # dumper
   /bin/bash.exe
   /bin/cut.exe
-  /bin/cygpath.exe
   /bin/dumper.exe
   /bin/grep.exe
   /bin/kill.exe

@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 # This script will push Jekyll branches.
 cd /opt/svnpenn.github.com
 
 # Push source branch
 git checkout source
 git add -A
-git commit -m "$(git status -s)"
+git status -s | git commit -F-
 git push origin source || exit
 
 # Push master branch
@@ -17,20 +17,16 @@ git rm -qr .
 cp -r _site/. .
 rm -r _site
 git add -A
-git commit -m "$(git status -s)"
-git push origin master
-git checkout source
+read s f < <(git status -s)
+git status -s | git commit -F-
+git push origin master || exit
 
 # Check status
-url="svnpenn.github.com/$(git status -s | head -1 | cut -c4-)"
-original=$(wget -qO- $url)
-
-while test "$original" = "$(wget -qO- $url)"; do
-  for i in {1..10}; do
-    # 10 seconds of filler, 10 dots
-    printf '.'
-    sleep 1
+check(){
+  until cmp -s $1 <(wget -qO- $2); do
+    for i in {0..9}; do echo -n $i; sleep 1; done
   done
-done
-
-printf 'Publish complete!'
+}
+check $f svnpenn.github.com/$f
+git checkout source
+echo 'Publish complete!'

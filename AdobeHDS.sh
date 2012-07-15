@@ -21,9 +21,8 @@ red 'Printing results'
 pidof "$p" | xargs dumper p &
 sleep 1
 pidof "$p" | xargs /bin/kill -f
-read s < <(which AdobeHDS.php | cygpath -mf-)
 read a < <(binparse "Frag" | cut -d? -f2)
 read m < <(binparse "http.*f4m?")
 read u < <(binparse "Mozilla/5.0")
 set -x
-php "$s" --auth "$a" --manifest "$m" --useragent "$u"
+php /usr/local/bin/AdobeHDS.php --auth "$a" --manifest "$m" --useragent "$u"
