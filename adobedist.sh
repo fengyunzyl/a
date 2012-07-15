@@ -2,9 +2,9 @@
 # Create AdobeHDS distribution
 
 version(){
-  rm -rf version
-  git clone -q "git://github.com/$1.git" version
-  cd version
+  rm -rf /tmp
+  git clone -q "git://github.com/$1.git" /tmp
+  cd /tmp
   git rev-list HEAD | tail -1 | xargs git tag v
   git describe --tags
   cd ->/dev/null
@@ -17,69 +17,39 @@ mkdir $distdir
 cd $distdir
 
 # BIN
-binfiles=(
-  cygcrypto-1.0.0.dll # php
-  cygphp5.dll # php
-  cygpcre-1.dll # php
-  cygssl-1.0.0.dll # php
-  cygxml2-2.dll # php
-  cyggcc_s-1.dll # bash
-  cygiconv-2.dll # bash
-  cygintl-8.dll # bash
-  cygncursesw-10.dll # bash
-  cygreadline7.dll # bash
-  cygwin1.dll # bash
-  cygpcre-0.dll # grep
-  cygstdc++-6.dll # dumper
-  cygz.dll # dumper
-  bash.exe
-  dumper.exe
-  grep.exe
-  kill.exe
-  php.exe
-  ps.exe
+deps=(
+  /bin/bash.exe
+  /bin/dumper.exe
+  /bin/grep.exe
+  /bin/kill.exe
+  /bin/php.exe
+  /bin/ps.exe
+  /bin/timeout.exe
+  /dev/fd
+  /etc/php5/conf.d/bcmath.ini
+  /etc/php5/conf.d/curl.ini
+  /etc/php5/conf.d/simplexml.ini
+  /lib/php/20090626/bcmath.dll
+  /lib/php/20090626/curl.dll
+  /lib/php/20090626/simplexml.dll
 )
-mkdir bin
-cd bin
-for file in ${binfiles[@]}; do cp /bin/$file .; done
-cd -
-
-# DEV
-mkdir dev
-cd dev
-cp -r /dev/fd .
-cd -
+cp -r --parents ${deps[@]} .
+ldd ${deps[@]} \
+  | grep usr \
+  | sort -u \
+  | cut -d\  -f3 \
+  | xargs -i% cp % bin
 
 # ETC
-mkdir etc
-cd etc
 echo 'PATH=/usr/local/bin:/usr/bin
-cd tmp' > profile
-cd -
-
-# USR/LIB
-ulfiles=(
-  /usr/lib/php/20090626/curl.dll
-  /usr/lib/php/20090626/simplexml.dll
-  # /c/php/libeay32.dll
-  # /c/php/ssleay32.dll
-)
-mkdir -p usr/lib/php/20090626
-cd usr/lib/php/20090626
-for file in ${ulfiles[@]}; do cp $file .; done
-cd -
+cd tmp' > etc/profile
 
 # USR/LOCAL/BIN
-#ulbinfiles=(
-  # /c/php/libeay32.dll
-  # /c/php/ssleay32.dll
-#)
 mkdir -p usr/local/bin
 cd usr/local/bin
-# for file in ${ulbinfiles[@]}; do cp $file .; done
-# echo extension=./php_curl.dll > php.ini
 wget -q https://raw.github.com/K-S-V/Scripts/master/AdobeHDS.php
 wget -q https://raw.github.com/svnpenn/etc/master/AdobeHDS.sh
+chmod +x AdobeHDS.sh
 cd -
 
 # CYGWIN.BAT
