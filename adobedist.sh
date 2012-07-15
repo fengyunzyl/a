@@ -18,24 +18,30 @@ cd $distdir
 
 # BIN
 binfiles=(
-  /bin/cyggcc_s-1.dll # bash
-  /bin/cygiconv-2.dll # bash
-  /bin/cygintl-8.dll # bash
-  /bin/cygncursesw-10.dll # bash
-  /bin/cygreadline7.dll # bash
-  /bin/cygwin1.dll # bash
-  /bin/cygpcre-0.dll # grep
-  /bin/cygstdc++-6.dll # dumper
-  /bin/cygz.dll # dumper
-  /bin/bash.exe
-  /bin/dumper.exe
-  /bin/grep.exe
-  /bin/kill.exe
-  /bin/ps.exe
+  cygcrypto-1.0.0.dll # php
+  cygphp5.dll # php
+  cygpcre-1.dll # php
+  cygssl-1.0.0.dll # php
+  cygxml2-2.dll # php
+  cyggcc_s-1.dll # bash
+  cygiconv-2.dll # bash
+  cygintl-8.dll # bash
+  cygncursesw-10.dll # bash
+  cygreadline7.dll # bash
+  cygwin1.dll # bash
+  cygpcre-0.dll # grep
+  cygstdc++-6.dll # dumper
+  cygz.dll # dumper
+  bash.exe
+  dumper.exe
+  grep.exe
+  kill.exe
+  php.exe
+  ps.exe
 )
 mkdir bin
 cd bin
-for file in ${binfiles[@]}; do cp $file .; done
+for file in ${binfiles[@]}; do cp /bin/$file .; done
 cd -
 
 # DEV
@@ -51,20 +57,29 @@ echo 'PATH=/usr/local/bin:/usr/bin
 cd tmp' > profile
 cd -
 
-# USR/LOCAL/BIN
-ulbinfiles=(
-  /c/php/ext/php_curl.dll
-  /c/php/libeay32.dll
-  /c/php/php.exe
-  /c/php/php5.dll
-  /c/php/ssleay32.dll
+# USR/LIB
+ulfiles=(
+  /usr/lib/php/20090626/curl.dll
+  /usr/lib/php/20090626/simplexml.dll
+  # /c/php/libeay32.dll
+  # /c/php/ssleay32.dll
 )
+mkdir -p usr/lib/php/20090626
+cd usr/lib/php/20090626
+for file in ${ulfiles[@]}; do cp $file .; done
+cd -
+
+# USR/LOCAL/BIN
+#ulbinfiles=(
+  # /c/php/libeay32.dll
+  # /c/php/ssleay32.dll
+#)
 mkdir -p usr/local/bin
 cd usr/local/bin
-for file in ${ulbinfiles[@]}; do cp $file .; done
-echo extension=./php_curl.dll > php.ini
-wget https://raw.github.com/K-S-V/Scripts/master/AdobeHDS.php
-wget https://raw.github.com/svnpenn/etc/master/AdobeHDS.sh
+# for file in ${ulbinfiles[@]}; do cp $file .; done
+# echo extension=./php_curl.dll > php.ini
+wget -q https://raw.github.com/K-S-V/Scripts/master/AdobeHDS.php
+wget -q https://raw.github.com/svnpenn/etc/master/AdobeHDS.sh
 cd -
 
 # CYGWIN.BAT

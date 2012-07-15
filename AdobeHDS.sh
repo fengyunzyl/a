@@ -26,4 +26,3 @@ read m < <(binparse "http.*f4m?")
 read u < <(binparse "Mozilla/5.0")
 set -x
 php /usr/local/bin/AdobeHDS.php --auth "$a2" --manifest "$m" --useragent "$u"
-# PHP Fatal error:  Call to undefined function simplexml_load_string()
