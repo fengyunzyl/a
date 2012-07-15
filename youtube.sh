@@ -59,7 +59,7 @@ while read; do
   # Raw URL decode
   printf -v video "%b" "${REPLY//%/\\x}"
   videos+=("$video")
-done < <(download "$1" | sed "s.[=\].\n.g" | grep "videoplayback%3F") # sed "s [=\] \n g"
+done < <(download "$1" | sed "s [=\] \n g" | grep "videoplayback%3F")
 
 # Choose video
 for i in "${!videos[@]}"; do
