@@ -2,22 +2,28 @@
 # Create AdobeHDS distribution
 
 version(){
-  rm -rf /tmp
-  git clone -q "git://github.com/$1.git" /tmp
+  read <<< "$PWD"
   cd /tmp
+  rm -rf $2
+  git clone -q git://github.com/$1/$2.git
+  cd $2
   git rev-list HEAD | tail -1 | xargs git tag v
   git describe --tags
-  cd ->/dev/null
+  cd "$REPLY"
 }
 
-read version_php < <(version K-S-V/Scripts)
-read version_sh < <(version svnpenn/etc)
+read version_php < <(version K-S-V Scripts)
+read version_sh < <(version svnpenn etc)
 distdir="adobehds-$version_sh"
 mkdir $distdir
 cd $distdir
 
 # BIN
 deps=(
+  /dev/fd
+  /etc/php5/conf.d/bcmath.ini
+  /etc/php5/conf.d/curl.ini
+  /etc/php5/conf.d/simplexml.ini
   /bin/bash.exe
   /bin/dumper.exe
   /bin/grep.exe
@@ -25,16 +31,12 @@ deps=(
   /bin/php.exe
   /bin/ps.exe
   /bin/timeout.exe
-  /dev/fd
-  /etc/php5/conf.d/bcmath.ini
-  /etc/php5/conf.d/curl.ini
-  /etc/php5/conf.d/simplexml.ini
   /lib/php/20090626/bcmath.dll
   /lib/php/20090626/curl.dll
   /lib/php/20090626/simplexml.dll
 )
 cp -r --parents ${deps[@]} .
-ldd ${deps[@]} \
+ldd ${deps[@]:4} \
   | grep usr \
   | sort -u \
   | cut -d\  -f3 \
@@ -47,8 +49,8 @@ cd tmp' > etc/profile
 # USR/LOCAL/BIN
 mkdir -p usr/local/bin
 cd usr/local/bin
-wget -q https://raw.github.com/K-S-V/Scripts/master/AdobeHDS.php
-wget -q https://raw.github.com/svnpenn/etc/master/AdobeHDS.sh
+cp /tmp/Scripts/AdobeHDS.php .
+cp /tmp/etc/AdobeHDS.sh .
 chmod +x AdobeHDS.sh
 cd -
 
