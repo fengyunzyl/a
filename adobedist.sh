@@ -1,6 +1,19 @@
 #!/bin/bash
 # Create AdobeHDS distribution
 
+version(){
+  cd "$1"
+  git rev-list HEAD | tail -1 | xargs git tag v
+  git describe --tags
+  cd "$OLDPWD"
+}
+
+read v_date < <(date)
+read v_phpscript < <(version /opt/Scripts)
+read v_shscript < <(version /opt/etc)
+read -d\( v_cygwin < <(uname -r)
+read -d\( PHP v_php < <(php -v)
+
 # CLONE REPOS
 read <<< "$PWD"
 mkdir -p /opt
@@ -13,6 +26,11 @@ cd "$REPLY"
 mkdir adobehds
 cd $_
 
+# OPT
+cp --parents /opt/Scripts/AdobeHDS.php .
+cp --parents /opt/etc/AdobeHDS.sh .
+chmod +x opt/etc/AdobeHDS.sh
+
 # BIN
 deps=(
   /dev/fd
@@ -20,6 +38,7 @@ deps=(
   /etc/php5/conf.d/curl.ini
   /etc/php5/conf.d/simplexml.ini
   /bin/bash.exe
+  /bin/cut.exe
   /bin/dumper.exe
   /bin/grep.exe
   /bin/kill.exe
@@ -39,35 +58,13 @@ ldd ${deps[@]:4} \
   | xargs -i% cp % bin
 
 # ETC
-echo 'PATH=/usr/local/bin:/usr/bin
+echo 'PATH=/bin:/opt/etc
 cd tmp' > etc/profile
-
-# USR/LOCAL/BIN
-mkdir -p usr/local/bin
-cd usr/local/bin
-cp /opt/Scripts/AdobeHDS.php .
-cp /opt/etc/AdobeHDS.sh .
-chmod +x AdobeHDS.sh
-cd -
 
 # CYGWIN.BAT
 echo '@start bin\bash -l' > Cygwin.bat
 
-# README & ARCHIVE
-
-version(){
-  cd "$1"
-  git rev-list HEAD | tail -1 | xargs git tag v
-  git describe --tags
-  cd "$OLDPWD"
-}
-
-read v_date < <(date)
-read v_phpscript < <(version /opt/Scripts)
-read v_shscript < <(version /opt/etc)
-read -d\( v_cygwin < <(uname -r)
-read -d\( PHP v_php < <(php -v)
-
+# README
 cat > README <<EOF
 AdobeHDS.sh by Steven Penny
 
