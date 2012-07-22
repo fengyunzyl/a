@@ -1,22 +1,17 @@
 #!/bin/bash
 # Create AdobeHDS distribution
 
-version(){
-  read <<< "$PWD"
-  cd /tmp
-  rm -rf $2
-  git clone -q git://github.com/$1/$2.git
-  cd $2
-  git rev-list HEAD | tail -1 | xargs git tag v
-  git describe --tags
-  cd "$REPLY"
-}
+# CLONE REPOS
+read <<< "$PWD"
+mkdir -p /opt
+cd $_
+cd Scripts && git pull && cd - || git clone git://github.com/K-S-V/Scripts.git
+cd etc && git pull && cd - || git clone git://github.com/svnpenn/etc.git
+cd "$REPLY"
 
-read version_php < <(version K-S-V Scripts)
-read version_sh < <(version svnpenn etc)
-distdir="adobehds-$version_sh"
-mkdir $distdir
-cd $distdir
+# BEGIN
+mkdir adobehds
+cd $_
 
 # BIN
 deps=(
@@ -50,33 +45,50 @@ cd tmp' > etc/profile
 # USR/LOCAL/BIN
 mkdir -p usr/local/bin
 cd usr/local/bin
-cp /tmp/Scripts/AdobeHDS.php .
-cp /tmp/etc/AdobeHDS.sh .
+cp /opt/Scripts/AdobeHDS.php .
+cp /opt/etc/AdobeHDS.sh .
 chmod +x AdobeHDS.sh
 cd -
 
 # CYGWIN.BAT
 echo '@start bin\bash -l' > Cygwin.bat
 
-# README
+# README & ARCHIVE
+
+version(){
+  cd "$1"
+  git rev-list HEAD | tail -1 | xargs git tag v
+  git describe --tags
+  cd "$OLDPWD"
+}
+
+read v_date < <(date)
+read v_phpscript < <(version /opt/Scripts)
+read v_shscript < <(version /opt/etc)
+read -d\( v_cygwin < <(uname -r)
+read -d\( PHP v_php < <(php -v)
+
 cat > README <<EOF
 AdobeHDS.sh by Steven Penny
 
 Steven’s Home Page: http://svnpenn.github.com
 
-Built on $(date)
+Built on $v_date
 
 The source code for this project can be found at
   http://github.com/svnpenn/etc
 
 Included with this package
-  AdobeHDS.php $version_php
-  AdobeHDS.sh $version_sh
-  Cygwin $(uname -r | cut -d\( -f1)
-  PHP $(php -v | head -1 | cut -d\  -f2)
+  AdobeHDS.php $v_phpscript
+  AdobeHDS.sh $v_shscript
+  Cygwin $v_cygwin
+  PHP $v_php
 
 OPERATING INSTRUCTIONS
   Double click Cygwin.bat
   Input AdobeHDS.sh
   Follow instructions after that
 EOF
+
+# ARCHIVE
+7z a "adobehds-$v_shscript"
