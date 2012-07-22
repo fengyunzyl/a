@@ -31,6 +31,7 @@ deps=(
   /bin/php.exe
   /bin/ps.exe
   /bin/timeout.exe
+  /bin/xargs.exe
   /lib/php/20090626/bcmath.dll
   /lib/php/20090626/curl.dll
   /lib/php/20090626/simplexml.dll

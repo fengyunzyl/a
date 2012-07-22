@@ -15,7 +15,7 @@ red(){
 }
 
 pidof $p | xargs /bin/kill -f
-printf "ProtectedMode=0" > "${COMSPEC%\\*}/Macromed/Flash/mms.cfg"
+echo ProtectedMode=0 > \\windows/system32/macromed/flash/mms.cfg
 red 'Press enter after video starts'; read
 red 'Printing results'
 pidof $p | xargs timeout 1 dumper p

@@ -1,8 +1,8 @@
 #!/bin/sh
-h="${COMSPEC%\\*}/drivers/etc/hosts"
-p="plugin-container.exe"
+h=\\windows/system32/drivers/etc/hosts
+p=plugin-container.exe
 
-pid(){
+pidof(){
   ps -W | grep "$1" | cut -c-9
 }
 
@@ -10,14 +10,10 @@ red(){
   printf "\e[1;31m%s\e[m\n" "$1"
 }
 
-# Kill flash player
-pid "$p" | xargs /bin/kill -f
-# Disable protected mode, 32 and 64 bit Windows
-printf "ProtectedMode=0" > "${COMSPEC%\\*}/Macromed/Flash/mms.cfg"
+pidof $p | xargs /bin/kill -f
+echo ProtectedMode=0 > \\windows/system32/macromed/flash/mms.cfg
 red 'Press enter after video starts'; read
-# Dump flash player
-pid "$p" | xargs dumper p &
-sleep 1
+pidof $p | xargs timeout 1 dumper p
 
 tr "\0\"" "\n" < p.core \
   | grep -Eom1 "rtmp[est]*://[\.0-9a-z]{2,}" \
