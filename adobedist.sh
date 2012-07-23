@@ -1,31 +1,22 @@
 #!/bin/bash
 # Create AdobeHDS distribution
+cd /tmp
 
+# GITHUB
 update(){
   (
-    mkdir -p /opt
     cd /opt
-    git clone $1
-    : ${1##*/}
-    cd ${_%.*}
-    git pull
+    git clone git://github.com/$1/$2.git
+    cd $2
+    git pull -q
     git rev-list HEAD | tail -1 | xargs git tag v
+    git describe --tags
+    cp --parents /opt/$2/$3 /tmp
   ) 2>/dev/null
 }
-
-read v_cygwin < <(uname -r | grep -o '[.0-9]*')
-read v_date < <(date)
-read v_php < <(php -v | grep -o '[.0-9]*')
-read v_phpscript < <(cd /opt/Scripts; git describe --tags)
-read v_shscript < <(cd /opt/etc; git describe --tags)
-update git://github.com/K-S-V/Scripts.git
-update git://github.com/svnpenn/etc.git
-mkdir adobehds
-cd $_
-
-# OPT
-cp --parents /opt/Scripts/AdobeHDS.php .
-cp --parents /opt/etc/AdobeHDS.sh .
+mkdir -p /opt
+read v_phpscript < <(update K-S-V Scripts AdobeHDS.php)
+read v_shscript < <(update svnpenn etc AdobeHDS.sh)
 
 # BIN
 deps=(
@@ -59,8 +50,12 @@ cd tmp' > etc/profile
 
 # CYGWIN.BAT
 echo '@start bin\bash -l' > Cygwin.bat
+chmod +x Cygwin.bat
 
 # README
+read v_date < <(date)
+read v_cygwin < <(uname -r | grep -o '[.0-9]*')
+read v_php < <(php -v | grep -o '[.0-9]*')
 cat > README <<EOF
 AdobeHDS.sh by Steven Penny
 
