@@ -1,35 +1,31 @@
 #!/bin/bash
 # Create AdobeHDS distribution
 
-version(){
-  cd "$1"
-  git rev-list HEAD | tail -1 | xargs git tag v
-  git describe --tags
-  cd "$OLDPWD"
+update(){
+  (
+    mkdir -p /opt
+    cd /opt
+    git clone $1
+    : ${1##*/}
+    cd ${_%.*}
+    git pull
+    git rev-list HEAD | tail -1 | xargs git tag v
+  ) 2>/dev/null
 }
 
+read v_cygwin < <(uname -r | grep -o '[.0-9]*')
 read v_date < <(date)
-read v_phpscript < <(version /opt/Scripts)
-read v_shscript < <(version /opt/etc)
-read -d\( v_cygwin < <(uname -r)
-read -d\( PHP v_php < <(php -v)
-
-# CLONE REPOS
-read <<< "$PWD"
-mkdir -p /opt
-cd $_
-cd Scripts && git pull && cd - || git clone git://github.com/K-S-V/Scripts.git
-cd etc && git pull && cd - || git clone git://github.com/svnpenn/etc.git
-cd "$REPLY"
-
-# BEGIN
+read v_php < <(php -v | grep -o '[.0-9]*')
+read v_phpscript < <(cd /opt/Scripts; git describe --tags)
+read v_shscript < <(cd /opt/etc; git describe --tags)
+update git://github.com/K-S-V/Scripts.git
+update git://github.com/svnpenn/etc.git
 mkdir adobehds
 cd $_
 
 # OPT
 cp --parents /opt/Scripts/AdobeHDS.php .
 cp --parents /opt/etc/AdobeHDS.sh .
-chmod +x opt/etc/AdobeHDS.sh
 
 # BIN
 deps=(
