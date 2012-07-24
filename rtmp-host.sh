@@ -16,8 +16,8 @@ red 'Press enter after video starts'; read
 pidof $p | xargs timeout 1 dumper p
 
 grep -aoz "rtmp[est]*://[.0-z]*/" p.core \
-  | cut -d/ -f3 \
-  | cut -d: -f1 \
+  | tr -d / \
+  | cut -d: -f2 \
   | sort -u \
   | xargs printf "127.0.0.1 %s\n" \
   | tee "$h"
