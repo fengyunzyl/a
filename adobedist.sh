@@ -6,7 +6,8 @@ mkdir -p /opt
 # GITHUB
 update(){
   cd /opt
-  [ -d $2 ] && cd $2 || git clone git://github.com/$1/$2.git
+  [ -d $2 ] || git clone git://github.com/$1/$2.git
+  cd $2
   git fetch
   git merge -q origin/master || exit
   git rev-list HEAD | tail -1 | xargs git tag -f v
