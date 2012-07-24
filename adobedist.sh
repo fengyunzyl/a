@@ -1,22 +1,20 @@
 #!/bin/bash
 # Create AdobeHDS distribution
 cd /tmp
+mkdir -p /opt
 
 # GITHUB
 update(){
-  (
-    cd /opt
-    git clone git://github.com/$1/$2.git
-    cd $2
-    git pull -q
-    git rev-list HEAD | tail -1 | xargs git tag v
-    git describe --tags
-    cp --parents /opt/$2/$3 /tmp
-  ) 2>/dev/null
+  cd /opt
+  [ -d $2 ] && cd $2 || git clone git://github.com/$1/$2.git
+  git fetch
+  git merge -q master || exit
+  git rev-list HEAD | tail -1 | xargs git tag -f v
+  git describe --tags
+  cp --parents /opt/$2/$3 /tmp
 }
-mkdir -p /opt
-read v_phpscript < <(update K-S-V Scripts AdobeHDS.php)
-read v_shscript < <(update svnpenn etc AdobeHDS.sh)
+read v_phpscript < <(update K-S-V Scripts AdobeHDS.php) || exit
+read v_shscript < <(update svnpenn etc AdobeHDS.sh) || exit
 
 # BIN
 deps=(

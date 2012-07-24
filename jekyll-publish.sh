@@ -10,8 +10,7 @@ git push origin source || exit
 
 # Push master branch
 jekyll
-# Liquid error: No such file or directory
-grep -r --color Liquid.error * && exit
+grep --color -r 'Liquid.error' . && exit
 git checkout master
 git rm -qr .
 cp -r _site/. .
