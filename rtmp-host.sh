@@ -20,7 +20,7 @@ grep -aoz "rtmp[est]*://[.0-z]*/" p.core \
   | cut -d: -f2 \
   | sort -u \
   | xargs printf "127.0.0.1 %s\n" \
-  | tee "$h"
+  | tee $h
 
 red 'Press enter to start RtmpSrv, then restart video.'; read
 coproc r (rtmpsrv)
