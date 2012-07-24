@@ -15,8 +15,9 @@ echo ProtectedMode=0 > \\windows/system32/macromed/flash/mms.cfg
 red 'Press enter after video starts'; read
 pidof $p | xargs timeout 1 dumper p
 
-grep -Eaoz "rtmp[est]*://[.0-9a-z]{2,}" p.core \
+grep -aoz "rtmp[est]*://[.0-z]*/" p.core \
   | cut -d/ -f3 \
+  | cut -d: -f1 \
   | sort -u \
   | xargs printf "127.0.0.1 %s\n" \
   | tee "$h"
