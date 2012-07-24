@@ -8,7 +8,7 @@ update(){
   cd /opt
   [ -d $2 ] && cd $2 || git clone git://github.com/$1/$2.git
   git fetch
-  git merge -q master || exit
+  git merge -q origin/master || exit
   git rev-list HEAD | tail -1 | xargs git tag -f v
   git describe --tags
   cp --parents /opt/$2/$3 /tmp
