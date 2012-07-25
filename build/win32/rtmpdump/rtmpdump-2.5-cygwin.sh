@@ -1,6 +1,5 @@
 #!/bin/sh
-# Install Cygwin packages
-./setup -nqs ftp://lug.mtu.edu/cygwin -P git,make,mingw64-i686-gcc-core,wget
+host=i686-w64-mingw32
 
 # Install Zlib
 wget zlib.net/zlib-1.2.7.tar.bz2
