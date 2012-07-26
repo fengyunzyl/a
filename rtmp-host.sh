@@ -35,4 +35,4 @@ echo q >&${r[1]}
 pidof rtmpdump | xargs /bin/kill -f
 # tr "[:cntrl:]" "\n" < p.core | grep -A1 -m1 secureTokenResponse | tail -1
 eval "$REPLY||$REPLY -v"
-rm p.core
+rm p.core ports
