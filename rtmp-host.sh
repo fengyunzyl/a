@@ -15,7 +15,8 @@ echo ProtectedMode=0 > \\windows/system32/macromed/flash/mms.cfg
 red 'Press enter after video starts'; read
 pidof $p | xargs timeout 1 dumper p
 
-grep -aoz "rtmp[est]*://[.0-z]*/" p.core \
+grep -Eaoz "rtmp[est]*://[.0-9a-z]*:[0-9]{3,}" p.core \
+  | tee ports \
   | tr -d / \
   | cut -d: -f2 \
   | sort -u \
@@ -23,13 +24,15 @@ grep -aoz "rtmp[est]*://[.0-z]*/" p.core \
   | tee $h
 
 red 'Press enter to start RtmpSrv, then restart video.'; read
+IFS=: read _ _ RTMPPORT < ports
+export RTMPPORT
 coproc r (rtmpsrv)
 while read; do grep rtmpdump <<< "$REPLY" && break; done <&${r[0]}
 echo q >&${r[1]}
-
-# Restore hosts file
 > $h
 
 # Run RtmpDump
 pidof rtmpdump | xargs /bin/kill -f
+# tr "[:cntrl:]" "\n" < p.core | grep -A1 -m1 secureTokenResponse | tail -1
 eval "$REPLY||$REPLY -v"
+rm p.core
