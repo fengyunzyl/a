@@ -6,15 +6,6 @@ delay, please include link(s) to the web-page(s) with video(s)[/QUOTE]
 stream-recorder.com/forum/announcement.php?f=4[/URL]
 ~~~
 
-# Flash Access
-~~~
-[QUOTE=KSV]They are using FlashAccess DRM to encrypt the content. it's clearly
-mentioned in manifest file. it's not possible to recover those videos without
-reversing FlashAccess.[/QUOTE]
-[URL="stream-recorder.com/forum/showpost.php?p=46255&postcount=42"]
-stream-recorder.com/forum/showpost.php?p=46255&postcount=42[/URL]
-~~~
-
 # Space character
 ~~~
 &#8203;
@@ -36,3 +27,16 @@ the same of all of you. Think before you post.[/QUOTE]
 [QUOTE][FONT="Lucida Console"]
 [/FONT][/QUOTE]
 ~~~
+
+
+It should be noted that none of
+
+* Flasm
+* RabcDasm
+* Flare
+
+will [B]decompile[/B] SWF files. Flasm and RabcDasm will [B]disassemble[/B] swf
+files into bytecode, but this is not ActionScript source code.
+
+Flare claims to decompile but has not been updated since 2006 and does not work
+on modern swf files.
