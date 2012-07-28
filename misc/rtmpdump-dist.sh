@@ -4,9 +4,8 @@ host=i686-w64-mingw32
 
 cd rtmpdump
 rtmpdump_version=$(git describe --tags)
-# stackoverflow.com/questions/1253828
 rtmpdump_timestamp=$(date -d "$(stat -c %z rtmpdump.exe)")
-distdir="$OLDPWD/rtmpdump-$rtmpdump_version-svnpenn"
+distdir="$OLDPWD/rtmpdump-$rtmpdump_version"
 mkdir $distdir
 
 cp rtmpdump.exe $distdir
