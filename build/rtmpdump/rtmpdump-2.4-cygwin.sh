@@ -1,8 +1,5 @@
-#!/bin/sh
+#!/bin/bash
 host=i686-w64-mingw32
-
-# Install Cygwin packages
-./setup -nqs ftp://lug.mtu.edu/cygwin -P git,make,mingw64-i686-gcc-core,wget
 
 # Install Zlib
 wget zlib.net/zlib-1.2.7.tar.bz2
@@ -31,10 +28,30 @@ cd -
 
 # Install RtmpDump
 cd rtmpdump
-git tag 'v2.4' 'c28f1ba'
+git tag v2.4 c28f1ba
 # Build
-make CROSS_COMPILE="$host-" CRYPTO=POLARSSL SHARED= SYS=mingw XLDFLAGS=-static \
-	VERSION=$(git describe --tags)
+read < <(git describe --tags)
+
+make \
+  CROSS_COMPILE="$host-" \
+  CRYPTO=POLARSSL \
+  SYS=mingw \
+  SHARED= \
+  XLDFLAGS=-static \
+  VERSION=$REPLY
+
+
 
 # Build librtmp.dll
 make CROSS_COMPILE="$host-" CRYPTO=POLARSSL SYS=mingw
+
+
+
+
+
+
+
+
+
+
+
