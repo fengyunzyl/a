@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 h=\\windows/system32/drivers/etc/hosts
 p=plugin-container
 
@@ -15,7 +15,7 @@ echo ProtectedMode=0 > \\windows/system32/macromed/flash/mms.cfg
 red 'Press enter after video starts'; read
 pidof $p | xargs timeout 1 dumper p
 
-grep -Eaoz "rtmp[est]*://[.0-9a-z]*:[0-9]{3,}" p.core \
+grep -Eaoz "rtmp[est]*://[.0-z]+" p.core \
   | tee ports \
   | tr -d / \
   | cut -d: -f2 \
@@ -27,12 +27,13 @@ red 'Press enter to start RtmpSrv, then restart video.'; read
 IFS=: read _ _ RTMPPORT < ports
 export RTMPPORT
 coproc r (rtmpsrv)
-while read; do grep rtmpdump <<< "$REPLY" && break; done <&${r[0]}
+while read incantation; do expr "${!_}" : rtmpdump && break; done <&${r[0]}
 echo q >&${r[1]}
+pidof rtmpdump | xargs /bin/kill -f
 > $h
 
-# Run RtmpDump
-pidof rtmpdump | xargs /bin/kill -f
-# tr "[:cntrl:]" "\n" < p.core | grep -A1 -m1 secureTokenResponse | tail -1
-eval "$REPLY||$REPLY -v"
+# Get SecureToken
+read < <(tr "[:cntrl:]" "\n" < p.core | grep -1m1 secureTokenResponse | tail -1)
 rm p.core ports
+set -x
+eval "$incantation -T '$REPLY'"
