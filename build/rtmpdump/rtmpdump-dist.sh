@@ -51,7 +51,7 @@ The source code for this RtmpDump build can be found at
   http://github.com/svnpenn/rtmpdump
 
 This version of RtmpDump was built on
-  Window 7 Ultimate Service Pack 1
+  Windows 7 Ultimate Service Pack 1
   http://windows.microsoft.com/en-us/windows7/products/home
 
 The toolchain used to compile this RtmpDump was
