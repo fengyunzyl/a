@@ -1,51 +1,44 @@
-#!/bin/sh
+#!/bin/bash
 # Create distribution!
-host=i686-w64-mingw32
+gcc=i686-w64-mingw32-gcc
+strip=i686-w64-mingw32-strip
 
 cd rtmpdump
-rtmpdump_version=$(git describe --tags)
-rtmpdump_timestamp=$(date -d "$(stat -c %z rtmpdump.exe)")
-distdir="$OLDPWD/rtmpdump-$rtmpdump_version"
+read v_rtmpdump < <(git describe --tags)
+read timestamp_rtmpdump < <(stat -c%z rtmpdump.exe | xargs -0 date -d)
+distdir="$OLDPWD/rtmpdump-$v_rtmpdump"
 mkdir $distdir
-
 cp rtmpdump.exe $distdir
 cp rtmpgw.exe $distdir
 cp rtmpsrv.exe $distdir
 cp rtmpsuck.exe $distdir
-
 cd librtmp
 cp librtmp.dll $distdir
 
 # Compress files
 cd $distdir
-# strip -R .tls -o test.exe rtmpdump.exe
-$host-strip *
-# mpress -b rtmpdump.exe
+$strip *
 upx -9 *
 
-# CREATE README
-gcc_version=$(gcc -dumpversion)
+# README
+read v_gcc < <($gcc -dumpversion)
 
-polarssl_version=$(cat <<EOF | $host-gcc -E -xc - | tail -1 | tr -d \"
-#include <polarssl/version.h>
-POLARSSL_VERSION_STRING
-EOF
-)
+: '#include <polarssl/version.h>
+POLARSSL_VERSION_STRING'
+read v_polarssl < <($gcc -E -xc - <<< "$_" | tail -1 | tr -d \")
 
-zlib_version=$(cat <<EOF | $host-gcc -E -xc - | tail -1 | tr -d \"
-#include <zlib.h>
-ZLIB_VERSION
-EOF
-)
+: '#include <zlib.h>
+ZLIB_VERSION'
+read v_zlib < <($gcc -E -xc - <<< "$_" | tail -1 | tr -d \")
 
 cat > README.txt <<EOF
 This is a RtmpDump Win32 static build by Steven Penny.
 
-Steven's Home Page: http://svnpenn.github.com
+Steven’s Home Page: http://svnpenn.github.com
 
-Built on $rtmpdump_timestamp
+Built on $timestamp_rtmpdump
 
-RtmpDump version $rtmpdump_version
+RtmpDump version $v_rtmpdump
 
 The source code for this RtmpDump build can be found at
   http://github.com/svnpenn/rtmpdump
@@ -58,9 +51,9 @@ The toolchain used to compile this RtmpDump was
   MinGW-w64: http://mingw-w64.sourceforge.net
 
 The GCC version used to compile this RtmpDump was
-  GCC $gcc_version: http://gcc.gnu.org
+  GCC $v_gcc: http://gcc.gnu.org
 
 The external libraries compiled into this RtmpDump are
-  Zlib $zlib_version http://zlib.net
-  PolarSSL $polarssl_version http://polarssl.org
+  Zlib $v_zlib http://zlib.net
+  PolarSSL $v_polarssl http://polarssl.org
 EOF
