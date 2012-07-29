@@ -4,10 +4,9 @@ gcc=i686-w64-mingw32-gcc
 strip=i686-w64-mingw32-strip
 
 cd rtmpdump
+read distdir < <(mktemp -d)
+read t_rtmpdump < <(stat -c%z rtmpdump.exe | xargs -0 date -d)
 read v_rtmpdump < <(git describe --tags)
-read timestamp_rtmpdump < <(stat -c%z rtmpdump.exe | xargs -0 date -d)
-distdir="$OLDPWD/rtmpdump-$v_rtmpdump"
-mkdir $distdir
 cp rtmpdump.exe $distdir
 cp rtmpgw.exe $distdir
 cp rtmpsrv.exe $distdir
@@ -15,7 +14,7 @@ cp rtmpsuck.exe $distdir
 cd librtmp
 cp librtmp.dll $distdir
 
-# Compress files
+# COMPRESS FILES
 cd $distdir
 $strip *
 upx -9 *
@@ -36,7 +35,7 @@ This is a RtmpDump Win32 static build by Steven Penny.
 
 Steven’s Home Page: http://svnpenn.github.com
 
-Built on $timestamp_rtmpdump
+Built on $t_rtmpdump
 
 RtmpDump version $v_rtmpdump
 
@@ -57,3 +56,6 @@ The external libraries compiled into this RtmpDump are
   Zlib $v_zlib http://zlib.net
   PolarSSL $v_polarssl http://polarssl.org
 EOF
+
+# ARCHIVE
+7z a "rtmpdump-$v_rtmpdump.7z"
