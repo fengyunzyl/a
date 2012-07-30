@@ -1,5 +1,6 @@
-// i686-w64-mingw32-gcc AdobeHDS.c -ldbghelp -lpcre -Wall
-#include <io.h>
+/*
+i686-w64-mingw32-gcc AdobeHDS.c -ldbghelp -lpcre -Wall
+*/
 #include <pcre.h>
 #include <stdio.h>
 #include <windows.h>
@@ -11,14 +12,15 @@ void kill(win32pid){
 }
 
 void dumper(win32pid){
+  HANDLE hFile = CreateFile("p.core", GENERIC_WRITE, 0, 0, CREATE_ALWAYS,
+    FILE_ATTRIBUTE_NORMAL, 0);
   MiniDumpWriteDump(OpenProcess(PROCESS_ALL_ACCESS, 0, win32pid), win32pid,
-    (void *)_get_osfhandle(fileno(fopen("p.core", "w"))),
-    MiniDumpWithFullMemory, 0, 0, 0);
+    hFile, MiniDumpWithFullMemory, 0, 0, 0);
 }
 
-int pidof(const char *imagename){
+int pidof(char *imagename){
   PROCESSENTRY32 pe32;
-  void *hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+  HANDLE hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
   pe32.dwSize = sizeof(PROCESSENTRY32);
   do {
     if (strcmp(pe32.szExeFile, imagename) == 0)
@@ -28,7 +30,7 @@ int pidof(const char *imagename){
 }
 
 void red(char *string){
-  void *hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+  HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
   SetConsoleTextAttribute(hConsole,
     FOREGROUND_RED | FOREGROUND_INTENSITY);
   printf("%s\n", string);
@@ -36,13 +38,19 @@ void red(char *string){
     FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 }
 
+void wf(char *file, char *data){
+  HANDLE hFile = CreateFile(file, GENERIC_WRITE, 0, 0, CREATE_ALWAYS,
+    FILE_ATTRIBUTE_NORMAL, 0);
+  DWORD bw;
+  WriteFile(hFile, data, (DWORD)strlen(data), &bw, 0);
+  CloseHandle(hFile);
+}
+
 int main(){
   int pid_flash;
   pid_flash = pidof("plugin-container.exe");
   kill(pid_flash);
-  FILE *mms = fopen("\\Windows/System32/Macromed/Flash/mms.cfg", "w");
-  fprintf(mms, "ProtectedMode=0");
-  fclose(mms);
+  wf("\\Windows/System32/Macromed/Flash/mms.cfg", "ProtectedMode=0");
   red("Press enter after video starts");
   getchar();
   red("Printing results");
@@ -53,26 +61,5 @@ int main(){
   // grep -axzm1 "[ -~]*$1[ -~]*" p.core
   // IFS=? read a1 a2 < <(binparse "Frag")
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
   return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
