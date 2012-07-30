@@ -1,17 +1,19 @@
 // i686-w64-mingw32-gcc AdobeHDS.c -ldbghelp -lpcre -Wall
+#include <io.h>
 #include <pcre.h>
 #include <stdio.h>
 #include <windows.h>
   #include <dbghelp.h>
   #include <tlhelp32.h>
 
-void red(char *string){
-  void *hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-  SetConsoleTextAttribute(hConsole,
-    FOREGROUND_RED | FOREGROUND_INTENSITY);
-  printf("%s\n", string);
-  SetConsoleTextAttribute(hConsole,
-    FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+void kill(win32pid){
+  TerminateProcess(OpenProcess(PROCESS_ALL_ACCESS, 0, win32pid), 1);
+}
+
+void dumper(win32pid){
+  MiniDumpWriteDump(OpenProcess(PROCESS_ALL_ACCESS, 0, win32pid), win32pid,
+    (void *)_get_osfhandle(fileno(fopen("p.core", "w"))),
+    MiniDumpWithFullMemory, 0, 0, 0);
 }
 
 int pidof(const char *imagename){
@@ -25,17 +27,13 @@ int pidof(const char *imagename){
   return 0;
 }
 
-void dumper(win32pid){
-  void *hProc = OpenProcess(PROCESS_ALL_ACCESS, FALSE, win32pid);
-  void *hFile = CreateFile("p.core", GENERIC_WRITE, 0, 0, CREATE_ALWAYS,
-    FILE_ATTRIBUTE_NORMAL, 0);
-  MiniDumpWriteDump(hProc, win32pid, hFile, MiniDumpWithFullMemory, 0, 0, 0);
-  CloseHandle(hFile);
-}
-
-void kill(win32pid){
-  void *hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, win32pid);
-  TerminateProcess(hProcess, 1);
+void red(char *string){
+  void *hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+  SetConsoleTextAttribute(hConsole,
+    FOREGROUND_RED | FOREGROUND_INTENSITY);
+  printf("%s\n", string);
+  SetConsoleTextAttribute(hConsole,
+    FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 }
 
 int main(){
