@@ -1,6 +1,10 @@
 /*
 i686-w64-mingw32-gcc AdobeHDS.c -ldbghelp -lpcre -Wall
+
+ibm.com/developerworks/systems/library/es-MigratingWin32toLinux.html
+stackoverflow.com/q/1421785/how-can-i-use-pcre-to-get-all-match-groups
 */
+#define PCRE_STATIC
 #include <pcre.h>
 #include <stdio.h>
 #include <windows.h>
@@ -61,5 +65,26 @@ int main(){
   // grep -axzm1 "[ -~]*$1[ -~]*" p.core
   // IFS=? read a1 a2 < <(binparse "Frag")
   
+  /*
+  const char *error;
+
+  int erroffset;
+
+  char *regex = "........Frag.........";
+
+  pcre *re = pcre_compile(regex, PCRE_MULTILINE, &error, &erroffset, 0);
+
+   unsigned int offset = 0;
+    unsigned int len    = strlen(str);
+    while (offset < len && (rc = pcre_exec(re, 0, str, len, offset, 0, ovector, sizeof(ovector))) >= 0)
+    {
+        for(int i = 0; i < rc; ++i)
+        {
+            printf("%2d: %.*s\n", i, ovector[2*i+1] - ovector[2*i], str + ovector[2*i]);
+        }
+        offset = ovector[1];
+    }
+  */
+
   return 0;
 }
