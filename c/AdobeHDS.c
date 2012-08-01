@@ -1,54 +1,12 @@
 /*
 i686-w64-mingw32-gcc AdobeHDS.c -ldbghelp -lpcre -Wall
 
+git clone git://metalog.git.sourceforge.net/gitroot/metalog/metalog
 ibm.com/developerworks/systems/library/es-MigratingWin32toLinux.html
+pastebin.com/j0aYDBfq
 stackoverflow.com/q/1421785/how-can-i-use-pcre-to-get-all-match-groups
 */
-#define PCRE_STATIC
-#include <pcre.h>
-#include <stdio.h>
-#include <windows.h>
-  #include <dbghelp.h>
-  #include <tlhelp32.h>
-
-void kill(win32pid){
-  TerminateProcess(OpenProcess(PROCESS_ALL_ACCESS, 0, win32pid), 1);
-}
-
-void dumper(win32pid){
-  HANDLE hFile = CreateFile("p.core", GENERIC_WRITE, 0, 0, CREATE_ALWAYS,
-    FILE_ATTRIBUTE_NORMAL, 0);
-  MiniDumpWriteDump(OpenProcess(PROCESS_ALL_ACCESS, 0, win32pid), win32pid,
-    hFile, MiniDumpWithFullMemory, 0, 0, 0);
-}
-
-int pidof(char *imagename){
-  PROCESSENTRY32 pe32;
-  HANDLE hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-  pe32.dwSize = sizeof(PROCESSENTRY32);
-  do {
-    if (strcmp(pe32.szExeFile, imagename) == 0)
-      return pe32.th32ProcessID;
-  } while (Process32Next(hProcessSnap, &pe32));
-  return 0;
-}
-
-void red(char *string){
-  HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-  SetConsoleTextAttribute(hConsole,
-    FOREGROUND_RED | FOREGROUND_INTENSITY);
-  printf("%s\n", string);
-  SetConsoleTextAttribute(hConsole,
-    FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
-}
-
-void wf(char *file, char *data){
-  HANDLE hFile = CreateFile(file, GENERIC_WRITE, 0, 0, CREATE_ALWAYS,
-    FILE_ATTRIBUTE_NORMAL, 0);
-  DWORD bw;
-  WriteFile(hFile, data, (DWORD)strlen(data), &bw, 0);
-  CloseHandle(hFile);
-}
+#include "AdobeHDS.h"
 
 int main(){
   int pid_flash;
@@ -64,27 +22,6 @@ int main(){
   
   // grep -axzm1 "[ -~]*$1[ -~]*" p.core
   // IFS=? read a1 a2 < <(binparse "Frag")
-  
-  /*
-  const char *error;
-
-  int erroffset;
-
-  char *regex = "........Frag.........";
-
-  pcre *re = pcre_compile(regex, PCRE_MULTILINE, &error, &erroffset, 0);
-
-   unsigned int offset = 0;
-    unsigned int len    = strlen(str);
-    while (offset < len && (rc = pcre_exec(re, 0, str, len, offset, 0, ovector, sizeof(ovector))) >= 0)
-    {
-        for(int i = 0; i < rc; ++i)
-        {
-            printf("%2d: %.*s\n", i, ovector[2*i+1] - ovector[2*i], str + ovector[2*i]);
-        }
-        offset = ovector[1];
-    }
-  */
 
   return 0;
 }
