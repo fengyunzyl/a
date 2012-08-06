@@ -17,6 +17,5 @@ wget -qO- "techpatterns.com/downloads/firefox/useragentswitcher.xml" \
   | while read v; do
       echo "$v"
       wget -qO- -U "$v" "youtube.com/watch?v=ReP9pN5jJDY" \
-        | grep -q "videoplayback?" && break
-      sleep .1
+        | grep -q "videoplayback?" && echo "$v" >> log
     done

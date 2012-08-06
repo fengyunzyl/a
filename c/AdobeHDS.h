@@ -1,6 +1,6 @@
 #define PCRE_STATIC
 #include <pcre.h>
-#include <stdio.h>
+#include <stdio.h> // fopen
 #include <windows.h>
   #include <dbghelp.h>
   #include <tlhelp32.h>
