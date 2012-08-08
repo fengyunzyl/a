@@ -1,4 +1,7 @@
 /*
+codecogs.com/reference/computing/c/stdio.h/fread.php
+ubuntuforums.org/showthread.php?t=141670&page=3
+
 $ tr "[:cntrl:]" "\n" < alj.core | wc -L
 167039
 */
