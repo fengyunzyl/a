@@ -1,49 +1,33 @@
+/*
+boredzo.org/pointers
+github.com/ffi/ffi/wiki/Binary-data
+stackoverflow.com/q/1835986/how-to-use-eof-to-run-through-a-text-file-in-c
+*/
+#define PCRE_STATIC
+#include <pcre.h>
 #include <stdio.h> // fopen
 
+struct file {
+  char *buf;
+  int size;
+};
 
+struct file read_whole_file(char *file_name){
+  FILE *fp = fopen(file_name, "r");
+  fseek(fp, 0, SEEK_END);
+  struct file fs;
+  fs.size = ftell(fp);
+  rewind(fp);
+  fs.buf = malloc(fs.size);
+  fread(fs.buf, 1, fs.size, fp);
+  fclose(fp);
+  return fs;
+}
 
 int main(){
-  char buf[BUFSIZ];
-  char *error;
-  int erroffset;
-  int ovector[100];
-  unsigned int offset = 0;
-  FILE *fp = fopen("null.log", "r")
-  pcre *re = pcre_compile("sdf", 0, &error, &erroffset, 0);
+  struct file fs = read_whole_file("null.log");
   
-  while (fread(buf, sizeof buf, 1, fp) == 1) {
-    
-    for (line_next = buf; line_next < buf + sizeof;
-        start_ofs -= line_next - line_buf)
-      {
-        
-      }
-    
-    
-    
-    
-    
-    
-    int e = pcre_exec(re, 0, buf, strlen(buf), offset, 0, ovector, sizeof ovector);
-    
-    printf("%d\n", e);
-    
-    
-    
-    
-    
-  }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  printf("%s\n%d", fs.buf, fs.size);
   
   return 0;
 }
