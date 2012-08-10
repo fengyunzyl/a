@@ -1,4 +1,4 @@
-
+~~~
 Its become clear that someone is censoring this forum.
 The "unofficial" RtmpDump thread has been deleted several times.
 The thread about DMCA was removed. Luckily I saved my post because I expected
@@ -19,8 +19,7 @@ In addition Xeebo patch is available here
 [URL="dropbox.com/s/iy5pku6c7iwht16/0001-Handshake-10.7z"]
 dropbox.com/s/iy5pku6c7iwht16/0001-Handshake-10.7z[/URL]
 enjoy.
-
----
+~~~
 
 ~~~
 Forum rules
