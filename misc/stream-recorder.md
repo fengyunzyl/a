@@ -10,12 +10,14 @@ or offer up a good explaination as to why this content is being removed.
 
 We have Xeebo to thank for this. He is the one who filed the DMCA takedown
 notice with GitHub. Please feel free to email him at
-xeebosoft@ukr.net
+[email]xeebosoft@ukr.net[/email]
 with your concerns. For time being my build from master branch is here
-rtmpdump.mplayerhq.hu/download/rtmpdump-v2.4-35-ge0056c5-master.7z
+[URL="rtmpdump.mplayerhq.hu/download/rtmpdump-v2.4-35-ge0056c5-master.7z"]
+rtmpdump.mplayerhq.hu/download/rtmpdump-v2.4-35-ge0056c5-master.7z[/URL]
 Builds from "svnpenn" branch are available upon request.
 In addition Xeebo patch is available here
-dropbox.com/s/iy5pku6c7iwht16/0001-Handshake-10.7z
+[URL="dropbox.com/s/iy5pku6c7iwht16/0001-Handshake-10.7z"]
+dropbox.com/s/iy5pku6c7iwht16/0001-Handshake-10.7z[/URL]
 enjoy.
 
 ---
