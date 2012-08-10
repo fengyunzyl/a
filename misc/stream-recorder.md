@@ -1,4 +1,13 @@
 
+Its become clear that someone is censoring this forum.
+The "unofficial" RtmpDump thread has been deleted several times.
+The thread about DMCA was removed. Luckily I saved my post because I expected
+this to happen.
+If you remove it again, I will post it again. So you better go ahead and ban me,
+or offer up a good explaination as to why this content is being removed.
+
+---
+
 We have Xeebo to thank for this. He is the one who filed the DMCA takedown
 notice with GitHub. Please feel free to email him at
 xeebosoft@ukr.net
