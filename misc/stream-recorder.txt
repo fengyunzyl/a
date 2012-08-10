@@ -21,25 +21,6 @@ enjoy.
 
 --------------------------------------------------------------------------------
 
-Forum rules
-[QUOTE=Forum rules v1.1]If you truly want definitive answers quickly and without
-delay, please include link(s) to the web-page(s) with video(s)[/QUOTE]
-[URL="stream-recorder.com/forum/announcement.php?f=4"]
-stream-recorder.com/forum/announcement.php?f=4[/URL]
-
---------------------------------------------------------------------------------
-
-Space character
-&#8203;
-
---------------------------------------------------------------------------------
-
-Insert code
-[QUOTE][FONT="Lucida Console"]
-[/FONT][/QUOTE]
-
---------------------------------------------------------------------------------
-
 It should be noted that none of
 
 * Flasm
@@ -51,3 +32,18 @@ files into bytecode, but this is not ActionScript source code.
 
 Flare claims to decompile but has not been updated since 2006 and does not work
 on modern swf files.
+
+--------------------------------------------------------------------------------
+
+Forum rules
+[QUOTE=Forum rules v1.1]If you truly want definitive answers quickly and without
+delay, please include link(s) to the web-page(s) with video(s)[/QUOTE]
+[URL="stream-recorder.com/forum/announcement.php?f=4"]
+stream-recorder.com/forum/announcement.php?f=4[/URL]
+
+Space character
+&#8203;
+
+Insert code
+[QUOTE][FONT="Lucida Console"]
+[/FONT][/QUOTE]
