@@ -1,33 +1,32 @@
-# Forum rules
+
+We have Xeebo to thank for this. He is the one who filed the DMCA takedown
+notice with GitHub. Please feel free to email him at
+xeebosoft@ukr.net
+with your concerns. For time being my build from master branch is here
+rtmpdump.mplayerhq.hu/download/rtmpdump-v2.4-35-ge0056c5-master.7z
+Builds from "svnpenn" branch are available upon request.
+In addition Xeebo patch is available here
+dropbox.com/s/iy5pku6c7iwht16/0001-Handshake-10.7z
+enjoy.
+
+---
+
 ~~~
+Forum rules
 [QUOTE=Forum rules v1.1]If you truly want definitive answers quickly and without
 delay, please include link(s) to the web-page(s) with video(s)[/QUOTE]
 [URL="stream-recorder.com/forum/announcement.php?f=4"]
 stream-recorder.com/forum/announcement.php?f=4[/URL]
-~~~
 
-# Space character
-~~~
+Space character
 &#8203;
-~~~
 
-# Howard Chu
-~~~
-[QUOTE=Howard Chu]You would not walk into the kitchen of a gourmet restaurant
-and ask the head chef to teach you how to boil a pot of water. The question
-itself is rude; it's inconsiderate of you to waste people's time with such
-questions that you should have found the answer to long before.
-
-Every thing that I put out on the web is the result of intense thought. I expect
-the same of all of you. Think before you post.[/QUOTE]
-~~~
-
-# Insert code
-~~~
+Insert code
 [QUOTE][FONT="Lucida Console"]
 [/FONT][/QUOTE]
 ~~~
 
+---
 
 It should be noted that none of
 
