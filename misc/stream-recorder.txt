@@ -11,6 +11,9 @@ with your concerns. For time being my build from master branch is here
 [URL="rtmpdump.mplayerhq.hu/download/rtmpdump-v2.4-35-ge0056c5-master.7z"]
 rtmpdump.mplayerhq.hu/download/rtmpdump-v2.4-35-ge0056c5-master.7z[/URL]
 Builds from "svnpenn" branch are available upon request.
+I will be maintaining posts on GitHub as well
+[URL="github.com/svnpenn/etc/blob/master/misc/stream-recorder.txt"]
+github.com/svnpenn/etc/blob/master/misc/stream-recorder.txt[/URL]
 
 --------------------------------------------------------------------------------
 
