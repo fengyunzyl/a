@@ -21,20 +21,6 @@ enjoy.
 
 --------------------------------------------------------------------------------
 
-It should be noted that none of
-
-* Flasm
-* RabcDasm
-* Flare
-
-will [B]decompile[/B] SWF files. Flasm and RabcDasm will [B]disassemble[/B] swf
-files into bytecode, but this is not ActionScript source code.
-
-Flare claims to decompile but has not been updated since 2006 and does not work
-on modern swf files.
-
---------------------------------------------------------------------------------
-
 Forum rules
 [QUOTE=Forum rules v1.1]If you truly want definitive answers quickly and without
 delay, please include link(s) to the web-page(s) with video(s)[/QUOTE]
