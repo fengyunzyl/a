@@ -1,5 +1,5 @@
 ~~~
-Its become clear that someone is censoring this forum.
+It has become clear that someone is censoring this forum.
 The "unofficial" RtmpDump thread has been deleted several times.
 The thread about DMCA was removed. Luckily I saved my post because I expected
 this to happen.
