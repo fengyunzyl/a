@@ -2,11 +2,14 @@ Xeebo filed a DMCA takedown notice on the svnpenn/rtmpdump repo, in order to
 have the "Handshake 10" patch removed.
 
 This has been done and a counter notice filed. The repository should be restored
-in 10 days time. In mean time builds from "svnpenn" branch available upon
-request.
+in 10 days time. In mean time build from "master" branch is here
 
+[URL="rtmpdump.mplayerhq.hu/download/rtmpdump-v2.4-35-ge0056c5-master.7z"]
+rtmpdump.mplayerhq.hu/download/rtmpdump-v2.4-35-ge0056c5-master.7z[/URL]
+
+build from "svnpenn" branch available upon request.
 In addition I filed a notice with Adobe about Xeebo’s site
-http://tubedigger.com, which is now down.
+[url]http://tubedigger.com[/url], which is now down.
 
 I tried to explain these event on this forum and moderator placebo banned me and
 removed my thread. He even started removing my posts from other threads. I
