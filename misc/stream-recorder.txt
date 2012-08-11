@@ -1,19 +1,17 @@
-It has become clear that someone is censoring this forum.
-The "unofficial" RtmpDump thread has been deleted several times.
-The thread about DMCA was removed. Luckily I saved my post because I expected
-this to happen.
-If you remove it again, I will post it again. So you better go ahead and ban me,
-or offer up a good explaination as to why this content is being removed.
-We have Xeebo to thank for this. He is the one who filed the DMCA takedown
-notice with GitHub. Please feel free to email him at
-[email]xeebosoft@ukr.net[/email]
-with your concerns. For time being my build from master branch is here
-[URL="rtmpdump.mplayerhq.hu/download/rtmpdump-v2.4-35-ge0056c5-master.7z"]
-rtmpdump.mplayerhq.hu/download/rtmpdump-v2.4-35-ge0056c5-master.7z[/URL]
-Builds from "svnpenn" branch are available upon request.
-I will be maintaining posts on GitHub as well
-[URL="github.com/svnpenn/etc/blob/master/misc/stream-recorder.txt"]
-github.com/svnpenn/etc/blob/master/misc/stream-recorder.txt[/URL]
+Xeebo filed a DMCA takedown notice on the svnpenn/rtmpdump repo, in order to
+have the "Handshake 10" patch removed.
+
+This has been done and a counter notice filed. The repository should be restored
+in 10 days time. In mean time builds from "svnpenn" branch available upon
+request.
+
+In addition I filed a notice with Adobe about Xeebo’s site
+http://tubedigger.com, which is now down.
+
+I tried to explain these event on this forum and moderator placebo banned me and
+removed my thread. He even started removing my posts from other threads. I
+believe the situation is now under control and all parties can move forward
+amicably.
 
 --------------------------------------------------------------------------------
 
