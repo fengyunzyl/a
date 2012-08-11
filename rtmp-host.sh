@@ -36,4 +36,4 @@ pidof rtmpdump | xargs /bin/kill -f
 read < <(tr "[:cntrl:]" "\n" < p.core | grep -1m1 secureTokenResponse | tail -1)
 rm p.core ports
 set -x
-eval "$incantation -T '$REPLY'"
+eval "$incantation ${REPLY:+-T $REPLY}"
