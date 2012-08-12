@@ -1,3 +1,16 @@
+In response to moderator placebo banning me and removing my posts/threads, I
+have to say this.
+
+My build on http://rtmpdump.mplayerhq.hu has been pulled at my request. In
+addition I will be pulling the builds on GitHub when the repo comes back up.
+Those seeking Windows builds will need to use KSV, or build your own.
+
+Finally this will be my last post on these forums until the current climate of
+censorship and banning ceases. Further inquiries can be made to moderator
+placebo.
+
+--------------------------------------------------------------------------------
+
 Xeebo filed a DMCA takedown notice on the svnpenn/rtmpdump repo, in order to
 have the "Handshake 10" patch removed.
 
