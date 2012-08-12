@@ -2,10 +2,10 @@
 # Git remove sensitive data
 # help.github.com/articles/remove-sensitive-data
 
-[ ! $1 ] && echo "Usage: ${0##*/} FILE" && exit
+[ ! "$1" ] && echo "Usage: ${0##*/} FILE" && exit
 
 git filter-branch \
-  --index-filter "git rm --cached --ignore-unmatch $1" \
+  --index-filter "git rm --cached --ignore-unmatch '$1'" \
   --prune-empty --tag-name-filter cat -- --all || exit
 
 # Cleanup and reclaming space

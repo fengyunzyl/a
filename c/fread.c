@@ -2,6 +2,7 @@
 aleax.it/TutWin32
 boredzo.org/pointers
 github.com/ffi/ffi/wiki/Binary-data
+roseindia.net/c-tutorials/c-structure-pointer.shtml
 stackoverflow.com/q/1835986/how-to-use-eof-to-run-through-a-text-file-in-c
 */
 #define PCRE_STATIC
