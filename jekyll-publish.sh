@@ -11,7 +11,7 @@ git push origin source || exit
 # Push master branch
 jekyll || exit
 grep --color -r 'Liquid.error' . && exit
-coderay || exit
+coderay >/dev/null || exit
 git checkout master
 git rm -qr .
 cp -r _site/. .
