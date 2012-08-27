@@ -23,4 +23,5 @@ IFS=? read a1 a2 < <(binparse "Frag")
 read m < <(binparse "http.*f4m?")
 read u < <(binparse "Mozilla/5.0")
 set -x
-php /opt/Scripts/AdobeHDS.php --auth "$a2" --manifest "$m" --useragent "$u"
+php /opt/Scripts/AdobeHDS.php ${a2:+--auth "$a2"} --manifest "$m" \
+  --useragent "$u"

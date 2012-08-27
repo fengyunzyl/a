@@ -1,36 +1,3 @@
-In response to moderator placebo banning me and removing my posts/threads, I
-have to say this.
-
-My build on http://rtmpdump.mplayerhq.hu has been pulled at my request. In
-addition I will be pulling the builds on GitHub when the repo comes back up.
-Those seeking Windows builds will need to use KSV, or build your own.
-
-Finally this will be my last post on these forums until the current climate of
-censorship and banning ceases. Further inquiries can be made to moderator
-placebo.
-
---------------------------------------------------------------------------------
-
-Xeebo filed a DMCA takedown notice on the svnpenn/rtmpdump repo, in order to
-have the "Handshake 10" patch removed.
-
-This has been done and a counter notice filed. The repository should be restored
-in 10 days time. In mean time build from "master" branch is here
-
-[URL="rtmpdump.mplayerhq.hu/download/rtmpdump-v2.4-35-ge0056c5-master.7z"]
-rtmpdump.mplayerhq.hu/download/rtmpdump-v2.4-35-ge0056c5-master.7z[/URL]
-
-build from "svnpenn" branch available upon request.
-In addition I filed a notice with Adobe about Xeebo’s site
-[url]http://tubedigger.com[/url], which is now down.
-
-I tried to explain these event on this forum and moderator placebo banned me and
-removed my thread. He even started removing my posts from other threads. I
-believe the situation is now under control and all parties can move forward
-amicably.
-
---------------------------------------------------------------------------------
-
 Forum rules
 [QUOTE=Forum rules v1.1]If you truly want definitive answers quickly and without
 delay, please include link(s) to the web-page(s) with video(s)[/QUOTE]
