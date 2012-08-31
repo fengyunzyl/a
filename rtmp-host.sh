@@ -33,7 +33,7 @@ pidof rtmpdump | xargs /bin/kill -f
 > $h
 
 # Get SecureToken
-read < <(tr "[:cntrl:]" "\n" < p.core | grep -1m1 secureTokenResponse | tail -1)
+read < <(tr "[:cntrl:]" "\n" < p.core | grep -1m1 secureTokenResponse | tac)
 rm p.core ports
 echo "$incantation ${REPLY:+-T $REPLY}"
 eval "$_"
