@@ -19,9 +19,9 @@ echo ProtectedMode=0 > \\windows/system32/macromed/flash/mms.cfg
 red 'Press enter after video starts'; read
 red 'Printing results'
 pidof $p | xargs timeout 1 dumper p
-IFS=? read a1 a2 < <(binparse "Frag")
+IFS=? read _ a < <(binparse "Frag")
 read m < <(binparse "http.*f4m?")
 read u < <(binparse "Mozilla/5.0")
 set -x
-php /opt/Scripts/AdobeHDS.php ${a2:+--auth "$a2"} --manifest "$m" \
+php /opt/Scripts/AdobeHDS.php ${a:+--auth "$a"} --manifest "$m" \
   --useragent "$u"

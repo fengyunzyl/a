@@ -1,4 +1,5 @@
 #!/bin/bash
+set -o igncr # ignore CR
 p="plugin-container.exe"
 
 pidof(){
