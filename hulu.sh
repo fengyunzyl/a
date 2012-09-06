@@ -11,15 +11,21 @@ attrget(){
   echo "${_%%\"*}" # Remove back
 }
 
-red(){
-  printf "\e[1;31m%s\e[m\n" "$1"
+warn(){
+  echo -e "\e[1;35m$1\e[m"
+}
+
+die(){
+  echo -e "\e[1;31m$1\e[m"
+  exit
 }
 
 pidof $p | xargs /bin/kill -f
 echo ProtectedMode=0 > \\windows/system32/macromed/flash/mms.cfg
-red 'Press enter after video starts'; read
-red 'Printing results'
-pidof $p | xargs timeout 1 dumper p
+warn 'Press enter after video starts'; read
+warn 'Printing results'
+read < <(pidof $p) || die "$p not found!"
+timeout 1 dumper p $REPLY
 
 # Create array
 while read -d $'\0'; do
@@ -34,7 +40,7 @@ for i in "${!videos[@]}"; do
   printf "%2d\t%9s\t%s\n" "$i" "$file_type" "$cdn"
 done
 
-red 'Make choice. Avoid level3.'; read
+warn 'Make choice. Avoid level3.'; read
 video="${videos[REPLY]}"
 read server < <(attrget "$video" "server")
 read stream < <(attrget "$video" "stream")
