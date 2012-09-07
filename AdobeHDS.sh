@@ -16,8 +16,8 @@ warn(){
 
 pidof $p | xargs /bin/kill -f
 echo ProtectedMode=0 > \\windows/system32/macromed/flash/mms.cfg
-warn 'Press enter after video starts'; read
-warn 'Printing results'
+warn 'Killed flash player for clean dump.
+Restart video then press enter here'; read
 pidof $p | xargs timeout 1 dumper p
 IFS=? read _ a < <(binparse "Frag")
 read m < <(binparse "http.*f4m?")

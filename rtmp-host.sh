@@ -17,7 +17,8 @@ die(){
 
 pidof $p | xargs /bin/kill -f
 echo ProtectedMode=0 > \\windows/system32/macromed/flash/mms.cfg
-warn 'Press enter after video starts'; read
+warn 'Killed flash player for clean dump.
+Restart video then press enter here'; read
 read < <(pidof $p) || die "$p not found!"
 timeout 1 dumper p $REPLY
 
