@@ -1,23 +1,23 @@
 #!/bin/bash
 set -o igncr # ignore CR
-p="plugin-container.exe"
-
-pidof(){
-  ps -W | grep "$1" | cut -c-9
-}
+p=plugin-container.exe
 
 attrget(){
   : "${1#*$2=\"}" # Remove front
   echo "${_%%\"*}" # Remove back
 }
 
+die(){
+  echo -e "\e[1;31m$1\e[m"
+  exit
+}
+
 warn(){
   echo -e "\e[1;35m$1\e[m"
 }
 
-die(){
-  echo -e "\e[1;31m$1\e[m"
-  exit
+pidof(){
+  ps -W | grep $1 | cut -c-9
 }
 
 pidof $p | xargs /bin/kill -f
