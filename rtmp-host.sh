@@ -1,19 +1,25 @@
 #!/bin/bash
 h=\\windows/system32/drivers/etc/hosts
-p=plugin-container
+p=plugin-container.exe
 
 pidof(){
   ps -W | grep "$1" | cut -c-9
 }
 
-red(){
-  printf "\e[1;31m%s\e[m\n" "$1"
+warn(){
+  echo -e "\e[1;35m$1\e[m"
+}
+
+die(){
+  echo -e "\e[1;31m$1\e[m"
+  exit
 }
 
 pidof $p | xargs /bin/kill -f
 echo ProtectedMode=0 > \\windows/system32/macromed/flash/mms.cfg
-red 'Press enter after video starts'; read
-pidof $p | xargs timeout 1 dumper p
+warn 'Press enter after video starts'; read
+read < <(pidof $p) || die "$p not found!"
+timeout 1 dumper p $REPLY
 
 grep -Eaoz "rtmp[est]*://[-.0-z]+" p.core \
   | tee ports \
@@ -23,7 +29,7 @@ grep -Eaoz "rtmp[est]*://[-.0-z]+" p.core \
   | xargs printf "127.0.0.1 %s\n" \
   | tee $h
 
-red 'Press enter to start RtmpSrv, then restart video.'; read
+warn 'Press enter to start RtmpSrv, then restart video.'; read
 IFS=: read _ _ RTMPPORT < ports
 export RTMPPORT
 coproc r (rtmpsrv)
