@@ -7,6 +7,7 @@ cd rtmpdump
 read distdir < <(mktemp -d)
 read t_rtmpdump < <(stat -c%z rtmpdump.exe | xargs -0 date -d)
 read v_rtmpdump < <(git describe --tags)
+read branch < <(cut -d/ -f3 .git/HEAD)
 cp rtmpdump.exe $distdir
 cp rtmpgw.exe $distdir
 cp rtmpsrv.exe $distdir
@@ -58,4 +59,4 @@ The external libraries compiled into this RtmpDump are
 EOF
 
 # ARCHIVE
-7z a "rtmpdump-$v_rtmpdump.7z"
+7z a "rtmpdump-$v_rtmpdump-$branch.7z"
