@@ -51,7 +51,12 @@ red(){
   printf "\e[1;31m%s\e[m\n" "$1"
 }
 
-[ ! $1 ] && echo "Usage: ${0##*/} http://www.youtube.com/..." && exit
+die(){
+  echo -e "\e[1;31m$1\e[m"
+  exit
+}
+
+[ $1 ] || die "Usage: $0 http://www.youtube.com/..."
 
 # Create array
 videos=()
