@@ -28,23 +28,21 @@ read < <(pidof $p) || die "$p not found!"
 timeout 1 dumper p $REPLY
 
 # Create array
-while read -d $'\0'; do
-  videos+=("$REPLY")
-done < <(grep -az "video server" p.core)
+mapfile vids < <(grep -az "video server" p.core | tr "\0" "\n")
 
 # Choose video
-for i in "${!videos[@]}"; do
-  video="${videos[i]}"
-  read file_type < <(attrget "$video" "file-type")
-  read cdn < <(attrget "$video" "cdn")
+for i in "${!vids[@]}"; do
+  vid="${vids[i]}"
+  read file_type < <(attrget "$vid" "file-type")
+  read cdn < <(attrget "$vid" "cdn")
   printf "%2d\t%9s\t%s\n" "$i" "$file_type" "$cdn"
 done
 
 warn 'Make choice. Avoid level3.'; read
-video="${videos[REPLY]}"
-read server < <(attrget "$video" "server")
-read stream < <(attrget "$video" "stream")
-read token < <(attrget "$video" "token")
+vid="${vids[REPLY]}"
+read server < <(attrget "$vid" "server")
+read stream < <(attrget "$vid" "stream")
+read token < <(attrget "$vid" "token")
 app="${server#*//*/}"
 
 set -x
