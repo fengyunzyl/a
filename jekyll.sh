@@ -1,7 +1,12 @@
 #!/bin/sh
 # Launch Jekyll
 
-[ ! $1 ] && echo "Usage: ${0##*/} REPO_NAME" && exit
+die(){
+  echo -e "\e[1;31m$1\e[m"
+  exit
+}
+
+[ $1 ] || die "Usage: $0 REPO_NAME"
 
 cd /opt/$1
 
