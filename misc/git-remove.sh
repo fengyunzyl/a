@@ -2,7 +2,12 @@
 # Git remove sensitive data
 # help.github.com/articles/remove-sensitive-data
 
-[ ! "$1" ] && echo "Usage: ${0##*/} FILE" && exit
+die(){
+  echo -e "\e[1;31m$1\e[m"
+  exit
+}
+
+[ $1 ] || die "Usage: $0 FILE"
 
 git filter-branch \
   --index-filter "git rm --cached --ignore-unmatch '$1'" \
