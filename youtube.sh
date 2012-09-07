@@ -47,8 +47,8 @@ download(){
   done
 }
 
-red(){
-  printf "\e[1;31m%s\e[m\n" "$1"
+warn(){
+  echo -e "\e[1;35m$1\e[m"
 }
 
 die(){
@@ -75,7 +75,7 @@ for i in "${!videos[@]}"; do
   echo "${qual[_]}"
 done
 
-red 'Make choice.'; read
+warn 'Make choice.'; read
 : "${videos[REPLY]}"
 echo "$_"
 download "$_" > videoplayback

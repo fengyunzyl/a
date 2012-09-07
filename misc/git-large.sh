@@ -2,13 +2,13 @@
 # Find large files in git repo, that dont exist in HEAD
 # stackoverflow.com/questions/298314
 
-red(){
-  printf "\e[1;31m%s\e[m\n" "$1"
+warn(){
+  echo -e "\e[1;35m$1\e[m"
 }
 
 declare -A big_files
 big_files=()
-red 'Printing results'
+warn 'Printing results'
 
 while read commit; do
   while read bits type sha size path; do
