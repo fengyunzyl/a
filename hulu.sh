@@ -21,7 +21,8 @@ pidof(){
 }
 
 pidof $p | xargs /bin/kill -f
-echo ProtectedMode=0 > \\windows/system32/macromed/flash/mms.cfg
+read < <(cd $WINDIR; pwd)
+echo ProtectedMode=0 > $REPLY/system32/macromed/flash/mms.cfg
 warn 'Killed flash player for clean dump.
 Restart video then press enter here'; read
 read < <(pidof $p) || die "$p not found!"
