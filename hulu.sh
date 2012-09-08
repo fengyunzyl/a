@@ -28,7 +28,7 @@ read < <(pidof $p) || die "$p not found!"
 timeout 1 dumper p $REPLY 2>/dev/null
 
 # Create array
-mapfile vids < <(grep -az "video server" p.core | tr "\0" "\n")
+mapfile vids < <(grep -aoz "<video [^>]*>" p.core | sort | uniq -w123)
 
 # Choose video
 for i in "${!vids[@]}"; do
