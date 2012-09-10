@@ -25,7 +25,9 @@ echo ProtectedMode=0 2>/dev/null >\\windows/system32/macromed/flash/mms.cfg
 warn 'Killed flash player for clean dump.
 Restart video then press enter here'; read
 read < <(pidof $p) || die "$p not found!"
-timeout 1 dumper p $REPLY 2>/dev/null
+rm -f p.core
+dumper p $REPLY &
+until [ -s p.core ]; do sleep 1; done
 
 # Create array
 mapfile vids < <(grep -aoz "<video [^>]*>" p.core | sort | uniq -w123)
