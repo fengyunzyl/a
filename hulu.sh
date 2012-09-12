@@ -1,5 +1,4 @@
 #!/bin/bash
-PATH+=:.
 p=plugin-container.exe
 
 attrget(){
