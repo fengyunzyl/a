@@ -1,5 +1,5 @@
 #!/bin/bash
-set -o igncr # ignore CR
+PATH+=:.
 p=plugin-container.exe
 
 attrget(){
