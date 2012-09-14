@@ -1,9 +1,9 @@
 #!/bin/bash
-LANG=
+read c < <(cd \\;pwd)
 p=plugin-container.exe
 
 binparse(){
-  grep -axzm1 "[ -~]*$1[ -~]*" p.core
+  LANG= grep -axzm1 "[ -~]*$1[ -~]*" p.core
 }
 
 pidof(){
@@ -20,7 +20,7 @@ warn(){
 }
 
 pidof $p | xargs /bin/kill -f
-echo ProtectedMode=0 > $HOMEDRIVE/windows/system32/macromed/flash/mms.cfg
+echo ProtectedMode=0 > $c/windows/system32/macromed/flash/mms.cfg
 warn 'Killed flash player for clean dump.
 Restart video then press enter here'; read
 read < <(pidof $p) || die "$p not found!"
