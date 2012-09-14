@@ -1,5 +1,5 @@
 #!/bin/bash
-h=\\windows/system32/drivers/etc/hosts
+h=$HOMEDRIVE/windows/system32/drivers/etc/hosts
 p=plugin-container.exe
 
 pidof(){
@@ -16,7 +16,7 @@ die(){
 }
 
 pidof $p | xargs /bin/kill -f
-echo ProtectedMode=0 2>/dev/null >\\windows/system32/macromed/flash/mms.cfg
+echo ProtectedMode=0 > $HOMEDRIVE/windows/system32/macromed/flash/mms.cfg
 warn 'Killed flash player for clean dump.
 Restart video then press enter here'; read
 read < <(pidof $p) || die "$p not found!"
