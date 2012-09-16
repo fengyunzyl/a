@@ -25,11 +25,11 @@ read v_gcc < <($gcc -dumpversion)
 
 : '#include <polarssl/version.h>
 POLARSSL_VERSION_STRING'
-read v_polarssl < <($gcc -E -xc - <<< "$_" | tail -1 | tr -d \")
+read v_polarssl < <($gcc -E -xc - <<< "$_" | tac | tr -d \")
 
 : '#include <zlib.h>
 ZLIB_VERSION'
-read v_zlib < <($gcc -E -xc - <<< "$_" | tail -1 | tr -d \")
+read v_zlib < <($gcc -E -xc - <<< "$_" | tac | tr -d \")
 
 cat > README.txt <<EOF
 This is a RtmpDump Win32 static build by Steven Penny.

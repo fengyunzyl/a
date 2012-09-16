@@ -1,14 +1,12 @@
 #!/bin/bash
-
-# Determine correct PolarSSL
-git clone git://git.ffmpeg.org/rtmpdump
-cd rtmpdump
-v=0.14.3
-grep -r ciphersuite . && v=1.0.0 && grep -r havege_random . && v=1.1.3
-cd -
+# This is to build MY RtmpDump. The official one at http://rtmpdump.mplayerhq.hu
+# at this point is terribly out of date. They are still using PolarSSL 1.0.0 and
+# havent committed the patch for PolarSSL 1.1.1 in over 6 months. I have also
+# since been moderated on the mailing list, so yeah, I am dropping support for
+# building "official" RtmpDump.
 
 # Install PolarSSL
-wget polarssl.org/code/releases/polarssl-$v-gpl.tgz
+wget polarssl.org/code/releases/polarssl-1.1.4-gpl.tgz
 tar xf polarssl*
 cd polarssl*
 make APPS= AR=i686-w64-mingw32-ar CC=i686-w64-mingw32-gcc
@@ -25,6 +23,7 @@ make install -f win32/Makefile.gcc BINARY_PATH=/bin \
 cd -
 
 # Install RtmpDump
+git clone git://github.com/svnpenn/rtmpdump.git
 cd rtmpdump
 git tag v2.4 c28f1ba
 read < <(git describe --tags)

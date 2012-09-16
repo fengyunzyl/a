@@ -25,7 +25,7 @@ rm -f p.core
 dumper p $REPLY &
 until [ -s p.core ]; do sleep 1; done
 
-grep -Eaoz "rtmp[est]*://[-.0-z]+" p.core \
+grep -Eaioz "rtmp[est]*://[-.0-z]+" p.core \
   | tee ports \
   | tr -d / \
   | cut -d: -f2 \
