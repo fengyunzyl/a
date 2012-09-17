@@ -7,16 +7,16 @@
 
 # Install PolarSSL
 wget polarssl.org/code/releases/polarssl-1.1.4-gpl.tgz
-tar xf polarssl*
-cd polarssl*
+tar xf polarssl-1.1.4-gpl.tgz
+cd polarssl-1.1.4
 make APPS= AR=i686-w64-mingw32-ar CC=i686-w64-mingw32-gcc
 make install DESTDIR=/usr/i686-w64-mingw32/sys-root/mingw
 cd -
 
 # Install Zlib
 wget zlib.net/zlib-1.2.7.tar.bz2
-tar xf zlib*
-cd zlib*
+tar xf zlib-1.2.7.tar.bz2
+cd zlib-1.2.7
 make install -f win32/Makefile.gcc BINARY_PATH=/bin \
   DESTDIR=/usr/i686-w64-mingw32/sys-root/mingw INCLUDE_PATH=/include \
   LIBRARY_PATH=/lib PREFIX=i686-w64-mingw32-
