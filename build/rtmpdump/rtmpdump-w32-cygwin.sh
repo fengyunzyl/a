@@ -25,7 +25,6 @@ cd -
 # Install RtmpDump
 git clone git://github.com/svnpenn/rtmpdump.git
 cd rtmpdump
-git tag v2.4 c28f1ba
 read < <(git describe --tags)
 make CROSS_COMPILE=i686-w64-mingw32- CRYPTO=POLARSSL SYS=mingw SHARED= \
   XLDFLAGS=-static VERSION=$REPLY
