@@ -1,6 +1,6 @@
 #!/bin/bash
-read c < <(cd \\;pwd)
-h=$c/windows/system32/drivers/etc/hosts
+/\\ 2>/dev/null
+h=\\windows/system32/drivers/etc/hosts
 p=plugin-container.exe
 
 pidof(){
@@ -18,7 +18,7 @@ die(){
 }
 
 pidof $p | xargs /bin/kill -f
-echo ProtectedMode=0 > $c/windows/system32/macromed/flash/mms.cfg
+echo ProtectedMode=0 >\\windows/system32/macromed/flash/mms.cfg
 warn 'Killed flash player for clean dump.
 Restart video then press enter here'
 read < <(pidof $p) || die "$p not found!"
@@ -27,7 +27,7 @@ dumper p $REPLY &
 until [ -s p.core ]; do sleep 1; done
 
 # Add better support for upper case RTMPE; grep -i is too slow
-time grep -Eaoz "rtmp[est]*://[-.0-z]+" p.core \
+LANG= grep -Eaoz "rtmp[est]*://[-.0-z]+" p.core \
   | tee ports \
   | tr -d / \
   | cut -d: -f2 \
@@ -51,5 +51,5 @@ pidof rtmpdump | xargs /bin/kill -f
 # Get SecureToken
 read < <(tr "[:cntrl:]" "\n" < p.core | grep -1m1 secureTokenResponse | tac)
 rm p.core ports
-echo "$incantation ${REPLY:+-T $REPLY}"
+echo "$incantation ${REPLY:+-T '$REPLY'}"
 eval "$_"
