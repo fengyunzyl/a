@@ -44,6 +44,8 @@ while read incantation; do
   expr "${!_}" : rtmpdump && break
 done <&${r[0]}
 
+# mapfile -t < <(grep -1Um1 rtmpdump <&$r)
+# Restart video
 echo q >&${r[1]}
 pidof rtmpdump | xargs /bin/kill -f
 > $h

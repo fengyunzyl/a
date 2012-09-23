@@ -10,6 +10,7 @@ git add -A
 git commit -m KSV
 
 # Patch with Xeebo code
+git checkout 603f
 git branch xeebo
 git checkout xeebo
 git apply ../0001-Handshake-10.patch
