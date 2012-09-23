@@ -1,4 +1,5 @@
 #!/bin/bash
+/\\ 2>/dev/null
 p=plugin-container.exe
 
 attrget(){
