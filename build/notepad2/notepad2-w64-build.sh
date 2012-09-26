@@ -5,7 +5,7 @@ PATH=/bin:/c/svn/bin
 # msdn.microsoft.com/en-us/windows/hardware/gg487428
 
 # Get source
-# It is important to inlcude trunk or you
+# It is important to include trunk or you
 # get the unmodded code as well
 url='http://notepad2-mod.googlecode.com/svn/trunk'
 svn_dir=$(svn info $url | awk /Revision/'{print $2}')
