@@ -46,7 +46,7 @@ LANG= grep -Eao '(RTMP|rtmp).{0,2}://[-.0-z]+' pg.core \
 warn 'Press enter to start RtmpSrv, then restart video.'
 IFS=: read _ _ RTMPPORT < ports
 export RTMPPORT
-read incantation < <(rtmpsrv | grep -m1 rtmpdump)
+read rp < <(rtmpsrv | grep -m1 rtmpdump)
 # mapfile -t < <(grep -1Um1 rtmpdump <&$r)
 # Restart video
 killall rtmpdump
@@ -56,5 +56,6 @@ killall rtmpsrv
 # Get SecureToken
 read < <(tr "[:cntrl:]" "\n" < pg.core | grep -1m1 secureTokenResponse | tac)
 rm pg.core ports
-echo "$incantation ${REPLY:+-T '$REPLY'}"
-eval "$_"
+[ $REPLY ] && rp+=" -T '$REPLY'"
+echo $rp
+eval $rp
