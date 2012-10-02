@@ -1,5 +1,4 @@
 #!/bin/bash
-/\\ 2>/dev/null
 p=plugin-container
 
 die(){
@@ -21,7 +20,7 @@ killall(){
 }
 
 killall $p
-echo ProtectedMode=0 >\\windows/system32/macromed/flash/mms.cfg
+echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
 warn 'Killed flash player for clean dump.
 Restart video then press enter here'
 read < <(pidof $p) || die "$p not found!"
