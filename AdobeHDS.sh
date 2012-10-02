@@ -1,9 +1,10 @@
 #!/bin/bash
 /\\ 2>/dev/null
+f=/opt/Scripts/AdobeHDS.php
 p=plugin-container.exe
 
 binparse(){
-  grep -aozm1 "$1" p.core
+  grep -azm1 "$1" p.core
 }
 
 pidof(){
@@ -26,8 +27,9 @@ Restart video then press enter here'; read
 read < <(pidof $p) || die "$p not found!"
 timeout 1 dumper p $REPLY 2>/dev/null
 IFS=? read _ a < <(binparse "Frag")
-read m < <(binparse "http.*\.f4m")
+read m < <(binparse "^http.*f4m")
 read u < <(binparse "Mozilla/5.0")
 set -x
-php /opt/Scripts/AdobeHDS.php ${a:+--auth "$a"} --manifest "$m" \
-  --useragent "$u" --delete
+php "$f" --manifest "$m" && exit
+php "$f" --manifest "$m" --auth "$a" && exit
+php "$f" --manifest "$m" --auth "$a" --useragent "$u"

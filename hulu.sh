@@ -1,11 +1,6 @@
 #!/bin/bash
 /\\ 2>/dev/null
-p=plugin-container.exe
-
-attrget(){
-  : "${1#*$2=\"}" # Remove front
-  echo "${_%%\"*}" # Remove back
-}
+p=plugin-container
 
 die(){
   echo -e "\e[1;31m$1\e[m"
@@ -14,43 +9,43 @@ die(){
 
 warn(){
   echo -e "\e[1;35m$1\e[m"
+  read
 }
 
 pidof(){
   ps -W | grep $1 | cut -c-9
 }
 
-pidof $p | xargs /bin/kill -f
-echo ProtectedMode=0 >${COMSPEC%\\*}/macromed/flash/mms.cfg
+killall(){
+  pidof $1 | xargs /bin/kill -f
+}
+
+killall $p
+echo ProtectedMode=0 >\\windows/system32/macromed/flash/mms.cfg
 warn 'Killed flash player for clean dump.
-Restart video then press enter here'; read
+Restart video then press enter here'
 read < <(pidof $p) || die "$p not found!"
 rm -f p.core
 dumper p $REPLY &
 until [ -s p.core ]; do sleep 1; done
-
-# Create array
 mapfile vids < <(grep -aoz "<video [^>]*>" p.core | sort | uniq -w123)
+declare -A attr
 
-# Choose video
 for i in "${!vids[@]}"; do
-  vid="${vids[i]}"
-  read file_type < <(attrget "$vid" "file-type")
-  read cdn < <(attrget "$vid" "cdn")
-  printf "%2d\t%9s\t%s\n" "$i" "$file_type" "$cdn"
+  IFS=\" read -a vid <<< "${vids[i]}"
+  j=0
+  while [[ "${vid[j]}" =~ \ ([^=]*) ]]; do
+    attr[$i,${BASH_REMATCH[1]}]="${vid[j+1]}"
+    ((j+=2))
+  done
+  printf "%2d\t%9s\t%s\n" "$i" "${attr[$i,file-type]}" "${attr[$i,cdn]}"
 done
 
-warn 'Make choice. Avoid level3.'; read
-vid="${vids[REPLY]}"
-read server < <(attrget "$vid" "server")
-read stream < <(attrget "$vid" "stream")
-read token < <(attrget "$vid" "token")
-app="${server#*//*/}"
-
+warn 'Make choice. Avoid level3.'
 set -x
 rtmpdump \
 -W "http://download.hulu.com/huludesktop.swf" \
--a "$app?${token//&amp;/&}" \
+-a "${attr[$REPLY,server]#*//*/}?${attr[$REPLY,token]//amp;}" \
 -o "out.flv" \
--r "$server" \
--y "$stream"
+-r "${attr[$REPLY,server]}" \
+-y "${attr[$REPLY,stream]}"

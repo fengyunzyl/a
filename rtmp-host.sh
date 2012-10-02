@@ -1,10 +1,11 @@
 #!/bin/bash
 /\\ 2>/dev/null
 h=\\windows/system32/drivers/etc/hosts
-p=plugin-container.exe
+p=plugin-container
 
-pidof(){
-  ps -W | grep "$1" | cut -c-9
+die(){
+  echo -e "\e[1;31m$1\e[m"
+  exit
 }
 
 warn(){
@@ -12,15 +13,19 @@ warn(){
   read
 }
 
-die(){
-  echo -e "\e[1;31m$1\e[m"
-  exit
+pidof(){
+  ps -W | grep $1 | cut -c-9
 }
 
-pidof $p | xargs /bin/kill -f
+killall(){
+  pidof $1 | xargs /bin/kill -f
+}
+
+killall $p
 echo ProtectedMode=0 >\\windows/system32/macromed/flash/mms.cfg
-warn 'Killed flash player for clean dump.
-Restart video then press enter here'
+> $h
+warn 'Killed flash player for clean dump. Hosts file reset.
+Restart video then press enter here.'
 read < <(pidof $p) || die "$p not found!"
 rm -f p.core
 dumper p $REPLY &
@@ -32,22 +37,16 @@ LANG= grep -Eaoz "rtmp[est]*://[-.0-z]+" p.core \
   | tr -d / \
   | cut -d: -f2 \
   | sort -u \
-  | xargs printf "127.0.0.1 %s\n" \
+  | sed 's,^,127.0.0.1 ,' \
   | tee $h
 
 warn 'Press enter to start RtmpSrv, then restart video.'
 IFS=: read _ _ RTMPPORT < ports
 export RTMPPORT
-coproc r (rtmpsrv)
-
-while read incantation; do
-  expr "${!_}" : rtmpdump && break
-done <&${r[0]}
-
+read incantation < <(rtmpsrv | grep -m1 rtmpdump)
 # mapfile -t < <(grep -1Um1 rtmpdump <&$r)
 # Restart video
-echo q >&${r[1]}
-pidof rtmpdump | xargs /bin/kill -f
+killall rtmpsrv
 > $h
 
 # Get SecureToken
