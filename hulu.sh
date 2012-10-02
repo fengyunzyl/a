@@ -33,6 +33,7 @@ rm -f a.core
 dumper a $REPLY 2>/dev/null &
 until [ -s a.core ]; do sleep 1; done
 mapfile vids < <(grep -aoz "<video [^>]*>" a.core | sort | uniq -w123)
+rm a.core
 declare -A attr
 
 for i in "${!vids[@]}"; do

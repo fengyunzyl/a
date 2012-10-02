@@ -40,6 +40,7 @@ until [ -s a.core ]; do sleep 1; done
 IFS=? read _ a < <(binparse "Frag")
 read m < <(binparse "^http.*f4m")
 read u < <(binparse "Mozilla/5.0")
+rm a.core
 set -x
 php "$f" --manifest "$m" && exit
 php "$f" --manifest "$m" --auth "$a" && exit
