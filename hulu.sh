@@ -1,5 +1,4 @@
 #!/bin/bash
-p=plugin-container
 
 die(){
   echo -e "\e[1;31m$1\e[m"
@@ -19,15 +18,21 @@ killall(){
   pidof $1 | xargs /bin/kill -f
 }
 
+realpath(){
+  read $1 < <(cd ${!1}; pwd)
+}
+
+realpath WINDIR
+p=plugin-container
 killall $p
-echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
+echo ProtectedMode=0 >$WINDIR/system32/macromed/flash/mms.cfg
 warn 'Killed flash player for clean dump.
 Restart video then press enter here'
 read < <(pidof $p) || die "$p not found!"
-rm -f p.core
-dumper p $REPLY &
-until [ -s p.core ]; do sleep 1; done
-mapfile vids < <(grep -aoz "<video [^>]*>" p.core | sort | uniq -w123)
+rm -f a.core
+dumper a $REPLY 2>/dev/null &
+until [ -s a.core ]; do sleep 1; done
+mapfile vids < <(grep -aoz "<video [^>]*>" a.core | sort | uniq -w123)
 declare -A attr
 
 for i in "${!vids[@]}"; do
