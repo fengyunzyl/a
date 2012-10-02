@@ -7,7 +7,7 @@ die(){
 
 warn(){
   echo -e "\e[1;35m$1\e[m"
-  read
+  read rp
 }
 
 pidof(){
@@ -50,7 +50,7 @@ warn 'Make choice. Avoid level3.'
 set -x
 rtmpdump \
 -W "http://download.hulu.com/huludesktop.swf" \
--a "${attr[$REPLY,server]#*//*/}?${attr[$REPLY,token]//amp;}" \
+-a "${attr[$rp,server]#*//*/}?${attr[$rp,token]//amp;}" \
 -o "out.flv" \
--r "${attr[$REPLY,server]}" \
--y "${attr[$REPLY,stream]}"
+-r "${attr[$rp,server]}" \
+-y "${attr[$rp,stream]}"
