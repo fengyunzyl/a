@@ -35,8 +35,7 @@ rm -f pg.core
 dumper pg $REPLY 2>/dev/null &
 until [ -s pg.core ]; do sleep 1; done
 
-# Add better support for upper case RTMPE; grep -i is too slow
-LANG= grep -Eaoz "rtmp[est]*://[-.0-z]+" pg.core \
+LANG= grep -Eao '(RTMP|rtmp).{0,2}://[-.0-z]+' pg.core \
   | tee ports \
   | tr -d / \
   | cut -d: -f2 \
