@@ -1,7 +1,7 @@
 #!/bin/bash
 
 binparse(){
-  grep -azm1 "$1" a.core
+  grep -azm1 "$1" pg.core
 }
 
 pidof(){
@@ -27,21 +27,21 @@ realpath(){
 }
 
 realpath WINDIR
-f=/opt/Scripts/AdobeHDS.php
-p=plugin-container.exe
-killall $p
-echo ProtectedMode=0 >$WINDIR/system32/macromed/flash/mms.cfg
+ab=/opt/Scripts/AdobeHDS.php
+pc=plugin-container
+killall $pc
+echo ProtectedMode=0 > $WINDIR/system32/macromed/flash/mms.cfg
 warn 'Killed flash player for clean dump.
 Restart video then press enter here'
-read < <(pidof $p) || die "$p not found!"
-rm -f a.core
-dumper a $REPLY 2>/dev/null &
-until [ -s a.core ]; do sleep 1; done
-IFS=? read _ a < <(binparse "Frag")
-read m < <(binparse "^http.*f4m")
-read u < <(binparse "Mozilla/5.0")
-rm a.core
+read < <(pidof $pc) || die "$p not found!"
+rm -f pg.core
+dumper pg $REPLY 2>/dev/null &
+until [ -s pg.core ]; do sleep 1; done
+IFS=? read _ ah < <(binparse "Frag")
+read mn < <(binparse "^http.*f4m")
+read ur < <(binparse "Mozilla/5.0")
+rm pg.core
 set -x
-php "$f" --manifest "$m" && exit
-php "$f" --manifest "$m" --auth "$a" && exit
-php "$f" --manifest "$m" --auth "$a" --useragent "$u"
+php "$ab" --manifest "$mn" && exit
+php "$ab" --manifest "$mn" --auth "$ah" && exit
+php "$ab" --manifest "$mn" --auth "$ah" --useragent "$ur"

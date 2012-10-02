@@ -23,17 +23,17 @@ realpath(){
 }
 
 realpath WINDIR
-p=plugin-container
-killall $p
-echo ProtectedMode=0 >$WINDIR/system32/macromed/flash/mms.cfg
+pc=plugin-container
+killall $pc
+echo ProtectedMode=0 > $WINDIR/system32/macromed/flash/mms.cfg
 warn 'Killed flash player for clean dump.
 Restart video then press enter here'
-read < <(pidof $p) || die "$p not found!"
-rm -f a.core
-dumper a $REPLY 2>/dev/null &
-until [ -s a.core ]; do sleep 1; done
-mapfile vids < <(grep -aoz "<video [^>]*>" a.core | sort | uniq -w123)
-rm a.core
+read < <(pidof $pc) || die "$pc not found!"
+rm -f pg.core
+dumper pg $REPLY 2>/dev/null &
+until [ -s pg.core ]; do sleep 1; done
+mapfile vids < <(grep -aoz "<video [^>]*>" pg.core | sort | uniq -w123)
+rm pg.core
 declare -A attr
 
 for i in "${!vids[@]}"; do

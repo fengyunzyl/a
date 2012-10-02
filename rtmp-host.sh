@@ -23,26 +23,26 @@ realpath(){
 }
 
 realpath WINDIR
-h=$WINDIR/system32/drivers/etc/hosts
-p=plugin-container
-killall $p
-echo ProtectedMode=0 >$WINDIR/system32/macromed/flash/mms.cfg
-> $h
+hs=$WINDIR/system32/drivers/etc/hosts
+pc=plugin-container
+killall $pc
+echo ProtectedMode=0 > $WINDIR/system32/macromed/flash/mms.cfg
+> $hs
 warn 'Killed flash player for clean dump. Hosts file reset.
 Restart video then press enter here.'
-read < <(pidof $p) || die "$p not found!"
-rm -f a.core
-dumper a $REPLY &
-until [ -s a.core ]; do sleep 1; done
+read < <(pidof $pc) || die "$pc not found!"
+rm -f pg.core
+dumper pg $REPLY 2>/dev/null &
+until [ -s pg.core ]; do sleep 1; done
 
 # Add better support for upper case RTMPE; grep -i is too slow
-LANG= grep -Eaoz "rtmp[est]*://[-.0-z]+" a.core \
+LANG= grep -Eaoz "rtmp[est]*://[-.0-z]+" pg.core \
   | tee ports \
   | tr -d / \
   | cut -d: -f2 \
   | sort -u \
   | sed 's,^,127.0.0.1 ,' \
-  | tee $h
+  | tee $hs
 
 warn 'Press enter to start RtmpSrv, then restart video.'
 IFS=: read _ _ RTMPPORT < ports
@@ -50,11 +50,12 @@ export RTMPPORT
 read incantation < <(rtmpsrv | grep -m1 rtmpdump)
 # mapfile -t < <(grep -1Um1 rtmpdump <&$r)
 # Restart video
+killall rtmpdump
 killall rtmpsrv
-> $h
+> $hs
 
 # Get SecureToken
-read < <(tr "[:cntrl:]" "\n" < a.core | grep -1m1 secureTokenResponse | tac)
-rm a.core ports
+read < <(tr "[:cntrl:]" "\n" < pg.core | grep -1m1 secureTokenResponse | tac)
+rm pg.core ports
 echo "$incantation ${REPLY:+-T '$REPLY'}"
 eval "$_"
