@@ -18,21 +18,16 @@ killall(){
   pidof $1 | xargs /bin/kill -f
 }
 
-realpath(){
-  read $1 < <(cd ${!1}; pwd)
-}
-
-realpath WINDIR
 hs=$WINDIR/system32/drivers/etc/hosts
 pc=plugin-container
 killall $pc
-echo ProtectedMode=0 > $WINDIR/system32/macromed/flash/mms.cfg
+echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
 > $hs
 warn 'Killed flash player for clean dump. Hosts file reset.
 Restart video then press enter here.'
 read < <(pidof $pc) || die "$pc not found!"
 rm -f pg.core
-dumper pg $REPLY 2>/dev/null &
+dumper pg $REPLY &
 until [ -s pg.core ]; do sleep 1; done
 
 LANG= grep -Eao '(RTMP|rtmp).{0,2}://[-.0-z]+' pg.core \
@@ -55,12 +50,10 @@ killall rtmpsrv
 
 tr "[:cntrl:]" "\n" < pg.core \
   | grep -1m1 secureTokenResponse \
-  | tail -1 \
-  | sed 's,^,TOKEN=,' \
+  | tac \
   | tee tp
 
-. tp
+read < tp && rp+=" -T '$REPLY'"
 rm pg.core tp
-[ $TOKEN ] && rp+=" -T '$TOKEN'"
 echo $rp
 eval $rp
