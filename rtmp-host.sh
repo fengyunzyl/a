@@ -11,11 +11,11 @@ warn(){
 }
 
 pidof(){
-  ps -W | grep $1 | cut -c-9
+  ps -W | awk /$1/'{print$4;exit}'
 }
 
 killall(){
-  pidof $1 | xargs /bin/kill -f
+  pidof $1 | xargs kill -f
 }
 
 hs=$WINDIR/system32/drivers/etc/hosts
