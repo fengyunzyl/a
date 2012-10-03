@@ -36,7 +36,7 @@ dumper pg $REPLY 2>/dev/null &
 until [ -s pg.core ]; do sleep 1; done
 
 LANG= grep -Eao '(RTMP|rtmp).{0,2}://[-.0-z]+' pg.core \
-  | tee ports \
+  | tee tp \
   | tr -d / \
   | cut -d: -f2 \
   | sort -u \
@@ -44,7 +44,7 @@ LANG= grep -Eao '(RTMP|rtmp).{0,2}://[-.0-z]+' pg.core \
   | tee $hs
 
 warn 'Press enter to start RtmpSrv, then restart video.'
-IFS=: read _ _ RTMPPORT < ports
+IFS=: read _ _ RTMPPORT < tp
 export RTMPPORT
 read rp < <(rtmpsrv | grep -m1 rtmpdump)
 # mapfile -t < <(grep -1Um1 rtmpdump <&$r)
@@ -53,9 +53,14 @@ killall rtmpdump
 killall rtmpsrv
 > $hs
 
-# Get SecureToken
-read < <(tr "[:cntrl:]" "\n" < pg.core | grep -1m1 secureTokenResponse | tac)
-rm pg.core ports
-[ $REPLY ] && rp+=" -T '$REPLY'"
+tr "[:cntrl:]" "\n" < pg.core \
+  | grep -1m1 secureTokenResponse \
+  | tail -1 \
+  | sed 's,^,TOKEN=,' \
+  | tee tp
+
+. tp
+rm pg.core tp
+[ $TOKEN ] && rp+=" -T '$TOKEN'"
 echo $rp
 eval $rp
