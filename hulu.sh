@@ -18,19 +18,14 @@ killall(){
   pidof $1 | xargs /bin/kill -f
 }
 
-realpath(){
-  read $1 < <(cd ${!1}; pwd)
-}
-
-realpath WINDIR
 pc=plugin-container
 killall $pc
-echo ProtectedMode=0 > $WINDIR/system32/macromed/flash/mms.cfg
+echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
 warn 'Killed flash player for clean dump.
 Restart video then press enter here'
 read < <(pidof $pc) || die "$pc not found!"
 rm -f pg.core
-dumper pg $REPLY 2>/dev/null &
+dumper pg $REPLY &
 until [ -s pg.core ]; do sleep 1; done
 mapfile vids < <(grep -aoz "<video [^>]*>" pg.core | sort | uniq -w123)
 rm pg.core
