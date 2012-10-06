@@ -19,7 +19,7 @@ warn(){
 }
 
 killall(){
-  pidof $1 | xargs /bin/kill -f
+  pidof $1 | xargs kill -f
 }
 
 ab=/opt/Scripts/AdobeHDS.php

@@ -15,7 +15,7 @@ pidof(){
 }
 
 killall(){
-  pidof $1 | xargs /bin/kill -f
+  pidof $1 | xargs kill -f
 }
 
 pc=plugin-container
