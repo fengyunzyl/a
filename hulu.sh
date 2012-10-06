@@ -22,7 +22,7 @@ pc=plugin-container
 killall $pc
 echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
 warn 'Killed flash player for clean dump.
-Restart video then press enter here'
+Restart video then press enter here.'
 read < <(pidof $pc) || die "$pc not found!"
 rm -f pg.core
 dumper pg $REPLY &
