@@ -1,11 +1,11 @@
 #!/bin/bash
 
 binparse(){
-  grep -azm1 "$1" pg.core
+  grep -Eaozm1 "$1" pg.core
 }
 
 pidof(){
-  ps -W | grep $1 | cut -c-9
+  ps -W | awk /$1/'{print$4;exit}'
 }
 
 die(){
@@ -32,11 +32,10 @@ read < <(pidof $pc) || die "$p not found!"
 rm -f pg.core
 dumper pg $REPLY &
 until [ -s pg.core ]; do sleep 1; done
-IFS=? read _ ah < <(binparse "Frag")
-read mn < <(binparse "^http.*f4m")
-read ur < <(binparse "Mozilla/5.0")
+read ah < <(binparse "pvtoken.*")
+read mn < <(binparse "http[^?]*f4m(\?|$)[^']*")
+read ur < <(binparse "Mozilla/5.0.*")
 rm pg.core
 set -x
 php "$ab" --manifest "$mn" && exit
-php "$ab" --manifest "$mn" --auth "$ah" && exit
 php "$ab" --manifest "$mn" --auth "$ah" --useragent "$ur"
