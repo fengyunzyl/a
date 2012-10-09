@@ -44,8 +44,8 @@ export RTMPPORT
 read rp < <(rtmpsrv | grep -m1 rtmpdump)
 # mapfile -t < <(grep -1Um1 rtmpdump <&$r)
 # Restart video
-killall rtmpdump
 killall rtmpsrv
+killall rtmpdump
 > $hs
 
 tr "[:cntrl:]" "\n" < pg.core \
