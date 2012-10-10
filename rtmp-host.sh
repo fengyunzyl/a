@@ -1,9 +1,5 @@
 #!/bin/bash
-
-die(){
-  echo -e "\e[1;31m$1\e[m"
-  exit
-}
+# Requires RtmpSrv v2.4-45 or higher
 
 warn(){
   echo -e "\e[1;35m$1\e[m"
@@ -25,7 +21,7 @@ echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
 > $hs
 warn 'Killed flash player for clean dump. Hosts file reset.
 Restart video then press enter here.'
-read < <(pidof $pc) || die "$pc not found!"
+until read < <(pidof $pc); do warn "$pc not found!"; done
 rm -f pg.core
 dumper pg $REPLY &
 until [ -s pg.core ]; do sleep 1; done
@@ -41,11 +37,8 @@ LANG= grep -Eao '(RTMP|rtmp).{0,2}://[-.0-z]+' pg.core \
 warn 'Press enter to start RtmpSrv, then restart video.'
 IFS=: read _ _ RTMPPORT < tp
 export RTMPPORT
-read rp < <(rtmpsrv | grep -m1 rtmpdump)
-# mapfile -t < <(grep -1Um1 rtmpdump <&$r)
-# Restart video
-killall rtmpsrv
-killall rtmpdump
+export RTMPSRV='print only'
+read rp < <(rtmpsrv)
 > $hs
 
 tr "[:cntrl:]" "\n" < pg.core \
