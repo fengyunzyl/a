@@ -1,5 +1,5 @@
 #!/bin/bash
-# Requires RtmpSrv v2.4-45 or higher
+# Requires RtmpSrv v2.4-44 or higher
 
 warn(){
   echo -e "\e[1;35m$1\e[m"
