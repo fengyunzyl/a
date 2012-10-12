@@ -1,5 +1,5 @@
 #!/bin/bash
-# Requires RtmpSrv v2.4-44 or higher
+# Requires RtmpSrv v2.4-45 or higher
 
 warn(){
   echo -e "\e[1;35m$1\e[m"
@@ -28,17 +28,13 @@ until [ -s pg.core ]; do sleep 1; done
 
 LANG= grep -Eao '(RTMP|rtmp).{0,2}://[-.0-z]+' pg.core \
   | tee tp \
-  | tr -d / \
-  | cut -d: -f2 \
+  | sed -r 's#.*/(.*):.*#127.0.0.1 \1#' \
   | sort -u \
-  | sed 's,^,127.0.0.1 ,' \
   | tee $hs
 
 warn 'Press enter to start RtmpSrv, then restart video.'
-IFS=: read _ _ RTMPPORT < tp
-export RTMPPORT
-export RTMPSRV='print only'
-read rp < <(rtmpsrv)
+read < <(cut -d: -f3 tp)
+read rp < <(rtmpsrv -i -c $REPLY)
 > $hs
 
 tr "[:cntrl:]" "\n" < pg.core \
