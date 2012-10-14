@@ -3,6 +3,10 @@
 gcc=i686-w64-mingw32-gcc
 strip=i686-w64-mingw32-strip
 
+vr(){
+  read $1 < <($gcc -E -xc - <<< "$2" | tac | tr -d \")
+}
+
 cd rtmpdump
 mkdir ds
 read t_rtmpdump < <(stat -c%z rtmpdump.exe | xargs -0 date -d)
@@ -17,13 +21,11 @@ upx -9 *
 # README
 read v_gcc < <($gcc -dumpversion)
 
-: '#include <polarssl/version.h>
+vr v_polarssl '#include <polarssl/version.h>
 POLARSSL_VERSION_STRING'
-read v_polarssl < <($gcc -E -xc - <<< "$_" | tac | tr -d \")
 
-: '#include <zlib.h>
+vr v_zlib '#include <zlib.h>
 ZLIB_VERSION'
-read v_zlib < <($gcc -E -xc - <<< "$_" | tac | tr -d \")
 
 cat > README.txt <<EOF
 This is a RtmpDump Win32 static build by Steven Penny.
