@@ -3,20 +3,14 @@
 gcc=i686-w64-mingw32-gcc
 strip=i686-w64-mingw32-strip
 
-ds="$PWD/ds"
-mkdir ds
 cd rtmpdump
+mkdir ds
 read t_rtmpdump < <(stat -c%z rtmpdump.exe | xargs -0 date -d)
 read v_rtmpdump < <(git describe --tags)
-cp rtmpdump.exe $ds
-cp rtmpgw.exe $ds
-cp rtmpsrv.exe $ds
-cp rtmpsuck.exe $ds
-cd librtmp
-cp librtmp.dll $ds
+cp rtmpdump.exe rtmpgw.exe rtmpsrv.exe rtmpsuck.exe librtmp/librtmp.dll ds
 
 # COMPRESS FILES
-cd $ds
+cd ds
 $strip *
 upx -9 *
 
