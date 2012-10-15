@@ -1,5 +1,4 @@
 #!/bin/bash
-# Requires RtmpSrv v2.4-46 or higher
 
 warn(){
   echo -e "\e[1;35m$1\e[m"
@@ -19,7 +18,8 @@ pc=plugin-container
 killall $pc
 echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
 > $hs
-warn 'Killed flash player for clean dump. Hosts file reset.
+warn 'This script requires RtmpSrv v2.4-46 or higher.
+Killed flash player for clean dump. Hosts file reset.
 Restart video then press enter here.'
 until read < <(pidof $pc); do warn "$pc not found!"; done
 rm -f pg.core
@@ -33,6 +33,7 @@ LANG= grep -Eao '(RTMP|rtmp).{0,2}://[-.0-z]+' pg.core \
   | tee $hs
 
 warn 'Press enter to start RtmpSrv, then restart video.'
+[ -a rtmpsrv ] && mv rtmpsrv /usr/local/bin
 read < <(cut -d: -f3 tp)
 read rp < <(rtmpsrv -i -c "$REPLY")
 > $hs
