@@ -7,18 +7,17 @@ vr(){
   read $1 < <($gcc -E -xc - <<< "$2" | tac | tr -d \")
 }
 
+# COMPRESS FILES
 cd rtmpdump
 mkdir ds
-read t_rtmpdump < <(stat -c%z rtmpdump.exe | xargs -0 date -d)
-read v_rtmpdump < <(git describe --tags)
-cp rtmpdump.exe rtmpgw.exe rtmpsrv.exe rtmpsuck.exe librtmp/librtmp.dll ds
-
-# COMPRESS FILES
-cd ds
-$strip *
-upx -9 *
+fs=(rtmpdump.exe rtmpgw.exe rtmpsrv.exe rtmpsuck.exe librtmp/librtmp.dll)
+$strip ${fs[@]}
+upx -9 ${fs[@]}
+cp ${fs[@]} ds
 
 # README
+read t_rtmpdump < <(stat -c%z rtmpdump.exe | xargs -0 date -d)
+read v_rtmpdump < <(git describe --tags)
 read v_gcc < <($gcc -dumpversion)
 
 vr v_polarssl '#include <polarssl/version.h>
@@ -27,6 +26,7 @@ POLARSSL_VERSION_STRING'
 vr v_zlib '#include <zlib.h>
 ZLIB_VERSION'
 
+cd ds
 cat > README.txt <<EOF
 This is a RtmpDump Win32 static build by Steven Penny.
 
