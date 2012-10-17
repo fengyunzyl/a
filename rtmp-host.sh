@@ -36,7 +36,6 @@ warn 'Press enter to start RtmpSrv, then restart video.'
 [ -a rtmpsrv ] && mv rtmpsrv /usr/local/bin
 read < <(cut -d: -f3 tp)
 read < <(rtmpsrv -i -c "$REPLY")
-> $hs
 declare -a aa="($REPLY)"
 declare -A ab
 while getopts "C:W:a:f:o:p:r:y:" opt "${aa[@]:1}"; do ab[$opt]="$OPTARG"; done
@@ -48,6 +47,7 @@ tr "[:cntrl:]" "\n" < pg.core \
 
 read ab[T] < tp
 rm pg.core tp
+> $hs
 set -x
 rtmpdump -o out.flv -r "${ab[r]}" && exit
 rtmpdump -o out.flv -r "${ab[r]}" -a "${ab[a]}" -y "${ab[y]}" && exit
