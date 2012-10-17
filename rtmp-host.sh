@@ -35,15 +35,21 @@ LANG= grep -Eao '(RTMP|rtmp).{0,2}://[-.0-z]+' pg.core \
 warn 'Press enter to start RtmpSrv, then restart video.'
 [ -a rtmpsrv ] && mv rtmpsrv /usr/local/bin
 read < <(cut -d: -f3 tp)
-read rp < <(rtmpsrv -i -c "$REPLY")
+read < <(rtmpsrv -i -c "$REPLY")
 > $hs
+declare -a aa="($REPLY)"
+declare -A ab
+while getopts "C:W:a:f:o:p:r:y:" opt "${aa[@]:1}"; do ab[$opt]="$OPTARG"; done
 
 tr "[:cntrl:]" "\n" < pg.core \
   | grep -1m1 secureTokenResponse \
   | tac \
   | tee tp
 
-read < tp && rp+=" -T '$REPLY'"
+read ab[T] < tp
 rm pg.core tp
-echo $rp
-eval $rp
+set -x
+rtmpdump -o out.flv -r "${ab[r]}" && exit
+rtmpdump -o out.flv -r "${ab[r]}" -a "${ab[a]}" -y "${ab[y]}" && exit
+rtmpdump -o out.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -W "${ab[W]}" && exit
+rtmpdump -o out.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -p "${ab[p]}"
