@@ -41,6 +41,6 @@ set -x
 rtmpdump \
 -W "http://download.hulu.com/huludesktop.swf" \
 -a "${attr[$rp,server]#*//*/}?${attr[$rp,token]//amp;}" \
--o "out.flv" \
+-o a.flv \
 -r "${attr[$rp,server]}" \
 -y "${attr[$rp,stream]}"
