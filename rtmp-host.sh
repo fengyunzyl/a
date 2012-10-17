@@ -49,7 +49,7 @@ read ab[T] < tp
 rm pg.core tp
 > $hs
 set -x
-rtmpdump -o out.flv -r "${ab[r]}" && exit
-rtmpdump -o out.flv -r "${ab[r]}" -a "${ab[a]}" -y "${ab[y]}" && exit
-rtmpdump -o out.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -W "${ab[W]}" && exit
-rtmpdump -o out.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -p "${ab[p]}"
+rtmpdump -o a.flv -r "${ab[r]}" && exit
+rtmpdump -o a.flv -r "${ab[r]}" -a "${ab[a]}" -y "${ab[y]}" && exit
+rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -W "${ab[W]}" && exit
+rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -p "${ab[p]}"
