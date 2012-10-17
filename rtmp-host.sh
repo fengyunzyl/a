@@ -26,11 +26,11 @@ rm -f pg.core
 dumper pg $REPLY &
 until [ -s pg.core ]; do sleep 1; done
 
-LANG= grep -Eao '(RTMP|rtmp).{0,2}://[-.0-z]+' pg.core \
-  | tee tp \
-  | sed -r 's#.*/([^:]*).*#127.0.0.1 \1#' \
-  | sort -u \
-  | tee $hs
+LANG= grep -Eao '(RTMP|rtmp).{0,2}://[-.0-z]+' pg.core |
+  tee tp |
+  sed -r 's#.*/([^:]*).*#127.0.0.1 \1#' |
+  sort -u |
+  tee $hs
 
 warn 'Press enter to start RtmpSrv, then restart video.'
 [ -a rtmpsrv ] && mv rtmpsrv /usr/local/bin
@@ -40,16 +40,16 @@ declare -a aa="($REPLY)"
 declare -A ab
 while getopts "C:W:a:f:o:p:r:y:" opt "${aa[@]:1}"; do ab[$opt]="$OPTARG"; done
 
-tr "[:cntrl:]" "\n" < pg.core \
-  | grep -1m1 secureTokenResponse \
-  | tac \
-  | tee tp
+tr "[:cntrl:]" "\n" < pg.core |
+  grep -1m1 secureTokenResponse |
+  tac |
+  tee tp
 
 read ab[T] < tp
 rm pg.core tp
 > $hs
 set -x
-rtmpdump -o a.flv -r "${ab[r]}" || \
-rtmpdump -o a.flv -r "${ab[r]}" -a "${ab[a]}" -y "${ab[y]}" || \
-rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -W "${ab[W]}" || \
+rtmpdump -o a.flv -r "${ab[r]}" ||
+rtmpdump -o a.flv -r "${ab[r]}" -a "${ab[a]}" -y "${ab[y]}" ||
+rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -W "${ab[W]}" ||
 rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -p "${ab[p]}"
