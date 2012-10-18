@@ -50,6 +50,7 @@ rm pg.core tp
 > $hs
 set -x
 rtmpdump -o a.flv -r "${ab[r]}" ||
+rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" ||
 rtmpdump -o a.flv -r "${ab[r]}" -a "${ab[a]}" -y "${ab[y]}" ||
 rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -W "${ab[W]}" ||
 rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -p "${ab[p]}"
