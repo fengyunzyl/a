@@ -10,7 +10,7 @@ vr(){
 # COMPRESS FILES
 cd rtmpdump
 mkdir ds
-fs=(rtmpdump.exe rtmpgw.exe rtmpsrv.exe rtmpsuck.exe librtmp/librtmp.dll)
+fs=(rtmp{dump,gw,srv,suck}.exe librtmp/librtmp.dll)
 $strip ${fs[@]}
 upx -9 ${fs[@]}
 cp ${fs[@]} ds
