@@ -24,7 +24,6 @@ dumper pg $REPLY &
 until [ -s pg.core ]; do sleep 1; done
 mapfile vids < <(grep -aoz "<video [^>]*>" pg.core | sort | uniq -w123)
 rm pg.core
-declare -A attr
 
 for i in "${!vids[@]}"; do
   IFS=\" read -a vid <<< "${vids[i]}"
