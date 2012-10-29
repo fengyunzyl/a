@@ -1,32 +1,35 @@
 /*
-hulu.c
-
 i686-w64-mingw32-gcc hulu.c -Wall
-
 mapfile vids < <(grep -aoz "<video [^>]*>" pg.core | sort | uniq -w123)
 */
 
 #include <stdio.h> // fopen
 #include <stdlib.h> // malloc
+#include <string.h> // strstr
 
 int main ()
 {
-  /* read file */
-  FILE * f;
-  int size;
+  // need array big enough for the biggest "video" line
+  // 888
+
   char * buffer;
-  f = fopen("pg.core", "r");
+  int size;
+  num = 1000;
+  FILE * f;
   
-  fseek(f, 0, SEEK_END);
-  size = ftell(f);
-  fseek(f, 0, SEEK_SET);
+  // need the "b"
+  f = fopen("pg.core", "rb");
   
   buffer = malloc(size);
-  fread(buffer, 1, size, f);
+  
+  while (! feof(f))
+    {
+      fgets(buffer, size, f);
+
+      if (strstr(buffer, "<video "))
+        printf("%s", buffer);
+    }
+
   fclose(f);
-  
-  /* print */
-  printf("%s\n", buffer);
-  
   return 0;
 }
