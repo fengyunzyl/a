@@ -14,7 +14,7 @@ int main ()
 
   char * buffer;
   int size;
-  num = 1000;
+  size = 1000;
   FILE * f;
   
   // need the "b"
