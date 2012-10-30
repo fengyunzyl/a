@@ -1,5 +1,3 @@
-Tests for my scripts
-
 AdobeHDS
   http://fora.tv/2010/06/14/FedEx_CEO_Frederick_W_Smith_Delivering_Innovation
   http://pluzz.fr/replay/1
@@ -30,10 +28,3 @@ site   args   playpath     connection
 [twi] http://de.twitch.tv
 [vik] http://viki.com/channels/5453-killer-k/videos/51483
 [zon] http://zonytvcom.info
-
-sent         master       svnpenn
-foo.mp4      mp4:foo      mp4:foo.mp4
-foo.flv      foo          foo.flv
-foo          foo          foo
-mp4:foo      mp4:foo      mp4:foo
-mp4:foo.mp4  mp4:foo.mp4  mp4:foo.mp4
