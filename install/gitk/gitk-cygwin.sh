@@ -21,6 +21,7 @@ make install
 cd -
 
 # Install gitk
+cd /usr/local/bin
 wget raw.github.com/git/git/master/gitk-git/gitk
-cp gitk /usr/local/bin
-# exec wish "\cygwin\usr\local\bin\gitk" -- "$@"
+echo 'cygpath -m "$1" | xargs wish85' > wish
+cd -
