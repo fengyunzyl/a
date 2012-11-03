@@ -1,4 +1,5 @@
 #!/bin/bash
+# Requires: php-bcmath, php-curl, php-simplexml
 
 binparse(){
   grep -Eaozm1 "$1" pg.core
