@@ -21,6 +21,6 @@ cd -
 # Install gitk
 cd /usr/local/bin
 wget raw.github.com/git/git/master/gitk-git/gitk
-chmod +x gitk
-echo 'wish85 $HOMEDRIVE/cygwin$1 -- ${@:3}' > wish
+wget raw.github.com/svnpenn/dotfiles/master/bin/wish
+chmod +x gitk wish
 cd -
