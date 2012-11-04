@@ -22,5 +22,5 @@ cd -
 cd /usr/local/bin
 wget raw.github.com/git/git/master/gitk-git/gitk
 chmod +x gitk
-echo 'cygpath -m "$1" | xargs -I% wish85 % -- ${@:3}' > wish
+echo 'wish85 $HOMEDRIVE/cygwin$1 -- ${@:3}' > wish
 cd -
