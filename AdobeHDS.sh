@@ -32,7 +32,7 @@ read ah < <(binparse "pvtoken.*")
 read mn < <(binparse "http[^?]*f4m(\?|$)[^']*")
 read ur < <(binparse "Mozilla/5.0.*")
 rm pg.core
-echo extension=ext/php_curl.dll > /usr/local/bin/php/php.ini
+echo extension=ext/php_curl.dll > $HOMEDRIVE/php/php.ini
 set -x
 php "$ab" --manifest "$mn" ||
 php "$ab" --manifest "$mn" --auth "$ah" --useragent "$ur"
