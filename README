@@ -5,26 +5,15 @@ AdobeHDS
   http://music.yahoo.com/programs/iheart/
   http://syfy.com/videos/Lost%20Girl
 
+RTMP
+  http://cwtv.com/cw-video/the-next                              NA     0.839s
+  http://de.twitch.tv                                            oryWj  1.799s
+  http://desihd.net/new                                          oryp   1.887s
+  http://viki.com/channels/5453-killer-k/videos/51483            orya   2.449s
+  http://tape.tv                                                 orya   2.582s
+  http://tvpublica.com.ar/vivo                                   ory    4.255s
+  http://canaldosconcursos.com.br/video_demo.php?id_cursos=3130  oryTW  NA
+  http://zonytvcom.info                                          oryTp  NA
+
 Proxy
   http://hidemyass.com/proxy-list
-
-site   args   playpath     connection
-[cwt]  NA     mp4:foo.mp4  0.839s
-[det]  ory    foo          1.227s
-[twi]  oryWj  foo          1.799s
-[des]  oryp   foo          1.887s
-[vik]  orya   mp4:foo.mp4  2.449s
-[tap]  orya   mp4:foo.mp4  2.582s
-[tvp]  ory    foo          4.255s
-[can]  oryTW  foo          NA
-[zon]  oryTp  foo          NA
-
-[can] http://canaldosconcursos.com.br/video_demo.php?id_cursos=3130
-[cwt] http://cwtv.com/cw-video/the-next
-[des] http://desihd.net/new
-[det] http://www.deticanetreveal.com/streaming-video/webinar-20120927.html
-[tap] http://tape.tv
-[tvp] http://tvpublica.com.ar/vivo
-[twi] http://de.twitch.tv
-[vik] http://viki.com/channels/5453-killer-k/videos/51483
-[zon] http://zonytvcom.info

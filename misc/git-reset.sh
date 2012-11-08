@@ -10,17 +10,14 @@ refb=origin/master
 
 until git merge $refb
   do
-    warn "svnpenn~$refa fail"
+    warn "origin/svnpenn~$refa fail"
     ((refa++))
     git reset --hard
-    git checkout svnpenn~$refa
+    git checkout origin/svnpenn~$refa
   done
 
 git reset --hard origin/svnpenn
 git checkout svnpenn
-warn "svnpenn~$refa success"
+warn "origin/svnpenn~$refa success"
 
-# git reset --hard svnpenn~14
-# git merge origin/master
-# Merge my commits back in
-# git merge 0d1c
+# git merge 002e
