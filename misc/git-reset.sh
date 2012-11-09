@@ -1,23 +1,24 @@
 #!/bin/sh
 # Keep trying until clean merge
 
-warn(){
+warn()
+{
   echo -e "\e[1;35m$1\e[m"
 }
 
-refa=0
-refb=origin/master
-
-until git merge $refb
+git cherry svnpenn master | while read
   do
-    warn "origin/svnpenn~$refa fail"
-    ((refa++))
-    git reset --hard
-    git checkout origin/svnpenn~$refa
+    sha=${REPLY:2:5}
+    git merge $sha ||
+      {
+        warn "$sha bad!"
+        git reset --hard
+        git merge -X ours $sha
+      }
   done
 
-git reset --hard origin/svnpenn
-git checkout svnpenn
-warn "origin/svnpenn~$refa success"
-
-# git merge 002e
+# git merge -X patience master
+# cp ../rtmpsrv.c .
+# cp ../rtmp.c librtmp
+# cp ../parseurl.c librtmp
+# git commit -a
