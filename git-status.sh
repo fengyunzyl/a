@@ -1,15 +1,16 @@
 #!/bin/sh
-# stackoverflow.com/questions/961101
 
-purple(){
+warn()
+{
   printf "\e[1;35m%s\e[m" "$1"
 }
 
 # need trailing slash to filter out files
-for i in /opt/*/; do
-  clear
-  cd $i
-  git status
-  purple $i
-  read
-done
+for i in /opt/*/
+  do
+    clear
+    cd $i
+    git status
+    warn $i
+    read
+  done
