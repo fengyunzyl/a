@@ -11,7 +11,7 @@ git cherry svnpenn master | while read
     sha=${REPLY:2:5}
     git merge $sha ||
       {
-        warn "$sha bad!"
+        warn "$sha bad"
         git reset --hard
         git merge -X ours $sha
       }
