@@ -16,9 +16,3 @@ git cherry svnpenn master | while read
         git merge -X ours $sha
       }
   done
-
-# git merge -X patience master
-# cp ../rtmpsrv.c .
-# cp ../rtmp.c librtmp
-# cp ../parseurl.c librtmp
-# git commit -a
