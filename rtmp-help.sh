@@ -25,7 +25,7 @@ rm -f pg.core
 dumper pg $REPLY &
 until [ -s pg.core ]; do sleep 1; done
 warn 'Press enter to start RtmpDumpHelper, then restart video.'
-mv rtmp{srv,dumphelper{,.dll}} /usr/local/bin 2>/dev/null
+# mv rtmp{srv,dumphelper{,.dll}} /usr/local/bin 2>/dev/null
 
 LANG= grep -Eaom1 '(RTMP|rtmp).{0,2}://[-.0-z]+' pg.core |
   cut -d: -f3 > tp
