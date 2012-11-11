@@ -11,7 +11,7 @@ vr()
 # COMPRESS FILES
 cd rtmpdump
 mkdir ds
-fs=(rtmp{dump,gw,srv,suck}.exe librtmp/librtmp.dll)
+fs=(rtmp{dump,gw,srv,suck}.exe librtmp/librtmp-0.dll)
 $strip ${fs[@]}
 upx -9 ${fs[@]}
 cp ${fs[@]} ds
