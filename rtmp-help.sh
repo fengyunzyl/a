@@ -1,15 +1,18 @@
 #!/bin/bash
 
-warn(){
+warn()
+{
   echo -e "\e[1;35m$1\e[m"
   read
 }
 
-pgrep(){
+pgrep()
+{
   ps -W | awk /$1/'{print$4;exit}'
 }
 
-pkill(){
+pkill()
+{
   pgrep $1 | xargs kill -f
 }
 
@@ -20,10 +23,20 @@ echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
 warn 'This script requires RtmpSrv v2.4-46 or higher.
 Killed flash player for clean dump.
 Restart video then press enter here.'
-until read < <(pgrep $pc); do warn "$pc not found!"; done
+
+until read < <(pgrep $pc)
+  do
+    warn "$pc not found!"
+  done
+
 rm -f pg.core
 dumper pg $REPLY &
-until [ -s pg.core ]; do sleep 1; done
+
+until [ -s pg.core ]
+  do
+    sleep 1
+  done
+
 warn 'Press enter to start RtmpDumpHelper, then restart video.'
 # mv rtmp{srv,dumphelper{,.dll}} /usr/local/bin 2>/dev/null
 
@@ -40,7 +53,11 @@ read < <(rtmpsrv -i)
 pkill rtmpdumphelper
 declare -a aa="($REPLY)"
 declare -A ab
-while getopts "C:W:a:f:o:p:r:y:" opt "${aa[@]:1}"; do ab[$opt]="$OPTARG"; done
+
+while getopts "C:W:a:f:o:p:r:y:" opt "${aa[@]:1}"
+  do
+    ab[$opt]="$OPTARG"
+  done
 
 tr "[:cntrl:]" "\n" < pg.core |
   grep -1m1 secureTokenResponse |
