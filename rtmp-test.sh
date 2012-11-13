@@ -72,6 +72,7 @@ urls=(
   http://tape.tv
   http://tvpublica.com.ar/vivo
   http://canaldosconcursos.com.br/video_demo.php?id_cursos=3130
+  http://zonytvcom.info
 )
 
 for url in ${urls[@]}
