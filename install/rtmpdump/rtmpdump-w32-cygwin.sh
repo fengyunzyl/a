@@ -1,9 +1,6 @@
 #!/bin/bash
-# This is to build MY RtmpDump. The official one at http://rtmpdump.mplayerhq.hu
-# at this point is terribly out of date. They are still using PolarSSL 1.0.0 and
-# havent committed the patch for PolarSSL 1.1.1 in over 6 months. I have also
-# since been moderated on the mailing list, so yeah, I am dropping support for
-# building "official" RtmpDump.
+# This is to build MY RtmpDump. I have dropped support for building "official"
+# RtmpDump.
 
 # Install PolarSSL
 wget polarssl.org/code/releases/polarssl-1.2.0-gpl.tgz
@@ -25,6 +22,7 @@ cd -
 # Install RtmpDump
 git clone git://github.com/svnpenn/rtmpdump.git
 cd rtmpdump
+git checkout svnpenn
 read < <(git describe --tags)
 make CROSS_COMPILE=i686-w64-mingw32- CRYPTO=POLARSSL SYS=mingw SHARED= \
   XLDFLAGS=-static VERSION=$REPLY
