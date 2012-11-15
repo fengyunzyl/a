@@ -15,3 +15,4 @@ git cherry-pick -X theirs -n ksv
 git reset
 git add -p
 git commit
+git reset --hard
