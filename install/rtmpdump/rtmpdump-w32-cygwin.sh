@@ -14,7 +14,7 @@ make install -f win32/Makefile.gcc \
 cd -
 
 # Install PolarSSL
-wget polarssl.org/code/releases/polarssl-1.2.0-gpl.tgz
+wget polarssl.org/download/polarssl-1.2.0-gpl.tgz
 tar xf polarssl-1.2.0-gpl.tgz
 cd polarssl-1.2.0
 make lib \
