@@ -24,12 +24,14 @@ dump()
   pkill rtmpdumphelper
   echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
   warn 'Killed flash player for clean dump.'
-  warn 'Press enter after video starts.'
+  warn 'Press enter after video starts, or s to skip.'
   read
+  [ "$REPLY" = s ] && return
   
   until read < <(pgrep $pc)
     do
       warn "$pc not found!"
+      read
     done
 
   rm -f pg.core
