@@ -9,6 +9,6 @@ git fetch upstream
 git merge upstream/master
 git push origin master
 
-git checkout svnpenn
+git checkout pu
 git merge master
-git push origin svnpenn
+git push origin pu

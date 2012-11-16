@@ -28,7 +28,7 @@ cd -
 # Install RtmpDump
 git clone git://github.com/svnpenn/rtmpdump.git
 cd rtmpdump
-git checkout svnpenn
+git checkout pu
 read < <(git describe --tags)
 make \
   SYS=mingw \

@@ -9,7 +9,7 @@ git add -A
 git commit -m msg
 
 # Partly cherry pick
-git checkout svnpenn
+git checkout pu
 # You need "theirs" because cherry-pick is dumb
 git cherry-pick -X theirs -n ksv
 git reset

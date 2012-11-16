@@ -6,7 +6,7 @@ warn()
   echo -e "\e[1;35m$1\e[m"
 }
 
-git cherry svnpenn master | while read
+git cherry pu master | while read
   do
     sha=${REPLY:2:5}
     git merge $sha ||
