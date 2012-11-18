@@ -17,7 +17,6 @@ while getopts "C:W:a:f:o:p:r:vy:" opt "${aa[@]:1}"
   done
 
 set -x
-rtmpdump -o a.flv -i "${ab[r]}" ||
 rtmpdump -o a.flv -i "${ab[r]} playpath=${ab[y]}" ||
 rtmpdump -o a.flv -i "${ab[r]} playpath=${ab[y]} live=1" ||
 rtmpdump -o a.flv -i "${ab[r]} playpath=${ab[y]} app=${ab[a]}" ||
