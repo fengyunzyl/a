@@ -18,7 +18,7 @@ warn()
 
 dump()
 {
-  palemoon $1
+  open $1
   pc=plugin-container
   pkill $pc
   pkill rtmpdumphelper
