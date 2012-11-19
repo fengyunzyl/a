@@ -12,12 +12,6 @@ try()
   eval "$@"
 }
 
-strp()
-{
-  read $1 <<< ${!1/www.}
-  read $1 <<< ${!1%/*}
-}
-
 warn 'Enter full RtmpDump command.'
 read
 declare -a aa="($REPLY)"
@@ -27,7 +21,11 @@ while getopts "C:W:a:f:o:p:r:vy:" opt "${aa[@]:1}"
     declare _$opt="$OPTARG"
   done
 
-strp _p
+# strip -p
+_p=${_p%/*}
+_p=${_p/www.}
+# strip -r
+_r=${_r%/}
 
 try rtmpdump -o a.flv -i "$_r/$_y" ||
 try rtmpdump -o a.flv -i "\"$_r/$_y live=1\"" ||
