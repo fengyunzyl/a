@@ -1,7 +1,8 @@
 #!/bin/sh
 # Launch Jekyll
 
-die(){
+die()
+{
   echo -e "\e[1;31m$1\e[m"
   exit
 }
@@ -12,5 +13,5 @@ cd /opt/$1
 
 # Run
 jekyll --auto --server &
-cygstart "."
-cygstart "http://localhost:4000"
+open '.'
+open 'http://localhost:4000'
