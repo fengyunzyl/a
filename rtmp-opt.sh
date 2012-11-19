@@ -29,7 +29,7 @@ while getopts "C:W:a:f:o:p:r:vy:" opt "${aa[@]:1}"
 
 strp _p
 
-try "rtmpdump -o a.flv -i \"$_r/$_y\"" ||
+try "rtmpdump -o a.flv -i $_r/$_y" ||
 try "rtmpdump -o a.flv -i \"$_r/$_y live=1\"" ||
 try "rtmpdump -o a.flv -i \"$_r/$_y app=$_a\"" ||
 try "rtmpdump -o a.flv -i \"$_r/$_y pageUrl=$_p\""
