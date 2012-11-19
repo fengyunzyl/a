@@ -1,9 +1,9 @@
 #!/bin/bash
+# FIXME check for RtmpSrv RtmpDumpHelper on PATH
 
 warn()
 {
-  echo -e "\e[1;35m$1\e[m"
-  read
+  echo -e "\e[1;35m$@\e[m"
 }
 
 pgrep()
@@ -16,6 +16,12 @@ pkill()
   pgrep $1 | xargs kill -f
 }
 
+try()
+{
+  warn "$@"
+  eval "$@"
+}
+
 pc=plugin-container
 pkill $pc
 pkill rtmpdumphelper
@@ -23,10 +29,12 @@ echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
 warn 'This script requires RtmpSrv v2.4-46 or higher.
 Killed flash player for clean dump.
 Restart video then press enter here.'
+read
 
 until read < <(pgrep $pc)
   do
     warn "$pc not found!"
+    read
   done
 
 rm -f pg.core
@@ -38,7 +46,7 @@ until [ -s pg.core ]
   done
 
 warn 'Press enter to start RtmpDumpHelper, then restart video.'
-# mv rtmp{srv,dumphelper{,.dll}} /usr/local/bin 2>/dev/null
+read
 
 LANG= grep -Eaom1 '(RTMP|rtmp).{0,2}://[-.0-z]+' pg.core |
   cut -d: -f3 > tp
@@ -65,10 +73,10 @@ tr "[:cntrl:]" "\n" < pg.core |
 
 read ab[T] < tp
 rm pg.core tp
-set -x
-rtmpdump -o a.flv -r "${ab[r]}" ||
-rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" ||
-rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -v ||
-rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -a "${ab[a]}" ||
-rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -W "${ab[W]}" ||
-rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -p "${ab[p]}"
+
+try rtmpdump -o a.flv -r "${ab[r]}" ||
+try rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" ||
+try rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -v ||
+try rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -a "${ab[a]}" ||
+try rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -W "${ab[W]}" ||
+try rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -p "${ab[p]}"

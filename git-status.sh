@@ -2,7 +2,7 @@
 
 warn()
 {
-  printf "\e[1;35m%s\e[m" "$1"
+  echo -e "\e[1;35m$@\e[m"
 }
 
 # need trailing slash to filter out files

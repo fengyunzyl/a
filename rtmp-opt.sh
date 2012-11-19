@@ -3,13 +3,13 @@
 
 warn()
 {
-  echo -e "\e[1;35m$1\e[m"
+  echo -e "\e[1;35m$@\e[m"
 }
 
 try()
 {
-  warn "$1"
-  eval "$1"
+  warn "$@"
+  eval "$@"
 }
 
 strp()

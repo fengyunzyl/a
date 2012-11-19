@@ -2,8 +2,9 @@
 # Git remove sensitive data
 # help.github.com/articles/remove-sensitive-data
 
-die(){
-  echo -e "\e[1;31m$1\e[m"
+die()
+{
+  echo -e "\e[1;31m$@\e[m"
   exit
 }
 

@@ -2,8 +2,7 @@
 
 warn()
 {
-  echo -e "\e[1;35m$1\e[m"
-  read rp
+  echo -e "\e[1;35m$@\e[m"
 }
 
 pgrep()
@@ -16,15 +15,23 @@ pkill()
   pgrep $1 | xargs kill -f
 }
 
+try()
+{
+  warn "$@"
+  eval "$@"
+}
+
 pc=plugin-container
 pkill $pc
 echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
 warn 'Killed flash player for clean dump.
 Restart video then press enter here.'
+read
 
 until read < <(pgrep $pc)
   do
     warn "$pc not found!"
+    read
   done
 
 rm -f pg.core
@@ -36,7 +43,6 @@ until [ -s pg.core ]
   done
 
 mapfile vids < <(grep -aoz "<video [^>]*>" pg.core | sort | uniq -w123)
-rm pg.core
 
 for i in "${!vids[@]}"
   do
@@ -51,10 +57,12 @@ for i in "${!vids[@]}"
   done
 
 warn 'Make choice. Avoid level3.'
-set -x
-rtmpdump \
+read rp
+rm pg.core
+
+try rtmpdump \
   -o a.flv \
   -W http://download.hulu.com/huludesktop.swf \
   -r "${server[rp]}" \
   -y "${stream[rp]}" \
-  -a "${server[rp]#*//*/}?${token[rp]//amp;}"
+  -a "\"${server[rp]#*//*/}?${token[rp]//amp;}\""

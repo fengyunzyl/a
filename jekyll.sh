@@ -3,7 +3,7 @@
 
 die()
 {
-  echo -e "\e[1;31m$1\e[m"
+  echo -e "\e[1;31m$@\e[m"
   exit
 }
 

@@ -13,25 +13,32 @@ pgrep()
 
 warn()
 {
-  echo -e "\e[1;35m$1\e[m"
-  read
+  echo -e "\e[1;35m$@\e[m"
 }
 
-killall()
+pkill()
 {
   pgrep $1 | xargs kill -f
 }
 
+try()
+{
+  warn "$@"
+  eval "$@"
+}
+
 ab=/opt/Scripts/AdobeHDS.php
 pc=plugin-container
-killall $pc
+pkill $pc
 echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
 warn 'Killed flash player for clean dump.
 Restart video then press enter here.'
+read
 
 until read < <(pgrep $pc)
   do
     warn "$pc not found!"
+    read
   done
 
 rm -f pg.core
@@ -45,8 +52,8 @@ until [ -s pg.core ]
 read ah < <(binparse "pvtoken.*")
 read mn < <(binparse "http[^?]*f4m(\?|$)[^']*")
 read ur < <(binparse "Mozilla/5.0.*")
-rm pg.core
 echo extension=ext/php_curl.dll > /usr/local/bin/php/php.ini
-set -x
-php "$ab" --manifest "$mn" ||
-php "$ab" --manifest "$mn" --auth "$ah" --useragent "$ur"
+rm pg.core
+
+try php "$ab" --manifest "$mn" ||
+try php "$ab" --manifest "$mn" --auth "$ah" --useragent "$ur"

@@ -4,7 +4,7 @@
 
 warn()
 {
-  echo -e "\e[1;35m$1\e[m"
+  echo -e "\e[1;35m$@\e[m"
 }
 
 declare -A big_files

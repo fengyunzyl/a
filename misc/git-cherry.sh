@@ -1,9 +1,9 @@
 #!/bin/sh
-# Keep trying until clean merge
+# Find merge conflicts
 
 warn()
 {
-  echo -e "\e[1;35m$1\e[m"
+  echo -e "\e[1;35m$@\e[m"
 }
 
 git cherry pu master | while read
