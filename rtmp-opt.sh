@@ -16,7 +16,7 @@ warn 'Enter full RtmpDump command.'
 read
 declare -a aa="($REPLY)"
 
-while getopts "C:RW:a:f:o:p:r:vy:" opt "${aa[@]:1}"
+while getopts "C:RT:W:a:f:o:p:r:vy:" opt "${aa[@]:1}"
   do
     declare _$opt="$OPTARG"
   done
@@ -34,4 +34,5 @@ try rtmpdump -o a.flv -i "$_r/$_y" ||
 try rtmpdump -o a.flv -i "\"$_r/$_y app=$_a\"" ||
 try rtmpdump -o a.flv -i "\"$_r/$_y live=1\"" ||
 try rtmpdump -o a.flv -i "\"$_r/$_y pageUrl=$_p\"" ||
-try rtmpdump -o a.flv -i "\"$_r playpath=$_y\""
+try rtmpdump -o a.flv -i "\"$_r playpath=$_y\"" ||
+try rtmpdump -o a.flv -i "\"$_r/$_y token=$_T\""
