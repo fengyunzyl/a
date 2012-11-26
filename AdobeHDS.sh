@@ -56,4 +56,4 @@ echo extension=ext/php_curl.dll > /usr/local/bin/php/php.ini
 rm pg.core
 
 try php "$ab" --manifest "$mn" ||
-try php "$ab" --manifest "$mn" --auth "$ah" --useragent "$ur"
+try php "$ab" --manifest "$mn" --auth "\"$ah\"" --useragent "\"$ur\""
