@@ -1,5 +1,13 @@
 #!/bin/sh
 # RtmpDump with Handshake 10
+# Must use bitbucket because of GitHub DMCA
+
+# Create dist
+git clone git://github.com/svnpenn/rtmpdump.git
+cd rtmpdump
+git checkout 603f
+read < <(git describe --tags)
+7z a " h10-$REPLY.7z" ../handshake-10.patch
 
 # Install PolarSSL
 wget polarssl.org/download/polarssl-1.1.4-gpl.tgz
@@ -14,12 +22,12 @@ make install \
 cd -
 
 # Install RtmpDump
-wget m1.archiveorange.com/m/att/5hTZa/ArchiveOrange_VBYOyGhyRngLOtrtTAtaYPOcOgQa.zip
-7z e ArchiveOrange_VBYOyGhyRngLOtrtTAtaYPOcOgQa.zip
-git clone git://git.ffmpeg.org/rtmpdump
+wget bitbucket.org/svnpenn/rtmpdump/downloads/h10-v2.4-34-g603ff20.7z
+7z e h10-v2.4-34-g603ff20.7z
+git clone git://github.com/svnpenn/rtmpdump.git
 cd rtmpdump
 git checkout -b handshake-10 603f
-git am ../0001-Handshake-10.patch
+git am ../handshake-10.patch
 make \
   SYS=mingw \
   CRYPTO=POLARSSL \
