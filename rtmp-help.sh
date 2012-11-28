@@ -1,22 +1,22 @@
 #!/bin/bash
 # FIXME check for RtmpSrv RtmpDumpHelper on PATH
 
-warn()
+warn ()
 {
   echo -e "\e[1;35m$@\e[m"
 }
 
-pgrep()
+pgrep ()
 {
   ps -W | awk /$1/'{print$4;exit}'
 }
 
-pkill()
+pkill ()
 {
   pgrep $1 | xargs kill -f
 }
 
-try()
+try ()
 {
   warn "$@"
   eval "$@"

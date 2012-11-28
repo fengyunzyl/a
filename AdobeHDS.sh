@@ -1,27 +1,27 @@
 #!/bin/bash
 # Requires: php-bcmath, php-curl, php-simplexml
 
-binparse()
+binparse ()
 {
   grep -Eaozm1 "$1" pg.core
 }
 
-pgrep()
+pgrep ()
 {
   ps -W | awk /$1/'{print$4;exit}'
 }
 
-warn()
+warn ()
 {
   echo -e "\e[1;35m$@\e[m"
 }
 
-pkill()
+pkill ()
 {
   pgrep $1 | xargs kill -f
 }
 
-try()
+try ()
 {
   warn "$@"
   eval "$@"
@@ -50,7 +50,7 @@ until [ -s pg.core ]
   done
 
 read ah < <(binparse "pvtoken.*")
-read mn < <(binparse "http[^?]*f4m(\?|$)[^']*")
+read mn < <(tr '[:cntrl:]<>' '\n' < pg.core | grep 'http://.*\.f4m')
 read ur < <(binparse "Mozilla/5.0.*")
 echo extension=ext/php_curl.dll > /usr/local/bin/php/php.ini
 rm pg.core
