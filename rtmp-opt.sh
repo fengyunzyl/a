@@ -22,7 +22,7 @@ warn 'Enter full RtmpDump command.'
 read
 declare -a aa="($REPLY)"
 
-while getopts "C:RT:W:a:f:o:p:r:vy:" opt "${aa[@]:1}"
+while getopts "C:RT:W:a:b:f:o:p:r:vy:" opt "${aa[@]:1}"
   do
     declare _$opt="$OPTARG"
   done
