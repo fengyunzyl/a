@@ -1,7 +1,7 @@
 #!/bin/sh
 # Launch Jekyll
 
-die()
+die ()
 {
   echo -e "\e[1;31m$@\e[m"
   exit

@@ -8,8 +8,14 @@ warn ()
 
 try ()
 {
-  warn "$@"
-  eval "$@"
+  unset gh
+  for gg
+    do
+      [[ "$gg" =~ [\ \&] ]] && gg="\"$gg\""
+      gh+=("$gg")
+    done
+  warn "${gh[@]}"
+  eval "${gh[@]}"
 }
 
 warn 'Enter full RtmpDump command.'
@@ -29,8 +35,8 @@ _y=${_y%.mp4}
 
 # If you use live flag on non-live, it takes forever to time out.
 try rtmpdump -o a.flv -i "$_r/$_y" ||
-try rtmpdump -o a.flv -i "\"$_r/$_y app=$_a\"" ||
-try rtmpdump -o a.flv -i "\"$_r/$_y pageUrl=$_p\"" ||
-try rtmpdump -o a.flv -i "\"$_r playpath=$_y\"" ||
-try rtmpdump -o a.flv -i "\"$_r/$_y token=$_T\"" ||
-try rtmpdump -o a.flv -i "\"$_r/$_y live=1\""
+try rtmpdump -o a.flv -i "$_r/$_y app=$_a" ||
+try rtmpdump -o a.flv -i "$_r/$_y pageUrl=$_p" ||
+try rtmpdump -o a.flv -i "$_r playpath=$_y" ||
+try rtmpdump -o a.flv -i "$_r/$_y token=$_T" ||
+try rtmpdump -o a.flv -i "$_r/$_y live=1"

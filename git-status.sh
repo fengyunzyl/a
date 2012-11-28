@@ -1,6 +1,6 @@
 #!/bin/sh
 
-warn()
+warn ()
 {
   echo -e "\e[1;35m$@\e[m"
 }

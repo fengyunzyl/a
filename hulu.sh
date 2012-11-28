@@ -17,8 +17,14 @@ pkill ()
 
 try ()
 {
-  warn "$@"
-  eval "$@"
+  unset gh
+  for gg
+    do
+      [[ "$gg" =~ [\ \&] ]] && gg="\"$gg\""
+      gh+=("$gg")
+    done
+  warn "${gh[@]}"
+  eval "${gh[@]}"
 }
 
 pc=plugin-container
@@ -65,4 +71,4 @@ try rtmpdump \
   -W http://download.hulu.com/huludesktop.swf \
   -r "${server[rp]}" \
   -y "${stream[rp]}" \
-  -a "\"${server[rp]#*//*/}?${token[rp]//amp;}\""
+  -a "${server[rp]#*//*/}?${token[rp]//amp;}"

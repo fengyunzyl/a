@@ -23,8 +23,14 @@ pkill ()
 
 try ()
 {
-  warn "$@"
-  eval "$@"
+  unset gh
+  for gg
+    do
+      [[ "$gg" =~ [\ \&] ]] && gg="\"$gg\""
+      gh+=("$gg")
+    done
+  warn "${gh[@]}"
+  eval "${gh[@]}"
 }
 
 ab=/opt/Scripts/AdobeHDS.php
@@ -50,10 +56,10 @@ until [ -s pg.core ]
   done
 
 read ah < <(binparse "pvtoken.*")
-read mn < <(tr '[:cntrl:]<>' '\n' < pg.core | grep 'http://.*\.f4m')
+read mn < <(tr "[:cntrl:]'<>" "\n" < pg.core | grep 'http://.*\.f4m')
 read ur < <(binparse "Mozilla/5.0.*")
 echo extension=ext/php_curl.dll > /usr/local/bin/php/php.ini
-rm pg.core
+# rm pg.core
 
 try php "$ab" --manifest "$mn" ||
-try php "$ab" --manifest "$mn" --auth "\"$ah\"" --useragent "\"$ur\""
+try php "$ab" --manifest "$mn" --auth "$ah" --useragent "$ur"
