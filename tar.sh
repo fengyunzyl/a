@@ -21,7 +21,7 @@ try ()
 
 [ $1 ] || usage
 
-try tar acf a.tar.bz2 "$1"
-try tar acf a.tar.gz "$1"
-try tar acf a.tar.lzma "$1"
-try tar acf a.tar.xz "$1"
+try tar acf a.tar.bz2 "$@"
+try tar acf a.tar.gz "$@"
+try tar acf a.tar.lzma "$@"
+try tar acf a.tar.xz "$@"
