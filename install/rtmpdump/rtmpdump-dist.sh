@@ -3,7 +3,7 @@
 gcc=i686-w64-mingw32-gcc
 strip=i686-w64-mingw32-strip
 
-vr()
+vr ()
 {
   read $1 < <($gcc -E -xc - <<< "$2" | tac | tr -d \")
 }
