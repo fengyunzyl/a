@@ -1,5 +1,6 @@
 #!/bin/sh
 # http://git.savannah.gnu.org/cgit/tar.git/tree/src/suffix.c
+# 7z wins because it is smaller than these.
 
 usage ()
 {
