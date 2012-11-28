@@ -1,6 +1,6 @@
 #!/bin/bash
 # MP3 encode
-# ffmpeg -i "$REPLY" -b:a 320k -id3v2_version 3 "${REPLY%.*}.mp3" </dev/null
+# FIXME ffmpeg -i a.wav -b:a 320k -id3v2_version 3 a.mp3
 
 warn ()
 {
