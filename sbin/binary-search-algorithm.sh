@@ -1,12 +1,15 @@
-#!/bin/bash
+#!/bin/sh
 # Binary search algorithm
-# torvalds/linux
-# 41446
-# real    1m24.434s
+
+warn ()
+{
+  echo -e "\e[1;35m$@\e[m"
+}
 
 usage ()
 {
-  echo "Usage:  ${0##*/} torvalds/linux"
+  warn "Usage:  ${0##*/} torvalds/linux"
+  exit
 }
 
 [ $1 ] || usage
@@ -23,7 +26,6 @@ while wget --spider $url$up
 
 until ((j = (lw + up) / 2)); [ $j -eq $lw ]
   do
+    warn $j
     wget --spider $url$j && lw=$j || up=$j
   done
-
-echo $j
