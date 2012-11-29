@@ -5,7 +5,7 @@
 # Create dist
 git clone git://github.com/svnpenn/rtmpdump.git
 cd rtmpdump
-git checkout 603f
+git checkout 603ff20
 read < <(git describe --tags)
 7z a " h10-$REPLY.7z" ../handshake-10.patch
 
@@ -26,7 +26,7 @@ wget bitbucket.org/svnpenn/rtmpdump/downloads/h10-v2.4-34-g603ff20.7z
 7z e h10-v2.4-34-g603ff20.7z
 git clone git://github.com/svnpenn/rtmpdump.git
 cd rtmpdump
-git checkout -b handshake-10 603f
+git checkout -b handshake-10 603ff20
 git am ../handshake-10.patch
 make \
   SYS=mingw \
