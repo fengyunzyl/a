@@ -6,7 +6,7 @@
 git ls-remote -t git://github.com/git/git.git |
   tail -1 |
   tr / ^ |
-  cut -d^ -f3
+  cut -d^ -f3 |
   tee tg
 
 # Get commits to HEAD
