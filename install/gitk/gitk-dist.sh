@@ -26,4 +26,5 @@ cd -
 
 # Archive
 cd /tmp
-tar acf gitk.tar.lzma usr
+read < <(git-describe-remote.sh git/git)
+tar acf gitk-$REPLY.tar.lzma usr
