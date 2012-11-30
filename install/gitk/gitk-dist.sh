@@ -5,7 +5,7 @@ rm -rf /tmp
 wget downloads.sf.net/tcl/tcl8.5.12-src.tar.gz
 tar xf tcl8.5.12-src.tar.gz
 cd tcl8.5.12/win
-./configure --host i686-w64-mingw32 --prefix /tmp/usr/local
+./configure --host i686-w64-mingw32 --prefix /tmp/usr/local --disable-shared
 make install
 cd -
 
@@ -13,8 +13,8 @@ cd -
 wget downloads.sf.net/tcl/tk8.5.12-src.tar.gz
 tar xf tk8.5.12-src.tar.gz
 cd tk8.5.12/win
-./configure --host i686-w64-mingw32 --prefix /tmp/usr/local
-make install
+./configure --host i686-w64-mingw32 --prefix /tmp/usr/local --disable-shared
+make install-binaries install-libraries
 cd -
 
 # Install gitk
