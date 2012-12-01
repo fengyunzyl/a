@@ -47,4 +47,5 @@ try rtmpdump -o a.flv -i "$_r/$_y pageUrl=$_p" ||
 try rtmpdump -o a.flv -i "$_r playpath=$_y" ||
 try rtmpdump -o a.flv -i "$_r/$_y token=$_T" ||
 try rtmpdump -o a.flv -i "$_r/$_y live=1" ||
-try rtmpdump -o a.flv -i "$_r/$_y swfUrl=$_W jtv=$_j"
+try rtmpdump -o a.flv -i "$_r/$_y swfUrl=$_W jtv=$_j" ||
+try rtmpdump -o a.flv -i "$_r/$_y swfUrl=$_W live=1"
