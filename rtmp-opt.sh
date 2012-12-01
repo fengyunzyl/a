@@ -43,9 +43,9 @@ _j=${_j// /\\20}
 # If you use live flag on non-live, it takes forever to time out.
 try rtmpdump -o a.flv -i "$_r/$_y" ||
 try rtmpdump -o a.flv -i "$_r/$_y app=$_a" ||
-try rtmpdump -o a.flv -i "$_r/$_y pageUrl=$_p" ||
-try rtmpdump -o a.flv -i "$_r playpath=$_y" ||
 try rtmpdump -o a.flv -i "$_r/$_y token=$_T" ||
-try rtmpdump -o a.flv -i "$_r/$_y live=1" ||
+try rtmpdump -o a.flv -i "$_r/$_y pageUrl=$_p" ||
 try rtmpdump -o a.flv -i "$_r/$_y swfUrl=$_W jtv=$_j" ||
-try rtmpdump -o a.flv -i "$_r/$_y swfUrl=$_W live=1"
+try rtmpdump -o a.flv -i "$_r playpath=$_y" ||
+try rtmpdump -o a.flv -i "$_r/$_y live=1" ||
+try rtmpdump -o a.flv -i "$_r/$_y live=1 swfUrl=$_W"
