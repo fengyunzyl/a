@@ -27,4 +27,6 @@ cd -
 # Archive
 cd /tmp
 read < <(git-describe-remote.sh git/git)
-tar acf gitk-$REPLY.tar.lzma usr
+# strip will decrease file size without increasing archive size
+find -exec strip {} \;
+tar acf gitk-$REPLY.tar.lzma usr/local/bin usr/local/lib/{tcl8,tcl8.5,tk8.5}
