@@ -32,12 +32,14 @@ while getopts "C:RT:W:a:b:f:j:o:p:r:vy:" opt
     declare _$opt="$OPTARG"
   done
 
+_W="${_W/\/\/www.///}"
 _j="${_j// /\\20}"
 _j="${_j//\"/\\\"}"
 _p="${_p%/*}"
-_p="${_p/www.}"
+_p="${_p/\/\/www.///}"
 _r="${_r%/}"
 _r="${_r/:1935\///}"
+_r="${_r/\/\/www.///}"
 _y="${_y%.mp4}"
 
 # If you use live flag on non-live, it takes forever to time out.
