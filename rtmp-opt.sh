@@ -37,7 +37,7 @@ _j="${_j//\"/\\\"}"
 _p="${_p%/*}"
 _p="${_p/www.}"
 _r="${_r%/}"
-_r="${_r/:1935\//\/}"
+_r="${_r/:1935\///}"
 _y="${_y%.mp4}"
 
 # If you use live flag on non-live, it takes forever to time out.
