@@ -18,8 +18,14 @@ pkill ()
 
 try ()
 {
-  warn "$@"
-  eval "$@"
+  unset gh
+  for gg
+    do
+      [[ "$gg" =~ [\ \&] ]] && gg="\"$gg\""
+      gh+=("$gg")
+    done
+  warn "${gh[@]}"
+  eval "${gh[@]}"
 }
 
 pc=plugin-container
@@ -74,7 +80,6 @@ tr "[:cntrl:]" "\n" < pg.core |
 read ab[T] < tp
 rm pg.core tp
 
-try rtmpdump -o a.flv -r "${ab[r]}" ||
 try rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" ||
 try rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -v ||
 try rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -a "${ab[a]}" ||
