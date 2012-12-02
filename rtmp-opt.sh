@@ -43,7 +43,7 @@ do
       fi
       trim ab[aa]
   fi
-shift
+  shift
 done
 
 for ac in ${!ab[@]}
