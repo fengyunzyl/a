@@ -8,14 +8,8 @@ warn ()
 
 try ()
 {
-  unset gh
-  for gg
-    do
-      [[ "$gg" =~ [\ \&] ]] && gg="\"$gg\""
-      gh+=("$gg")
-    done
-  warn "${gh[@]}"
-  eval "${gh[@]}"
+  warn "$@"
+  eval "$@"
 }
 
 usage ()
@@ -24,30 +18,39 @@ usage ()
   exit
 }
 
+trim ()
+{
+  read $1 <<< ${!1/\/\/www.///}
+  read $1 <<< ${!1/:1935\///}
+}
+
 [ $1 ] || usage
 shift
 
-while getopts "C:RT:W:a:b:f:j:o:p:r:vy:" opt
-  do
-    declare _$opt="$OPTARG"
-  done
+aa=-1
+while [ "$1" ]
+do
+  if [ ${1::1} = - ]
+    then
+      (( aa++ ))
+      ab[aa]="$1"
+    else
+      if [[ "$1" =~ [\ \&] ]]
+        then
+          ab[aa]+=" \"$1\""
+        else
+          ab[aa]+=" $1"
+      fi
+      trim ab[aa]
+  fi
+shift
+done
 
-_W="${_W/\/\/www.///}"
-_j="${_j// /\\20}"
-_j="${_j//\"/\\\"}"
-_p="${_p%/*}"
-_p="${_p/\/\/www.///}"
-_r="${_r%/}"
-_r="${_r/:1935\///}"
-_r="${_r/\/\/www.///}"
-_y="${_y%.mp4}"
+for ac in ${!ab[@]}
+do
+  read <<< ${ab[ac]}
+  ab[ac]=
+  try rtmpdump -o a.flv -B .1 ${ab[@]} || ab[ac]=$REPLY
+done
 
-# If you use live flag on non-live, it takes forever to time out.
-try rtmpdump -o a.flv -i "$_r/$_y" ||
-try rtmpdump -o a.flv -i "$_r/$_y app=$_a" ||
-try rtmpdump -o a.flv -i "$_r/$_y token=$_T" ||
-try rtmpdump -o a.flv -i "$_r/$_y pageUrl=$_p" ||
-try rtmpdump -o a.flv -i "$_r/$_y swfUrl=$_W jtv=$_j" ||
-try rtmpdump -o a.flv -i "$_r playpath=$_y" ||
-try rtmpdump -o a.flv -i "$_r/$_y live=1" ||
-try rtmpdump -o a.flv -i "$_r/$_y live=1 swfUrl=$_W"
+warn rtmpdump -o a.flv ${ab[@]}
