@@ -1,6 +1,7 @@
 #!/bin/sh
 # RtmpDump with Handshake 10
 # Must use bitbucket because of GitHub DMCA
+# http://stream-recorder.com/forum/thedailyshow-com-rtmpe-t14437.html
 
 # Create dist
 git clone git://github.com/svnpenn/rtmpdump.git
