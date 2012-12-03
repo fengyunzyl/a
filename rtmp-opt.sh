@@ -30,8 +30,10 @@ unquote ()
 
 trim ()
 {
+  # Dont remove trailing slash, it will mess up "app" parsing
   read $1 <<< ${!1/\/\/www.///}
   read $1 <<< ${!1/:1935\///}
+  read $1 <<< ${!1%.mp4}
 }
 
 [ $1 ] || usage
