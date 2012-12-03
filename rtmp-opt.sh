@@ -31,30 +31,30 @@ unquote ()
 trim ()
 {
   # Dont remove trailing slash, it will mess up "app" parsing
+  # Dont remove ".mp4", some servers require it
   read $1 <<< ${!1/\/\/www.///}
   read $1 <<< ${!1/:1935\///}
-  read $1 <<< ${!1%.mp4}
 }
 
 [ $1 ] || usage
 shift
 
-aa=0
 for ac
 do
   trim ac
   quote ac
-  ab[aa]=$ac
-  (( aa++ ))
+  ab[aa++]=$ac
 done
 
-for ac in ${!ab[@]}
+for ((ac = 0; ac < aa; ac++))
 do
   b1=${ab[ac]}
+  b2=${ab[ac+1]}
   unset ab[ac]
+  [ ${ab[ac+1]::1} != - ] && unset ab[++ac]
   try rtmpdump -o a.flv -B .1 ${ab[@]}
   # Partial download will return 2, which is ok
-  [ $? = 1 ] && ab[ac]=$b1
+  [ $? = 1 ] && ab[ac-1]=$b1 && ab[ac]=$b2
 done
 
 for ac in ${!ab[@]}
