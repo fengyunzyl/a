@@ -26,7 +26,7 @@ quote ()
 
 unquote ()
 {
-  read $1 <<< ${!1//\"}
+  read $1 <<< "${!1//\"}"
 }
 
 trim ()
