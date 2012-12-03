@@ -49,7 +49,7 @@ done
 
 for ac in ${!ab[@]}
 do
-  read b1 <<< ${ab[ac]}
+  b1=${ab[ac]}
   unset ab[ac]
   ! try rtmpdump -o a.flv -B .1 ${ab[@]} && ab[ac]=$b1
 done
@@ -67,8 +67,8 @@ do
       do
         # if command fails on last section of qs you will need to restore ab
         # if command fails before last section of qs you will need to restore qs
-        read b1 <<< ${ab[ac]}
-        read b2 <<< ${qs[ae]}
+        b1=${ab[ac]}
+        b2=${qs[ae]}
         unset qs[ae]
         # join
         IFS=\& read ab[ac] <<< "$url?${qs[*]}"
