@@ -20,8 +20,7 @@ usage ()
 
 quote ()
 {
-  # add double quotes if needed
-  [[ ${!1} =~ \& ]] && read $1 <<< \"${!1}\"
+  [[ ${!1} =~ [\ \&] ]] && read $1 <<< \"${!1}\"
 }
 
 unquote ()
@@ -51,7 +50,9 @@ for ac in ${!ab[@]}
 do
   b1=${ab[ac]}
   unset ab[ac]
-  ! try rtmpdump -o a.flv -B .1 ${ab[@]} && ab[ac]=$b1
+  try rtmpdump -o a.flv -B .1 ${ab[@]}
+  # Partial download will return 2, which is ok
+  [ $? = 1 ] && ab[ac]=$b1
 done
 
 for ac in ${!ab[@]}
@@ -73,7 +74,8 @@ do
         # join
         IFS=\& read ab[ac] <<< "$url?${qs[*]}"
         quote ab[ac]
-        ! try rtmpdump -o a.flv -B .1 ${ab[@]} && ab[ac]=$b1 && qs[ae]=$b2
+        try rtmpdump -o a.flv -B .1 ${ab[@]}
+        [ $? = 1 ] && ab[ac]=$b1 && qs[ae]=$b2
       done
   fi
 done
