@@ -18,6 +18,17 @@ usage ()
   exit
 }
 
+quote ()
+{
+  # add double quotes if needed
+  [[ ${!1} =~ \& ]] && read $1 <<< \"${!1}\"
+}
+
+unquote ()
+{
+  read $1 <<< ${!1//\"}
+}
+
 trim ()
 {
   read $1 <<< ${!1/\/\/www.///}
@@ -27,30 +38,44 @@ trim ()
 [ $1 ] || usage
 shift
 
-aa=-1
-while [ "$1" ]
+aa=0
+for ac
 do
-  if [ ${1::1} = - ]
-    then
-      (( aa++ ))
-      ab[aa]="$1"
-    else
-      if [[ "$1" =~ [\ \&] ]]
-        then
-          ab[aa]+=" \"$1\""
-        else
-          ab[aa]+=" $1"
-      fi
-      trim ab[aa]
-  fi
-  shift
+  trim ac
+  quote ac
+  ab[aa]=$ac
+  (( aa++ ))
 done
 
 for ac in ${!ab[@]}
 do
-  read <<< ${ab[ac]}
-  ab[ac]=
-  try rtmpdump -o a.flv -B .1 ${ab[@]} || ab[ac]=$REPLY
+  read b1 <<< ${ab[ac]}
+  unset ab[ac]
+  ! try rtmpdump -o a.flv -B .1 ${ab[@]} && ab[ac]=$b1
+done
+
+for ac in ${!ab[@]}
+do
+  # Break up querystring, if it exists
+  if [[ ${ab[ac]} =~ \? ]]
+    then
+      unquote ab[ac]
+      url="${ab[ac]%\?*}"
+      # split
+      IFS=\& read -a qs <<< "${ab[ac]#*\?}"
+      for ae in ${!qs[@]}
+      do
+        # if command fails on last section of qs you will need to restore ab
+        # if command fails before last section of qs you will need to restore qs
+        read b1 <<< ${ab[ac]}
+        read b2 <<< ${qs[ae]}
+        unset qs[ae]
+        # join
+        IFS=\& read ab[ac] <<< "$url?${qs[*]}"
+        quote ab[ac]
+        ! try rtmpdump -o a.flv -B .1 ${ab[@]} && ab[ac]=$b1 && qs[ae]=$b2
+      done
+  fi
 done
 
 warn rtmpdump -o a.flv ${ab[@]}
