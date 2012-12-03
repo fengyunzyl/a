@@ -54,6 +54,7 @@ The external libraries compiled into this RtmpDump are
   Zlib $v_zlib http://zlib.net
   PolarSSL $v_polarssl http://polarssl.org
 EOF
+u2d README.txt
 
 # ARCHIVE
 7z a "rtmpdump-$v_rtmpdump.7z"
