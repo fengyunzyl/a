@@ -9,4 +9,5 @@ cp -r usr /
 # Install gitk
 cd /usr/local/bin
 wget raw.github.com/git/git/master/gitk-git/gitk
-chmod +x gitk
+wget raw.github.com/svnpenn/etc/master/install/gitk/wish
+chmod +x gitk wish
