@@ -6,18 +6,18 @@
 rm -rf $HOMEDRIVE/usr
 
 # Install Tcl
-wget downloads.sf.net/tcl/tcl8.5.12-src.tar.gz
-tar xf tcl8.5.12-src.tar.gz
-cd tcl8.5.12/win
+wget downloads.sf.net/tcl/tcl8.5.13-src.tar.gz
+tar xf tcl8.5.13-src.tar.gz
+cd tcl8.5.13/win
 ./configure --host i686-w64-mingw32 --disable-shared \
   --prefix $HOMEDRIVE/usr/local
 make install-binaries install-libraries
 cd -
 
 # Install Tk
-wget downloads.sf.net/tcl/tk8.5.12-src.tar.gz
-tar xf tk8.5.12-src.tar.gz
-cd tk8.5.12/win
+wget downloads.sf.net/tcl/tk8.5.13-src.tar.gz
+tar xf tk8.5.13-src.tar.gz
+cd tk8.5.13/win
 ./configure --host i686-w64-mingw32 --disable-shared \
   --prefix $HOMEDRIVE/usr/local
 make install-binaries install-libraries
@@ -28,7 +28,7 @@ cd $HOMEDRIVE/usr/local/bin
 i686-w64-mingw32-strip wish85s
 cd $HOMEDRIVE
 # threshold 100 KB. This will leave some empty folders but so what.
-tar acf tk-8.5.12.tar.gz \
+tar acf tk-8.5.13.tar.gz \
   --exclude '*.a' \
   --exclude encoding \
   --exclude include \

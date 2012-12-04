@@ -4,8 +4,8 @@
 # github.com/svnpenn/etc/blob/master/install/tcl-tk/tk-dist.sh
 
 # Install Tk
-wget github.com/downloads/svnpenn/etc/tk-8.5.12.tar.gz
-tar xf tk-8.5.12.tar.gz
+wget github.com/downloads/svnpenn/etc/tk-8.5.13.tar.gz
+tar xf tk-8.5.13.tar.gz
 cp -r usr /
 
 # Install gitk
