@@ -1,7 +1,12 @@
 #!/bin/sh
 # Use gitk on Cygwin without X11
-# Script I used to build Tk:
-# github.com/svnpenn/etc/blob/master/install/tcl-tk/tk-dist.sh
+# Scripts I used to build:
+# github.com/svnpenn/etc/tree/master/install/tcl-tk
+
+# Install Tcl
+wget github.com/downloads/svnpenn/etc/tcl-8.5.13.tar.gz
+tar xf tcl-8.5.13.tar.gz
+cp -r usr /
 
 # Install Tk
 wget github.com/downloads/svnpenn/etc/tk-8.5.13.tar.gz
