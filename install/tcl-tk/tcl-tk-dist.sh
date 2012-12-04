@@ -19,22 +19,14 @@ cd tk8.5.12/win
 ./configure --host i686-w64-mingw32 --disable-shared \
   --prefix $HOMEDRIVE/usr/local
 make install-binaries install-libraries
-cd -
-
-# Install gitk
-cd $HOMEDRIVE/usr/local/bin
-wget raw.github.com/git/git/master/gitk-git/gitk
-wget raw.github.com/svnpenn/dotfiles/master/bin/wish
-chmod +x gitk wish
-cd -
 
 # Archive
-cd $HOMEDRIVE
-read < <(git-describe-remote.sh git/git)
+cd $HOMEDRIVE/usr/local/bin
 # strip will decrease file size without increasing archive size
-find usr -exec i686-w64-mingw32-strip {} \;
+i686-w64-mingw32-strip tclsh85s wish85s
+cd $HOMEDRIVE
 # threshold 100 KB. This will leave some empty folders but so what.
-tar acf gitk-$REPLY.tar.gz \
+tar acf tcl-tk-8.5.12.tar.gz \
   --exclude '*.a' \
   --exclude encoding \
   --exclude include \
