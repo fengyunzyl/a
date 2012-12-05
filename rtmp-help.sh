@@ -38,18 +38,18 @@ Restart video then press enter here.'
 read
 
 until read < <(pgrep $pc)
-  do
-    warn "$pc not found!"
-    read
-  done
+do
+  warn "$pc not found!"
+  read
+done
 
 rm -f pg.core
 dumper pg $REPLY &
 
 until [ -s pg.core ]
-  do
-    sleep 1
-  done
+do
+  sleep 1
+done
 
 warn 'Press enter to start RtmpDumpHelper, then restart video.'
 read
@@ -69,9 +69,9 @@ declare -a aa="($REPLY)"
 declare -A ab
 
 while getopts "C:W:a:f:o:p:r:y:" opt "${aa[@]:1}"
-  do
-    ab[$opt]="$OPTARG"
-  done
+do
+  ab[$opt]="$OPTARG"
+done
 
 tr "[:cntrl:]" "\n" < pg.core |
   grep -1m1 secureTokenResponse |

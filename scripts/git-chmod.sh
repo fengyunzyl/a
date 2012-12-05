@@ -38,6 +38,6 @@ log cd ${REPLY%/*}
 log chmod 755 $1
 
 # Push mode change
-log git update-index --add --chmod=+x $1
-log git commit -m 'change mode'
+log git update-index --chmod=+x $1
+log git commit -am 'change mode'
 log git push
