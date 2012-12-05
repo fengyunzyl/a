@@ -1,0 +1,3 @@
+#!/bin/sh
+# Clear the screen and buffer
+printf \\ec
