@@ -1,5 +1,8 @@
 #!/bin/bash
 
+
+
+
 # Install Zlib
 wget zlib.net/zlib-1.2.7.tar.bz2
 tar xf zlib-1.2.7.tar.bz2
@@ -31,7 +34,6 @@ cd rtmpdump
 git checkout pu
 read < <(git describe --tags)
 
-
 make install \
   SYS=mingw \
   CRYPTO=POLARSSL \
@@ -39,22 +41,16 @@ make install \
   SHARED= \
   XLDFLAGS=-static \
   DESTDIR=.
-
-
-
-make \
-  SYS=mingw \
-  CRYPTO=POLARSSL \
-  CROSS_COMPILE=i686-w64-mingw32- \
-  SHARED= \
-  XLDFLAGS=-static \
   VERSION=$REPLY \
   OPT=-Os
 # Build librtmp.dll
-make \
+
+
+make install \
   SYS=mingw \
   CRYPTO=POLARSSL \
   CROSS_COMPILE=i686-w64-mingw32- \
+  DESTDIR=$OLDPWD
   OPT=-Os
 
 
