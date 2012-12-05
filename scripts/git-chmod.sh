@@ -16,10 +16,10 @@ try ()
 {
   unset gh
   for gg
-    do
-      [[ "$gg" =~ [\ \&] ]] && gg="\"$gg\""
-      gh+=("$gg")
-    done
+  do
+    [[ "$gg" =~ [\ \&] ]] && gg="\"$gg\""
+    gh+=("$gg")
+  done
   warn "${gh[@]}"
   eval "${gh[@]}"
 }
