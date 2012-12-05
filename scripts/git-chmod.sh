@@ -12,12 +12,17 @@ usage ()
   exit
 }
 
+quote ()
+{
+  [[ ${!1} =~ [\ \&] ]] && read $1 <<< \"${!1}\"
+}
+
 log ()
 {
   local gh
   for gg
   do
-    [[ "$gg" =~ [\ \&] ]] && gg="\"$gg\""
+    quote gg
     gh+=("$gg")
   done
   warn "${gh[@]}"

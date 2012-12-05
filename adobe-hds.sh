@@ -21,14 +21,19 @@ pkill ()
   pgrep $1 | xargs kill -f
 }
 
+quote ()
+{
+  [[ ${!1} =~ [\ \&] ]] && read $1 <<< \"${!1}\"
+}
+
 try ()
 {
-  unset gh
+  local gh
   for gg
-    do
-      [[ "$gg" =~ [\ \&] ]] && gg="\"$gg\""
-      gh+=("$gg")
-    done
+  do
+    quote gg
+    gh+=("$gg")
+  done
   warn "${gh[@]}"
   eval "${gh[@]}"
 }
@@ -42,18 +47,18 @@ Restart video then press enter here.'
 read
 
 until read < <(pgrep $pc)
-  do
-    warn "$pc not found!"
-    read
-  done
+do
+  warn "$pc not found!"
+  read
+done
 
 rm -f pg.core
 dumper pg $REPLY &
 
 until [ -s pg.core ]
-  do
-    sleep 1
-  done
+do
+  sleep 1
+done
 
 read ah < <(binparse "pvtoken.*")
 read mn < <(tr "[:cntrl:]'<>" "\n" < pg.core | grep 'http://.*\.f4m')
