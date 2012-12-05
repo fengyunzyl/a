@@ -12,7 +12,7 @@ usage ()
   exit
 }
 
-try ()
+log ()
 {
   local gh
   for gg
@@ -27,12 +27,12 @@ try ()
 [ $1 ] || usage
 
 read < <(type -p $1)
-try cd ${REPLY%/*}
+log cd ${REPLY%/*}
 
 # Change mode locally
-try chmod 755 $1
+log chmod 755 $1
 
 # Push mode change
-try git update-index --add --chmod=+x $1
-try git commit -m 'change mode'
-try git push
+log git update-index --add --chmod=+x $1
+log git commit -m 'change mode'
+log git push
