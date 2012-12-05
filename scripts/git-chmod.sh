@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # stackoverflow.com/q/9027584/how-to-change-the-file-mode-on-github
 
 warn ()
@@ -14,7 +14,7 @@ usage ()
 
 try ()
 {
-  unset gh
+  local gh
   for gg
   do
     [[ "$gg" =~ [\ \&] ]] && gg="\"$gg\""
@@ -25,6 +25,9 @@ try ()
 }
 
 [ $1 ] || usage
+
+read < <(type -p $1)
+try cd ${REPLY%/*}
 
 # Change mode locally
 try chmod 755 $1
