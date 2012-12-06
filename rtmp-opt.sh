@@ -6,7 +6,7 @@ warn ()
   echo -e "\e[1;35m$@\e[m"
 }
 
-try ()
+log ()
 {
   warn "$@"
   eval "$@"
@@ -52,7 +52,7 @@ do
   b2=${ab[ac+1]}
   unset ab[ac]
   [ ${ab[ac+1]::1} != - ] && unset ab[++ac]
-  try rtmpdump -o a.flv -B .1 ${ab[@]}
+  log rtmpdump -o a.flv -B .1 ${ab[@]}
   # Partial download will return 2, which is ok
   [ $? = 1 ] && ab[ac-1]=$b1 && ab[ac]=$b2
 done
@@ -78,7 +78,7 @@ do
       IFS=\& read <<< "${qs[*]}"
       [ $REPLY ] && ab[ac]+="?$REPLY"
       quote ab[ac]
-      try rtmpdump -o a.flv -B .1 ${ab[@]}
+      log rtmpdump -o a.flv -B .1 ${ab[@]}
       [ $? = 1 ] && ab[ac]=$b1 && qs[ae]=$b2
     done
   fi
