@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Optimize RTMP string
 
 warn ()
@@ -51,11 +51,21 @@ do
   b1=${ab[ac]}
   b2=${ab[ac+1]}
   unset ab[ac]
-  [ ${ab[ac+1]::1} != - ] && unset ab[++ac]
+  [ "${ab[ac+1]::1}" != - ] && unset ab[++ac]
   log rtmpdump -o a.flv -B .1 ${ab[@]}
   # Partial download will return 2, which is ok
   [ $? = 1 ] && ab[ac-1]=$b1 && ab[ac]=$b2
 done
+
+qsplit ()
+{
+  IFS=\& read -a $1 <<< "${!2}"
+}
+
+qjoin ()
+{
+  IFS=\& read $1 < <(eval echo \"\${$2[*]}\")
+}
 
 for ac in ${!ab[@]}
 do
@@ -63,23 +73,19 @@ do
   if [[ ${ab[ac]} =~ \? ]]
   then
     unquote ab[ac]
-    url="${ab[ac]%\?*}"
-    # split
-    IFS=\& read -a qs <<< "${ab[ac]#*\?}"
-    for ae in ${!qs[@]}
+    IFS=? read url qs <<< "${ab[ac]}"
+    qsplit qa qs
+    for ae in ${!qa[@]}
     do
-      # if command fails on last section of qs you will need to restore ab
-      # if command fails before last section of qs you will need to restore qs
       b1=${ab[ac]}
-      b2=${qs[ae]}
-      ab[ac]=$url
-      unset qs[ae]
-      # join
-      IFS=\& read <<< "${qs[*]}"
-      [ $REPLY ] && ab[ac]+="?$REPLY"
+      b2=${qa[ae]}
+      ab[ac]="$url"
+      unset qa[ae]
+      qjoin qs qa
+      [ $qs ] && ab[ac]+="?$qs"
       quote ab[ac]
       log rtmpdump -o a.flv -B .1 ${ab[@]}
-      [ $? = 1 ] && ab[ac]=$b1 && qs[ae]=$b2
+      [ $? = 1 ] && ab[ac]=$b1 && qa[ae]=$b2
     done
   fi
 done
