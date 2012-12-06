@@ -1,6 +1,11 @@
 #!/bin/bash
 # FIXME check for RtmpSrv RtmpDumpHelper on PATH
 
+quote ()
+{
+  [[ ${!1} =~ [\ \&] ]] && read $1 <<< \"${!1}\"
+}
+
 warn ()
 {
   echo -e "\e[1;35m$@\e[m"
@@ -16,14 +21,14 @@ pkill ()
   pgrep $1 | xargs kill -f
 }
 
-try ()
+log ()
 {
-  unset gh
+  local gh
   for gg
-    do
-      [[ "$gg" =~ [\ \&] ]] && gg="\"$gg\""
-      gh+=("$gg")
-    done
+  do
+    quote gg
+    gh+=("$gg")
+  done
   warn "${gh[@]}"
   eval "${gh[@]}"
 }
@@ -80,8 +85,8 @@ tr "[:cntrl:]" "\n" < pg.core |
 read ab[T] < tp
 rm pg.core tp
 
-try rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" ||
-try rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -v ||
-try rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -a "${ab[a]}" ||
-try rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -W "${ab[W]}" ||
-try rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -p "${ab[p]}"
+log rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" ||
+log rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -v ||
+log rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -a "${ab[a]}" ||
+log rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -W "${ab[W]}" ||
+log rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -p "${ab[p]}"

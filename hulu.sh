@@ -1,5 +1,10 @@
 #!/bin/bash
 
+quote ()
+{
+  [[ ${!1} =~ [\ \&] ]] && read $1 <<< \"${!1}\"
+}
+
 warn ()
 {
   echo -e "\e[1;35m$@\e[m"
@@ -15,14 +20,14 @@ pkill ()
   pgrep $1 | xargs kill -f
 }
 
-try ()
+log ()
 {
-  unset gh
+  local gh
   for gg
-    do
-      [[ "$gg" =~ [\ \&] ]] && gg="\"$gg\""
-      gh+=("$gg")
-    done
+  do
+    quote gg
+    gh+=("$gg")
+  done
   warn "${gh[@]}"
   eval "${gh[@]}"
 }
@@ -35,38 +40,38 @@ Restart video then press enter here.'
 read
 
 until read < <(pgrep $pc)
-  do
-    warn "$pc not found!"
-    read
-  done
+do
+  warn "$pc not found!"
+  read
+done
 
 rm -f pg.core
 dumper pg $REPLY &
 
 until [ -s pg.core ]
-  do
-    sleep 1
-  done
+do
+  sleep 1
+done
 
 mapfile vids < <(grep -aoz "<video [^>]*>" pg.core | sort | uniq -w123)
 
 for i in "${!vids[@]}"
+do
+  IFS=\" read -a vid <<< "${vids[i]}"
+  j=0
+  while [[ "${vid[j]}" =~ \ ([^=]*) ]]
   do
-    IFS=\" read -a vid <<< "${vids[i]}"
-    j=0
-    while [[ "${vid[j]}" =~ \ ([^=]*) ]]
-      do
-        read ${BASH_REMATCH[1]//[-:]}[i] <<< "${vid[j+1]}"
-        ((j+=2))
-      done
-    printf "%2d\t%9s\t%s\n" "$i" "${filetype[i]}" "${cdn[i]}"
+    read ${BASH_REMATCH[1]//[-:]}[i] <<< "${vid[j+1]}"
+    ((j+=2))
   done
+  printf "%2d\t%9s\t%s\n" "$i" "${filetype[i]}" "${cdn[i]}"
+done
 
 warn 'Make choice. Avoid level3.'
 read rp
 rm pg.core
 
-try rtmpdump \
+log rtmpdump \
   -o a.flv \
   -W http://download.hulu.com/huludesktop.swf \
   -r "${server[rp]}" \
