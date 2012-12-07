@@ -32,6 +32,11 @@ log ()
   eval "${gh[@]}"
 }
 
+rsplit ()
+{
+  IFS=$3 read -a $1 <<< "${!2}"
+}
+
 pc=plugin-container
 pkill $pc
 echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
@@ -55,16 +60,18 @@ done
 
 mapfile vids < <(grep -aoz "<video [^>]*>" pg.core | sort | uniq -w123)
 
-for i in "${!vids[@]}"
+i=0
+for vs in "${vids[@]}"
 do
-  IFS=\" read -a vid <<< "${vids[i]}"
+  rsplit va vs \"
   j=0
-  while [[ "${vid[j]}" =~ \ ([^=]*) ]]
+  while [[ "${va[j]}" =~ \ ([^=]*) ]]
   do
-    read ${BASH_REMATCH[1]//[-:]}[i] <<< "${vid[j+1]}"
+    read ${BASH_REMATCH[1]//[-:]}[i] <<< "${va[j+1]}"
     ((j+=2))
   done
   printf "%2d\t%9s\t%s\n" "$i" "${filetype[i]}" "${cdn[i]}"
+  ((i++))
 done
 
 warn 'Make choice. Avoid level3.'
