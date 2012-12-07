@@ -91,3 +91,4 @@ do
 done
 
 warn rtmpdump -o a.flv ${ab[@]}
+echo rtmpdump -o a.flv ${ab[@]} > a.sh
