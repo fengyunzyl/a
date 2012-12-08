@@ -68,25 +68,13 @@ autorunproxyserver=0
 captureportslist=1935 $REPLY
 usecaptureportslist=1" > /usr/local/bin/rtmpdumphelper.cfg
 rtmpdumphelper &
-read < <(rtmpsrv -i)
+read da < <(rtmpsrv -i)
 pkill rtmpdumphelper
-declare -a aa="($REPLY)"
-declare -A ab
-
-while getopts "C:W:a:f:o:p:r:y:" opt "${aa[@]:1}"
-do
-  ab[$opt]="$OPTARG"
-done
 
 tr "[:cntrl:]" "\n" < pg.core |
   grep -1m1 secureTokenResponse |
   tac > tp
 
-read ab[T] < tp
+read dt < tp
 rm pg.core tp
-
-log rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" ||
-log rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -v ||
-log rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -a "${ab[a]}" ||
-log rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -W "${ab[W]}" ||
-log rtmpdump -o a.flv -r "${ab[r]}" -y "${ab[y]}" -T "${ab[T]}" -p "${ab[p]}"
+log $da ${dt:+-T $dt}
