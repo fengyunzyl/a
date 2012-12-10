@@ -1,5 +1,7 @@
 #!/bin/bash
 # FIXME check for RtmpSrv RtmpDumpHelper on PATH
+# FIXME NetStream.Play.Reset..description..(Playing and resetting
+#   mosaiktv/20121210
 
 quote ()
 {
