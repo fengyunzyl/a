@@ -49,12 +49,12 @@ done
 for ((ac = 0; ac < aa; ac++))
 do
   b1=${ab[ac]}
-  b2=${ab[ac+1]}
   unset ab[ac]
-  [ "${ab[ac+1]::1}" != - ] && unset ab[++ac]
-  log rtmpdump -o a.flv -B .1 ${ab[@]}
+  [ "${ab[ac+1]::1}" = - ] && unset two || two=yes
+  [ $two ] && b2=${ab[ac+1]} && unset ab[ac+1]
+  log rtmpdump ${ab[@]} -B .1 -o a.flv
   # Partial download will return 2, which is ok
-  [ $? = 1 ] && ab[ac-1]=$b1 && ab[ac]=$b2
+  [ $? = 1 ] && ab[ac]=$b1 && [ $two ] && ab[ac+1]=$b2 && ((ac++))
 done
 
 qsplit ()
@@ -84,11 +84,12 @@ do
       qjoin qs qa
       [ $qs ] && ab[ac]+="?$qs"
       quote ab[ac]
-      log rtmpdump -o a.flv -B .1 ${ab[@]}
+      log rtmpdump ${ab[@]} -B .1 -o a.flv
       [ $? = 1 ] && ab[ac]=$b1 && qa[ae]=$b2
     done
   fi
 done
 
-warn rtmpdump -o a.flv ${ab[@]}
-echo rtmpdump -o a.flv ${ab[@]} > a.sh
+rm a.flv
+warn rtmpdump ${ab[@]} -o a.flv
+echo rtmpdump ${ab[@]} -o a.flv > a.sh
