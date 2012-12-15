@@ -54,7 +54,7 @@ do
   [[ $two =~ ^- ]] && unset two || unset ab[ac+1]
   log rtmpdump ${ab[@]} -B .1 -o a.flv
   # Partial download will return 2, which is ok
-  [ $? = 1 ] && ab[ac]=$one && [ $two ] && ab[ac+1]=$two && ((ac++))
+  [ $? = 1 ] && ab[ac]=$one && [ $two ] && ab[++ac]=$two
 done
 
 qsplit ()
