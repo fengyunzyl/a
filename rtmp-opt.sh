@@ -42,7 +42,7 @@ shift
 
 for ac
 do
-  [ ${ac::1} != - ] && trim ac && quote ac
+  [[ $ac =~ ^- ]] && trim ac && quote ac
   ab[aa++]=$ac
 done
 
