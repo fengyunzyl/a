@@ -50,7 +50,8 @@ for ((ac = 0; ac < aa; ac++))
 do
   one=${ab[ac]}
   unset ab[ac]
-  ! [[ ${ab[ac+1]} =~ ^- ]] && two=${ab[ac+1]} && unset ab[ac+1] || unset two
+  two=${ab[ac+1]}
+  [[ $two =~ ^- ]] && unset two || unset ab[ac+1]
   log rtmpdump ${ab[@]} -B .1 -o a.flv
   # Partial download will return 2, which is ok
   [ $? = 1 ] && ab[ac]=$one && [ $two ] && ab[ac+1]=$two && ((ac++))
