@@ -48,13 +48,12 @@ done
 
 for ((ac = 0; ac < aa; ac++))
 do
-  b1=${ab[ac]}
+  one=${ab[ac]}
   unset ab[ac]
-  [ "${ab[ac+1]::1}" = - ] && unset two || two=yes
-  [ $two ] && b2=${ab[ac+1]} && unset ab[ac+1]
+  ! [[ ${ab[ac+1]} =~ ^- ]] && two=${ab[ac+1]} && unset ab[ac+1] || unset two
   log rtmpdump ${ab[@]} -B .1 -o a.flv
   # Partial download will return 2, which is ok
-  [ $? = 1 ] && ab[ac]=$b1 && [ $two ] && ab[ac+1]=$b2 && ((ac++))
+  [ $? = 1 ] && ab[ac]=$one && [ $two ] && ab[ac+1]=$two && ((ac++))
 done
 
 qsplit ()
