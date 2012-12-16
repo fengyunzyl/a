@@ -42,7 +42,8 @@ shift
 
 for ac
 do
-  [[ $ac =~ ^- ]] && trim ac && quote ac
+  trim ac
+  quote ac
   ab[aa++]=$ac
 done
 
@@ -77,16 +78,17 @@ do
     qsplit qa qs
     for ae in ${!qa[@]}
     do
-      b1=${ab[ac]}
-      b2=${qa[ae]}
-      ab[ac]="$url"
+      one=${qa[ae]}
       unset qa[ae]
       qjoin qs qa
-      [ $qs ] && ab[ac]+="?$qs"
+      ab[ac]=${url}${qs:+?$qs}
       quote ab[ac]
       log rtmpdump ${ab[@]} -B .1 -o a.flv
-      [ $? = 1 ] && ab[ac]=$b1 && qa[ae]=$b2
+      [ $? = 1 ] && qa[ae]=$one
     done
+    qjoin qs qa
+    ab[ac]=${url}${qs:+?$qs}
+    quote ab[ac]
   fi
 done
 

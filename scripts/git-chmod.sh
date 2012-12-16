@@ -31,13 +31,10 @@ log ()
 
 [ $1 ] || usage
 
-read < <(type -p $1)
-log cd ${REPLY%/*}
-
 # Change mode locally
 log chmod 755 $1
 
 # Push mode change
 log git update-index --chmod=+x $1
-log git commit -am 'change mode'
+log git commit -am "change mode $1"
 log git push
