@@ -1,3 +1,22 @@
+Forum rules
+~~~
+[quote=Forum rules v1.1]If you truly want definitive answers quickly and without
+delay, please include link(s) to the web-page(s) with video(s)[/quote]
+[url="stream-recorder.com/forum/announcement.php?f=4"]
+stream-recorder.com/forum/announcement.php?f=4[/url]
+~~~
+
+Insert code
+~~~
+[quote][font="Lucida Console"]
+[/font][/quote]
+~~~
+
+Space character
+~~~
+&#8203;
+~~~
+
 RTMP
 - [cwtv](http://cwtv.com/cw-video/the-next)
 - [twitch](http://de.twitch.tv)
@@ -30,22 +49,3 @@ RTMP FIXME from KSV
 
 Proxy
 - http://hidemyass.com/proxy-list
-
-Forum rules
-~~~
-[quote=Forum rules v1.1]If you truly want definitive answers quickly and without
-delay, please include link(s) to the web-page(s) with video(s)[/quote]
-[url="stream-recorder.com/forum/announcement.php?f=4"]
-stream-recorder.com/forum/announcement.php?f=4[/url]
-~~~
-
-Space character
-~~~
-&#8203;
-~~~
-
-Insert code
-~~~
-[quote][font="Lucida Console"]
-[/font][/quote]
-~~~
