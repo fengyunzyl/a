@@ -6,7 +6,7 @@ wget downloads.sf.net/tcl/tcl8.5.13-src.tar.gz
 tar xf tcl8.5.13-src.tar.gz
 cd tcl8.5.13/win
 ./configure --host i686-w64-mingw32 --disable-shared
-make binaries install-libraries
+make binaries install-libraries INSTALL_ROOT=$HOMEDRIVE/cygwin
 cd -
 
 # Install Tk
