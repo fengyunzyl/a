@@ -47,10 +47,10 @@ i686-w64-mingw32-strip ${fs[@]}
 upx -9 ${fs[@]}
 
 # Readme
-read t_rtmpdump < <(stat -c%z bin/rtmpdump.exe | xargs -0 date -d)
-read v_rtmpdump < <(git describe --tags)
+read RTMPDUMP_DATE < <(stat -c%z bin/rtmpdump.exe | xargs -0 date -d)
+read RTMPDUMP_VERSION < <(git describe --tags)
 CC=i686-w64-mingw32-gcc
-read v_gcc < <($CC -dumpversion)
+read GCC_VERSION < <($CC -dumpversion)
 
 vr ()
 {
@@ -62,14 +62,14 @@ vr ()
 vr POLARSSL_VERSION_STRING polarssl/version.h
 vr ZLIB_VERSION zlib.h
 
-echo "
+cat > README.txt <<j
 This is a RtmpDump Win32 static build by Steven Penny.
 
-Steven’s Home Page: http://svnpenn.github.com
+Stevenâ€™s Home Page: http://svnpenn.github.com
 
-Built on $t_rtmpdump
+Built on $RTMPDUMP_DATE
 
-RtmpDump version $v_rtmpdump
+RtmpDump version $RTMPDUMP_VERSION
 
 The source code for this RtmpDump build can be found at
   http://github.com/svnpenn/rtmpdump
@@ -79,19 +79,19 @@ This version of RtmpDump was built on
   http://windows.microsoft.com/en-us/windows7/products/home
 
 The toolchain used to compile this RtmpDump was
-  MinGW-w64: http://mingw-w64.sourceforge.net
+  MinGW-w64  http://mingw-w64.sourceforge.net
 
 The GCC version used to compile this RtmpDump was
-  GCC $v_gcc: http://gcc.gnu.org
+  GCC $GCC_VERSION  http://gcc.gnu.org
 
 The external libraries compiled into this RtmpDump are
-  Zlib $v_zlib http://zlib.net
-  PolarSSL $v_polarssl http://polarssl.org
-" > README.txt
+  Zlib $ZLIB_VERSION  http://zlib.net
+  PolarSSL $POLARSSL_VERSION_STRING  http://polarssl.org
+j
 u2d README.txt
 
 # Archive
-tar acf rtmpdump-$v_rtmpdump.tar.gz \
+tar acf rtmpdump-$RTMPDUMP_VERSION.tar.gz \
   README.txt \
   bin \
   man \
