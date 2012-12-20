@@ -30,10 +30,10 @@ unquote ()
 
 trim ()
 {
-  # Dont remove trailing slash, it will mess up "app" parsing
-  # Dont remove ".mp4", some servers require it
   # Dont lowercase because app querystring is case sensitive
-  read $1 <<< ${!1/\/\/www.///}
+  # Dont remove ".mp4", some servers require it
+  # Dont remove "www.", some servers require it
+  # Dont remove trailing slash, it will mess up "app" parsing
   read $1 <<< ${!1/:1935\///}
 }
 
@@ -55,7 +55,7 @@ do
   [[ $two =~ ^- ]] && unset two || unset ab[ac+1]
   log rtmpdump ${ab[@]} -B .1 -o a.flv
   # Partial download will return 2, which is ok
-  [ $? = 1 ] && ab[ac]=$one && [ $two ] && ab[++ac]=$two
+  [ $? = 1 ] && ab[ac]=$one && [[ $two ]] && ab[++ac]=$two
 done
 
 qsplit ()
