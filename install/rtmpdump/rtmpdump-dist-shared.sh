@@ -33,7 +33,6 @@ git clone git://github.com/svnpenn/rtmpdump.git
 cd rtmpdump
 git checkout pu
 read < <(git describe --tags)
-
 make install \
   SYS=mingw \
   CRYPTO=POLARSSL \
@@ -44,20 +43,9 @@ make install \
   VERSION=$REPLY \
   OPT=-Os
 # Build librtmp.dll
-
-
 make install \
   SYS=mingw \
   CRYPTO=POLARSSL \
   CROSS_COMPILE=i686-w64-mingw32- \
   DESTDIR=$OLDPWD
   OPT=-Os
-
-
-
-
-
-
-
-
-
