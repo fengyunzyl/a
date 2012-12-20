@@ -21,7 +21,8 @@ int main(int argc, char* argv[])
   FILE *fIn, *fOut;
   off_t filePos, fileSize;
   int checkForShift, res;
-  unsigned int len, dataSize, timeStamp, timeStampPrev, timeStampShift, prevAudioTS, prevVideoTS, previousTagSize, firstNonZeroTimeStamp;
+  unsigned int len, dataSize, timeStamp, timeStampPrev, timeStampShift,
+    prevAudioTS, prevVideoTS, previousTagSize, firstNonZeroTimeStamp;
   unsigned char buf[4096];
   char fname[1024], *p;
 
@@ -73,12 +74,14 @@ int main(int argc, char* argv[])
   do
   {
     /* Read FLV header */
-    if (fread(buf, 1, 9, fIn) != 9 || buf[0] != 'F' || buf[1] != 'L' || buf[2] != 'V' || buf[3] != 0x01)
+    if (fread(buf, 1, 9, fIn) != 9 ||
+      buf[0] != 'F' || buf[1] != 'L' || buf[2] != 'V' || buf[3] != 0x01)
     {
       printf("Invalid FLV header\n");
       break;
     }
-    if (fseek(fIn, ((((((buf[5] << 8) | buf[6]) << 8) | buf[7]) << 8) | buf[8]), SEEK_SET))
+    if (fseek(fIn,
+      ((((((buf[5] << 8) | buf[6]) << 8) | buf[7]) << 8) | buf[8]), SEEK_SET))
     {
       printf("Failed to seek to first FLV tag\n");
       break;
@@ -92,7 +95,8 @@ int main(int argc, char* argv[])
     filePos += 9;
 
     checkForShift = 1;
-    timeStampPrev = timeStampShift = prevAudioTS = prevVideoTS = previousTagSize = firstNonZeroTimeStamp = 0;
+    timeStampPrev = timeStampShift = prevAudioTS = prevVideoTS =
+      previousTagSize = firstNonZeroTimeStamp = 0;
 
     /* Read FLV tags */
     while (1)
@@ -128,7 +132,8 @@ int main(int argc, char* argv[])
         }
         if (timeStampShift == 0 && checkForShift)
         {
-          if (timeStampPrev >= TS_MIN_TRESHOLD && timeStamp >= timeStampPrev + TS_WINDOW_CHECK)
+          if (timeStampPrev >= TS_MIN_TRESHOLD &&
+            timeStamp >= timeStampPrev + TS_WINDOW_CHECK)
           {
             timeStampShift = timeStamp - timeStampPrev;
             printf("\nDetected %u ms time shift\n", timeStampShift);
