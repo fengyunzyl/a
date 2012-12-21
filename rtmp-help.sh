@@ -3,11 +3,6 @@
 # FIXME NetStream.Play.Reset..description..(Playing and resetting
 #   mosaiktv/20121210
 
-quote ()
-{
-  [[ ${!1} =~ [\ \&] ]] && read $1 <<< \"${!1}\"
-}
-
 warn ()
 {
   echo -e "\e[1;35m$@\e[m"
@@ -21,18 +16,6 @@ pgrep ()
 pkill ()
 {
   pgrep $1 | xargs kill -f
-}
-
-log ()
-{
-  local gh
-  for gg
-  do
-    quote gg
-    gh+=("$gg")
-  done
-  warn "${gh[@]}"
-  eval "${gh[@]}"
 }
 
 pc=plugin-container
@@ -67,7 +50,7 @@ LANG= grep -Eaom1 '(RTMP|rtmp).{0,2}://[-.0-z]+' pg.core |
 read < tp
 echo "[general]
 autorunproxyserver=0
-captureportslist=1935 $REPLY
+captureportslist=1935 443 80 $REPLY
 usecaptureportslist=1" > /usr/local/bin/rtmpdumphelper.cfg
 rtmpdumphelper &
 read da < <(rtmpsrv -i)
@@ -79,4 +62,4 @@ tr "[:cntrl:]" "\n" < pg.core |
 
 read dt < tp
 rm pg.core tp
-log $da ${dt:+-T $dt}
+eval rtmp-opt.sh $da ${dt:+-T $dt}
