@@ -20,7 +20,7 @@ usage ()
 
 quote ()
 {
-  [[ ${!1} =~ [\ \#\&] ]] && read $1 <<< \"${!1}\"
+  [[ ${!1} =~ [\ \#\&\;] ]] && read $1 <<< \"${!1}\"
 }
 
 unquote ()
@@ -31,7 +31,7 @@ unquote ()
 trim ()
 {
   # Dont lowercase because app querystring is case sensitive
-  # Dont remove ".mp4", some servers require it
+  # Dont remove ".mp4" or "mp4:", some servers require it
   # Dont remove "www.", some servers require it
   # Dont remove trailing slash, it will mess up "app" parsing
   read $1 <<< ${!1/:1935\///}
