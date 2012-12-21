@@ -30,7 +30,7 @@ cd -
 git clone git://github.com/svnpenn/rtmpdump.git
 cd rtmpdump
 git checkout pu
-read < <(git describe --tags)
+read RTMPDUMP_VERSION < <(git describe --tags)
 make install \
   SYS=mingw \
   CRYPTO=POLARSSL \
@@ -38,7 +38,7 @@ make install \
   SHARED= \
   XLDFLAGS=-static \
   prefix=$PWD \
-  VERSION=$REPLY \
+  VERSION=$RTMPDUMP_VERSION \
   OPT=-Os
 
 # Compress files
@@ -48,7 +48,6 @@ upx -9 ${fs[@]}
 
 # Readme
 read RTMPDUMP_DATE < <(stat -c%z bin/rtmpdump.exe | xargs -0 date -d)
-read RTMPDUMP_VERSION < <(git describe --tags)
 CC=i686-w64-mingw32-gcc
 read GCC_VERSION < <($CC -dumpversion)
 
