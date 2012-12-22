@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # See how long command stays alive
 
 warn ()
