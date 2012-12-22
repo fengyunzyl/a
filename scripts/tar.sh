@@ -15,7 +15,7 @@ usage ()
 
 log ()
 {
-  unset gh
+  local gh
   for gg
   do
     quote gg
