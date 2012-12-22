@@ -31,10 +31,11 @@ unquote ()
 trim ()
 {
   # Dont lowercase because app querystring is case sensitive
-  # Dont remove ".mp4" or "mp4:", some servers require it
-  # Dont remove "www.", some servers require it
+  # Dont remove ".mp4" "mp4:" or "www.", some server require it
   # Dont remove trailing slash, it will mess up "app" parsing
-  read $1 <<< ${!1/:1935\///}
+  printf -v $1 %b "${!1//\%/\x}"
+  printf -v $1 %s "${!1//amp;}"
+  printf -v $1 %s "${!1/:1935\///}"
 }
 
 [ $1 ] || usage
@@ -60,7 +61,7 @@ done
 
 qsplit ()
 {
-  IFS=\& read -a $1 <<< "${!2}"
+  IFS=\&? read -a $1 <<< "${!2}"
 }
 
 qjoin ()
