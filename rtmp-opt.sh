@@ -72,25 +72,22 @@ qjoin ()
 for ac in ${!ab[@]}
 do
   # Break up querystring, if it exists
-  if [[ ${ab[ac]} =~ \? ]]
-  then
-    unquote ab[ac]
-    IFS=? read url qs <<< "${ab[ac]}"
-    qsplit qa qs
-    for ae in ${!qa[@]}
-    do
-      one=${qa[ae]}
-      unset qa[ae]
-      qjoin qs qa
-      ab[ac]=${url}${qs:+?$qs}
-      quote ab[ac]
-      log rtmpdump ${ab[@]} -B .1 -o a.flv
-      [ $? = 1 ] && qa[ae]=$one
-    done
+  unquote ab[ac]
+  IFS=? read url qs <<< "${ab[ac]}"
+  qsplit qa qs
+  for ae in ${!qa[@]}
+  do
+    one=${qa[ae]}
+    unset qa[ae]
     qjoin qs qa
     ab[ac]=${url}${qs:+?$qs}
     quote ab[ac]
-  fi
+    log rtmpdump ${ab[@]} -B .1 -o a.flv
+    [ $? = 1 ] && qa[ae]=$one
+  done
+  qjoin qs qa
+  ab[ac]=${url}${qs:+?$qs}
+  quote ab[ac]
 done
 
 rm a.flv
