@@ -9,15 +9,15 @@ wget -qO- "techpatterns.com/downloads/firefox/useragentswitcher.xml" |
   tr '"();' '\n' |
   sed "s/^[ \t]*//" |
   sort -u |
-  while read u
-    do
-      printf "${#u}\t$u\n"
-    done |
+  while read aa
+  do
+    printf "${#aa}\t$aa\n"
+  done |
   sort -n |
   cut -f2 |
-  while read v
-    do
-      echo "$v"
-      wget -qO- -U "$v" "youtube.com/watch?v=ReP9pN5jJDY" |
-        grep -q "videoplayback?" && echo "$v" >> log
-    done
+  while read bb
+  do
+    echo "$bb"
+    wget -qO- -U "$bb" "youtube.com/watch?v=ReP9pN5jJDY" |
+      grep -q "videoplayback?" && echo "$bb" >> log
+  done
