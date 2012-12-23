@@ -42,9 +42,9 @@ make install \
   OPT=-Os
 
 # Compress files
-fs=(bin/rtmpdump.exe sbin/{rtmpgw.exe,rtmpsrv.exe,rtmpsuck.exe})
-i686-w64-mingw32-strip ${fs[@]}
-upx -9 ${fs[@]}
+read -d, < <(find bin sbin -type f)
+i686-w64-mingw32-strip $REPLY
+upx -9 $REPLY
 
 # Readme
 CC=i686-w64-mingw32-gcc

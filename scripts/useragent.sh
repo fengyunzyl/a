@@ -5,7 +5,7 @@
 # Find the shortest User Agent string
 # From my tests it was "iPad"
 
-wget -qO- "techpatterns.com/downloads/firefox/useragentswitcher.xml" |
+wget -qO- techpatterns.com/downloads/firefox/useragentswitcher.xml |
   tr '"();' '\n' |
   sed "s/^[ \t]*//" |
   sort -u |
@@ -15,9 +15,8 @@ wget -qO- "techpatterns.com/downloads/firefox/useragentswitcher.xml" |
   done |
   sort -n |
   cut -f2 |
-  while read bb
+  while read aa
   do
-    echo "$bb"
-    wget -qO- -U "$bb" "youtube.com/watch?v=ReP9pN5jJDY" |
-      grep -q "videoplayback?" && echo "$bb" >> log
+    wget -qO- -U "$aa" youtube.com/watch?v=ReP9pN5jJDY |
+      grep -q videoplayback? && echo $aa && exit || echo $aa
   done
