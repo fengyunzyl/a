@@ -24,11 +24,10 @@ main (void)
   while (! feof (f))
     {
       fgets (buffer, size, f);
-      if
-        (
-          strstr (buffer, "<video ") &&
-          strstr (buffer, "/>")
-        )
+      if (
+        strstr (buffer, "<video ") &&
+        strstr (buffer, "/>")
+      )
         printf ("%s", buffer);
     }
 
