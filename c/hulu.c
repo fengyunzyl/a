@@ -29,9 +29,9 @@ main (void)
           strstr (buffer, "<video ") &&
           strstr (buffer, "/>")
         )
-        printf("%s", buffer);
+        printf ("%s", buffer);
     }
 
-  fclose(f);
+  fclose (f);
   return 0;
 }
