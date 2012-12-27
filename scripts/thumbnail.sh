@@ -9,7 +9,7 @@ warn ()
 
 usage ()
 {
-  echo "Usage:  $0 FILE"
+  echo "Usage:  $0 INTERVAL"
   exit
 }
 
@@ -31,16 +31,18 @@ log ()
 }
 
 [ $1 ] || usage
-find /tmp -mindepth 1 | xargs rm -f
+warn 'Drag video here, then press enter (backslash ok)'
+read -r vd
+log atomicparsley "$vd" --artwork REMOVE_ALL --overWrite || exit
 
 j=0
-while log ffmpeg -ss $j -i "$1" -frames:v 1 -v warning /tmp/$j.png
+while log ffmpeg -ss $j -i "$vd" -frames:v 1 -v warning /tmp/$j.png
 do
   [ -a /tmp/$j.png ] || break
-  (( j += 20 ))
+  (( j += $1 ))
 done
 
-log atomicparsley "$1" --artwork REMOVE_ALL --overWrite || exit
 warn 'Drag picture here, then press enter (backslash ok)'
-read -r
-log atomicparsley "$1" --artwork "$REPLY" --overWrite
+read -r pc
+log atomicparsley "$vd" --artwork "$pc" --overWrite
+find /tmp -mindepth 1 | xargs rm -f
