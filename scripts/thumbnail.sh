@@ -36,7 +36,7 @@ read -r vd
 log atomicparsley "$vd" --artwork REMOVE_ALL --overWrite || exit
 
 j=0
-while log ffmpeg -ss $j -i "$vd" -frames:v 1 -v warning /tmp/$j.png
+while log ffmpeg -ss $j -i "$vd" -frames 1 -v warning /tmp/$j.png
 do
   [ -a /tmp/$j.png ] || break
   (( j += $1 ))
