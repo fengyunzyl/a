@@ -59,7 +59,7 @@ vr ()
 vr POLARSSL_VERSION_STRING polarssl/version.h
 vr ZLIB_VERSION zlib.h
 read GCC_VERSION < <($CC -dumpversion)
-read RTMPDUMP_DATE < <(stat -c%z bin/rtmpdump.exe | xargs -0 date -d)
+read RTMPDUMP_DATE < <(stat -c%z rtmpdump | xargs -0 date -d)
 
 cat > README.txt <<j
 This is a RtmpDump Win32 static build by Steven Penny.
