@@ -1,0 +1,8 @@
+#!/bin/bash
+# Cygwin wrapper for Windows native ffmpeg
+for j
+do
+  [[ "$j" =~ : ]] || read j < <(cygpath -im -- "$j")
+  k+=("$j")
+done
+/usr/local/bin/ffmpeg "${k[@]}"

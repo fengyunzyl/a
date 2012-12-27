@@ -1,8 +1,8 @@
 #!/bin/bash
 # Cygwin wrapper for Windows native start
 for j
-  do
-    [[ "$j" =~ :// ]] || read j < <(cygpath -im -- "$j")
-    k+=("$j")
-  done
+do
+  [[ "$j" =~ :// ]] || read j < <(cygpath -im -- "$j")
+  k+=("$j")
+done
 $WINDIR/system32/cmd /c start "${k[@]}"
