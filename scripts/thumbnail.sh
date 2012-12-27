@@ -31,16 +31,15 @@ log ()
 }
 
 [ $1 ] || usage
-rm -r /tmp
+find /tmp -mindepth 1 | xargs rm -f
 
 j=0
 while log ffmpeg -ss $j -i "$1" -frames:v 1 -v warning /tmp/$j.png
 do
   [ -a /tmp/$j.png ] || break
-  (( j += 30 ))
+  (( j += 20 ))
 done
 
-open /tmp
 log atomicparsley "$1" --artwork REMOVE_ALL --overWrite || exit
 warn 'Drag picture here, then press enter (backslash ok)'
 read -r
