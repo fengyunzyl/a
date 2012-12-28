@@ -12,8 +12,6 @@ log ()
   eval "$@"
 }
 
-# read -d! f < <(rtmpsrv -i)
-
 rtmpsuck -et
 read f < rtmpsuck.txt
 
