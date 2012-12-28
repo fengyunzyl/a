@@ -12,7 +12,10 @@ log ()
   eval "$@"
 }
 
-read -d! f < <(rtmpsrv -i)
+# read -d! f < <(rtmpsrv -i)
+
+rtmpsuck -et
+read f < rtmpsuck.txt
 
 q=1
 while read j < <(date)
