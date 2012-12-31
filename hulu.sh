@@ -58,6 +58,7 @@ do
   sleep 1
 done
 
+kill %%
 mapfile vids < <(grep -aoz "<video [^>]*>" pg.core | sort | uniq -w123)
 
 i=0
