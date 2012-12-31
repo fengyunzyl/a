@@ -33,8 +33,7 @@ log ()
 
 # Change mode locally
 log chmod 755 $1
-
 # Push mode change
 log git update-index --chmod=+x $1
-log git commit -am "change mode $1"
+log git commit -m "change mode $1" $1
 log git push
