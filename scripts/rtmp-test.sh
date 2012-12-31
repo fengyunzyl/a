@@ -42,6 +42,7 @@ dump()
       sleep 1
     done
 
+  kill %%
   warn 'Press enter to start RtmpDumpHelper, then restart video.'
   read
 
@@ -54,9 +55,8 @@ dump()
   echo "autorunproxyserver=0" >> $cg
   echo "captureportslist=1935 $REPLY" >> $cg
   echo "usecaptureportslist=1" >> $cg
-  rtmpdumphelper &
-  read -r rp < <(rtmpsrv -i)
-  pkill rtmpdumphelper
+  rtmpsuck -et
+  read -r rp < rtmpsuck.txt
 
   tr "[:cntrl:]" "\n" < pg.core |
     grep -1m1 secureTokenResponse |
@@ -78,6 +78,6 @@ urls=(
 )
 
 for url in ${urls[@]}
-  do
-    dump $url
-  done
+do
+  dump $url
+done
