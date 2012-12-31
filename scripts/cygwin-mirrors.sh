@@ -1,7 +1,7 @@
 #!/bin/sh
 # Print Cygwin mirrors
 
-IFS=/ read hh pp <<< 'sources.redhat.com/cygwin/mirrors.lst'
+IFS=/ read hh pp <<< "sources.redhat.com/cygwin/mirrors.lst"
 exec 3<>/dev/tcp/$hh/80
 
 echo "GET /$pp
