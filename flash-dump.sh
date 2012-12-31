@@ -36,4 +36,4 @@ do
   sleep 1
 done
 
-pkill $pc
+kill %%
