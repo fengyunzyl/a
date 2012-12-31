@@ -48,13 +48,13 @@ LANG= grep -Eaom1 '(RTMP|rtmp).{0,2}://[-.0-z]+' pg.core |
   cut -d: -f3 > tp
 
 read < tp
+# Be careful adding ports here, can block RTMPT
 echo "[general]
 autorunproxyserver=0
-captureportslist=1935 443 80 $REPLY
+captureportslist=1935 $REPLY
 usecaptureportslist=1" > /usr/local/bin/rtmpdumphelper.cfg
-rtmpdumphelper &
-read da < <(rtmpsrv -i)
-pkill rtmpdumphelper
+rtmpsuck -et
+read da < rtmpsuck.txt
 
 tr "[:cntrl:]" "\n" < pg.core |
   grep -1m1 secureTokenResponse |
