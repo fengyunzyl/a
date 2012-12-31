@@ -60,6 +60,7 @@ do
   sleep 1
 done
 
+kill %%
 read ah < <(binparse "pvtoken.*")
 read mn < <(tr "[:cntrl:]'<>" "\n" < pg.core | grep '^http://[^?]*\.f4m')
 read ur < <(binparse "Mozilla/5.0.*")
