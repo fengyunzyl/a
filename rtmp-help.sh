@@ -41,6 +41,7 @@ do
   sleep 1
 done
 
+kill %%
 warn 'Press enter to start RtmpDumpHelper, then restart video.'
 read
 
