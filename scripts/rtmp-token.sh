@@ -37,6 +37,7 @@ do
   sleep 1
 done
 
+kill %%
 tr "[:cntrl:]" "\n" < pg.core |
   grep -1m1 secureTokenResponse |
   tac > tp
