@@ -43,4 +43,4 @@ tr "[:cntrl:]" "\n" < pg.core |
 
 read dt < tp
 rm pg.core tp
-[ $dt ] && echo $dt || echo 'SecureToken not found.'
+[[ $dt ]] && echo $dt || echo 'SecureToken not found.'
