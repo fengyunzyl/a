@@ -19,14 +19,14 @@ quote ()
 
 log ()
 {
-  local gh
-  for gg
+  local pp
+  for oo
   do
-    quote gg
-    gh+=("$gg")
+    quote oo
+    pp+=("$oo")
   done
-  warn "${gh[@]}"
-  eval "${gh[@]}"
+  warn "${pp[@]}"
+  eval "${pp[@]}"
 }
 
 [ $1 ] || usage
