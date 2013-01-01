@@ -15,6 +15,9 @@ cd -
 wget downloads.sf.net/fatsort/fatsort-0.9.17.269.tar.gz
 tar xf fatsort-0.9.17.269.tar.gz
 cd fatsort-0.9.17.269
+# patch
+wget raw.github.com/svnpenn/a/master/install/fatsort/fatsort.diff
+git apply fatsort.diff
 make \
   CC=i686-w64-mingw32-gcc \
   LD=i686-w64-mingw32-gcc \
