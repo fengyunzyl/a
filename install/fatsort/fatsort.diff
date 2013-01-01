@@ -1,0 +1,25 @@
+diff --git a/src/Makefile b/src/Makefile
+index fc7264b..3a11e6a 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -43,7 +43,7 @@ OBJ=fatsort.o FAT_fs.o fileio.o endianness.o signal.o entrylist.o errors.o optio
+ all: fatsort
+ 
+ fatsort: $(OBJ) $(DEBUG_OBJ) Makefile
+-	${LD} ${LDFLAGS} $(OBJ) $(DEBUG_OBJ) -o $@
++	${LD} $(OBJ) ${LDFLAGS} $(DEBUG_OBJ) -o $@
+ 
+ fatsort.o: fatsort.c endianness.h signal.h FAT_fs.h options.h errors.h sort.h misc.h Makefile
+ 	$(CC) ${CFLAGS} -c $< -o $@
+diff --git a/src/natstrcmp.h b/src/natstrcmp.h
+index a2f4463..4795878 100644
+--- a/src/natstrcmp.h
++++ b/src/natstrcmp.h
+@@ -25,6 +25,7 @@
+ #define __natstrcmp_h__
+ 
+ #include <sys/types.h>
++#include "platform.h"
+ 
+ // natural order comparison
+ int32_t natstrcmp(const char *str1, const char *str2);
