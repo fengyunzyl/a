@@ -51,8 +51,7 @@ CC=i686-w64-mingw32-gcc
 
 vr ()
 {
-  echo "#include <$2>
-  $1" > a.c
+  printf "#include <$2>\n$1" > a.c
   read $1 < <($CC -E a.c | tac | tr -d \")
 }
 
