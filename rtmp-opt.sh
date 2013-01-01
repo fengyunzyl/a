@@ -73,7 +73,8 @@ do
   log $gg ${bb[@]} -o a.flv 2> >(tee kk) &
   grepkill sec kk
   [ -s kk ] && bb[hh]=$one
-  [[ $two ]] && (( ++hh )) || continue
+  [[ $two ]] || continue
+  (( hh++ ))
   [ -s kk ] && bb[hh]=$two
 done
 
