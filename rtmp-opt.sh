@@ -9,7 +9,7 @@ warn ()
 log ()
 {
   warn "$@"
-  eval "$@"
+  exec "$@"
 }
 
 usage ()
@@ -39,24 +39,42 @@ trim ()
 }
 
 [ $1 ] || usage
+gg=$1
 shift
 
-for ac
+for hh
 do
-  trim ac
-  quote ac
-  ab[aa++]=$ac
+  trim hh
+  quote hh
+  bb[aa++]=$hh
 done
 
-for ((ac = 0; ac < aa; ac++))
+grepkill ()
+{
+  # search stderr, then kill
+  while [ -d /proc/$! ]
+  do
+    if grep -q $1 $2
+    then
+      kill %%
+      > $2
+      echo
+    fi
+    sleep 1
+  done 2>/dev/null
+}
+
+for ((hh = 0; hh < aa; hh++))
 do
-  one=${ab[ac]}
-  unset ab[ac]
-  two=${ab[ac+1]}
-  [[ $two =~ ^- ]] && unset two || unset ab[ac+1]
-  log rtmpdump ${ab[@]} -B .1 -o a.flv
-  # Partial download will return 2, which is ok
-  [ $? = 1 ] && ab[ac]=$one && [[ $two ]] && ab[++ac]=$two
+  one=${bb[hh]}
+  unset bb[hh]
+  two=${bb[hh+1]}
+  [[ $two =~ ^- ]] && unset two || unset bb[hh+1]
+  log $gg ${bb[@]} -o a.flv 2> >(tee kk) &
+  grepkill sec kk
+  [ -s kk ] && bb[hh]=$one
+  [[ $two ]] && (( ++hh )) || continue
+  [ -s kk ] && bb[hh]=$two
 done
 
 qsplit ()
@@ -69,27 +87,28 @@ qjoin ()
   IFS=\& read $1 < <(eval echo \"\${$2[*]}\")
 }
 
-for ac in ${!ab[@]}
+for hh in ${!bb[@]}
 do
   # Break up querystring, if it exists
-  unquote ab[ac]
-  IFS=? read url qs <<< "${ab[ac]}"
+  unquote bb[hh]
+  IFS=? read url qs <<< "${bb[hh]}"
   qsplit qa qs
-  for ae in ${!qa[@]}
+  for ff in ${!qa[@]}
   do
-    one=${qa[ae]}
-    unset qa[ae]
+    one=${qa[ff]}
+    unset qa[ff]
     qjoin qs qa
-    ab[ac]=${url}${qs:+?$qs}
-    quote ab[ac]
-    log rtmpdump ${ab[@]} -B .1 -o a.flv
-    [ $? = 1 ] && qa[ae]=$one
+    bb[hh]=${url}${qs:+?$qs}
+    quote bb[hh]
+    log $gg ${bb[@]} -o a.flv 2> >(tee kk) &
+    grepkill sec kk
+    [ -s kk ] && qa[ff]=$one
   done
   qjoin qs qa
-  ab[ac]=${url}${qs:+?$qs}
-  quote ab[ac]
+  bb[hh]=${url}${qs:+?$qs}
+  quote bb[hh]
 done
 
-rm a.flv
-warn rtmpdump ${ab[@]} -o a.flv
-echo rtmpdump ${ab[@]} -o a.flv > a.sh
+warn $gg ${bb[@]} -o a.flv
+echo $gg ${bb[@]} -o a.flv > a.sh
+rm a.flv kk
