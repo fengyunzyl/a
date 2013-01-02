@@ -39,8 +39,6 @@ trim ()
 }
 
 [ $1 ] || usage
-gg=$1
-shift
 
 for hh
 do
@@ -54,7 +52,7 @@ grepkill ()
   # search stderr, then kill
   while [ -d /proc/$! ]
   do
-    if grep -q $1 $2
+    if grep -q "$1" $2
     then
       kill %%
       > $2
@@ -64,14 +62,14 @@ grepkill ()
   done 2>/dev/null
 }
 
-for ((hh = 0; hh < aa; hh++))
+for ((hh = 1; hh < aa; hh++))
 do
   one=${bb[hh]}
   unset bb[hh]
   two=${bb[hh+1]}
   [[ $two =~ ^- ]] && unset two || unset bb[hh+1]
-  log $gg ${bb[@]} -o a.flv 2> >(tee kk) &
-  grepkill sec kk
+  log ${bb[@]} -o a.flv -m 9 -\# 2> >(tee kk) &
+  grepkill '######' kk
   [ -s kk ] && bb[hh]=$one
   [[ $two ]] || continue
   (( hh++ ))
@@ -101,8 +99,8 @@ do
     qjoin qs qa
     bb[hh]=${url}${qs:+?$qs}
     quote bb[hh]
-    log $gg ${bb[@]} -o a.flv 2> >(tee kk) &
-    grepkill sec kk
+    log ${bb[@]} -o a.flv -m 9 -\# 2> >(tee kk) &
+    grepkill '######' kk
     [ -s kk ] && qa[ff]=$one
   done
   qjoin qs qa
@@ -110,6 +108,6 @@ do
   quote bb[hh]
 done
 
-warn $gg ${bb[@]} -o a.flv
-echo $gg ${bb[@]} -o a.flv > a.sh
+warn ${bb[@]} -o a.flv
+echo ${bb[@]} -o a.flv > a.sh
 rm a.flv kk
