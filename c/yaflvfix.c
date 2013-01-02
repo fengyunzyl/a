@@ -8,6 +8,7 @@
 /* All times in ms */
 #define TS_MIN_TRESHOLD 4
 #define TS_WINDOW_CHECK 33000
+#define PROGRESS_UPDATE_TIME 100
 
 #if defined(_MSC_VER)
 #define off_t __int64
@@ -16,17 +17,32 @@
 #define ftello ftello64
 #endif
 
+#if defined(_MSC_VER)
+#include <Windows.h>
+#define GetTicks GetTickCount
+#else
+#include <sys/time.h>
+unsigned int GetTicks()
+{
+  struct timeval tv;
+  struct timezone tz;
+  gettimeofday(&tv, &tz);
+  return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+}
+#endif
+
 int main(int argc, char* argv[])
 {
   FILE *fIn, *fOut;
   off_t filePos, fileSize;
   int checkForShift, res;
-  unsigned int len, dataSize, timeStamp, timeStampPrev, timeStampShift,
+  unsigned int len, dataSize, tick, timeStamp, timeStampPrev, timeStampShift,
     prevAudioTS, prevVideoTS, previousTagSize, firstNonZeroTimeStamp;
-  unsigned char buf[4096];
+  unsigned char buf[16384];
   char fname[1024], *p;
 
   res = 1;
+  tick = GetTicks() - PROGRESS_UPDATE_TIME;
 
   if (argc < 2)
   {
@@ -80,8 +96,8 @@ int main(int argc, char* argv[])
       printf("Invalid FLV header\n");
       break;
     }
-    if (fseek(fIn,
-      ((((((buf[5] << 8) | buf[6]) << 8) | buf[7]) << 8) | buf[8]), SEEK_SET))
+    filePos = ((((((buf[5] << 8) | buf[6]) << 8) | buf[7]) << 8) | buf[8]);
+    if (filePos >= fileSize || fseek(fIn, filePos, SEEK_SET))
     {
       printf("Failed to seek to first FLV tag\n");
       break;
@@ -92,7 +108,6 @@ int main(int argc, char* argv[])
       printf("Error writing file\n");
       break;
     }
-    filePos += 9;
 
     checkForShift = 1;
     timeStampPrev = timeStampShift = prevAudioTS = prevVideoTS =
@@ -101,7 +116,11 @@ int main(int argc, char* argv[])
     /* Read FLV tags */
     while (1)
     {
-      printf("\rProcessed %.2f%%", ((float)filePos * 100 / fileSize));
+      if (GetTicks() - tick >= PROGRESS_UPDATE_TIME)
+      {
+        printf("\rProcessed %.2f%%", ((float)filePos * 100 / fileSize));
+        tick = GetTicks();
+      }
       if (fread(buf, 1, 15, fIn) != 15)
       {
         res = 0;
