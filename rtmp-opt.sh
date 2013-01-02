@@ -110,4 +110,5 @@ done
 
 warn ${bb[@]} -o a.flv
 echo ${bb[@]} -o a.flv > a.sh
+fold -w69 <<< "${bb[@]} -o a.flv" >> a.sh
 rm a.flv kk
