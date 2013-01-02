@@ -9,7 +9,7 @@ warn ()
 log ()
 {
   warn "$@"
-  exec "$@"
+  eval exec "$@"
 }
 
 usage ()
