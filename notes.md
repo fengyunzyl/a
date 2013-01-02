@@ -30,11 +30,10 @@ NA      -T  <a href=http://canaldosconcursos.com.br/video_demo.php?id_cursos=313
 
 RTMP FIXME
 
-<a href=http://stream-recorder.com/forum/download-movie-naver-com-t14842.html>SR 1</a>
-<a href=http://stream-recorder.com/forum/kisstv-stop-working-t14132.html>SR 2</a>
-<a href=http://stream-recorder.com/forum/rtmpdump-rtmpe-stream-t14859.html>SR 3</a>
-<a href=http://stream-recorder.com/forum/rtmpsrv-doesnt-always-work-t14164.html>SR 4</a>
-<a href=http://lists.mplayerhq.hu/pipermail/rtmpdump/2012-December/002249.html>ML 1</a>
+<a href=http://stream-recorder.com/forum/kisstv-stop-working-t14132.html>kisstv stop working</a>
+<a href=http://stream-recorder.com/forum/rtmpdump-rtmpe-stream-t14859.html>Handshake 10</a>
+<a href=http://stream-recorder.com/forum/rtmpsrv-doesnt-always-work-t14164.html>rtmpsrv doesn't always work</a>
+<a href=http://lists.mplayerhq.hu/pipermail/rtmpdump/2012-December/002249.html>rtmpsrv does not work on certain streams</a>
 
 AdobeHDS
 
