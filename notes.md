@@ -28,12 +28,14 @@ NA      -v  <a href=http://teledunet.com>teledunet</a>
 NA      -T  <a href=http://zonytvcom.info>zonytvcom</a>
 NA      -T  <a href=http://canaldosconcursos.com.br/video_demo.php?id_cursos=3130>canaldosconcursos</a>
 
-RTMP FIXME from KSV
+RTMP FIXME
 
 <a href=http://kissfm.ro/kisstv/live>kissfm</a>
-<a href=http://movie.naver.com/movie/bi/mi/mediaView.nhn?code=74565>naver</a>
-<a href=http://ustream.tv/mmajunkieradio>ustream</a>
 <a href=http://livestream.com/bideojuegos>livestream</a>
+<a href=http://movie.naver.com/movie/bi/mi/mediaView.nhn?code=74565>naver</a>
+<a href=http://stream-recorder.com/forum/help-greek-stream-stopped-working-t14841.html>stream-recorder 1</a>
+<a href=http://stream-recorder.com/forum/rtmpdump-rtmpe-stream-t14859.html>stream-recorder 2</a>
+<a href=http://ustream.tv/mmajunkieradio>ustream</a>
 
 AdobeHDS
 
