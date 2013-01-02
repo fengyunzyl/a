@@ -5,20 +5,21 @@ answers ()
 {
   # rtmp.c
   for a in \
-    n n n n n n n n n n \
-    n n n n n n n y n n \
-    n n n n n n n n n n \
-    n n n n n n n n n n \
-    n n n
-    do
-      echo $a
-    done
+    y y y y y y y y y y \
+    y y y y y y y y y y \
+    y y y y y y y y y y \
+    y y y y y y y y y y \
+    y y y
+  do
+    echo $a
+  done
 }
 
-git reset --hard origin
+git reset --hard origin~1
 git apply -p0 ../Patch.diff
-git add -p librtmp/rtmp.c < <(answers)
-git commit -m live
+# git add -p librtmp/rtmp.c < <(answers)
+git add -p < <(answers)
+git commit -m foo
 git reset --hard
 
 make rtmpdump \
@@ -28,7 +29,4 @@ make rtmpdump \
   SHARED= \
   XLDFLAGS=-static || exit
 
-timeout 2 ./rtmpdump \
-  -o a.flv \
-  -r rtmp://d.cdn.msnbclive.eu/edge/cnbc_live \
-  -W http://msnbclive.eu/player.swf  
+./rtmpdump -r rtmp://s31.webvideocore.net/live/ -y 7zlyq17szhc0o0wwsg4o -o a.flv
