@@ -14,7 +14,7 @@ warn ()
 
 usage ()
 {
-  warn "Usage:  ${0##*/} FILE FILE FILE"
+  echo "Usage:  $0 FILE FILE FILE"
   exit
 }
 
@@ -34,7 +34,7 @@ log ()
 
 for hh
 do
-  hi="${hh%.*}.mp3"
-  log ffmpeg -i "$hh" -q 1 "$hi"
-  log mp3gain -r -k -m 10 "$hi"
+  kk="${hh%.*}.mp3"
+  log ffmpeg -i "$hh" -q 1 "$kk"
+  log mp3gain -r -k -m 10 "$kk"
 done
