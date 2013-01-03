@@ -3,8 +3,7 @@
 
 warn ()
 {
-  printf "\e[1;35m%s \e[m" "$@"
-  printf "\n"
+  printf "\e[36m%s\e[m\n" "$*"
 }
 
 usage ()
@@ -15,7 +14,7 @@ usage ()
 
 quote ()
 {
-  ! [[ ${!1} =~ \" ]] && [[ ${!1} =~ \\ ]] && read -r $1 <<< \"${!1}\"
+  [[ ${!1} =~ \\ ]] && read -r $1 <<< \"${!1}\"
 }
 
 log ()
@@ -30,19 +29,28 @@ log ()
   eval "${pp[@]}"
 }
 
+unquote ()
+{
+  read -r $1 <<< "${!1//\"}"
+}
+
 [ $1 ] || usage
-warn 'Drag video here, then press enter (backslash ok)'
+
+warn 'Careful, screencaps will dump in current directory.
+Drag video here, then press enter (backslashes ok).'
 read -r vd
+unquote vd
 log atomicparsley "$vd" --artwork REMOVE_ALL --overWrite || exit
 
 j=0
-while log ffmpeg -ss $j -i "$vd" -frames 1 -v warning /tmp/$j.png
+while log ffmpeg -ss $j -i "$vd" -frames 1 -v warning $j.png
 do
-  [ -a /tmp/$j.png ] || break
+  [ -a $j.png ] || break
   (( j += $1 ))
 done
 
-warn 'Drag picture here, then press enter (backslash ok)'
+warn 'Drag picture here, then press enter (backslashes ok).'
 read -r pc
+unquote pc
 log atomicparsley "$vd" --artwork "$pc" --overWrite
-find /tmp -mindepth 1 | xargs rm -f
+ls | grep png | xargs rm -f
