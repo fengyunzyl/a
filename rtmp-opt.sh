@@ -108,7 +108,13 @@ do
   quote bb[hh]
 done
 
-warn ${bb[@]} -o a.flv
-echo ${bb[@]} -o a.flv > a.sh
-fold -w69 <<< "${bb[@]} -o a.flv" >> a.sh
-rm a.flv kk
+fd ()
+{
+  printf '\n\n'
+  fold -w69 kk
+  rm a.flv kk
+}
+
+trap fd 0 INT
+echo ${bb[@]} -o a.flv > kk
+eval ${bb[@]} -o a.flv |& tee -a kk
