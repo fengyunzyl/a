@@ -1,14 +1,13 @@
 #!/bin/sh
 # Launch Jekyll
 
-die ()
+usage ()
 {
-  echo -e "\e[1;31m$@\e[m"
+  echo "Usage:  $0 REPO_NAME"
   exit
 }
 
-[ $1 ] || die "Usage: $0 REPO_NAME"
-
+[ $1 ] || usage
 cd /opt/$1
 
 # Run

@@ -13,7 +13,7 @@ pgrep ()
 
 warn ()
 {
-  echo -e "\e[1;35m$@\e[m"
+  printf "\e[1;35m%s\e[m\n" "$*"
 }
 
 pkill ()

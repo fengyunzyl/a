@@ -2,13 +2,13 @@
 # Git remove sensitive data
 # help.github.com/articles/remove-sensitive-data
 
-die()
+usage ()
 {
-  echo -e "\e[1;31m$@\e[m"
+  echo "Usage:  $0 FILE"
   exit
 }
 
-[ $1 ] || die "Usage: $0 FILE"
+[ $1 ] || usage
 
 git filter-branch \
   --index-filter "git rm --cached --ignore-unmatch '$1'" \
