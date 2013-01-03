@@ -4,18 +4,12 @@
 
 quote ()
 {
-  [[ ${!1} =~ [\ \&] ]] && read $1 <<< \"${!1}\"
+  [[ ${!1} =~ \\ ]] && read -r $1 <<< \"${!1}\"
 }
 
 warn ()
 {
-  printf "\e[1;35m%s\e[m\n" "$*"
-}
-
-usage ()
-{
-  echo "Usage:  $0 FILE FILE FILE"
-  exit
+  printf "\e[36m%s\e[m\n" "$*"
 }
 
 log ()
@@ -30,11 +24,16 @@ log ()
   eval "${pp[@]}"
 }
 
-[ $1 ] || usage
+unquote ()
+{
+  read -r $1 <<< "${!1//\"}"
+}
 
-for hh
+# stdin
+while read -r -p 'Drag file here, or use a pipe.'$'\n' hh
 do
+  unquote hh
   kk="${hh%.*}.mp3"
-  log ffmpeg -i "$hh" -q 1 "$kk"
+  log ffmpeg -i "$hh" -q 1 -v warning "$kk"
   log mp3gain -r -k -m 10 "$kk"
 done
