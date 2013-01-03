@@ -5,10 +5,10 @@ answers ()
 {
   # rtmp.c
   for aa in \
-    n n y n y n n n n n \
-    n n n n n n n n n n \
-    n y y n n n n n y Y \
-    n n n n n n n n n n \
+    y y y y y y y y y y \
+    y y y y y y y y y y \
+    y y y y y y y y y y \
+    y y y y n n n n n y \
     n n y
   do
     echo $aa
@@ -16,7 +16,14 @@ answers ()
 
   # rtmp.h
   for aa in \
-    n n y
+    y y y
+  do
+    echo $aa
+  done
+
+  # rtmp_sys.h
+  for aa in \
+    n y n n
   do
     echo $aa
   done
@@ -24,13 +31,6 @@ answers ()
   # rtmpdump.c
   for aa in \
     n y n n n y
-  do
-    echo $aa
-  done
-
-  # rtmp_sys.h
-  for aa in \
-    n n n y
   do
     echo $aa
   done
@@ -54,7 +54,22 @@ make rtmpdump \
   SHARED= \
   XLDFLAGS=-static || exit
 
-timeout 14 ./rtmpdump \
-  -o a.flv \
-  -r rtmp://s31.webvideocore.net/live/ \
-  -y 7zlyq17szhc0o0wwsg4o
+grepkill ()
+{
+  # search stderr, then kill
+  while [ -d /proc/$! ]
+  do
+    if grep -q "$1" $2
+    then
+      kill %%
+      > $2
+      echo
+    fi
+    sleep 1
+  done 2>/dev/null
+}
+
+./rtmpdump -a live/kiss -o a.flv -r rtmp://fms53.mediadirect.ro/live/kiss \
+  -\# 2> >(tee kk) &
+
+grepkill '#####################' kk
