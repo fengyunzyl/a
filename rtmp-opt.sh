@@ -54,12 +54,12 @@ grepkill ()
   do
     if grep -q "$1" $2
     then
-      kill %%
+      kill -13 %%
       > $2
       echo
     fi
     sleep 1
-  done 2>/dev/null
+  done
 }
 
 for ((hh = 1; hh < aa; hh++))

@@ -61,12 +61,12 @@ grepkill ()
   do
     if grep -q "$1" $2
     then
-      kill %%
+      kill -13 %%
       > $2
       echo
     fi
     sleep 1
-  done 2>/dev/null
+  done
 }
 
 ./rtmpdump -a live/kiss -o a.flv -r rtmp://fms53.mediadirect.ro/live/kiss \

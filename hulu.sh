@@ -58,7 +58,7 @@ do
   sleep 1
 done
 
-kill %%
+kill -13 %%
 mapfile vids < <(grep -aoz "<video [^>]*>" pg.core | sort | uniq -w123)
 
 i=0
@@ -78,7 +78,6 @@ done
 warn 'Make choice. Avoid level3.'
 read rp
 rm pg.core
-
 log rtmpdump \
   -o a.flv \
   -W http://download.hulu.com/huludesktop.swf \
