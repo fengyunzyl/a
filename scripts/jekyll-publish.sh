@@ -17,16 +17,22 @@ git rm -qr .
 cp -r _site/. .
 rm -r _site
 git add -A
-read _ s < <(git status -s)
+read < <(git status -s | cut -c4-)
 git status -s | git commit -F-
 git push origin master || exit
 
 # Check status
-check(){
-  until cmp -s $1 <(wget -qO- $2); do
-    for i in {0..9}; do echo -n $i; sleep 1; done
+check ()
+{
+  until cmp -s $1 <(wget -qO- $2)
+  do
+    for z in {0..9}
+    do
+      printf $z
+      sleep 1
+    done
   done
 }
-check $s svnpenn.github.com/$s
+check $REPLY svnpenn.github.com/$REPLY
 git checkout source
 echo 'Publish complete!'
