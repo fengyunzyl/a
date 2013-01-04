@@ -30,7 +30,7 @@ NA      -T  <a href=http://canaldosconcursos.com.br/video_demo.php?id_cursos=313
 
 RTMP FIXME
 
-<a href=http://stream-recorder.com/forum/rtmpdump-rtmpe-stream-t14859.html>Handshake 10</a>
+<a href=http://stream-recorder.com/forum/connection-failed-server-reject-t10749.html>Handshake 10</a>
 <a href=http://lists.mplayerhq.hu/pipermail/rtmpdump/2012-December/002249.html>rtmpsrv does not work on certain streams</a>
 
 AdobeHDS
