@@ -8,28 +8,6 @@ usage ()
   exit
 }
 
-warn ()
-{
-  printf "\e[36m%s\e[m\n" "$*"
-}
-
-quote ()
-{
-  [[ ${!1} =~ [\ \#\&\;] ]] && read $1 <<< \"${!1}\"
-}
-
-log ()
-{
-  local pp
-  for oo
-  do
-    quote oo
-    pp+=("$oo")
-  done
-  warn "${pp[@]}"
-  exec "${pp[@]}"
-}
-
 grepkill ()
 {
   # search stderr, then kill
@@ -48,7 +26,8 @@ grepkill ()
 z=$1
 shift
 
-log $@ -o a.flv 2> >(tee kk) &
+exec $@ -o a.flv 2> >(tee kk) &
+sleep 1
 aa=$!
 grepkill $z kk
 rm a.flv kk
