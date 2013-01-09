@@ -14,7 +14,7 @@ grepkill ()
   while [ -d /proc/$aa ]
   do
     read < <(tr '\r .' '\n\t' < kk | tac | cut -f5)
-    if (( $REPLY + 0 > $z ))
+    if (( $REPLY + 1 > $z ))
     then
       kill -13 %%
     fi
