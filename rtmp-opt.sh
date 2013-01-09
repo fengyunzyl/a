@@ -31,11 +31,11 @@ unquote ()
 trim ()
 {
   # Dont lowercase because app querystring is case sensitive
-  # Dont remove ".mp4" "mp4:" or "www.", some server require it
+  # Dont remove ".mp4" "mp4:" or "www.", some servers require it
   # Dont remove trailing slash, it will mess up "app" parsing
-  printf -v $1 %b "${!1//\%/\x}"
-  printf -v $1 %s "${!1//amp;}"
-  printf -v $1 %s "${!1/:1935\///}"
+  # Dont decode the URL, some servers require encoded URL
+  read $1 <<< "${!1//amp;}"
+  read $1 <<< "${!1/:1935\///}"
 }
 
 [ $1 ] || usage
@@ -113,7 +113,8 @@ fd ()
   [ -a kk ] || exit
   printf '\n\n'
   fold -w69 kk
-  rm a.flv kk
+  rm a.flv kk &
+  wait $!
 }
 
 trap fd 0 2
