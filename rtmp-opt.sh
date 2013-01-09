@@ -14,7 +14,7 @@ log ()
 
 usage ()
 {
-  warn "Usage:  ${0##*/} COMMAND"
+  echo "Usage:  $0 COMMAND"
   exit
 }
 
@@ -47,18 +47,18 @@ do
   bb[aa++]=$hh
 done
 
-grepkill ()
+watch ()
 {
-  # search stderr, then kill
-  while [ -d /proc/$! ]
+  while [ -d /proc/$3 ]
   do
-    if grep -q "$1" $2
+    sleep 1
+    read < <(tr '\r' '\n' < kk | tac | cut -d. -f1)
+    if (( $REPLY + 1 > $1 ))
     then
-      kill -13 %%
+      kill -13 $3
       > $2
       echo
     fi
-    sleep 1
   done
 }
 
@@ -68,8 +68,8 @@ do
   unset bb[hh]
   two=${bb[hh+1]}
   [[ $two =~ ^- ]] && unset two || unset bb[hh+1]
-  log ${bb[@]} -o a.flv -m 9 -\# 2> >(tee kk) &
-  grepkill '######' kk
+  log ${bb[@]} -o a.flv -m 9 2> >(tee kk) &
+  watch 1000 kk $!
   [ -s kk ] && bb[hh]=$one
   [[ $two ]] || continue
   (( hh++ ))
@@ -99,8 +99,8 @@ do
     qjoin qs qa
     bb[hh]=${url}${qs:+?$qs}
     quote bb[hh]
-    log ${bb[@]} -o a.flv -m 9 -\# 2> >(tee kk) &
-    grepkill '######' kk
+    log ${bb[@]} -o a.flv -m 9 2> >(tee kk) &
+    watch 1000 kk $!
     [ -s kk ] && qa[ff]=$one
   done
   qjoin qs qa
