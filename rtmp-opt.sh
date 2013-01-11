@@ -52,7 +52,7 @@ watch ()
   while [ -d /proc/$2 ]
   do
     sleep 1
-    read < <(tr '\r' '\n' < kk | tac | cut -d. -f1)
+    read < <(tr '\r' '\n' < $1 | tac | cut -d. -f1)
     if (( $REPLY + 1 > $3 ))
     then
       kill -13 $2
