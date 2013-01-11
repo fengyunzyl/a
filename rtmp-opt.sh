@@ -49,14 +49,14 @@ done
 
 watch ()
 {
-  while [ -d /proc/$3 ]
+  while [ -d /proc/$2 ]
   do
     sleep 1
     read < <(tr '\r' '\n' < kk | tac | cut -d. -f1)
-    if (( $REPLY + 1 > $1 ))
+    if (( $REPLY + 1 > $3 ))
     then
-      kill -13 $3
-      > $2
+      kill -13 $2
+      > $1
       echo
     fi
   done
@@ -69,7 +69,7 @@ do
   two=${bb[hh+1]}
   [[ $two =~ ^- ]] && unset two || unset bb[hh+1]
   log ${bb[@]} -o a.flv -m 9 2> >(tee kk) &
-  watch 1000 kk $!
+  watch kk $! 1000
   [ -s kk ] && bb[hh]=$one
   [[ $two ]] || continue
   (( hh++ ))
@@ -100,7 +100,7 @@ do
     bb[hh]=${url}${qs:+?$qs}
     quote bb[hh]
     log ${bb[@]} -o a.flv -m 9 2> >(tee kk) &
-    watch 1000 kk $!
+    watch kk $! 1000
     [ -s kk ] && qa[ff]=$one
   done
   qjoin qs qa
