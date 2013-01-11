@@ -8,26 +8,46 @@ usage ()
   exit
 }
 
-grepkill ()
+watch ()
 {
-  # search stderr, then kill
-  while [ -d /proc/$aa ]
+  while [ -d /proc/$2 ]
   do
-    read < <(tr '\r .' '\n\t' < kk | tac | cut -f5)
-    if (( $REPLY + 1 > $z ))
-    then
-      kill -13 %%
-    fi
     sleep 1
+    read < <(tr '\r .' '\n\t' < kk | tac | cut -f5)
+    if (( $REPLY + 1 > $3 ))
+    then
+      kill -13 $2
+      break
+    fi
   done
+}
+
+warn ()
+{
+  printf "\e[36m%s\e[m\n" "$*"
+}
+
+quote ()
+{
+  [[ ${!1} =~ [\ \#\&\;] ]] && read $1 <<< \"${!1}\"
+}
+
+log ()
+{
+  local pp
+  for oo
+  do
+    quote oo
+    pp+=("$oo")
+  done
+  warn "${pp[@]}"
+  eval exec "${pp[@]}"
 }
 
 [ $1 ] || usage
 z=$1
 shift
 
-exec $@ -o a.flv 2> >(tee kk) &
-sleep 1
-aa=$!
-grepkill $z kk
+log "$@" 2> >(tee kk) &
+watch kk $! $z
 rm a.flv kk
