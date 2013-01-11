@@ -49,17 +49,19 @@ done
 
 watch ()
 {
-  while [ -d /proc/$2 ]
+  gg=$1
+  shift
+  while read -d $'\r'
   do
-    sleep 1
-    read < <(tr '\r' '\n' < $1 | tac | cut -d. -f1)
-    if (( $REPLY + 1 > $3 ))
+    [[ $REPLY =~ ([0-9]*) ]]
+    if (( ${BASH_REMATCH[1]} + 1 > $gg ))
     then
-      kill -13 $2
-      > $1
+      kill $!
       echo
+      return
     fi
-  done
+  done < <(log "$@" &> >(tee /dev/tty))
+  return 1
 }
 
 for ((hh = 1; hh < aa; hh++))
@@ -68,12 +70,12 @@ do
   unset bb[hh]
   two=${bb[hh+1]}
   [[ $two =~ ^- ]] && unset two || unset bb[hh+1]
-  log ${bb[@]} -o a.flv -m 9 2> >(tee kk) &
-  watch kk $! 1000
-  [ -s kk ] && bb[hh]=$one
-  [[ $two ]] || continue
-  (( hh++ ))
-  [ -s kk ] && bb[hh]=$two
+  if ! watch 1000 ${bb[@]} -o a.flv -m 9
+  then
+    bb[hh]=$one
+    bb[hh+1]=$two
+  fi
+  [[ $two ]] && (( hh++ ))
 done
 
 qsplit ()
@@ -99,9 +101,10 @@ do
     qjoin qs qa
     bb[hh]=${url}${qs:+?$qs}
     quote bb[hh]
-    log ${bb[@]} -o a.flv -m 9 2> >(tee kk) &
-    watch kk $! 1000
-    [ -s kk ] && qa[ff]=$one
+    if ! watch 1000 ${bb[@]} -o a.flv -m 9
+    then
+      qa[ff]=$one
+    fi
   done
   qjoin qs qa
   bb[hh]=${url}${qs:+?$qs}
@@ -110,13 +113,12 @@ done
 
 fd ()
 {
-  [ -a kk ] || exit
   printf '\n\n'
   fold -w69 kk
-  rm a.flv kk &
-  wait $!
+  rm a.flv kk
 }
 
-trap fd 0 2
+trap fd 0
+trap exit 2
 echo ${bb[@]} -o a.flv > kk
 eval ${bb[@]} -o a.flv |& tee -a kk

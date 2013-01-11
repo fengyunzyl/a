@@ -8,20 +8,6 @@ usage ()
   exit
 }
 
-watch ()
-{
-  while [ -d /proc/$2 ]
-  do
-    sleep 1
-    read < <(tr '\r .' '\n\t' < $1 | tac | cut -f5)
-    if (( $REPLY + 1 > $3 ))
-    then
-      kill -13 $2
-      break
-    fi
-  done
-}
-
 warn ()
 {
   printf "\e[36m%s\e[m\n" "$*"
@@ -48,6 +34,11 @@ log ()
 z=$1
 shift
 
-log "$@" 2> >(tee kk) &
-watch kk $! $z
-rm a.flv kk
+while read -d $'\r'
+do
+  [[ $REPLY =~ /\ ([0-9]*) ]]
+  if (( ${BASH_REMATCH[1]} + 1 > $z ))
+  then
+    kill $!
+  fi
+done < <(log "$@" &> >(tee /dev/tty))
