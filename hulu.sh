@@ -7,7 +7,7 @@ quote ()
 
 warn ()
 {
-  printf "\e[1;35m%s\e[m\n" "$*"
+  printf "\e[36m%s\e[m\n" "$*"
 }
 
 pgrep ()
@@ -37,19 +37,26 @@ rsplit ()
   IFS=$3 read -a $1 <<< "${!2}"
 }
 
+usage ()
+{
+  echo "Usage:  $0 DELAY TITLE"
+  exit
+}
+
+[ $1 ] || usage
 pc=plugin-container
 pkill $pc
 echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
 warn 'Killed flash player for clean dump.
-Restart video then press enter here.'
-read
+Script will automatically continue after video is restarted.'
 
 until read < <(pgrep $pc)
 do
-  warn "$pc not found!"
-  read
+  sleep 1
 done
 
+sleep $1
+shift
 rm -f pg.core
 dumper pg $REPLY &
 
@@ -84,3 +91,5 @@ log rtmpdump \
   -r "${server[rp]}" \
   -y "${stream[rp]}" \
   -a "${server[rp]#*//*/}?${token[rp]//amp;}"
+log ffmpeg -i a.flv -c copy -v warning "$*.mp4"
+rm a.flv
