@@ -1,11 +1,6 @@
 #!/bin/bash
 # Requires: php-bcmath, php-curl, php-simplexml
 
-binparse ()
-{
-  grep -Eaozm1 "$1" a.core
-}
-
 pgrep ()
 {
   ps -W | awk /$1/'{print$4;exit}'
@@ -26,6 +21,36 @@ quote ()
   [[ ${!1} =~ [\ \&] ]] && read $1 <<< \"${!1}\"
 }
 
+usage ()
+{
+  echo "usage: $0 DELAY"
+  exit
+}
+
+clean ()
+{
+  rm -f a.core
+}
+
+coredump ()
+{
+  pkill $2
+  warn Killed $2 for clean dump.
+  warn Script will automatically continue after $2 is restarted.
+  until read < <(pgrep $2)
+  do
+    sleep 1
+  done
+  sleep $1
+  clean
+  dumper a $REPLY &
+  until [ -s a.core ]
+  do
+    sleep 1
+  done
+  kill -13 %%
+}
+
 log ()
 {
   local pp
@@ -38,34 +63,15 @@ log ()
   eval "${pp[@]}"
 }
 
+[ $1 ] || usage
 ab=/opt/Scripts/AdobeHDS.php
-pc=plugin-container
-pkill $pc
 echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
-warn 'Killed flash player for clean dump.
-Restart video then press enter here.'
-read
-
-until read < <(pgrep $pc)
-do
-  warn "$pc not found!"
-  read
-done
-
-rm -f a.core
-dumper a $REPLY &
-
-until [ -s a.core ]
-do
-  sleep 1
-done
-
-kill %%
-read ah < <(binparse "pvtoken.*")
-read mn < <(tr "[:cntrl:]'<>" "\n" < a.core | grep '^http://[^?]*\.f4m')
-read ur < <(binparse "Mozilla/5.0.*")
+coredump $1 plugin-container
+read ah < <(grep -Eaozm1 'pvtoken.*' a.core)
+read mn < <(tr "[:cntrl:]'<>" '\n' < a.core | grep '^http://[^?]*\.f4m')
+read ur < <(grep -Eaozm1 'Mozilla/5.0.*' a.core)
 echo extension=ext/php_curl.dll > /usr/local/bin/php/php.ini
-rm a.core
+clean
 
 log php "$ab" --manifest "$mn" ||
 log php "$ab" --manifest "$mn" --auth "$ah" --useragent "$ur"
