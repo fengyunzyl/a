@@ -48,7 +48,6 @@ usage ()
 clean ()
 {
   rm -f a.flv pg.core
-  exit
 }
 
 serialize ()
@@ -79,7 +78,7 @@ done
 
 sleep $1
 shift
-rm -f pg.core
+clean
 dumper pg $REPLY &
 
 until [ -s pg.core ]
@@ -101,7 +100,11 @@ do
   fi
 done < <(grep -aoz "<video [^>]*>" pg.core | sort | uniq -w123)
 
-[ $1 ] || clean
+if ! [ $1 ]
+then
+  clean
+  exit
+fi
 
 log rtmpdump \
   -o a.flv \
