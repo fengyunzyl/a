@@ -32,15 +32,37 @@ log ()
   eval "${pp[@]}"
 }
 
-rsplit ()
+qsplit ()
 {
-  IFS=$3 read -a $1 <<< "${!2}"
+  IFS=\" read -a $1 <<< "${!2}"
 }
 
 usage ()
 {
-  echo "Usage:  $0 DELAY TITLE"
+  echo "usage: $0 DELAY CDN FILETYPE TITLE"
+  echo
+  echo "To see available CDNs and filetypes run script with just DELAY."
   exit
+}
+
+clean ()
+{
+  rm -f a.flv pg.core
+  exit
+}
+
+serialize ()
+{
+  xs=${REPLY}
+  xs=${xs#* }
+  xs=${xs%/>}
+  qsplit xa xs
+  aa=0
+  while [ ${xa[aa]} ]
+  do
+    read ${xa[aa]//[-:=]} <<< ${xa[aa+1]}
+    (( aa += 2 ))
+  done
 }
 
 [ $1 ] || usage
@@ -66,30 +88,28 @@ do
 done
 
 kill -13 %%
-mapfile vids < <(grep -aoz "<video [^>]*>" pg.core | sort | uniq -w123)
 
-i=0
-for vs in "${vids[@]}"
+while read
 do
-  rsplit va vs \"
-  j=0
-  while [[ "${va[j]}" =~ \ ([^=]*) ]]
-  do
-    read ${BASH_REMATCH[1]//[-:]}[i] <<< "${va[j+1]}"
-    ((j+=2))
-  done
-  printf "%2d\t%9s\t%s\n" "$i" "${filetype[i]}" "${cdn[i]}"
-  ((i++))
-done
+  serialize
+  if ! [ $1 ]
+  then
+    printf "%-9s  %9s\n" "$cdn" "$filetype"
+  elif [ $cdn$filetype = $1$2 ]
+  then
+    break
+  fi
+done < <(grep -aoz "<video [^>]*>" pg.core | sort | uniq -w123)
 
-warn 'Make choice. Avoid level3.'
-read rp
-rm pg.core
+[ $1 ] || clean
+
 log rtmpdump \
   -o a.flv \
   -W http://download.hulu.com/huludesktop.swf \
-  -r "${server[rp]}" \
-  -y "${stream[rp]}" \
-  -a "${server[rp]#*//*/}?${token[rp]//amp;}"
+  -r "$server" \
+  -y "$stream" \
+  -a "${server#*//*/}?${token//amp;}"
+
+shift 2
 log ffmpeg -i a.flv -c copy -v warning "$*.mp4"
-rm a.flv
+clean
