@@ -12,22 +12,28 @@ pkill ()
 
 warn ()
 {
-  printf "\e[1;35m%s\e[m\n" "$*"
+  printf "\e[36m%s\e[m\n" "$*"
 }
 
+usage ()
+{
+  echo "usage: $0 DELAY"
+  exit
+}
+
+[ $1 ] || usage
 pc=plugin-container
 pkill $pc
 echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
 warn 'Killed flash player for clean dump.
-Restart video then press enter here.'
-read
+Script will automatically continue after video is restarted.'
 
 until read < <(pgrep $pc)
 do
-  warn "$pc not found!"
-  read
+  sleep 1
 done
 
+sleep $1
 rm -f pg.core
 dumper pg $REPLY &
 
