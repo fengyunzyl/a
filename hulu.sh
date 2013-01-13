@@ -65,7 +65,7 @@ serialize ()
   done
 }
 
-core ()
+coredump ()
 {
   pkill $2
   warn Killed $2 for clean dump.
@@ -86,7 +86,7 @@ core ()
 
 [ $1 ] || usage
 echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
-core $1 plugin-container
+coredump $1 plugin-container
 shift
 
 while read video
