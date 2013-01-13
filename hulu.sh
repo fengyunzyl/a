@@ -98,7 +98,7 @@ do
   then
     break
   fi
-done < <(grep -aoz "<video [^>]*>" pg.core | sort | uniq -w123)
+done < <(grep -ao "<video [^>]*>" pg.core | sort | uniq -w123)
 
 if ! [ $1 ]
 then
