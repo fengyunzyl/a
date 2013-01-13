@@ -26,10 +26,11 @@ log ()
   for oo
   do
     quote oo
-    pp+=("$oo")
+    pp+=(${oo})
   done
-  warn "${pp[@]}"
-  eval "${pp[@]}"
+  echo ${pp[*]} >> a.txt
+  warn ${pp[*]}
+  eval ${pp[*]}
 }
 
 qsplit ()
@@ -47,7 +48,7 @@ usage ()
 
 clean ()
 {
-  rm -f a.flv a.core
+  rm -f a.core a.flv a.txt
 }
 
 serialize ()
