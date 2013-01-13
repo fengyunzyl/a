@@ -6,42 +6,54 @@ pgrep ()
   ps -W | awk /$1/'{print$4;exit}'
 }
 
+usage ()
+{
+  echo "usage: $0 DELAY"
+  exit
+}
+
+clean ()
+{
+  rm -f a.core a.txt
+}
+
 pkill ()
 {
   pgrep $1 | xargs kill -f
 }
 
-warn ()
+coredump ()
 {
-  printf "\e[1;35m%s\e[m\n" "$*"
+  pkill $2
+  warn Killed $2 for clean dump.
+  warn Script will automatically continue after $2 is restarted.
+  until read < <(pgrep $2)
+  do
+    sleep 1
+  done
+  sleep $1
+  clean
+  dumper a $REPLY &
+  until [ -s a.core ]
+  do
+    sleep 1
+  done
+  kill -13 %%
 }
 
-pc=plugin-container
-pkill $pc
+warn ()
+{
+  printf '\e[1;35m%s\e[m\n' "$*"
+}
+
+[ $1 ] || usage
 echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
-warn 'Killed flash player for clean dump.
-Restart video then press enter here.'
-read
+coredump $1 plugin-container
 
-until read < <(pgrep $pc)
-do
-  warn "$pc not found!"
-  read
-done
-
-rm -f a.core
-dumper a $REPLY &
-
-until [ -s a.core ]
-do
-  sleep 1
-done
-
-kill %%
 tr "[:cntrl:]" "\n" < a.core |
   grep -1m1 secureTokenResponse |
-  tac > tp
+  tac > a.txt
 
-read dt < tp
-rm a.core tp
+read dt < a.txt
+rm a.core a.txt
 [[ $dt ]] && echo $dt || echo 'SecureToken not found.'
