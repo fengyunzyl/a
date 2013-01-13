@@ -28,6 +28,10 @@ NA      -v  <a href=http://teledunet.com>teledunet</a>
 NA      -T  <a href=http://zonytvcom.info>zonytvcom</a>
 NA      -T  <a href=http://canaldosconcursos.com.br/video_demo.php?id_cursos=3130>canaldosconcursos</a>
 
+RTMP FIXME
+
+<a href=http://stream-recorder.com/forum/any-ideas-t14924.html>Any ideas?</a>
+
 AdobeHDS
 
 <a href=http://fora.tv/2010/06/14/FedEx_CEO_Frederick_W_Smith_Delivering_Innovation>fora</a>
