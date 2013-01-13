@@ -34,10 +34,10 @@ do
 done
 
 sleep $1
-rm -f pg.core
-dumper pg $REPLY &
+rm -f a.core
+dumper a $REPLY &
 
-until [ -s pg.core ]
+until [ -s a.core ]
 do
   sleep 1
 done

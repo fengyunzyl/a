@@ -29,19 +29,19 @@ do
   read
 done
 
-rm -f pg.core
-dumper pg $REPLY &
+rm -f a.core
+dumper a $REPLY &
 
-until [ -s pg.core ]
+until [ -s a.core ]
 do
   sleep 1
 done
 
 kill %%
-tr "[:cntrl:]" "\n" < pg.core |
+tr "[:cntrl:]" "\n" < a.core |
   grep -1m1 secureTokenResponse |
   tac > tp
 
 read dt < tp
-rm pg.core tp
+rm a.core tp
 [[ $dt ]] && echo $dt || echo 'SecureToken not found.'

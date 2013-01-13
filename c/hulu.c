@@ -1,6 +1,6 @@
 /*
 i686-w64-mingw32-gcc hulu.c -Wall
-mapfile vids < <(grep -aoz "<video [^>]*>" pg.core | sort | uniq -w123)
+mapfile vids < <(grep -aoz "<video [^>]*>" a.core | sort | uniq -w123)
 */
 
 #include <stdio.h> // fopen
@@ -19,7 +19,7 @@ main (void)
   buffer = malloc (size);
 
   /* need the "b" */
-  f = fopen ("pg.core", "rb");
+  f = fopen ("a.core", "rb");
 
   while (! feof (f))
     {

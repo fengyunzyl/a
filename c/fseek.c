@@ -1,7 +1,7 @@
 /*
 hulu.c
 i686-w64-mingw32-gcc hulu.c -Wall
-mapfile vids < <(grep -aoz "<video [^>]*>" pg.core | sort | uniq -w123)
+mapfile vids < <(grep -aoz "<video [^>]*>" a.core | sort | uniq -w123)
 */
 
 #include <stdio.h> // fopen
@@ -17,7 +17,7 @@ int main ()
   FILE * f;
   int size;
   char * buffer;
-  f = fopen("pg.core", "r");
+  f = fopen("a.core", "r");
   
   fseek(f, 0, SEEK_END);
   size = ftell(f);
