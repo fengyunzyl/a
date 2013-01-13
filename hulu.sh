@@ -33,7 +33,7 @@ log ()
   eval ${pp[*]}
 }
 
-qsplit ()
+bsplit ()
 {
   IFS=\" read -a $1 <<< "${!2}"
 }
@@ -53,10 +53,10 @@ clean ()
 
 serialize ()
 {
-  xs=${REPLY}
+  xs=${!1}
   xs=${xs#* }
   xs=${xs%/>}
-  qsplit xa xs
+  bsplit xa xs
   aa=0
   while [ ${xa[aa]} ]
   do
@@ -89,9 +89,9 @@ done
 
 kill -13 %%
 
-while read
+while read video
 do
-  serialize
+  serialize video
   if ! [ $1 ]
   then
     printf "%-9s  %9s\n" "$cdn" "$filetype"
