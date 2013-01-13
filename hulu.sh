@@ -47,7 +47,7 @@ usage ()
 
 clean ()
 {
-  rm -f a.flv pg.core
+  rm -f a.flv a.core
 }
 
 serialize ()
@@ -79,9 +79,9 @@ done
 sleep $1
 shift
 clean
-dumper pg $REPLY &
+dumper a $REPLY &
 
-until [ -s pg.core ]
+until [ -s a.core ]
 do
   sleep 1
 done
@@ -98,7 +98,7 @@ do
   then
     break
   fi
-done < <(grep -ao "<video [^>]*>" pg.core | sort | uniq -w123)
+done < <(grep -ao "<video [^>]*>" a.core | sort | uniq -w123)
 
 if ! [ $1 ]
 then
