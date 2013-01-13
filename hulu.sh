@@ -65,29 +65,29 @@ serialize ()
   done
 }
 
+core ()
+{
+  pkill $2
+  warn Killed $2 for clean dump.
+  warn Script will automatically continue after $2 is restarted.
+  until read < <(pgrep $2)
+  do
+    sleep 1
+  done
+  sleep $1
+  clean
+  dumper a $REPLY &
+  until [ -s a.core ]
+  do
+    sleep 1
+  done
+  kill -13 %%
+}
+
 [ $1 ] || usage
-pc=plugin-container
-pkill $pc
 echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
-warn 'Killed flash player for clean dump.
-Script will automatically continue after video is restarted.'
-
-until read < <(pgrep $pc)
-do
-  sleep 1
-done
-
-sleep $1
+core $1 plugin-container
 shift
-clean
-dumper a $REPLY &
-
-until [ -s a.core ]
-do
-  sleep 1
-done
-
-kill -13 %%
 
 while read video
 do
