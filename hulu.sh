@@ -26,7 +26,7 @@ log ()
   for oo
   do
     quote oo
-    pp+=(${oo})
+    pp+=($oo)
   done
   echo ${pp[*]} >> a.txt
   warn ${pp[*]}
@@ -94,12 +94,12 @@ do
   serialize video
   if ! [ $1 ]
   then
-    printf "%-9s  %9s\n" "$cdn" "$filetype"
+    printf '%-9s  %9s\n' $cdn $filetype
   elif [ $cdn$filetype = $1$2 ]
   then
     break
   fi
-done < <(grep -ao "<video [^>]*>" a.core | sort | uniq -w123)
+done < <(grep -ao '<video [^>]*>' a.core | sort | uniq -w123)
 
 if ! [ $1 ]
 then
@@ -110,9 +110,9 @@ fi
 log rtmpdump \
   -o a.flv \
   -W http://download.hulu.com/huludesktop.swf \
-  -r "$server" \
-  -y "$stream" \
-  -a "${server#*//*/}?${token//amp;}"
+  -r $server \
+  -y $stream \
+  -a ${server#*//*/}?${token//amp;}
 
 shift 2
 log ffmpeg -i a.flv -c copy -v warning "$*.mp4"
