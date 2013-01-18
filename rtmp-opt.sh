@@ -38,6 +38,11 @@ trim ()
   read $1 <<< "${!1/:1935\///}"
 }
 
+clean ()
+{
+  rm a.flv
+}
+
 [ $1 ] || usage
 
 for hh
@@ -111,14 +116,6 @@ do
   quote bb[hh]
 done
 
-fd ()
-{
-  printf '\n\n'
-  fold -w69 kk
-  rm a.flv kk
-}
-
-trap fd 0
-trap exit 2
-echo ${bb[@]} -o a.flv > kk
-eval ${bb[@]} -o a.flv |& tee -a kk
+echo ${bb[*]} -o a.flv > a.txt
+warn ${bb[*]} -o a.flv
+clean
