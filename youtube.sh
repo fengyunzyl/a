@@ -56,5 +56,5 @@ if [ $arg_itag ]
 then
   wget -O videoplayback "$url&signature=$sig"
 else
-  warn Now try $0 NUMBER URL
+  usage
 fi
