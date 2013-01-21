@@ -62,11 +62,11 @@ do
   then
     break
   fi
-done < <(wget -O a.$3 "$1" 2>&1)
+done < <(wget -O a.$3 $1 2>&1)
 
 if [ ${BASH_REMATCH[1]} = 2147483646 ]
 then
-  wget --ignore-length -O a.$3 "$1"
+  wget --ignore-length -O a.$3 $1
 else
-  wget -O a.$3 "$1"
+  wget -O a.$3 $1
 fi
