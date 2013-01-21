@@ -60,10 +60,9 @@ while read
 do
   if [[ $REPLY =~ Length:.([0-9]*) ]]
   then
-    kill $!
     break
   fi
-done < <(exec wget -O a.$3 "$1" 2>&1)
+done < <(wget -O a.$3 "$1" 2>&1)
 
 if [ ${BASH_REMATCH[1]} = 2147483646 ]
 then
