@@ -1,6 +1,7 @@
 #!/bin/bash
 # Bash download from YouTube
-# http://www.youtube.com/watch?v=LHelEIJVxiE
+# http://youtube.com/watch?v=LHelEIJVxiE
+# http://youtube.com/watch?v=L7ird1HeEjw
 
 qual=(
   [5]='240p FLV h.263'
@@ -53,5 +54,13 @@ do
 done < <(wget -qO- $arg_url | tr '",' '\n' | grep sig=)
 
 [ $arg_itag ] || usage
-set ${qual[itag],,}
-wget -O "a.$2" "$url&signature=$sig"
+set "$url&signature=$sig" ${qual[itag],,}
+read -d! < <(timeout 1 wget -O a.$3 "$1" 2>&1)
+[[ $REPLY =~ Length:.([0-9]*) ]]
+
+if [ ${BASH_REMATCH[1]} = 2147483646 ]
+then
+  wget --ignore-length -O a.$3 "$1"
+else
+  wget -O a.$3 "$1"
+fi
