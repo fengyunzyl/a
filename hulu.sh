@@ -55,7 +55,7 @@ clean ()
 
 serialize_xml ()
 {
-  [[ ${!1} =~ [^\ ]*\ (.*)/\> ]]
+  [[ ${!1} =~ [^\ ]*.(.*)/\> ]]
   xs=${BASH_REMATCH[1]}
   bsplit xa xs
   aa=0
