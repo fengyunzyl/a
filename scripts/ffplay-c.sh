@@ -3,7 +3,7 @@
 
 usage ()
 {
-  echo "usage:  ${0##*/} COOKIE URL"
+  echo "usage: $0 COOKIE URL"
   echo
   echo "example cookie:  sbsession=sbg&sbuser=lorem"
   exit
