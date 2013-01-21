@@ -3,7 +3,7 @@
 
 usage ()
 {
-  echo "Usage:  ${0##*/} torvalds/linux"
+  echo usage: $0 torvalds/linux
   exit
 }
 
