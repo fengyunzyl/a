@@ -36,16 +36,13 @@ set etc
 mkdir -p $1
 cd $1
 echo '
-[ -d dev/fd ] || $WINDIR/system32/attrib +s dev/fd
 PATH=/bin:/usr/local/bin
 PROMPT_COMMAND="history -a"
 PS1="\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ "
 
-if ! [ -d $HOME ]
-then
-  mkdir -p $HOME
-  echo %% > ~/.bash_history
-fi
+[ -d dev/fd ] || $WINDIR/system32/attrib +s dev/fd
+[ -d $HOME ] || mkdir -p $HOME
+[ -a ~/.bash_history ] || echo %% > ~/.bash_history
 
 cd
 ' > profile
