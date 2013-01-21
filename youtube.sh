@@ -3,22 +3,22 @@
 # http://www.youtube.com/watch?v=LHelEIJVxiE
 
 qual=(
-  [5]='FLV 240p H.263'
-  [17]='3GP 144p'
-  [18]='MP4 360p H.264 Baseline'
-  [22]='MP4 720p H.264 High'
-  [34]='FLV 360p H.264 Main'
-  [35]='FLV 480p H.264 Main'
-  [36]='3GP 240p'
-  [37]='MP4 1080p H.264 High'
-  [43]='WebM 360p VP8'
-  [44]='WebM 480p VP8'
-  [45]='WebM 720p VP8'
-  [46]='WebM 1080p VP8'
-  [82]='MP4 360p H.264 3D'
-  [84]='MP4 720p H.264 3D'
-  [100]='WebM 360p VP8 3D'
-  [102]='WebM 720p VP8 3D'
+  [5]='240p FLV h.263'
+  [17]='144p 3GP mpeg4 simple'
+  [18]='360p MP4 h.264 baseline'
+  [22]='720p MP4 h.264 high'
+  [34]='360p FLV h.264 main'
+  [35]='480p FLV h.264 main'
+  [36]='240p 3GP mpeg4 simple'
+  [37]='1080p MP4 h.264 high'
+  [43]='360p WebM vp8'
+  [44]='480p WebM vp8'
+  [45]='720p WebM vp8'
+  [46]='1080p WebM vp8'
+  [82]='360p MP4 h.264 3D'
+  [84]='720p MP4 h.264 3D'
+  [100]='360p WebM vp8 3D'
+  [102]='720p WebM vp8 3D'
 )
 
 warn ()
@@ -53,4 +53,5 @@ do
 done < <(wget -qO- $arg_url | tr '",' '\n' | grep sig=)
 
 [ $arg_itag ] || usage
-wget -O videoplayback "$url&signature=$sig"
+set ${qual[itag],,}
+wget -O "a.$2" "$url&signature=$sig"
