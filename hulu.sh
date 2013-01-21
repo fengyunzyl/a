@@ -40,7 +40,7 @@ bsplit ()
 
 usage ()
 {
-  echo "usage: $0 DELAY CDN FILETYPE TITLE"
+  echo "usage: $0 DELAY CDN FILETYPE URL"
   echo
   echo "To see available CDNs and filetypes run script with just DELAY."
   exit
@@ -49,13 +49,14 @@ usage ()
 clean ()
 {
   rm -f a.core a.flv a.txt
+  echo 'user_pref("browser.startup.page",3);' \
+    >$APPDATA/moonch~1/palemo~1/profiles/default/user.js
 }
 
-serialize ()
+serialize_xml ()
 {
-  xs=${!1}
-  xs=${xs#* }
-  xs=${xs%/>}
+  [[ ${!1} =~ [^\ ]*\ (.*)/\> ]]
+  xs=${BASH_REMATCH[1]}
   bsplit xa xs
   aa=0
   while [ ${xa[aa]} ]
@@ -67,9 +68,6 @@ serialize ()
 
 coredump ()
 {
-  pkill $2
-  warn Killed $2 for clean dump.
-  warn Script will automatically continue after $2 is restarted.
   until read < <(pgrep $2)
   do
     sleep 1
@@ -84,18 +82,21 @@ coredump ()
   kill -13 %%
 }
 
-[ $1 ] || usage
+[ $4 ] || usage
 echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
+echo 'user_pref("browser.startup.page",1);' \
+  >$APPDATA/moonch~1/palemo~1/profiles/default/user.js
+pkill palemoon
+open $4
 coredump $1 plugin-container
-shift
 
 while read video
 do
-  serialize video
+  serialize_xml video
   if ! [ $1 ]
   then
     printf '%-9s  %9s\n' $cdn $filetype
-  elif [ $cdn$filetype = $1$2 ]
+  elif [ $cdn$filetype = $2$3 ]
   then
     break
   fi
@@ -107,13 +108,14 @@ then
   exit
 fi
 
-log rtmpdump \
-  -o a.flv \
-  -W http://download.hulu.com/huludesktop.swf \
-  -r $server \
-  -y $stream \
-  -a ${server#*//*/}?${token//amp;}
+read app < <(cut -d/ -f4- <<< ${server}?${token//amp;})
 
-shift 2
-log ffmpeg -i a.flv -c copy -v warning "$*.mp4"
+log rtmpdump \
+  -W http://download.hulu.com/huludesktop.swf \
+  -o a.flv \
+  -a $app \
+  -r $server \
+  -y $stream
+
+log ffmpeg -i a.flv -c copy -v warning a.mp4
 clean
