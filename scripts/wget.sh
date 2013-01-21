@@ -35,7 +35,7 @@ download()
 
   while read
   do
-    if [[ $REPLY =~ Location:\ (.*) ]]
+    if [[ $REPLY =~ Location:.(.*) ]]
     then
       # follow redirect
       break
