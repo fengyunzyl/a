@@ -52,9 +52,5 @@ do
   fi
 done < <(wget -qO- $arg_url | tr '",' '\n' | grep sig=)
 
-if [ $arg_itag ]
-then
-  wget -O videoplayback "$url&signature=$sig"
-else
-  usage
-fi
+[ $arg_itag ] || usage
+wget -O videoplayback "$url&signature=$sig"
