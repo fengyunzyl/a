@@ -78,6 +78,9 @@ cp -r /usr/share/terminfo .
 cd -
 
 # archive
+cd ${0%/*}
+read BABY_VERSION < <(git log --oneline $0 | wc -l)
+cd -
 read < <(ls -C)
-tar acf baby-cygwin.tar.gz $REPLY
+tar acf baby-cygwin-$BABY_VERSION.tar.gz $REPLY
 rm -r $REPLY
