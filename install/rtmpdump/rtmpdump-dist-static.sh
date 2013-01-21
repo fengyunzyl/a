@@ -60,7 +60,7 @@ vr ZLIB_VERSION zlib.h
 read GCC_VERSION < <($CC -dumpversion)
 read RTMPDUMP_DATE < <(stat -c%z rtmpdump | xargs -0 date -d)
 
-cat > README.txt <<j
+cat > README.txt <<q
 This is a RtmpDump Win32 static build by Steven Penny.
 
 Steven’s Home Page: http://svnpenn.github.com
@@ -85,7 +85,7 @@ The GCC version used to compile this RtmpDump was
 The external libraries compiled into this RtmpDump are
   Zlib $ZLIB_VERSION  http://zlib.net
   PolarSSL $POLARSSL_VERSION_STRING  http://polarssl.org
-j
+q
 u2d README.txt
 
 # Archive

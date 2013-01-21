@@ -9,7 +9,7 @@ quote ()
 
 usage ()
 {
-  echo "Usage:  ${0##*/} INPUT"
+  echo usage: $0 INPUT
   exit
 }
 
@@ -21,8 +21,8 @@ log ()
     quote oo
     pp+=("$oo")
   done
-  warn "${pp[@]}"
-  eval "${pp[@]}"
+  echo ${pp[*]}
+  eval ${pp[*]}
 }
 
 [ $1 ] || usage

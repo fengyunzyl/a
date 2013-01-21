@@ -5,25 +5,31 @@ echo '@start bin\bash -l' > cygwin.bat
 read DATE < <(date)
 read CYGWIN_VERSION < <(uname -r | grep -o '[.0-9]*')
 cat > README.txt <<q
-youtube.sh by Steven Penny
+Baby Cygwin by Steven Penny
 
 Steven’s Home Page: http://svnpenn.github.com
 
 Today’s date $DATE
 
-The source code for this script can be found at
-  http://github.com/svnpenn/a
+The build script for this build can be found at
+  http://github.com/svnpenn/a/blob/master/baby-cygwin.sh
 
 Included with this package
-  youtube.sh
   Cygwin $CYGWIN_VERSION
   
 OPERATING INSTRUCTIONS
+  Put any scripts into /usr/local/bin
   Double click cygwin.bat
-  Input youtube.sh
-  Follow instructions after that
 q
 u2d README.txt
+
+# /dev
+set dev
+mkdir -p $1
+cd $1
+cp -r /dev/fd .
+$WINDIR/system32/attrib -s
+cd -
 
 # /etc
 set etc
@@ -39,32 +45,32 @@ then
 fi
 
 export PROMPT_COMMAND="history -a"
+[ -d dev/fd ] || $WINDIR/system32/attrib +s dev/fd
 cd
 ' > profile
 cd -
 
 # /usr/bin
 deps=(
-  /dev/fd
   /bin/bash.exe
   /bin/grep.exe
   /bin/mkdir.exe
   /bin/tr.exe
   /bin/wget.exe
 )
-cp -r --parents ${deps[@]} .
-ldd ${deps[@]:1} |
+set bin
+mkdir -p $1
+cd $1
+cp ${deps[@]} .
+ldd ${deps[@]} |
   grep usr |
   sort -u |
   cut -d\  -f3 |
-  xargs cp -t bin
+  xargs cp -t .
+cd -
 
 # /usr/local/bin
-set usr/local/bin
-mkdir -p $1
-cd $1
-cp /opt/a/youtube.sh .
-cd -
+mkdir -p usr/local/bin
 
 # /usr/share/terminfo
 set usr/share
@@ -75,5 +81,5 @@ cd -
 
 # archive
 read < <(ls -C)
-tar acf youtube.tar.gz $REPLY
+tar acf baby-cygwin.tar.gz $REPLY
 rm -r $REPLY
