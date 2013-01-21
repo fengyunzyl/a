@@ -59,8 +59,8 @@ deps=(
 set bin
 mkdir -p $1
 cd $1
-cp ${deps[@]} .
-ldd ${deps[@]} |
+cp ${deps[*]} .
+ldd ${deps[*]} |
   grep usr |
   sort -u |
   cut -d\  -f3 |
