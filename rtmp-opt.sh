@@ -3,7 +3,7 @@
 
 warn ()
 {
-  printf "\e[36m%s\e[m\n" "$*"
+  printf '\e[36m%s\e[m\n' "$*"
 }
 
 log ()
