@@ -6,7 +6,7 @@ read < <(git describe --tags)
 
 tag=${REPLY%-*-*}
 
-sha=${REPLY##*-}
+sha=${REPLY/*-}
 
 read < <(git log --oneline $tag..HEAD | wc -l)
 
