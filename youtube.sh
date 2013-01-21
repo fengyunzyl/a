@@ -55,8 +55,15 @@ done < <(wget -qO- $arg_url | tr '",' '\n' | grep sig=)
 
 [ $arg_itag ] || usage
 set "$url&signature=$sig" ${qual[itag],,}
-read -d! < <(timeout 1 wget -O a.$3 "$1" 2>&1)
-[[ $REPLY =~ Length:.([0-9]*) ]]
+
+while read
+do
+  if [[ $REPLY =~ Length:.([0-9]*) ]]
+  then
+    kill $!
+    break
+  fi
+done < <(exec wget -O a.$3 "$1" 2>&1)
 
 if [ ${BASH_REMATCH[1]} = 2147483646 ]
 then
