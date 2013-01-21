@@ -3,12 +3,12 @@
 
 warn ()
 {
-  printf "\e[1;35m%s\e[m\n" "$*"
+  printf '\e[36m%s\e[m\n' "$*"
 }
 
 usage ()
 {
-  warn "Usage:  ${0##*/} torvalds/linux"
+  echo usage: $0 torvalds/linux
   exit
 }
 
