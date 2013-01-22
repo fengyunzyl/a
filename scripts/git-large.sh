@@ -2,31 +2,33 @@
 # Find large files in git repo, that dont exist in HEAD
 # stackoverflow.com/questions/298314
 
-warn()
+usage ()
 {
-  printf "\e[1;35m%s\e[m\n" "$*"
+  echo usage: $0 SIZE
+  exit
 }
 
+[ $1 ] || usage
 declare -A big_files
 big_files=()
-warn 'Printing results'
+echo printing results
 
 while read commit
+do
+  while read bits type sha size path
   do
-    while read bits type sha size path
-      do
-        [ $size -gt 10000 ] &&
-          {
-            big_files[$sha]="$sha $size $path"
-          }
-      done < <(git ls-tree --abbrev -rl $commit)
-  done < <(git rev-list HEAD)
+    if (( $size > $1 ))
+    then
+      big_files[$sha]="$sha $size $path"
+    fi
+  done < <(git ls-tree --abbrev -rl $commit)
+done < <(git rev-list HEAD)
 
 for file in "${big_files[@]}"
-  do
-    read sha size path <<< "$file"
-    git ls-tree -r HEAD | grep -q $sha ||
-      {
-        echo $file
-      }
-  done
+do
+  read sha size path <<< "$file"
+  if git ls-tree -r HEAD | grep -q $sha
+  then
+    echo $file
+  fi
+done
