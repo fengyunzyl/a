@@ -35,6 +35,6 @@ while read -r -p 'Drag file here, or use a pipe.
 do
   unquote hh
   kk="${hh%.*}.mp3"
-  log ffmpeg -i "$hh" -q 1 -v warning "$kk"
+  log ffmpeg -i "$hh" -q 0 -v warning "$kk"
   log mp3gain -r -k -m 10 -s s "$kk"
 done
