@@ -29,7 +29,8 @@ unquote ()
 }
 
 # stdin
-while read -r -p 'Drag file here, or use a pipe.'$'\n' mm
+while read -r -p 'Drag file here, or use a pipe.
+' mm
 do
   unquote mm
   nn="${mm%.*}.mp4"

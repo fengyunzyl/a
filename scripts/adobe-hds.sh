@@ -8,7 +8,7 @@ pgrep ()
 
 warn ()
 {
-  printf "\e[1;35m%s\e[m\n" "$*"
+  printf '\e[36m%s\e[m\n' "$*"
 }
 
 pkill ()
@@ -23,7 +23,7 @@ quote ()
 
 usage ()
 {
-  echo "usage: $0 DELAY"
+  echo usage: $0 DELAY
   exit
 }
 
@@ -57,10 +57,10 @@ log ()
   for oo
   do
     quote oo
-    pp+=("$oo")
+    pp+=($oo)
   done
-  warn "${pp[@]}"
-  eval "${pp[@]}"
+  warn ${pp[*]}
+  eval ${pp[*]}
 }
 
 [ $1 ] || usage

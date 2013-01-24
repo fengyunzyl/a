@@ -30,7 +30,8 @@ unquote ()
 }
 
 # stdin
-while read -r -p 'Drag file here, or use a pipe.'$'\n' hh
+while read -r -p 'Drag file here, or use a pipe.
+' hh
 do
   unquote hh
   kk="${hh%.*}.mp3"
