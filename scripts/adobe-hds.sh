@@ -64,14 +64,14 @@ log ()
 }
 
 [ $1 ] || usage
-ab=/opt/Scripts/AdobeHDS.php
 echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
 coredump $1 plugin-container
 read ah < <(grep -Eaozm1 'pvtoken.*' a.core)
 read mn < <(tr "[:cntrl:]'<>" '\n' < a.core | grep '^http://[^?]*\.f4m')
 read ur < <(grep -Eaozm1 'Mozilla/5.0.*' a.core)
 echo extension=ext/php_curl.dll > /usr/local/bin/php/php.ini
+set /opt/Scripts/AdobeHDS.php
 clean
 
-log php "$ab" --manifest "$mn" ||
-log php "$ab" --manifest "$mn" --auth "$ah" --useragent "$ur"
+log php "$1" --manifest "$mn" ||
+log php "$1" --manifest "$mn" --auth "$ah" --useragent "$ur"
