@@ -36,5 +36,5 @@ do
   unquote hh
   kk="${hh%.*}.mp3"
   log ffmpeg -i "$hh" -q 1 -v warning "$kk"
-  log mp3gain -r -k -m 10 "$kk"
+  log mp3gain -r -k -m 10 -s s "$kk"
 done
