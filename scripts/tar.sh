@@ -15,14 +15,14 @@ usage ()
 
 log ()
 {
-  local pp
   for oo
   do
     quote oo
-    pp+=($oo)
+    set -- "$@" $oo
+    shift
   done
-  echo ${pp[*]}
-  eval ${pp[*]}
+  warn $*
+  eval $*
 }
 
 [ $1 ] || usage

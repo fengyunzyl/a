@@ -3,7 +3,7 @@
 
 warn()
 {
-  printf "\e[1;35m%s\e[m\n" "$*"
+  printf '\e[1;35m%s\e[m\n' "$*"
 }
 
 git cherry pu master | while read

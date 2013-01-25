@@ -9,19 +9,19 @@ quote ()
 
 warn ()
 {
-  printf "\e[36m%s\e[m\n" "$*"
+  printf '\e[36m%s\e[m\n' "$*"
 }
 
 log ()
 {
-  local pp
   for oo
   do
     quote oo
-    pp+=($oo)
+    set -- "$@" $oo
+    shift
   done
-  warn ${pp[*]}
-  eval ${pp[*]}
+  warn $*
+  eval $*
 }
 
 unquote ()

@@ -53,14 +53,14 @@ coredump ()
 
 log ()
 {
-  local pp
   for oo
   do
     quote oo
-    pp+=($oo)
+    set -- "$@" $oo
+    shift
   done
-  warn ${pp[*]}
-  eval ${pp[*]}
+  warn $*
+  eval $*
 }
 
 [ $1 ] || usage
