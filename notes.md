@@ -1,4 +1,12 @@
 <pre>
+
+New forum
+
+I have the answer; delete your posts here and repost to
+
+[URL="ffmpeg.zeranoe.com/forum/viewforum.php?f=25"]
+ffmpeg.zeranoe.com/forum/viewforum.php?f=25[/URL]
+
 Forum rules
 
 [quote=Forum rules v1.1]If you truly want definitive answers quickly and without
