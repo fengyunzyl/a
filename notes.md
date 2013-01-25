@@ -7,12 +7,8 @@ I have the answer; delete your posts here and repost to
 [URL="ffmpeg.zeranoe.com/forum/viewforum.php?f=25"]
 ffmpeg.zeranoe.com/forum/viewforum.php?f=25[/URL]
 
-<a href=http://stream-recorder.com/forum/help-please-sniff-rtmp-dinozap-t15066.html>move 1</a>
-<a href=http://stream-recorder.com/forum/play-fpt-vn-need-help-dumping-site-t15072.html>move 2</a>
-
-svnpenn8
-svnpen.n@gmail.com
-svnpen..n@gmail.com
+svnpenn9
+svnpen...n@gmail.com
 
 Forum rules
 
