@@ -7,6 +7,12 @@ I have the answer; delete your posts here and repost to
 [URL="ffmpeg.zeranoe.com/forum/viewforum.php?f=25"]
 ffmpeg.zeranoe.com/forum/viewforum.php?f=25[/URL]
 
+http://stream-recorder.com/forum/help-please-sniff-rtmp-dinozap-t15066.html
+http://stream-recorder.com/forum/help-please-mtv-rtmp-t15079.html
+http://stream-recorder.com/forum/play-fpt-vn-need-help-dumping-site-t15072.html
+http://stream-recorder.com/forum/ooyala-t15071.html
+http://stream-recorder.com/forum/cant-download-sites-advertisements-t15090.html
+
 Forum rules
 
 [quote=Forum rules v1.1]If you truly want definitive answers quickly and without
