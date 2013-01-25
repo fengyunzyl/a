@@ -17,10 +17,10 @@ log ()
   for oo
   do
     quote oo
-    pp+=("$oo")
+    pp+=($oo)
   done
-  warn "${pp[@]}"
-  eval "${pp[@]}"
+  warn ${pp[*]}
+  eval ${pp[*]}
 }
 
 unquote ()

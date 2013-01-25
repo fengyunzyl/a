@@ -19,7 +19,7 @@ log ()
   for oo
   do
     quote oo
-    pp+=("$oo")
+    pp+=($oo)
   done
   echo ${pp[*]}
   eval ${pp[*]}
