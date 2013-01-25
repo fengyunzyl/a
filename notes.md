@@ -8,9 +8,8 @@ I have the answer; delete your posts here and repost to
 ffmpeg.zeranoe.com/forum/viewforum.php?f=25[/URL]
 
 <a href=http://stream-recorder.com/forum/help-please-sniff-rtmp-dinozap-t15066.html>move 1</a>
-<a href=http://stream-recorder.com/forum/help-please-mtv-rtmp-t15079.html>move 2</a>
-<a href=http://stream-recorder.com/forum/play-fpt-vn-need-help-dumping-site-t15072.html>move 3</a>
-<a href=http://stream-recorder.com/forum/cant-download-sites-advertisements-t15090.html>move 4</a>
+<a href=http://stream-recorder.com/forum/play-fpt-vn-need-help-dumping-site-t15072.html>move 2</a>
+<a href=http://stream-recorder.com/forum/cant-download-sites-advertisements-t15090.html>move 3</a>
 
 svnpen.n@gmail.com
 svnpen..n@gmail.com
