@@ -9,7 +9,7 @@ git status -s | git commit -F-
 git push origin source || exit
 
 # Push master branch
-jekyll || exit
+LANG=en_US.UTF-8 jekyll || exit
 grep --color -r 'Liquid.error' . && exit
 coderay >/dev/null || exit
 git checkout master
