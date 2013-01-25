@@ -3,7 +3,7 @@
 
 usage ()
 {
-  echo "Usage:  $0 REPO_NAME"
+  echo usage: $0 REPO_NAME
   exit
 }
 
@@ -11,6 +11,6 @@ usage ()
 cd /opt/$1
 
 # Run
-jekyll --auto --server &
+LANG=en_US.UTF-8 jekyll --auto --server &
 open '.'
 open 'http://localhost:4000'
