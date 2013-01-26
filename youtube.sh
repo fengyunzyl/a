@@ -33,17 +33,32 @@ usage ()
   exit
 }
 
+decode ()
+{
+  read $1 < <(sed 's % \\\\x g' <<< ${!2} | xargs printf)
+}
+
 [ $1 ] || usage
 [ $2 ] || set '' $1
 arg_itag=$1
-arg_url=$2
 
-while read
+# set
+# declare
+# decode
+
+set ${2//[&?]/ }
+shift
+declare $*
+
+read < <(wget -qO- www.youtube.com/get_video_info?video_id=$v)
+declare ${REPLY//&/ }
+decode fmt_stream_map url_encoded_fmt_stream_map
+
+set ${fmt_stream_map//,/ }
+for oo
 do
-  # raw URL decode
-  printf -v video %b ${REPLY//%/\\x}
-  # serialize data
-  declare ${video//u0026/ }
+  declare ${oo//&/ }
+  decode decoded_url url
   if ! [ $arg_itag ]
   then
     printf ' %3.3s  %s\n' $itag "${qual[itag]}"
@@ -51,10 +66,10 @@ do
   then
     break
   fi
-done < <(wget -qO- $arg_url | tr '",' '\n' | grep sig=)
+done
 
 [ $arg_itag ] || usage
-set "$url&signature=$sig" ${qual[itag],,}
+set "$decoded_url&signature=$sig" ${qual[itag],,}
 
 while read
 do
