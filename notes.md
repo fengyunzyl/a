@@ -7,8 +7,7 @@ I have the answer; delete your posts here and repost to
 [URL="ffmpeg.zeranoe.com/forum/viewforum.php?f=25"]
 ffmpeg.zeranoe.com/forum/viewforum.php?f=25[/URL]
 
-svnpenn10
-svnpen....n@gmail.com
+<a href=http://stream-recorder.com/forum/dinozap-tv-help-please-t15107.html>move 1</a>
 
 Forum rules
 
