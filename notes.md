@@ -1,16 +1,5 @@
 <pre>
 
-New forum
-
-I have the answer; delete your posts here and repost to
-
-[URL="ffmpeg.zeranoe.com/forum/viewforum.php?f=25"]
-ffmpeg.zeranoe.com/forum/viewforum.php?f=25[/URL]
-
-<a href=http://stream-recorder.com/forum/cant-download-sites-advertisements-t15090.html>move</a>
-<a href=http://stream-recorder.com/forum/help-really-want-record-video-tv-t15106.html>move</a>
-<a href=http://stream-recorder.com/forum/play-fpt-vn-need-help-dumping-site-t15072.html>move</a>
-
 Forum rules
 
 [quote=Forum rules v1.1]If you truly want definitive answers quickly and without
