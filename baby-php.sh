@@ -1,5 +1,5 @@
 #!/bin/bash
-bin=$PWD/php-5.4.11-nts-Win32-VC9-x86
+set $PWD/php-5.4.11-nts-Win32-VC9-x86
 mkdir dist
 cd dist
 
@@ -10,7 +10,7 @@ cd root
 start cmd.exe
 q
 read DATE < <(date)
-PATH=$bin:$PATH
+PATH=$1:$PATH
 read PHP_VERSION < <(php -v | grep -o '[.0-9]*')
 cat > README.txt <<q
 Baby PHP by
@@ -37,14 +37,14 @@ u2d README.txt
 
 # bin
 deps=(
-  $bin/ext/php_curl.dll
-  $bin/php.exe
+  $1/ext/php_curl.dll
+  $1/php.exe
 )
 mkdir bin
 cd bin
 cp ${deps[*]} .
 ldd ${deps[*]} |
-  grep " $bin" |
+  grep " $1" |
   cut -d\  -f3 |
   sort -u |
   xargs cp -t .
