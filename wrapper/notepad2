@@ -1,4 +1,5 @@
 # Cygwin wrapper for Windows native Notepad2
+## ## ## ## ## ## GitHub highlight hack
 df "$1" | tac >k
 read b <k
 rm k
