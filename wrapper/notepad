@@ -1,3 +1,0 @@
-#!/bin/sh
-# Cygwin wrapper for Windows native notepad
-cygpath -im -- "$@" | xargs $WINDIR/system32/notepad
