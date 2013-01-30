@@ -1,14 +1,7 @@
 # Cygwin wrapper for Windows native Notepad2
-set "$1" '' "$1"
-while read mount
-do
-  set "$1" "$2" "$3" $mount
-  if [[ $1 =~ ^$5/?(.*) ]]
-  then
-    if (( ${#5} > ${#2} ))
-    then
-      set "$1" $5 "$4/${BASH_REMATCH[1]}"
-    fi
-  fi
-done </etc/mtab
-"$ProgramW6432/notepad2/notepad2" $3
+df "$1" | tac >k
+read b <k
+rm k
+set "$1" $b
+set "${1/$7/$2/}"
+"$ProgramW6432/notepad2/notepad2" "$1"
