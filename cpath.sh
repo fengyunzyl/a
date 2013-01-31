@@ -1,5 +1,5 @@
 #!/bin/sh
-# port script to convert paths
+# portable script to convert paths
 # existing file
 # new file
 # existing folder
