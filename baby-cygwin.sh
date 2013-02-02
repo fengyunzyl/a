@@ -1,4 +1,6 @@
 #!/bin/bash
+mkdir dist
+cd dist
 
 # /
 echo '@start bin\bash -l' > cygwin.bat
@@ -53,6 +55,7 @@ deps=(
   /bin/bash.exe
   /bin/grep.exe
   /bin/mkdir.exe
+  /bin/tee.exe
   /bin/tr.exe
   /bin/wget.exe
 )
