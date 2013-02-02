@@ -37,7 +37,7 @@ cd -
 set etc
 mkdir -p $1
 cd $1
-cat > profile <<q
+cat > profile <<'q'
 PATH=/bin:/usr/local/bin
 PROMPT_COMMAND='history -a'
 PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ '
