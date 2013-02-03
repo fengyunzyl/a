@@ -35,7 +35,7 @@ OPERATING INSTRUCTIONS
 q
 u2d README.txt
 
-# bin
+# /bin
 deps=(
   $1/ext/php_curl.dll
   $1/php.exe
@@ -51,7 +51,7 @@ ldd ${deps[*]} |
 echo extension=./php_curl.dll > php.ini
 cd -
 
-# root
+# /root
 mkdir root
 
 # archive
