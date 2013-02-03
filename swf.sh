@@ -7,7 +7,7 @@
 
 usage()
 {
-  echo usage: $0 FILE
+  echo usage: $0 [ABC_TAG_NAME] FILE
   exit
 }
 
@@ -39,9 +39,10 @@ clean ()
 }
 
 [ $1 ] || usage
-log furnace-swf -i $1 abclist
-# assume name is '' for now
-log furnace-swf -i $1 abcextract -n '' -o a.abc
+[ $2 ] || set , "$1"
+log furnace-swf -i "$2" abclist
+[ $1 = , ] && exit
+log furnace-swf -i "$2" abcextract -n "$1" -o a.abc
 log furnace-avm2 -i a.abc -d -o b.abc
 log furnace-avm2-decompiler -i b.abc -d -D funids > a.as
 clean
