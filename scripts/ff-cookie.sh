@@ -9,6 +9,6 @@ usage ()
   exit
 }
 
-[ $1 ] || usage
-
-ffplay -headers "Cookie: $1"$'\r\n' "$2"
+[ $2 ] || usage
+printf -v q 'Cookie: %s\r\n' "$1"
+ffplay -headers "$q" "$2"
