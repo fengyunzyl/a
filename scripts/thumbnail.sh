@@ -8,7 +8,9 @@ warn ()
 
 usage ()
 {
-  echo "Usage:  $0 INTERVAL"
+  echo usage: $0 INTERVAL [OUTPUT]
+  echo
+  echo default OUTPUT is %d.png
   exit
 }
 
@@ -35,18 +37,22 @@ unquote ()
 }
 
 [ $1 ] || usage
-
+[ $2 ] || set $1 %d.png
 warn 'Careful, screencaps will dump in current directory.
 Drag video here, then press enter (backslashes ok).'
 read -r vd
 unquote vd
 log atomicparsley "$vd" --artwork REMOVE_ALL --overWrite || exit
 
-j=0
-while log ffmpeg -ss $j -i "$vd" -frames 1 -v warning $j.png
+ee=0
+ff=0
+while :
 do
-  [ -a $j.png ] || break
-  (( j += $1 ))
+  printf -v gg $2 $ee
+  log ffmpeg -ss $ff -i "$vd" -frames 1 -v warning $gg
+  [ -a $gg ] || break
+  (( ee += 1 ))
+  (( ff += $1 ))
 done
 
 warn 'Drag picture here, then press enter (backslashes ok).'
