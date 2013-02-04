@@ -1,8 +1,15 @@
-#!/bin/bash
 # Cygwin wrapper for Windows native ffmpeg
-for j
+# if the path doesnt exist, i need to make it. So i need to either make a file
+# or a folder. Which do I make? Well you can make recursive folders with
+# "mkdir -p", but can you do that with files?
+for q
 do
-  [[ "$j" =~ : ]] || read j < <(cygpath -im -- "$j")
-  k+=("$j")
+  # FIXME remove this dir afterwards if needed
+  mkdir -p -- "$q"
+  df -- "$q" | tac >k
+  read b <k
+  set -- "$q" $b
+  x+=("${1/$7/$2/}")
 done
-/usr/local/bin/ffmpeg "${k[@]}"
+rm k
+/usr/local/bin/ffmpeg "${x[@]}"
