@@ -116,6 +116,6 @@ do
   quote bb[hh]
 done
 
-echo ${bb[*]} -o a.flv > a.txt
+echo ${bb[*]} -o a.flv > rtmp-opt.txt
 warn ${bb[*]} -o a.flv
 clean
