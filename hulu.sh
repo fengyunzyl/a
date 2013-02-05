@@ -83,6 +83,11 @@ coredump ()
   kill -13 %%
 }
 
+open ()
+{
+  cygstart $*
+}
+
 [ $2 ] || usage
 [ $4 ] || set $1 '' '' $2
 arg_delay=$1

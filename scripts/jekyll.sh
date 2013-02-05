@@ -7,10 +7,15 @@ usage ()
   exit
 }
 
+open ()
+{
+  cygstart $*
+}
+
 [ $1 ] || usage
 cd /opt/$1
 
 # Run
 LANG=en_US.UTF-8 jekyll --auto --server &
-open '.'
-open 'http://localhost:4000'
+open .
+open http://127.0.0.1:4000
