@@ -51,8 +51,8 @@ shift
 declare $*
 
 # FIXME graceful degradation
-read < <(wget -qO- www.youtube.com/get_video_info?video_id=$v)
-declare ${REPLY//&/ }
+read aa < <(wget -qO- www.youtube.com/get_video_info?video_id=$v)
+declare ${aa//&/ }
 decode fmt_stream_map url_encoded_fmt_stream_map
 
 set ${fmt_stream_map//,/ }
@@ -72,9 +72,9 @@ done
 [ $arg_itag ] || usage
 set "$decoded_url&signature=$sig" ${qual[itag],,}
 
-while read
+while read bb
 do
-  if [[ $REPLY =~ Length:.([0-9]*) ]]
+  if [[ $bb =~ Length:.([0-9]*) ]]
   then
     break
   fi
