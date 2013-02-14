@@ -10,11 +10,11 @@ clear ()
   printf '\ec'
 }
 
-while read -u 3
+while read -u3 k
 do
   clear
-  cd $REPLY
+  cd $k
   git status
-  warn $REPLY
+  warn $k
   read
 done 3< <(compgen -d /opt/)
