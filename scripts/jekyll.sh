@@ -9,13 +9,11 @@ usage ()
 
 open ()
 {
-  cygstart $*
+  $WINDIR/explorer $1
 }
 
 [ $1 ] || usage
 cd /opt/$1
-
-# Run
-LANG=en_US.UTF-8 jekyll --auto --server &
+jekyll serve -w &
 open .
 open http://127.0.0.1:4000

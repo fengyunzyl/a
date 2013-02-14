@@ -19,13 +19,23 @@ url=https://github.com/$1/commit/HEAD~
 up=1
 
 while wget --spider $url$up
-  do
-    lw=$up
-    ((up *= 2))
-  done
+do
+  lw=$up
+  ((up *= 2))
+done
 
-until ((j = (lw + up) / 2)); [ $j -eq $lw ]
-  do
-    warn $j
-    wget --spider $url$j && lw=$j || up=$j
-  done
+while :
+do
+  ((k = (lw + up) / 2))
+  if [ $k = $lw ]
+  then
+    break
+  fi
+  warn $k
+  if wget --spider $url$k
+  then
+    lw=$k
+  else
+    up=$k
+  fi
+done

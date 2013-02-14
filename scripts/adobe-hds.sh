@@ -69,7 +69,7 @@ coredump $1 plugin-container
 read ah < <(grep -Eaozm1 'pvtoken.*' a.core)
 read mn < <(tr "[:cntrl:]'<>" '\n' < a.core | grep '^http://[^?]*\.f4m')
 read ur < <(grep -Eaozm1 'Mozilla/5.0.*' a.core)
-echo extension=ext/php_curl.dll > /usr/local/bin/php/php.ini
+echo extension=ext/php_curl.dll >/sbin/php.ini
 set /opt/Scripts/AdobeHDS.php
 clean
 

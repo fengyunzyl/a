@@ -5,6 +5,11 @@ warn ()
   printf '\e[1;35m%s\e[m\n' "$*"
 }
 
+clear ()
+{
+  printf '\ec'
+}
+
 while read -u 3
 do
   clear

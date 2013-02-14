@@ -51,7 +51,7 @@ coredump $1 plugin-container
 warn 'Press enter to start RtmpDumpHelper, then restart video.'
 read
 
-LANG= grep -Eaom1 '(RTMP|rtmp).{0,2}://[-.0-z]+' a.core |
+grep -Eaom1 '(RTMP|rtmp).{0,2}://[-.:0-9A-Za-z]+' a.core |
   cut -d: -f3 > a.txt
 
 read < a.txt

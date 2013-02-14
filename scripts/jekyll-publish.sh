@@ -9,15 +9,15 @@ git status -s | git commit -F-
 git push origin source || exit
 
 # Push master branch
-LANG=en_US.UTF-8 jekyll || exit
+jekyll build || exit
 grep --color -r 'Liquid.error' . && exit
-coderay >/dev/null || exit
+command -v coderay || exit
 git checkout master
 git rm -qr .
 cp -r _site/. .
 rm -r _site
 git add -A
-read < <(git status -s | cut -c4-)
+read aa < <(git status -s | cut -c4-)
 git status -s | git commit -F-
 git push origin master || exit
 
@@ -33,6 +33,6 @@ check ()
     done
   done
 }
-check $REPLY svnpenn.github.com/$REPLY
+check $aa svnpenn.github.com/$aa
 git checkout source
 echo 'Publish complete!'
