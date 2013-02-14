@@ -130,12 +130,7 @@ done < <(grep -ao '<video [^>]*>' ff.core | sort | uniq -w123)
 
 # parse JSON to get file name
 clean
-
-if ! [ $arg_cdn ]
-then
-  exit
-fi
-
+[ $arg_cdn ] || exit
 read app < <(cut -d/ -f4- <<< ${server}?${token//amp;})
 
 log rtmpdump \
