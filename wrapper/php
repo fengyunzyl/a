@@ -1,8 +1,7 @@
-#!/bin/bash
 # Cygwin wrapper for Windows native php
-for j
-  do
-    [[ "$j" =~ :// ]] || read j < <(cygpath -im -- "$j")
-    k+=("$j")
-  done
-/usr/local/bin/php/php "${k[@]}"
+for aa
+do
+  [[ "$aa" =~ :// ]] || read aa < <(cygpath -im -- "$aa")
+  bb+=("$aa")
+done
+/sbin/php "${bb[@]}"
