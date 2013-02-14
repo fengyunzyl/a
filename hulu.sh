@@ -12,7 +12,7 @@ warn ()
 
 pgrep ()
 {
-  ps -W | awk /$1/'{print$4;exit}'
+  ps -W | grep $1 | cut -c-9
 }
 
 pkill ()
@@ -39,19 +39,19 @@ bsplit ()
 
 usage ()
 {
-  echo "usage: $0 DELAY [CDN FILETYPE] URL"
+  echo "usage: $0 [CDN FILETYPE] URL"
   echo
   echo "CDN       content delivery network"
-  echo "DELAY     wait time before coredump"
   echo "FILETYPE  quality"
   exit
 }
 
 clean ()
 {
-  rm -f a.core
-  set $APPDATA/moonch~1/palemo~1/profiles/default/user.js
-  echo 'user_pref("browser.startup.page",3);' >$1
+  rm -f ff.core
+  cd "$PROGRAMFILES/mozilla firefox"
+  rm -f defaults/pref/local-settings.js mozilla.cfg
+  cd ~-
 }
 
 serialize_xml ()
@@ -69,37 +69,51 @@ serialize_xml ()
 
 coredump ()
 {
-  until read < <(pgrep $2)
+  PID=$!
+  warn waiting for $2 to load...
+  rr=()
+  until (( ${#rr[*]} > 2000 ))
   do
+    mapfile rr </proc/$PID/maps
     sleep 1
   done
-  sleep ${!1}
+  warn dumping $2...
   clean
-  dumper a $REPLY &
-  until [ -s a.core ]
+  read WINPID </proc/$PID/winpid
+  dumper ff $WINPID 2>&- &
+  until [ -s ff.core ]
   do
     sleep 1
   done
-  kill -13 %%
+  kill -13 $PID
 }
 
-open ()
+firefox ()
 {
-  cygstart $*
+  exec "$PROGRAMFILES/mozilla firefox/firefox" $1
 }
 
-[ $2 ] || usage
-[ $4 ] || set $1 '' '' $2
-arg_delay=$1
-arg_cdn=$2
-arg_filetype=$3
-arg_url=$4
-echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
-set $APPDATA/moonch~1/palemo~1/profiles/default/user.js
-echo 'user_pref("browser.startup.page",1);' >$1
-pkill palemoon
-open $arg_url
-coredump arg_delay plugin-container
+[ $1 ] || usage
+[ $3 ] || set '' '' $1
+arg_cdn=$1
+arg_filetype=$2
+arg_url=$3
+pkill firefox
+cd $WINDIR
+echo ProtectedMode=0 > system32/macromed/flash/mms.cfg
+cd ~-
+cd "$PROGRAMFILES/mozilla firefox"
+cat > defaults/pref/local-settings.js <<bb
+pref("general.config.filename", "mozilla.cfg");
+pref("general.config.obscure_value", 0);
+bb
+cat > mozilla.cfg <<bb
+//
+lockPref("browser.startup.page", 1);
+bb
+cd ~-
+MOZ_DISABLE_OOP_PLUGINS=1 firefox $arg_url &
+coredump firefox
 
 while read video
 do
@@ -111,18 +125,17 @@ do
   then
     break
   fi
-done < <(grep -ao '<video [^>]*>' a.core | sort | uniq -w123)
+done < <(grep -ao '<video [^>]*>' ff.core | sort | uniq -w123)
+
+# parse JSON to get file name
+clean
 
 if ! [ $arg_cdn ]
 then
-  clean
   exit
 fi
 
 read app < <(cut -d/ -f4- <<< ${server}?${token//amp;})
-clean
-
-# parse JSON to get file name
 
 log rtmpdump \
   -W http://download.hulu.com/huludesktop.swf \
