@@ -70,14 +70,14 @@ serialize_xml ()
 coredump ()
 {
   PID=$!
-  warn waiting for $2 to load...
+  warn waiting for $1 to load...
   rr=()
   until (( ${#rr[*]} > 2000 ))
   do
     mapfile rr </proc/$PID/maps
     sleep 1
   done
-  warn dumping $2...
+  warn dumping $1...
   clean
   read WINPID </proc/$PID/winpid
   dumper ff $WINPID 2>&- &
@@ -109,6 +109,7 @@ pref("general.config.obscure_value", 0);
 bb
 cat > mozilla.cfg <<bb
 //
+lockPref("browser.sessionstore.resume_from_crash", false);
 lockPref("browser.startup.page", 1);
 bb
 cd ~-
