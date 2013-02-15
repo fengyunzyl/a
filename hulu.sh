@@ -70,14 +70,14 @@ serialize_xml ()
 coredump ()
 {
   PID=$!
-  warn waiting for $1 to load...
+  echo waiting for $1 to load...
   rr=()
   until (( ${#rr[*]} > 2000 ))
   do
     mapfile rr </proc/$PID/maps
     sleep 1
   done
-  warn dumping $1...
+  echo dumping $1...
   clean
   read WINPID </proc/$PID/winpid
   dumper ff $WINPID 2>&- &
