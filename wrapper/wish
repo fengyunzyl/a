@@ -1,3 +1,2 @@
-#!/bin/sh
 # Cygwin wrapper for Windows native wish
 cygpath -im -- "$@" | xargs wish85s
