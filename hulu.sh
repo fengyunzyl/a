@@ -129,13 +129,15 @@ do
 done < <(grep -ao '<video [^>]*>' ff.core | sort | uniq -w123)
 
 # parse JSON to get file name
+# use /dev/tcp to download "jq" if necessary
+flv=${arg_url/*\/}.flv
 clean
 [ $arg_cdn ] || exit
 read app < <(cut -d/ -f4- <<< ${server}?${token//amp;})
 
 log rtmpdump \
   -W http://download.hulu.com/huludesktop.swf \
-  -o a.flv \
+  -o $flv \
   -a $app \
   -r $server \
   -y $stream
