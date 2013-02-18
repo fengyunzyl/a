@@ -51,6 +51,7 @@ cd -
 # /usr/bin
 deps=(
   /bin/bash.exe
+  /bin/diff.exe
   /bin/grep.exe
   /bin/mkdir.exe
   /bin/tee.exe
