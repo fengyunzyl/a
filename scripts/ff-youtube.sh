@@ -37,7 +37,7 @@ usage ()
 [ $1 ] || usage
 nn='
 '
-while read -r -p "Drag song here, or use a pipe.$nn" hh
+while read -rp "Drag song here, or use a pipe.$nn" hh
 do
   unquote hh
   kk="${hh%.*}.mkv"
