@@ -5,14 +5,14 @@ warn ()
   printf '\e[1;35m%s\e[m\n' "$*"
 }
 
-clear ()
+c ()
 {
   printf '\ec'
 }
 
 while read -u3 k
 do
-  clear
+  c
   cd $k
   git status
   warn $k
