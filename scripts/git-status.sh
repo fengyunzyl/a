@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 warn ()
 {
@@ -10,11 +10,11 @@ c ()
   printf '\ec'
 }
 
-while read -u3 k
+compgen -d /opt/ | while read k
 do
   c
   cd $k
   git status
   warn $k
-  read
-done 3< <(compgen -d /opt/)
+  read </dev/tty
+done
