@@ -81,7 +81,7 @@ cd -
 
 # archive
 cd ${0%/*}
-read BABY_VERSION < <(git log --oneline $0 | wc -l)
+read BABY_VERSION < <(git log --follow --oneline $0 | wc -l)
 cd -
 read < <(ls -C)
 tar acf baby-cygwin-$BABY_VERSION.tar.gz $REPLY
