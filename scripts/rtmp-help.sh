@@ -12,7 +12,7 @@ clean ()
 
 pgrep ()
 {
-  ps -W | awk /$1/'{print$4;exit}'
+  ps -W | grep $1 | cut -c-9
 }
 
 coredump ()
