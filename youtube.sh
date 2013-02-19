@@ -49,7 +49,8 @@ arg_itag=$1
 set ${2//[&?]/ }
 shift
 declare $*
-read aa < <(wget -qO- www.youtube.com/get_video_info?video_id=$v) || exit
+read aa < <(wget -qO- www.youtube.com/get_video_info?video_id=$v)
+[ $aa ] || exit
 declare ${aa//&/ }
 decode fmt_stream_map url_encoded_fmt_stream_map
 
