@@ -1,50 +1,43 @@
-#!/bin/bash
+#!/bin/sh
 
-pgrep ()
+firefox ()
 {
-  ps -W | grep $1 | cut -c-9
-}
-
-pkill ()
-{
-  pgrep $1 | xargs kill -f
-}
-
-clean ()
-{
-  rm -f a.core
-}
-
-warn ()
-{
-  printf '\e[36m%s\e[m\n' "$*"
+  exec "$PROGRAMFILES/mozilla firefox/firefox" $*
 }
 
 usage ()
 {
-  echo usage: $0 DELAY
+  echo usage: $0 URL
   exit
 }
 
 coredump ()
 {
-  pkill $2
-  warn Killed $2 for clean dump.
-  warn Script will automatically continue after $2 is restarted.
-  until read < <(pgrep $2)
+  PID=$!
+  echo waiting for $1 to load...
+  rr=()
+  until (( ${#rr[*]} > 1700 ))
+  do
+    mapfile rr </proc/$PID/maps
+    sleep 1
+  done
+  echo dumping $1...
+  read WINPID </proc/$PID/winpid
+  dumper ff $WINPID 2>&- &
+  until [ -s ff.core ]
   do
     sleep 1
   done
-  sleep $1
-  clean
-  dumper a $REPLY &
-  until [ -s a.core ]
-  do
-    sleep 1
-  done
-  kill -13 %%
+  kill -13 $PID
 }
 
 [ $1 ] || usage
-echo ProtectedMode=0 2>/dev/null >$WINDIR/system32/macromed/flash/mms.cfg
-coredump $1 plugin-container
+arg_url=$1
+arg_pwd=$PWD
+cd $WINDIR
+echo ProtectedMode=0 > system32/macromed/flash/mms.cfg
+cd /tmp
+MOZ_DISABLE_OOP_PLUGINS=1 firefox -no-remote -profile . $arg_url &
+cd $arg_pwd
+rm -f ff.core
+coredump firefox
