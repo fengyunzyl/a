@@ -22,7 +22,7 @@ warn ()
 
 usage ()
 {
-  echo "usage: $0 DELAY"
+  echo usage: $0 DELAY
   exit
 }
 
