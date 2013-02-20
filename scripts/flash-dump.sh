@@ -5,12 +5,6 @@ firefox ()
   exec "$PROGRAMFILES/mozilla firefox/firefox" $*
 }
 
-usage ()
-{
-  echo usage: $0 URL
-  exit
-}
-
 coredump ()
 {
   PID=$!
@@ -31,13 +25,13 @@ coredump ()
   kill -13 $PID
 }
 
-[ $1 ] || usage
-arg_url=$1
 arg_pwd=$PWD
 cd $WINDIR
 echo ProtectedMode=0 > system32/macromed/flash/mms.cfg
+rm -r /tmp
+mkdir /tmp
 cd /tmp
-MOZ_DISABLE_OOP_PLUGINS=1 firefox -no-remote -profile . $arg_url &
+MOZ_DISABLE_OOP_PLUGINS=1 firefox -no-remote -profile . &
 cd $arg_pwd
 rm -f ff.core
 coredump firefox
