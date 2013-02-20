@@ -54,7 +54,7 @@ coredump ()
   PID=$!
   echo waiting for $1 to load...
   rr=()
-  until (( ${#rr[*]} > 2000 ))
+  until (( ${#rr[*]} > 1700 ))
   do
     mapfile rr </proc/$PID/maps
     sleep 1
