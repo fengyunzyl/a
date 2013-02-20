@@ -10,16 +10,6 @@ warn ()
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-pgrep ()
-{
-  ps -W | grep $1 | cut -c-9
-}
-
-pkill ()
-{
-  pgrep $1 | xargs kill -f
-}
-
 log ()
 {
   for oo
@@ -46,14 +36,6 @@ usage ()
   exit
 }
 
-clean ()
-{
-  rm -f ff.core
-  cd "$PROGRAMFILES/mozilla firefox"
-  rm -f defaults/pref/local-settings.js mozilla.cfg
-  cd ~-
-}
-
 serialize_xml ()
 {
   [[ ${!1} =~ [^\ ]*.(.*)/\> ]]
@@ -78,7 +60,6 @@ coredump ()
     sleep 1
   done
   echo dumping $1...
-  clean
   read WINPID </proc/$PID/winpid
   dumper ff $WINPID 2>&- &
   until [ -s ff.core ]
@@ -90,7 +71,7 @@ coredump ()
 
 firefox ()
 {
-  exec "$PROGRAMFILES/mozilla firefox/firefox" $1
+  exec "$PROGRAMFILES/mozilla firefox/firefox" $*
 }
 
 [ $1 ] || usage
@@ -98,22 +79,16 @@ firefox ()
 arg_cdn=$1
 arg_filetype=$2
 arg_url=$3
-pkill firefox
+arg_pwd=$PWD
 cd $WINDIR
 echo ProtectedMode=0 > system32/macromed/flash/mms.cfg
-cd ~-
-cd "$PROGRAMFILES/mozilla firefox"
-cat > defaults/pref/local-settings.js <<bb
-pref("general.config.filename", "mozilla.cfg");
-pref("general.config.obscure_value", 0);
-bb
-cat > mozilla.cfg <<bb
-//
-lockPref("browser.sessionstore.resume_from_crash", false);
-lockPref("browser.startup.page", 1);
-bb
-cd ~-
-MOZ_DISABLE_OOP_PLUGINS=1 firefox $arg_url &
+# copy cookies
+rm -r /tmp
+mkdir /tmp
+cd $APPDATA
+find -name cookies.sqlite -exec cp -t /tmp {} +
+cd /tmp
+MOZ_DISABLE_OOP_PLUGINS=1 firefox -no-remote -profile . $arg_url &
 coredump firefox
 
 while read video
@@ -131,9 +106,9 @@ done < <(grep -ao '<video [^>]*>' ff.core | sort | uniq -w123)
 # parse JSON to get file name
 # use /dev/tcp to download "jq" if necessary
 flv=${arg_url/*\/}.flv
-clean
 [ $arg_cdn ] || exit
 read app < <(cut -d/ -f4- <<< ${server}?${token//amp;})
+cd $arg_pwd
 
 log rtmpdump \
   -W http://download.hulu.com/huludesktop.swf \
