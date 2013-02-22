@@ -28,11 +28,12 @@ unquote ()
   read -r $1 <<< "${!1//\"}"
 }
 
-# stdin
-while read -r -p 'Drag file here, or use a pipe.
-' mm
+nn='
+'
+while read -rp "Drag file here, or use a pipe.$nn" aa
 do
-  unquote mm
-  nn="${mm%.*}.mp4"
-  log ffmpeg -i "$mm" -c copy -nostdin -v warning "$nn"
+  unquote aa
+  bb="${aa%.*}.mp4"
+  log ffmpeg -i "$aa" -c copy -nostdin -v warning "$bb"
+  log rm "$aa"
 done
