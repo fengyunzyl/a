@@ -39,10 +39,12 @@ clean ()
 }
 
 [ $1 ] || usage
-[ $2 ] || set , "$1"
-log furnace-swf -i "$2" abclist
-[ $1 = , ] && exit
-log furnace-swf -i "$2" abcextract -n "$1" -o a.abc
-log furnace-avm2 -i a.abc -d -o b.abc
-log furnace-avm2-decompiler -i b.abc -d -D funids > a.as
-clean
+arg_file=$1
+
+log furnace-swf -i $arg_file abclist | cut -s -d'"' -f2 | while read aa
+do
+  log furnace-swf -i $arg_file abcextract -n "$aa" -o a.abc
+  log furnace-avm2 -i a.abc -d -o b.abc
+  log furnace-avm2-decompiler -i b.abc -d -D funids > $aa.as
+  clean
+done
