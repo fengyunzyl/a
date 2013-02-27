@@ -40,8 +40,9 @@ nn='
 while read -rp "Drag song here, or use a pipe.$nn" hh
 do
   unquote hh
-  kk="${hh%.*}.mkv"
+  kk="${hh%.*}.mp4"
   # adding "-preset" would only make small difference in size or speed
-  log ffmpeg -loop 1 -i "$1" -i "$hh" -vf scale=-1:720 -c:a copy -shortest \
-    -qp 0 -v warning -nostdin "$kk"
+  # make sure input picture is at least 720
+  log ffmpeg -loop 1 -i "$1" -i "$hh" -shortest -qp 0 -v warning -nostdin \
+    -c:a aac -strict -2 -b:a 529200 "$kk"
 done
