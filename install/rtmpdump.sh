@@ -52,7 +52,7 @@ CC=i686-w64-mingw32-gcc
 vr ()
 {
   printf "#include <$2>\n$1" > a.c
-  read $1 < <($CC -E a.c | tac | tr -d \")
+  read $1 < <($CC -E a.c | sed '$!d; s/"//g')
 }
 
 vr POLARSSL_VERSION_STRING polarssl/version.h
