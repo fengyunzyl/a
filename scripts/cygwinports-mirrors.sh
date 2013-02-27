@@ -13,13 +13,14 @@ log ()
 }
 
 wget sourceware.org/mirrors.html
-sed '/^<li>/!d; /http:/!d; s/[^"]*"//; s/".*//' mirrors.html > mirrors.lst
+set '/^<li>/!d; /http:/!d; s/[^"]*"//; s/".*//; s./$..'
+sed "$1" mirrors.html > mirrors.lst
 
 while read ee
 do
   if log wget --spider -t1 -T1 -q $ee
   then
-    ff+=(${ee}cygwinports)
+    ff+=(${ee}/cygwinports)
   fi
 done < mirrors.lst
 
