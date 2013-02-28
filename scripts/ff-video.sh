@@ -1,5 +1,6 @@
 #!/bin/sh
 # combine song with video
+# FIXME "720p" is not always 720 vertical pixels. Make sure to check.
 
 # cut down video source. remove audio, metadata, and chapters
 ffmpeg -ss 2:00:00 -i tt.mp4 -c copy \
