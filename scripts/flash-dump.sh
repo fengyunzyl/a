@@ -8,13 +8,8 @@ firefox ()
 coredump ()
 {
   PID=$!
-  echo waiting for $1 to load...
-  rr=()
-  until (( ${#rr[*]} > 1700 ))
-  do
-    mapfile rr </proc/$PID/maps
-    sleep 1
-  done
+  echo press enter to dump...
+  read
   echo dumping $1...
   read WINPID </proc/$PID/winpid
   dumper ff $WINPID 2>&- &
