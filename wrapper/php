@@ -1,7 +1,0 @@
-# Cygwin wrapper for Windows native php
-for aa
-do
-  [[ "$aa" =~ :// ]] || read aa < <(cygpath -im -- "$aa")
-  bb+=("$aa")
-done
-/sbin/php "${bb[@]}"

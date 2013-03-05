@@ -1,7 +1,0 @@
-# Cygwin wrapper for Windows native Notepad2
-read ff < <(dirname "$1")
-read gg < <(basename "$1")
-cd "$ff"
-read -r ff < <($WINDIR/system32/cmd /c cd)
-"$ProgramW6432/notepad2/notepad2" "$ff/$gg"
-unset ff gg
