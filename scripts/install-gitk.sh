@@ -19,5 +19,5 @@ make install-binaries install-libraries
 # Install gitk
 cd /usr/local/bin
 wget raw.github.com/git/git/master/gitk-git/gitk
-wget raw.github.com/svnpenn/a/master/wrapper/wish
-chmod +x gitk wish
+wget raw.github.com/svnpenn/a/master/scripts/gitk.sh
+chmod +x gitk gitk.sh
