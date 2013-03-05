@@ -7,6 +7,17 @@ usage ()
   exit
 }
 
+warn ()
+{
+  printf '\e[36m%s\e[m\n' "$*" >&2
+}
+
+log ()
+{
+  warn $*
+  eval $*
+}
+
 [ $1 ] || usage
 git ls-remote git://github.com/$1.git > k
 
@@ -17,7 +28,7 @@ read tag < <(tac k | tr / ^ | cut -d^ -f3)
 read sha < <(cut -c-7 k)
 
 # Get commits to HEAD
-wget -Ok https://api.github.com/repos/$1/compare/$tag...HEAD
+log wget -qOk https://api.github.com/repos/$1/compare/$tag...HEAD
 read commits < <(grep total_commits k | grep -o '[0-9]*')
 echo "$tag-$commits-g$sha"
 rm k
