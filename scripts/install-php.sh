@@ -1,0 +1,8 @@
+# install PHP
+setup -nqP unzip
+
+mkdir -p ~/bin
+cd ~/bin
+wget -nc windows.php.net/downloads/releases/php-5.4.12-nts-Win32-VC9-x86.zip
+unzip php-5.4.12-nts-Win32-VC9-x86.zip
+chmod +x php.exe php5.dll
