@@ -20,8 +20,6 @@ log ()
 
 [ $1 ] || usage
 
-log LANG=
-$*
-
-log LANG=en_US.UTF-8
-$*
+log LANG= $*
+log LANG=en_US.CP850 $*
+log LANG=en_US.UTF-8 $*
