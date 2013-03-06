@@ -65,7 +65,7 @@ cp ${deps[*]} .
 ldd ${deps[*]} |
   grep usr |
   sort -u |
-  cut -d\  -f3 |
+  cut -d' ' -f3 |
   xargs cp -t .
 cd -
 
