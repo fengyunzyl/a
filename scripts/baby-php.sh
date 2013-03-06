@@ -45,7 +45,7 @@ cd bin
 cp ${deps[*]} .
 ldd ${deps[*]} |
   grep " $1" |
-  cut -d\  -f3 |
+  cut -d' ' -f3 |
   sort -u |
   xargs cp -t .
 echo extension=./php_curl.dll > php.ini
