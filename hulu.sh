@@ -23,11 +23,6 @@ log ()
   eval $*
 }
 
-bsplit ()
-{
-  IFS=\" read -a $1 <<< "${!2}"
-}
-
 usage ()
 {
   echo "usage: $0 [CDN FILETYPE] URL"
@@ -39,15 +34,12 @@ usage ()
 
 serialize_xml ()
 {
-  set $1 '[^ ]*.(.*)/>'
-  [[ ${!1} =~ $2 ]]
-  xs=${BASH_REMATCH[1]}
-  bsplit xa xs
-  aa=0
-  while [ ${xa[aa]} ]
+  set "${!1/<}"
+  eval set ${1/>}
+  for oo
   do
-    read ${xa[aa]//[-:=]} <<< ${xa[aa+1]}
-    (( aa += 2 ))
+    set ${oo/=/ }
+    read ${1/[-:]} <<< $2
   done
 }
 
