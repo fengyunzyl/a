@@ -53,16 +53,20 @@ coredump ()
 {
   PID=$!
   echo waiting for $1 to load...
-  rr=()
-  until (( ${#rr[*]} > 1700 ))
+  qq=0
+  while sleep 1
   do
     mapfile rr </proc/$PID/maps
-    sleep 1
+    if (( ${#rr[*]} - $qq < -1 ))
+    then
+      break
+    fi
+    qq=${#rr[*]}
   done
   echo dumping $1...
   read WINPID </proc/$PID/winpid
-  dumper ff $WINPID 2>&- &
-  until [ -s ff.core ]
+  dumper hulu $WINPID 2>&- &
+  until [ -s hulu.core ]
   do
     sleep 1
   done
@@ -82,7 +86,6 @@ arg_url=$3
 arg_pwd=$PWD
 cd $WINDIR
 echo ProtectedMode=0 > system32/macromed/flash/mms.cfg
-# copy cookies
 rm -r /tmp
 mkdir /tmp
 cd $APPDATA
@@ -101,18 +104,35 @@ do
   then
     break
   fi
-done < <(grep -ao '<video [^>]*>' ff.core | sort | uniq -w123)
+done < <(grep -ao '<video [^>]*>' hulu.core | sort | uniq -w123)
 
-# parse JSON to get file name
-# use /dev/tcp to download "jq" if necessary
-flv=${arg_url/*\/}.flv
 [ $arg_cdn ] || exit
-read app < <(cut -d/ -f4- <<< ${server}?${token//amp;})
-cd $arg_pwd
+[[ $arg_url =~ [0-9]+ ]]
+
+if [ -a /usr/local/bin/jq ]
+then
+  set www.hulu.com
+  exec 3< "/dev/tcp/$1/80"
+  echo "GET /api/2.0/video?id=$BASH_REMATCH HTTP/1.1" >&3
+  echo "connection: close" >&3
+  echo "host: $1" >&3
+  echo >&3
+  sed '1,/^$/d' <&3 > hulu.json
+  read uu < <(jq -r .show.name hulu.json)
+  read vv < <(jq .season_number hulu.json)
+  read ww < <(jq .episode_number hulu.json)
+  read xx < <(jq -r .title hulu.json)
+  flv="${uu} ${vv}x${ww} ${xx}.flv"
+else
+  flv="$BASH_REMATCH.flv"
+fi
+
+cd "$arg_pwd"
+app="${server#*//*/}?${token//amp;}"
 
 log rtmpdump \
   -W http://download.hulu.com/huludesktop.swf \
-  -o $flv \
-  -a $app \
   -r $server \
-  -y $stream
+  -a $app \
+  -y $stream \
+  -o "$flv"
