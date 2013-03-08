@@ -1,4 +1,6 @@
 # find unused variable names
+# FIXME use "false"
+# FIXME accept pipe
 
 usage()
 {
