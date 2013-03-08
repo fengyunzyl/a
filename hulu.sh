@@ -116,9 +116,9 @@ then
   read vv < <(jq .season_number hulu.json)
   read ww < <(jq .episode_number hulu.json)
   read xx < <(jq -r .title hulu.json)
-  flv="${uu} ${vv}x${ww} ${xx}.flv"
+  flv="${uu} ${vv}x${ww} ${xx}"
 else
-  flv="$BASH_REMATCH.flv"
+  flv="$BASH_REMATCH"
 fi
 
 cd "$arg_pwd"
@@ -129,4 +129,10 @@ log rtmpdump \
   -r $server \
   -a $app \
   -y $stream \
-  -o "$flv"
+  -o "$flv.flv"
+
+if [ -a /usr/local/bin/ffmpeg ]
+then
+  log ffmpeg -i "$flv.flv" -c copy -v warning "$flv.mp4"
+  log rm "$flv.flv"
+fi
