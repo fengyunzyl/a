@@ -29,6 +29,8 @@ usage ()
   echo
   echo "CDN       content delivery network"
   echo "FILETYPE  quality"
+  echo
+  echo "run with just URL to get CDN and FILETYPE params"
   exit
 }
 
@@ -82,7 +84,7 @@ cd $WINDIR
 echo ProtectedMode=0 > system32/macromed/flash/mms.cfg
 rm -r /tmp
 mkdir /tmp
-cd $APPDATA
+cd "$APPDATA"
 find -name cookies.sqlite -exec cp -t /tmp {} +
 cd /tmp
 MOZ_DISABLE_OOP_PLUGINS=1 firefox -no-remote -profile . $arg_url &
