@@ -85,7 +85,7 @@ echo ProtectedMode=0 > system32/macromed/flash/mms.cfg
 rm -r /tmp
 mkdir /tmp
 cd "$APPDATA"
-find -name cookies.sqlite -exec cp -t /tmp {} +
+find -name cookies.sqlite -exec cp -t /tmp {} ';'
 cd /tmp
 MOZ_DISABLE_OOP_PLUGINS=1 firefox -no-remote -profile . $arg_url &
 coredump firefox
@@ -99,9 +99,12 @@ do
   elif [ $cdn$filetype = $arg_cdn$arg_filetype ]
   then
     break
+  else
+    false
   fi
 done < <(grep -ao '<video [^>]*>' hulu.core | sort | uniq -w123)
 
+[ $? = 0 ] || usage
 [ $arg_cdn ] || exit
 [[ $arg_url =~ [0-9]+ ]]
 
