@@ -1,0 +1,9 @@
+This is the weak point of the script. The program doing the RAM dump is
+dumper.exe; this program is weak in that it must kill the dumped process (in
+this case Firefox) after it finishes. This creates a circular dependency: The
+script shouldnt kill Firefox until the RtmpDump params are found, but you cant
+know if they were found until after Firefox is killed.
+
+The way I have tried to work around this problem is by monitoring the memory
+usage of Firefox (/proc/$PID/maps) and basically guessing. When the memory usage
+"flattens out" that is a good indicator that the video has been loaded.
