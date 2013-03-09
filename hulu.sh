@@ -84,9 +84,11 @@ cd $WINDIR
 echo ProtectedMode=0 > system32/macromed/flash/mms.cfg
 rm -r /tmp
 mkdir /tmp
-cd "$APPDATA"
-# FIXME find 1
-find -name cookies.sqlite -exec cp -t /tmp {} ';'
+cd "$APPDATA/mozilla/firefox"
+read aa < <(find -name cookies.sqlite -exec ls -t {} +)
+cp "$aa" /tmp
+read aa < <(find -name prefs.js -exec ls -t {} +)
+cp "$aa" /tmp
 cd /tmp
 MOZ_DISABLE_OOP_PLUGINS=1 firefox -no-remote -profile . $arg_url &
 coredump firefox
