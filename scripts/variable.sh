@@ -1,6 +1,4 @@
 # find unused variable names
-# FIXME use "false"
-# FIXME accept pipe
 
 usage()
 {
@@ -29,10 +27,12 @@ do
   if [ ${#bbb[*]} = $arg_num ]
   then
     break
+  else
+    false
   fi  
 done
 
-if [ ${#bbb[*]} = $arg_num ]
+if [ $? = 0 ]
 then
   echo ${bbb[*]}
   exit
