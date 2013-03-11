@@ -71,9 +71,10 @@ done
 [ $arg_itag ] || usage
 set "$decoded_url&signature=$sig" ${qual[itag],,}
 
-while read bb
+gg='Length: ([0-9]*)'
+while read ff
 do
-  if [[ $bb =~ Length:.([0-9]*) ]]
+  if [[ $ff =~ $gg ]]
   then
     break
   fi
