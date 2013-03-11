@@ -2,20 +2,26 @@
 
 usage()
 {
-  echo usage: $0 NUMBER FILE
+  echo usage: $0 NUMBER [FILE]
   exit
 }
 
-[ $2 ] || usage
-arg_num="$1"
-arg_file="$2"
+[ $1 ] || usage
+arg_num=$1
+
+if [ $2 ]
+then
+  read -d '' arg_file < "$2"
+else
+  read -d '' arg_file
+fi
 
 # one character
 bad=( i j l )
 bbb=()
 for aaa in {a..z}
 do
-  if grep -q $aaa "$arg_file"
+  if [[ $arg_file =~ $aaa ]]
   then
     bbb=()
   elif [[ ${bad[*]} =~ $aaa ]]
@@ -43,7 +49,7 @@ bad=( cc dd ii jj ll )
 bbb=()
 for aaa in {a..z}
 do
-  if grep -q $aaa$aaa "${arg_file}"
+  if [[ $arg_file =~ $aaa$aaa ]]
   then
     bbb=()
   elif [[ ${bad[*]} =~ $aaa$aaa ]]
