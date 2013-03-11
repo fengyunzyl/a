@@ -16,6 +16,8 @@ else
   read -d '' arg_file
 fi
 
+arg_file=${arg_file,,}
+
 # one character
 bad=( i j l )
 bbb=()
