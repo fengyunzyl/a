@@ -74,6 +74,17 @@ firefox ()
   exec "$PROGRAMFILES/mozilla firefox/firefox" $*
 }
 
+download ()
+{
+  IFS=/ read gg hh <<< "$2"
+  exec 3< "/dev/tcp/$gg/80"
+  echo "GET /$hh HTTP/1.1" >&3
+  echo "connection: close" >&3
+  echo "host: $gg" >&3
+  echo >&3
+  sed '1,/^$/d' <&3 > $1
+}
+
 [ $1 ] || usage
 [ $3 ] || set '' '' $1
 arg_cdn=$1
@@ -113,13 +124,7 @@ done < <(grep -ao '<video [^>]*>' hulu.core | sort | uniq -w123)
 
 if [ -a /usr/local/bin/jq ]
 then
-  set www.hulu.com
-  exec 3< "/dev/tcp/$1/80"
-  echo "GET /api/2.0/video?id=$BASH_REMATCH HTTP/1.1" >&3
-  echo "connection: close" >&3
-  echo "host: $1" >&3
-  echo >&3
-  sed '1,/^$/d' <&3 > hulu.json
+  download hulu.json "www.hulu.com/api/2.0/video?id=$BASH_REMATCH"
   read uu < <(jq -r .show.name hulu.json)
   read vv < <(jq .season_number hulu.json)
   read ww < <(jq .episode_number hulu.json)
