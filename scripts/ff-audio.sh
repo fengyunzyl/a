@@ -46,7 +46,7 @@ do
   # adding "-preset" would only make small difference in size or speed
   # make sure input picture is at least 720
   log ffmpeg -loop 1 -i "$img" -i "$song" -shortest -qp 0 -c:a aac -strict -2 \
-    -b:a 496211 -v warning -stats "$video"
+    -b:a 495263 -v warning -stats "$video"
   # upload
   ffprobe -show_format -print_format flat=s=, -v error "$song" |
     sed 's/\r//; s/.*,//' > metadata.sh
