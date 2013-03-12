@@ -30,7 +30,7 @@ log ()
 
 usage ()
 {
-  echo usage: $0 IMAGE [SONGS]
+  echo usage: $0 IMAGE
   exit
 }
 
