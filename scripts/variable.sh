@@ -1,9 +1,33 @@
 # find unused variable names
 
-usage()
+usage ()
 {
   echo usage: $0 NUMBER [FILE]
   exit
+}
+
+build ()
+{
+  printf -v ccc "%$1s"
+  bbb=()
+  for aaa in {a..z}
+  do
+    ccc=${ccc//?/$aaa}
+    if [[ $arg_file =~ $ccc ]]
+    then
+      bbb=()
+    elif [[ ${bad[*]} =~ $ccc ]]
+    then
+      bbb=()
+    else
+      bbb+=($ccc)
+    fi
+    if [ ${#bbb[*]} = $arg_num ]
+    then
+      echo ${bbb[*]}
+      exit
+    fi
+  done
 }
 
 [ $1 ] || usage
@@ -20,50 +44,12 @@ arg_file=${arg_file,,}
 
 # one character
 bad=( i j l )
-bbb=()
-for aaa in {a..z}
-do
-  if [[ $arg_file =~ $aaa ]]
-  then
-    bbb=()
-  elif [[ ${bad[*]} =~ $aaa ]]
-  then
-    bbb=()
-  else
-    bbb+=($aaa)
-  fi
-  if [ ${#bbb[*]} = $arg_num ]
-  then
-    break
-  else
-    false
-  fi  
-done
-
-if [ $? = 0 ]
-then
-  echo ${bbb[*]}
-  exit
-fi
+build 1
 
 # two characters
 bad=( cc dd ii jj ll )
-bbb=()
-for aaa in {a..z}
-do
-  if [[ $arg_file =~ $aaa$aaa ]]
-  then
-    bbb=()
-  elif [[ ${bad[*]} =~ $aaa$aaa ]]
-  then
-    bbb=()
-  else
-    bbb+=($aaa$aaa)
-  fi
-  if [ ${#bbb[*]} = $arg_num ]
-  then
-    break
-  fi
-done
+build 2
 
-echo ${bbb[*]}
+# three characters
+bad=( iii jjj lll )
+build 3
