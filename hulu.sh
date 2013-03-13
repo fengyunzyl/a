@@ -1,14 +1,5 @@
 #!/bin/bash
 
-quote ()
-{
-  yy='[ #&;\]'
-  if [[ ${!1} =~ $yy ]]
-  then
-    read -r $1 <<< \"${!1}\"
-  fi
-}
-
 warn ()
 {
   printf '\e[36m%s\e[m\n' "$*"
@@ -16,14 +7,15 @@ warn ()
 
 log ()
 {
-  for oo
-  do
-    quote oo
-    set -- "$@" $oo
-    shift
-  done
-  warn $*
-  eval $*
+  exec 3>&2 2>log.txt
+  unset PS4
+  (set -x
+    : "$@")
+  read k < log.txt
+  warn ${k:2}
+  exec 2>&3
+  "$@"
+  rm log.txt
 }
 
 usage ()
