@@ -7,15 +7,10 @@ warn ()
 
 log ()
 {
-  exec 3>&2 2>log.txt
   unset PS4
-  (set -x
-    : "$@")
-  read k < log.txt
-  warn ${k:2}
-  exec 2>&3
+  read kk < <((set -x; : "$@") 2>&1)
+  warn ${kk:2}
   "$@"
-  rm log.txt
 }
 
 usage ()
