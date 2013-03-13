@@ -6,16 +6,15 @@ warn ()
 
 log ()
 {
-  exec 2> log.txt
-  PS4=
-  set -x
-  : "$@"
-  set +x
-  read b < log.txt
-  b=${b//\'/\"}
-  warn ${b:2}
+  exec 3>&2 2>log.txt
+  unset PS4
+  (set -x
+    : "$@")
+  read k < log.txt
+  warn ${k:2}
+  exec 2>&3
   "$@"
   rm log.txt
 }
 
-log mkdir 'asdf asdf' 'qwer qwer'
+log rtmpdump asdf 'asdf asdf'
