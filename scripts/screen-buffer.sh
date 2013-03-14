@@ -11,25 +11,13 @@ warn ()
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-quote ()
-{
-  yy='[ #&;\]'
-  if [[ ${!1} =~ $yy ]]
-  then
-    read -r $1 <<< \"${!1}\"
-  fi
-}
-
 log ()
 {
-  for oo
-  do
-    quote oo
-    set -- "$@" $oo
-    shift
-  done
-  warn $*
-  eval $*
+  unset PS4
+  coproc yy (set -x; : "$@") 2>&1
+  read zz <&$yy
+  warn ${zz:2}
+  "$@"
 }
 
 [ $1 ] || usage

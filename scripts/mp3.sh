@@ -2,15 +2,6 @@
 # MP3 encode
 # FIXME ffmpeg -i a.wav -b:a 320k -id3v2_version 3 a.mp3
 
-quote ()
-{
-  yy='[ #&;\]'
-  if [[ ${!1} =~ $yy ]]
-  then
-    read -r $1 <<< \"${!1}\"
-  fi
-}
-
 warn ()
 {
   printf '\e[36m%s\e[m\n' "$*"
@@ -18,14 +9,11 @@ warn ()
 
 log ()
 {
-  for oo
-  do
-    quote oo
-    set -- "$@" $oo
-    shift
-  done
-  warn $*
-  eval $*
+  unset PS4
+  coproc yy (set -x; : "$@") 2>&1
+  read zz <&$yy
+  warn ${zz:2}
+  "$@"
 }
 
 unquote ()

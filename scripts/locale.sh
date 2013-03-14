@@ -14,8 +14,11 @@ warn ()
 
 log ()
 {
-  warn $*
-  eval $*
+  unset PS4
+  coproc yy (set -x; : "$@") 2>&1
+  read zz <&$yy
+  warn ${zz:2}
+  "$@"
 }
 
 [ $1 ] || usage

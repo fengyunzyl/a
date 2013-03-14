@@ -8,8 +8,9 @@ warn ()
 log ()
 {
   unset PS4
-  read kk < <((set -x; : "$@") 2>&1)
-  warn ${kk:2}
+  coproc yy (set -x; : "$@") 2>&1
+  read zz <&$yy
+  warn ${zz:2}
   "$@"
 }
 

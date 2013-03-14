@@ -9,9 +9,9 @@ warn ()
 log ()
 {
   unset PS4
-  coproc nn (set -x; : "$@") 2>&1
-  read oo <&$nn
-  warn ${oo:2}
+  coproc yy (set -x; : "$@") 2>&1
+  read zz <&$yy
+  warn ${zz:2}
   exec "$@"
 }
 
