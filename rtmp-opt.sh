@@ -8,28 +8,17 @@ warn ()
 
 log ()
 {
-  warn "$@"
-  eval exec "$@"
+  unset PS4
+  coproc nn (set -x; : "$@") 2>&1
+  read oo <&$nn
+  warn ${oo:2}
+  exec "$@"
 }
 
 usage ()
 {
   echo "Usage:  $0 COMMAND"
   exit
-}
-
-quote ()
-{
-  yy='[ #&;\]'
-  if [[ ${!1} =~ $yy ]]
-  then
-    read -r $1 <<< \"${!1}\"
-  fi
-}
-
-unquote ()
-{
-  read $1 <<< "${!1//\"}"
 }
 
 trim ()
@@ -52,18 +41,18 @@ clean ()
 for hh
 do
   trim hh
-  quote hh
   bb[aa++]=$hh
 done
 
 watch ()
 {
-  gg=$1
+  aaa=$1
   shift
-  while read -d $'\r'
+  printf -v bbb '\r'
+  while read -d $bbb ccc
   do
-    [[ $REPLY =~ ([0-9]*) ]]
-    if (( ${BASH_REMATCH[1]} + 1 > $gg ))
+    [[ $ccc =~ [0-9]+ ]]
+    if (( BASH_REMATCH >= aaa ))
     then
       kill $!
       echo
@@ -89,18 +78,17 @@ done
 
 qsplit ()
 {
-  IFS=\&? read -a $1 <<< "${!2}"
+  IFS='&?' read -a $1 <<< "${!2}"
 }
 
 qjoin ()
 {
-  IFS=\& read $1 < <(eval echo \"\${$2[*]}\")
+  IFS='&' read $1 < <(eval echo \"\${$2[*]}\")
 }
 
 for hh in ${!bb[@]}
 do
   # Break up querystring, if it exists
-  unquote bb[hh]
   IFS=? read url qs <<< "${bb[hh]}"
   qsplit qa qs
   for ff in ${!qa[@]}
@@ -109,7 +97,6 @@ do
     unset qa[ff]
     qjoin qs qa
     bb[hh]=${url}${qs:+?$qs}
-    quote bb[hh]
     if ! watch 1000 ${bb[@]} -o a.flv -m 9
     then
       qa[ff]=$one
@@ -117,7 +104,6 @@ do
   done
   qjoin qs qa
   bb[hh]=${url}${qs:+?$qs}
-  quote bb[hh]
 done
 
 echo ${bb[*]} -o a.flv > rtmp-opt.txt
