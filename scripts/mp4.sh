@@ -32,8 +32,7 @@ unquote ()
   read -r $1 <<< "${!1//\"}"
 }
 
-nn='
-'
+printf -v nn '\n'
 while read -rp "Drag file here, or use a pipe.$nn" aa
 do
   unquote aa

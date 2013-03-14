@@ -33,9 +33,8 @@ unquote ()
   read -r $1 <<< "${!1//\"}"
 }
 
-# stdin
-while read -r -p 'Drag file here, or use a pipe.
-' hh
+printf -v nn '\n'
+while read -rp "Drag file here, or use a pipe.$nn" hh
 do
   unquote hh
   kk="${hh%.*}.mp3"
