@@ -1,5 +1,4 @@
 # install PHP
-setup -nqP unzip
 
 mkdir -p ~/bin
 cd ~/bin
