@@ -22,17 +22,14 @@ git status -s | git commit -F-
 git push origin master || exit
 
 # Check status
-check ()
-{
-  until cmp -s $1 <(wget -qO- $2)
+until cmp -s $aa <(wget -qO- svnpenn.github.com/$aa)
+do
+  for z in {0..9}
   do
-    for z in {0..9}
-    do
-      printf $z
-      sleep 1
-    done
+    printf $z
+    sleep 1
   done
-}
-check $aa svnpenn.github.com/$aa
+done
+
 git checkout source
 echo 'Publish complete!'
