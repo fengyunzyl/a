@@ -1,6 +1,6 @@
 #!/bin/bash
-mkdir dist
-cd dist
+mkdir baby-cygwin
+cd baby-cygwin
 
 # /
 echo '@start bin\bash -l' > cygwin.bat
@@ -83,6 +83,6 @@ cd -
 cd ${0%/*}
 read BABY_VERSION < <(git log --follow --oneline $0 | wc -l)
 cd -
-read < <(ls -C)
-tar acf baby-cygwin-$BABY_VERSION.tar.gz $REPLY
-rm -r $REPLY
+read aa < <(ls -C)
+tar acf baby-cygwin-$BABY_VERSION.tar.gz $aa
+rm -r $aa
