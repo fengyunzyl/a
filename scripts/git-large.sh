@@ -17,7 +17,7 @@ while read commit
 do
   while read bits type sha size path
   do
-    if (( $size > $1 ))
+    if (( size > $1 ))
     then
       big_files[$sha]="$sha $size $path"
     fi
