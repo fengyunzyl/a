@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [[ $OSTYPE =~ linux ]]
+then
+  FIREFOX=firefox
+else
+  FIREFOX="$PROGRAMFILES/mozilla firefox/firefox"
+fi
+
 warn ()
 {
   printf '\e[36m%s\e[m\n' "$*"
@@ -60,11 +67,6 @@ coredump ()
   kill -13 $PID
 }
 
-firefox ()
-{
-  exec "$PROGRAMFILES/mozilla firefox/firefox" $*
-}
-
 download ()
 {
   IFS=/ read gg hh <<< "$2"
@@ -92,7 +94,7 @@ cp "$aa" /tmp
 read aa < <(find -name prefs.js -exec ls -t {} +)
 cp "$aa" /tmp
 cd /tmp
-MOZ_DISABLE_OOP_PLUGINS=1 firefox -no-remote -profile . $arg_url &
+MOZ_DISABLE_OOP_PLUGINS=1 "$FIREFOX" -no-remote -profile . $arg_url &
 coredump firefox
 
 while read video

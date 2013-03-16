@@ -5,14 +5,16 @@ warn ()
   printf '\e[1;35m%s\e[m\n' "$*"
 }
 
-c ()
-{
-  printf '\ec'
-}
+if [[ $OSTYPE =~ linux ]]
+then
+  CLEAR=clear
+else
+  CLEAR='printf \ec'
+fi
 
 compgen -d /opt/ | while read k
 do
-  c
+  $CLEAR
   cd $k
   git status
   warn $k
