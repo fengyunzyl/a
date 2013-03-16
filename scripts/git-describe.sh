@@ -2,12 +2,12 @@
 # Fix broken git describe
 # http://article.gmane.org/gmane.comp.version-control.git/210835
 
-read < <(git describe --tags)
+read aa < <(git describe --tags)
 
-tag=${REPLY%-*-*}
+tag=${aa%-*-*}
 
-sha=${REPLY/*-}
+sha=${aa/*-}
 
-read < <(git log --oneline $tag..HEAD | wc -l)
+read bb < <(git log --oneline $tag..HEAD | wc -l)
 
-echo $tag-$REPLY-$sha
+echo $tag-$bb-$sha
