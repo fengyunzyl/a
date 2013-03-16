@@ -44,7 +44,7 @@ coredump ()
   while sleep 1
   do
     mapfile rr </proc/$PID/maps
-    if (( ${#rr[*]} - $qq < -1 ))
+    if (( ${#rr[*]} - qq < -1 ))
     then
       break
     fi
