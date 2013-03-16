@@ -42,9 +42,9 @@ make install \
   OPT=-Os
 
 # Compress files
-read -d, < <(find bin sbin -type f)
-i686-w64-mingw32-strip $REPLY
-upx -9 $REPLY
+read -d, aa < <(find bin sbin -type f)
+i686-w64-mingw32-strip $aa
+upx -9 $aa
 
 # Readme
 CC=i686-w64-mingw32-gcc
