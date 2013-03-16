@@ -7,8 +7,8 @@
 git clone git://github.com/svnpenn/rtmpdump.git
 cd rtmpdump
 git checkout 603ff20
-read < <(git describe --tags)
-7z a " h10-$REPLY.7z" ../handshake-10.patch
+read q < <(git describe --tags)
+tar acf h10-$q.tar.gz ../handshake-10.patch
 
 # Install PolarSSL
 wget polarssl.org/download/polarssl-1.1.4-gpl.tgz
