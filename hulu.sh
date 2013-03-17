@@ -47,15 +47,16 @@ coredump ()
 {
   PID=$!
   echo waiting for $1 to load...
-  qq=0
+  qq=10
+  rr=0
   while sleep 1
   do
-    mapfile rr </proc/$PID/maps
-    if (( ${#rr[*]} - qq < -1 ))
+    mapfile ss </proc/$PID/maps
+    if (( ${#ss[*]} - rr < qq ))
     then
       break
     fi
-    qq=${#rr[*]}
+    rr=${#ss[*]}
   done
   echo dumping $1...
   read WINPID </proc/$PID/winpid
@@ -96,6 +97,14 @@ cp "$aa" /tmp
 cd /tmp
 MOZ_DISABLE_OOP_PLUGINS=1 "$FIREFOX" -no-remote -profile . $arg_url &
 coredump firefox
+grep -ao '<video [[:print:]]*>' hulu.core | sort | uniq -w123 > hulu.smil
+
+if ! [ -s hulu.smil ]
+then
+  warn dumped too soon, retry
+  echo $qq $rr ${#ss[*]}
+  exit
+fi
 
 while read video
 do
@@ -109,7 +118,7 @@ do
   else
     false
   fi
-done < <(grep -ao '<video [^>]*>' hulu.core | sort | uniq -w123)
+done < hulu.smil
 
 [ $? = 0 ] || usage
 [ $arg_cdn ] || exit
