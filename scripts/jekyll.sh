@@ -1,4 +1,3 @@
-#!/bin/sh
 # Launch Jekyll
 
 if [[ $OSTYPE =~ linux ]]
