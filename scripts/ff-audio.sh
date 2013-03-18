@@ -25,19 +25,25 @@ usage ()
 }
 
 [ $1 ] || usage
-
 mapfile -t songs < <(find -name '*.flac')
 read img < <(find -name '*.jpg')
+
+if ! [ $img ]
+then
+  echo no jpg found
+  exit
+fi
+
 for song in "${songs[@]}"
 do
   video=${song%.*}.mp4
   # adding "-preset" would only make small difference in size or speed
   # make sure input picture is at least 720
-  log ffmpeg -loop 1 -i "$img" -i "$song" -shortest -qp 0 -c:a aac -strict -2 \
-    -b:a 495263 -v warning -stats "$video"
+  log ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -shortest -qp 0 \
+    -c:a aac -strict -2 -b:a 495263 -v warning -stats "$video"
   # upload
-  ffprobe -show_format -print_format flat=s=, -v error "$song" |
-    sed 's/\r//; s/.*,//' > metadata.sh
+  ffprobe -show_format -print_format flat=s=% -v error "$song" |
+    sed 's/\r//; s/.*%//' > metadata.sh
   . metadata.sh
   set summary.txt
   > $1
