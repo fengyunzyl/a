@@ -1,5 +1,3 @@
-#!/bin/sh
-
 # Cygwin packages
 setup -nqP git
 setup -nqP libicu-devel
