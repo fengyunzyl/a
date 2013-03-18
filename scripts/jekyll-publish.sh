@@ -1,9 +1,18 @@
-#!/bin/bash
 # This script will push Jekyll branches.
+
+log ()
+{
+  unset PS4
+  coproc yy (set -x; : "$@") 2>&1
+  read zz <&$yy
+  warn ${zz:2}
+  "$@"
+}
+
 cd /opt/svnpenn.github.com
 
 # Push source branch
-git checkout source
+log git checkout source
 git add -A
 git status -s | git commit -F-
 git push origin source || exit
@@ -18,7 +27,7 @@ then
   exit
 fi
 
-git checkout master
+log git checkout master
 git rm -qr .
 cp -r _site/. .
 rm -r _site
@@ -26,16 +35,5 @@ git add -A
 read aa < <(git status -s | cut -c4-)
 git status -s | git commit -F-
 git push origin master || exit
-
-# Check status
-until cmp -s $aa <(wget -qO- svnpenn.github.com/$aa)
-do
-  for z in {0..9}
-  do
-    printf $z
-    sleep 1
-  done
-done
-
-git checkout source
+log git checkout source
 echo 'Publish complete!'
