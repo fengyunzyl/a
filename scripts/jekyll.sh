@@ -16,6 +16,13 @@ usage ()
 
 [ $1 ] || usage
 cd /opt/$1
+rm -rf _site
 jekyll serve -w &
+
+until [ -a _site ]
+do
+  sleep 1
+done
+
 $XDG_OPEN .
 $XDG_OPEN http://127.0.0.1:4000
