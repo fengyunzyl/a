@@ -47,7 +47,7 @@ coredump ()
 {
   PID=$!
   echo waiting for $1 to load...
-  qq=2
+  qq=1
   rr=0
   while sleep 1
   do
