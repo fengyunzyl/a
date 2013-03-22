@@ -10,6 +10,11 @@ warn ()
   printf '\e[36m%s\e[m\n' "$*" >&2
 }
 
+json ()
+{
+  read $1 < <(jq -r .$2 jq.json)
+}
+
 log ()
 {
   unset PS4
@@ -20,26 +25,27 @@ log ()
 }
 
 [ $1 ] || usage
-log fpcalc "$1" > fpcalc.sh
-d2u -q fpcalc.sh
-log . fpcalc.sh
-rm fpcalc.sh
-required="client=8XaBELgH&duration=$DURATION&fingerprint=$FINGERPRINT"
-# recordings holds TITLE and ARTIST
-# releases holds ALBUM and DATE
-optional='meta=recordings+releases'
 
-curl -s "api.acoustid.org/v2/lookup?${required}&${optional}" |
-  jq .results[0].recordings[0] > meta.json
+# get TITLE
+log fpcalc "$1" > fp.sh
+d2u -q fp.sh
+. fp.sh
+req="client=8XaBELgH&duration=${DURATION}&fingerprint=${FINGERPRINT}"
+curl -s "api.acoustid.org/v2/lookup?${req}&meta=recordings+releaseids" |
+  jq .results[0].recordings[0] > jq.json
+json TITLE title
+json ID releases[0].id
 
-read TITLE < <(jq -r .title meta.json)
-read ALBUM < <(jq -r .releases[0].title meta.json)
-read ARTIST < <(jq -r .artists[0].name meta.json)
-read DATE < <(jq .releases[0].date.year meta.json)
-
+# get ALBUM ARTIST LABEL DATE
+set 'fmt=json&inc=artist-credits+labels'
+log curl -s "musicbrainz.org/ws/2/release/${ID}?${1}" > jq.json
+json ALBUM title
+json ARTIST '["artist-credit"][0].name'
+json LABEL '["label-info"][0].label.name'
+json DATE date
 echo $TITLE
 echo $ALBUM
 echo $ARTIST
+echo $LABEL
 echo $DATE
-
-rm meta.json
+rm fp.sh jq.json
