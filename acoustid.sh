@@ -43,6 +43,8 @@ json ALBUM title
 json ARTIST '["artist-credit"][0].name'
 json LABEL '["label-info"][0].label.name'
 json DATE date
+
+# print
 echo $TITLE
 echo $ALBUM
 echo $ARTIST
