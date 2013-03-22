@@ -30,8 +30,8 @@ log ()
 log fpcalc "$1" > fp.sh
 d2u -q fp.sh
 . fp.sh
-req="client=8XaBELgH&duration=${DURATION}&fingerprint=${FINGERPRINT}"
-curl -s "api.acoustid.org/v2/lookup?${req}&meta=recordings+releaseids" |
+set "client=8XaBELgH&duration=${DURATION}&fingerprint=${FINGERPRINT}"
+curl -s "api.acoustid.org/v2/lookup?${1}&meta=recordings+releaseids" |
   jq .results[0].recordings[0] > jq.json
 json TITLE title
 json ID releases[0].id
