@@ -68,6 +68,8 @@ fi
 
 for song in "${songs[@]}"
 do
+  # remove bad tags
+  log mp3gain -s d "$song"
   video=${song%.*}.mp4
   # adding "-preset" would only make small difference in size or speed
   # make sure input picture is at least 720
