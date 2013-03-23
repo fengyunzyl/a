@@ -70,12 +70,12 @@ for song in "${songs[@]}"
 do
   # remove bad tags
   log mp3gain -s d "$song"
+  metadata "$song"
   video=${song%.*}.mp4
   # adding "-preset" would only make small difference in size or speed
   # make sure input picture is at least 720
   log ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -shortest -qp 0 \
     -c:a aac -strict -2 -b:a 495263 -v warning -stats "$video"
-  metadata "$song"
   # category is case sensitive
   log google youtube post -c Music -n "$ARTIST, $TITLE" -s sr.txt \
     -t "$ALBUM, $ARTIST" -u svnpenn "$video"
