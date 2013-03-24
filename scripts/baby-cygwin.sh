@@ -51,11 +51,14 @@ cd -
 # /usr/bin
 deps=(
   /bin/bash.exe
+  /bin/cp.exe
   /bin/diff.exe
+  /bin/find.exe
   /bin/grep.exe
   /bin/mkdir.exe
   /bin/tee.exe
   /bin/sleep.exe
+  /bin/rm.exe
   /bin/tr.exe
   /bin/wget.exe
 )
