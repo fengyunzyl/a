@@ -55,6 +55,7 @@ deps=(
   /bin/grep.exe
   /bin/mkdir.exe
   /bin/tee.exe
+  /bin/sleep.exe
   /bin/tr.exe
   /bin/wget.exe
 )
