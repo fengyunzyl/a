@@ -82,9 +82,13 @@ do
   mp3gain -s d "$song"
   video=${song%.*}.mp4
   meta=${song%.*}.txt
-  # adding "-preset" would only make small difference in size or speed
-  # make sure input picture is at least 720
-  log ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -shortest -qp 0 \
+  ffprobe -v warning -show_format -print_format flat=s=_ "$song" |
+    d2u > pb.sh
+  . pb.sh
+  rm pb.sh
+  # Adding "-preset" would only make small difference in size or speed. Make
+  # sure input picture is at least 720. "-shortest" can mess up duration.
+  log ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -t $format_duration -qp 0 \
     -c:a aac -strict -2 -b:a 495263 -v warning -stats "$video"
   # category is case sensitive
   log google youtube post -c Music -n "${artist}, ${titles[$song]}" \
