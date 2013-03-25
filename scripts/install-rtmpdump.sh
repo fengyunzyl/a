@@ -37,8 +37,8 @@ make install \
   CROSS_COMPILE=i686-w64-mingw32- \
   SHARED= \
   XLDFLAGS=-static \
-  prefix=$PWD \
   VERSION=$RTMPDUMP_VERSION \
+  prefix=$PWD \
   OPT=-Os
 
 # Compress files
