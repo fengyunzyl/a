@@ -6,7 +6,7 @@ cd baby-cygwin
 echo '@start bin\bash -l' > cygwin.bat
 read DATE < <(date)
 read CYGWIN_VERSION < <(uname -r | grep -o '[.0-9]*')
-cat > README.txt <<q
+u2d > README.txt <<q
 Baby Cygwin by Steven Penny
 
 Steven’s Home Page: http://svnpenn.github.com
@@ -23,7 +23,6 @@ OPERATING INSTRUCTIONS
   Put any scripts into /usr/local/bin
   Double click cygwin.bat
 q
-u2d README.txt
 
 # /dev
 set dev
@@ -56,6 +55,7 @@ deps=(
   /bin/find.exe
   /bin/grep.exe
   /bin/mkdir.exe
+  /bin/ls.exe
   /bin/tee.exe
   /bin/sleep.exe
   /bin/rm.exe
