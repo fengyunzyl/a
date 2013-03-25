@@ -79,9 +79,8 @@ cd -
 mkdir -p usr/local/bin
 
 # /usr/share/terminfo
-set usr/share
-mkdir -p $1
-cd $1
+mkdir -p usr/share
+cd usr/share
 cp -r /usr/share/terminfo .
 cd -
 
