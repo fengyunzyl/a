@@ -1,6 +1,4 @@
-#!/bin/sh
 # Install PolarSSL
-
 wget polarssl.org/download/polarssl-1.2.0-gpl.tgz
 tar xf polarssl-1.2.0-gpl.tgz
 cd polarssl-1.2.0
