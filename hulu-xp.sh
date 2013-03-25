@@ -48,7 +48,7 @@ coredump ()
   arg_pid=$!
   arg_prog=$1
   echo waiting for $arg_prog to load...
-  log sleep 30
+  log sleep 40
   echo dumping $arg_prog...
   read WINPID </proc/$arg_pid/winpid
   dumper hulu $WINPID 2>&- &
