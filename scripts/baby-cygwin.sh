@@ -52,19 +52,21 @@ deps=(
   /bin/bash.exe
   /bin/cp.exe
   /bin/diff.exe
+  /bin/dumper.exe
   /bin/find.exe
   /bin/grep.exe
   /bin/mkdir.exe
   /bin/ls.exe
+  /bin/sort.exe
   /bin/tee.exe
   /bin/sleep.exe
   /bin/rm.exe
   /bin/tr.exe
+  /bin/uniq.exe
   /bin/wget.exe
 )
-set bin
-mkdir -p $1
-cd $1
+mkdir bin
+cd bin
 cp ${deps[*]} .
 ldd ${deps[*]} |
   grep usr |
