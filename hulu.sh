@@ -45,27 +45,30 @@ serialize_xml ()
 
 coredump ()
 {
-  PID=$!
-  echo waiting for $1 to load...
-  qq=-3
-  rr=0
+  arg_pid=$!
+  arg_prog=$1
+  echo waiting for $arg_prog to load...
+  aaa=90
+  set 0 0
   while sleep 1
   do
-    mapfile ss </proc/$PID/maps
-    if (( ${#ss[*]} - rr < qq ))
+    mapfile bbb </proc/$arg_pid/maps
+    (( ccc = ${2} - ${1} ))
+    (( ddd = ${#bbb[*]} - ${2} ))
+    if (( ${ccc/-} + ${ddd/-} < aaa ))
     then
       break
     fi
-    rr=${#ss[*]}
+    set ${2} ${#bbb[*]}
   done
-  echo dumping $1...
-  read WINPID </proc/$PID/winpid
+  echo dumping $arg_prog...
+  read WINPID </proc/$arg_pid/winpid
   dumper hulu $WINPID 2>&- &
   until [ -s hulu.core ]
   do
     sleep 1
   done
-  kill -13 $PID
+  kill -13 $arg_pid
 }
 
 download ()
@@ -102,7 +105,7 @@ grep -ao '<video [[:print:]]*>' hulu.core | sort | uniq -w123 > hulu.smil
 if ! [ -s hulu.smil ]
 then
   warn dumped too soon, retry
-  echo $qq $rr ${#ss[*]}
+  echo $aaa $ccc $ddd
   exit
 fi
 
