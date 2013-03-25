@@ -14,7 +14,7 @@ Steven’s Home Page: http://svnpenn.github.com
 Today’s date $DATE
 
 The build script for this build can be found at
-  http://github.com/svnpenn/a/blob/master/scripts/baby-cygwin.sh
+  http://github.com/svnpenn/a
 
 Included with this package
   Cygwin $CYGWIN_VERSION
