@@ -48,7 +48,7 @@ coredump ()
   arg_pid=$!
   arg_prog=$1
   echo waiting for $arg_prog to load...
-  aaa=20
+  aaa=9
   set 0 0
   while sleep 1
   do
