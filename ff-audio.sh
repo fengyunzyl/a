@@ -35,7 +35,6 @@ metadata ()
   tt=${ss%.*}.txt
   log fpcalc "$ss" | sed '1d' > fp.sh
   . fp.sh
-  rm fp.sh
   set "client=8XaBELgH&duration=${DURATION}&fingerprint=${FINGERPRINT}"
   wget -qO jq.json "api.acoustid.org/v2/lookup?meta=recordings+releaseids&${1}"
   json title '.results[0].recordings[0].title'
@@ -49,12 +48,14 @@ metadata ()
     json label '.["label-info"][0].label.name'
     json date '.date'
   fi
-  rm -f jq.json "$tt"
-  echo "Title: $title" >> "$tt"
-  echo "Album: $album" >> "$tt"
-  echo "Artist: $artist" >> "$tt"
-  echo "Label: $label" >> "$tt"
-  echo "Date: $date" >> "$tt"
+  rm fp.sh jq.json
+  {
+    echo "Title: $title"
+    echo "Album: $album"
+    echo "Artist: $artist"
+    echo "Label: $label"
+    echo "Date: $date"
+  } > "$tt"
   cat "$tt"
   warn 'enter "y" if metadata is ok'
   read uu

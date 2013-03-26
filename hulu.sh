@@ -74,11 +74,13 @@ coredump ()
 download ()
 {
   IFS=/ read gg hh <<< "$2"
-  exec 3< "/dev/tcp/$gg/80"
-  echo "GET /$hh HTTP/1.1" >&3
-  echo "connection: close" >&3
-  echo "host: $gg" >&3
-  echo >&3
+  exec 3< /dev/tcp/$gg/80
+  {
+    echo GET /$hh HTTP/1.1
+    echo connection: close
+    echo host: $gg
+    echo
+  } >&3
   sed '1,/^$/d' <&3 > $1
 }
 
