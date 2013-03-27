@@ -56,6 +56,7 @@ deps=(
   /bin/grep.exe
   /bin/mkdir.exe
   /bin/ls.exe
+  /bin/printf.exe
   /bin/rm.exe
   /bin/sed.exe
   /bin/sleep.exe
