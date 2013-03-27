@@ -9,10 +9,16 @@ warn ()
 log ()
 {
   unset PS4
-  coproc yy (set -x; : "$@") 2>&1
-  read zz <&$yy
-  warn ${zz:2}
-  exec "$@"
+  set $((set -x; : "$@") 2>&1)
+  gg=$2
+  shift 2
+  warn $*
+  if [ $gg = 1 ]
+  then
+    eval $*
+  else
+    echo $* > opt-rtmp.txt
+  fi
 }
 
 usage ()
@@ -58,7 +64,7 @@ watch ()
       echo
       return
     fi
-  done < <(log "$@" &> >(tee /dev/tty))
+  done < <(log 1 "$@" &> >(tee /dev/tty))
   return 1
 }
 
@@ -106,6 +112,5 @@ do
   bb[hh]=${url}${qs:+?$qs}
 done
 
-echo ${bb[*]} -o a.flv > rtmp-opt.txt
-warn ${bb[*]} -o a.flv
+log 2 ${bb[*]} -o a.flv
 clean
