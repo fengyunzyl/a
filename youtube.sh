@@ -29,7 +29,10 @@ warn ()
 
 usage ()
 {
-  echo usage: $0 [ITAG] URL
+  echo usage
+  echo $0 URL
+  echo or
+  echo $0 ITAG URL
   exit
 }
 
