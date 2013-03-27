@@ -56,13 +56,15 @@ deps=(
   /bin/grep.exe
   /bin/mkdir.exe
   /bin/ls.exe
+  /bin/rm.exe
+  /bin/sed.exe
+  /bin/sleep.exe
   /bin/sort.exe
   /bin/tee.exe
-  /bin/sleep.exe
-  /bin/rm.exe
   /bin/tr.exe
   /bin/uniq.exe
   /bin/wget.exe
+  /bin/xargs.exe
 )
 mkdir bin
 cd bin
