@@ -1,4 +1,5 @@
 #!/bin/bash
+set $PWD
 mkdir baby-cygwin
 cd baby-cygwin
 
@@ -25,17 +26,15 @@ OPERATING INSTRUCTIONS
 q
 
 # /dev
-set dev
-mkdir -p $1
-cd $1
+mkdir dev
+cd dev
 cp -r /dev/fd .
 $WINDIR/system32/attrib -s
 cd -
 
 # /etc
-set etc
-mkdir -p $1
-cd $1
+mkdir etc
+cd etc
 cat > profile <<'q'
 PATH=/bin:/usr/local/bin
 PROMPT_COMMAND='history -a'
@@ -87,7 +86,6 @@ cd -
 # archive
 cd ${0%/*}
 read BABY_VERSION < <(git log --follow --oneline $0 | wc -l)
-cd -
-read aa < <(ls -C)
-tar acf baby-cygwin-$BABY_VERSION.tar.gz $aa
-rm -r $aa
+cd $1
+tar acf baby-cygwin-$BABY_VERSION.tar.gz baby-cygwin
+rm -r baby-cygwin
