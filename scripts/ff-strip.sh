@@ -24,5 +24,5 @@ log ()
 arg_in=$1
 arg_out=strip-$arg_in
 
-log ffmpeg -i "$arg_in" -c copy -map_metadata -1 -map_chapters -1 \
-  -v warning "$arg_out"
+log ffmpeg -analyzeduration 74083266 -i "$arg_in" -c copy -map_metadata -1 \
+  -map_chapters -1 -v warning -stats "$arg_out"
