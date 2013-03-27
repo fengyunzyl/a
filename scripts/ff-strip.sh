@@ -24,5 +24,6 @@ log ()
 arg_in=$1
 arg_out=strip-$arg_in
 
-log ffmpeg -analyzeduration 74083266 -i "$arg_in" -c copy -map_metadata -1 \
-  -map_chapters -1 -v warning -stats "$arg_out"
+# "-analyzeduration" doesnt do anything other than remove the warning
+log ffmpeg -i "$arg_in" -c copy -map_metadata -1 -map_chapters -1 \
+  -v warning -stats "$arg_out"
