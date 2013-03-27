@@ -15,7 +15,7 @@ log ()
   warn $*
   if [ $gg = 1 ]
   then
-    eval $*
+    eval exec $*
   else
     echo $* > opt-rtmp.txt
   fi
