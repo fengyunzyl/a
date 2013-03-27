@@ -15,10 +15,10 @@ warn ()
 log ()
 {
   unset PS4
-  coproc yy (set -x; : "$@") 2>&1
-  read -r zz <&$yy
-  warn ${zz:2}
-  "$@"
+  set $((set -x; : "$@") 2>&1)
+  shift
+  warn $*
+  eval $*
 }
 
 usage ()
@@ -132,10 +132,12 @@ done < hulu.smil
 if [ -a /usr/local/bin/jq ]
 then
   download hulu.json "www.hulu.com/api/2.0/video?id=$BASH_REMATCH"
-  read uu < <(jq -r .show.name hulu.json)
-  read vv < <(jq .season_number hulu.json)
-  read ww < <(jq .episode_number hulu.json)
-  read xx < <(jq -r .title hulu.json)
+  {
+    read uu
+    read vv
+    read ww
+    read xx
+  } < <(jq -r '.show.name, .season_number, .episode_number, .title' hulu.json)
   flv="${uu} ${vv}x${ww} ${xx}"
 else
   flv="$BASH_REMATCH"
