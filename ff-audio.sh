@@ -8,10 +8,10 @@ warn ()
 log ()
 {
   unset PS4
-  coproc yy (set -x; : "$@") 2>&1
-  read zz <&$yy
-  warn ${zz:2}
-  "$@"
+  set $((set -x; : "$@") 2>&1)
+  shift
+  warn $*
+  eval $*
 }
 
 usage ()
