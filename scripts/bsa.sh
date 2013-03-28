@@ -23,11 +23,11 @@ do
     break
   fi
   warn $k
-  select foo in good bad
+  select foo in higher lower
   do
     break
   done
-  if [ $foo = good ]
+  if [ $foo = higher ]
   then
     (( lb = k ))
   else
