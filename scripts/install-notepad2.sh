@@ -1,6 +1,7 @@
 # install notepad2
 
-git clean -fdx
+git clone --depth 1 git://github.com/XhmikosR/notepad2-mod.git
+cd notepad2-mod
 # patch
 set 'ChangeState(' SCE_SH_BACKTICKS SCE_SH_DEFAULT
 sed -bi "0,/${1}${2}/s//${1}${3}/" scintilla/lexers/lexbash.cxx
