@@ -1,4 +1,4 @@
-#!/bin/bash
+# download from Hulu
 
 if [[ $OSTYPE =~ linux ]]
 then
@@ -48,7 +48,7 @@ coredump ()
   arg_pid=$!
   arg_prog=$1
   echo waiting for $arg_prog to load...
-  aaa=80
+  aaa=70
   set 0 0
   while sleep 1
   do
@@ -95,10 +95,10 @@ echo ProtectedMode=0 > system32/macromed/flash/mms.cfg
 rm -r /tmp
 mkdir /tmp
 cd "$APPDATA/mozilla/firefox"
-read aa < <(find -name cookies.sqlite -exec ls -t {} +)
-cp "$aa" /tmp
-read aa < <(find -name prefs.js -exec ls -t {} +)
-cp "$aa" /tmp
+set $(find -name cookies.sqlite -exec ls -t {} +)
+cp "$1" /tmp
+set $(find -name prefs.js -exec ls -t {} +)
+cp "$1" /tmp
 cd /tmp
 MOZ_DISABLE_OOP_PLUGINS=1 "$FIREFOX" -no-remote -profile . $arg_url &
 coredump firefox
@@ -132,13 +132,11 @@ done < hulu.smil
 if [ -a /usr/local/bin/jq ]
 then
   download hulu.json "www.hulu.com/api/2.0/video?id=$BASH_REMATCH"
-  {
-    read uu
-    read vv
-    read ww
-    read xx
-  } < <(jq -r '.show.name, .season_number, .episode_number, .title' hulu.json)
-  flv="${uu} ${vv}x${ww} ${xx}"
+  set '.show.name, .season_number, .episode_number, .title'
+  IFS=$'\n'
+  set $(jq -r "$1" hulu.json | d2u)
+  IFS=$' \t\n'
+  flv="${1} ${2}x${3} ${4}"
 else
   flv="$BASH_REMATCH"
 fi
