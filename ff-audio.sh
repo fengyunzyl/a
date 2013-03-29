@@ -83,7 +83,7 @@ do
   mp3gain -s d "$song"
   video=${song%.*}.mp4
   meta=${song%.*}.txt
-  ffprobe -v warning -show_format -print_format flat=s=_ "$song" |
+  ffprobe -v error -show_format -print_format flat=s=_ "$song" |
     d2u > pb.sh
   . pb.sh
   rm pb.sh
