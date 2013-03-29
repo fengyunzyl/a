@@ -1,4 +1,4 @@
-#!/bin/bash
+# baby php
 set $PWD/php-5.4.11-nts-Win32-VC9-x86
 mkdir dist
 cd dist
@@ -9,10 +9,10 @@ path %path%;%~dp0/bin
 cd root
 start cmd.exe
 q
-read DATE < <(date)
+DATE=$(date)
 PATH=$1:$PATH
-read PHP_VERSION < <(php -v | grep -o '[.0-9]*')
-cat > README.txt <<q
+PHP_VERSION=$(php -v | grep -o '[.0-9]*')
+u2d > README.txt <<q
 Baby PHP by
   Steven Penny
 
@@ -33,7 +33,6 @@ OPERATING INSTRUCTIONS
   Double click cmd.bat
   Use command like "php foo.php"
 q
-u2d README.txt
 
 # /bin
 deps=(
@@ -56,7 +55,7 @@ mkdir root
 
 # archive
 cd ${0%/*}
-read BABY_VERSION < <(git log --oneline $0 | wc -l)
+BABY_VERSION=$(git log --oneline $0 | wc -l)
 cd -
 set cmd.bat README.txt bin root
 tar acf baby-php-$BABY_VERSION.tar.gz $*
