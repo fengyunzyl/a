@@ -1,12 +1,12 @@
-#!/bin/bash
+# baby cygwin
 set $PWD
 mkdir baby-cygwin
 cd baby-cygwin
 
 # /
 echo '@start bin\bash -l' > cygwin.bat
-read DATE < <(date)
-read CYGWIN_VERSION < <(uname -r | grep -o '[.0-9]*')
+DATE=$(date)
+CYGWIN_VERSION=$(uname -r | grep -o '[.0-9]*')
 u2d > README.txt <<q
 Baby Cygwin by Steven Penny
 
@@ -88,7 +88,7 @@ cd -
 
 # archive
 cd ${0%/*}
-read BABY_VERSION < <(git log --follow --oneline $0 | wc -l)
+BABY_VERSION=$(git log --follow --oneline $0 | wc -l)
 cd $1
 tar acf baby-cygwin-$BABY_VERSION.tar.gz baby-cygwin
 rm -r baby-cygwin
