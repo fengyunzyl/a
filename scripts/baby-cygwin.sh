@@ -90,5 +90,6 @@ cd -
 cd ${0%/*}
 BABY_VERSION=$(git log --follow --oneline $0 | wc -l)
 cd $1
-tar acf baby-cygwin-$BABY_VERSION.tar.gz baby-cygwin
+P7ZIP="${ProgramW6432}/7-zip/7z"
+"$P7ZIP" a -mx=9 baby-cygwin-${BABY_VERSION}.zip baby-cygwin
 rm -r baby-cygwin
