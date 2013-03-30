@@ -4,8 +4,7 @@ cd notepad2-mod
 SOURCE=$PWD
 
 # patch
-set 'ChangeState(' SCE_SH_BACKTICKS SCE_SH_DEFAULT
-sed -bi "0,/${1}${2}/s//${1}${3}/" scintilla/lexers/lexbash.cxx
+sed -bi 's/sc.Match("$((")/& || sc.Match("$(")/' scintilla/lexers/lexbash.cxx
 
 # build
 cd build
