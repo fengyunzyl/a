@@ -1,13 +1,6 @@
 # create baby wdk
 # http://microsoft.com/en-us/download/details.aspx?id=11800
 
-if [[ $OSTYPE =~ linux ]]
-then
-  P7ZIP=p7zip
-else
-  P7ZIP="${ProgramW6432}/7-zip/7z"
-fi
-
 warn ()
 {
   printf '\e[36m%s\e[m\n' "$*"
@@ -31,10 +24,11 @@ deps=(
   wdk/libs_x64fre_cab001.cab
 )
 
+P7ZIP="${ProgramW6432}/7-zip/7z"
 log "$P7ZIP" x $HOMEDRIVE/steven/public/wdk/GRMWDK_EN_7600_1.ISO ${deps[*]}
 mv wdk baby-wdk
 cd ${0%/*}
 set $(git log --follow --oneline $0 | wc -l)
 cd -
-log tar acf baby-wdk-${1}.tar.gz baby-wdk
+"$P7ZIP" a -mx=9 baby-wdk-${1}.zip baby-wdk
 rm -r baby-wdk
