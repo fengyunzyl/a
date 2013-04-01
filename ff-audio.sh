@@ -29,11 +29,20 @@ json ()
   read $1 < <(jq -r "$2" jq.json)
 }
 
-metadata ()
-{
-  ss=$1
-  tt=${ss%.*}.txt
-  log fpcalc "$ss" | sed '1d' > fp.sh
+[ $1 ] || usage
+if ! read img < <(find -name '*.jpg')
+then
+  echo no jpg found
+  exit
+fi
+
+mapfile -t songs < <(find -name '*.flac' -o -name '*.mp3')
+declare -A titles
+
+for song in "${songs[@]}"
+do
+  tt=${song%.*}.txt
+  log fpcalc "$song" | sed '1d' > fp.sh
   . fp.sh
   set "client=8XaBELgH&duration=${DURATION}&fingerprint=${FINGERPRINT}"
   wget -qO jq.json "api.acoustid.org/v2/lookup?meta=recordings+releases&${1}"
@@ -60,22 +69,7 @@ metadata ()
   warn 'enter "y" if metadata is ok'
   read uu
   [ $uu ] || exit
-  titles[$ss]=$title
-}
-
-[ $1 ] || usage
-if ! read img < <(find -name '*.jpg')
-then
-  echo no jpg found
-  exit
-fi
-
-mapfile -t songs < <(find -name '*.flac' -o -name '*.mp3')
-declare -A titles
-
-for song in "${songs[@]}"
-do
-  metadata "$song"
+  titles[$song]=$title
 done
 
 for song in "${songs[@]}"
