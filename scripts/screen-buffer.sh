@@ -5,7 +5,7 @@ usage ()
 {
   echo usage: $0 ROWS COLUMNS
   set '3!d; s/....$/ 0x&/'
-  set $(($REG query 'hkcu\console' -v ScreenBufferSize | sed "$1") )
+  set $($REG query 'hkcu\console' -v ScreenBufferSize | sed "$1")
   echo current buffer rows $(($3))
   echo current buffer columns $(($4))
   exit
