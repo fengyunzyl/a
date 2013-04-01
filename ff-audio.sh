@@ -26,7 +26,7 @@ usage ()
 
 json ()
 {
-  read $1 < <(jq -r $2 jq.json)
+  read $1 < <(jq -r "$2" jq.json)
 }
 
 metadata ()
@@ -36,9 +36,9 @@ metadata ()
   log fpcalc "$ss" | sed '1d' > fp.sh
   . fp.sh
   set "client=8XaBELgH&duration=${DURATION}&fingerprint=${FINGERPRINT}"
-  wget -qO jq.json "api.acoustid.org/v2/lookup?meta=recordings+releaseids&${1}"
+  wget -qO jq.json "api.acoustid.org/v2/lookup?meta=recordings+releases&${1}"
   json title '.results[0].recordings[0].title'
-  json id '.results[0].recordings[0].releases[0].id'
+  json id '.results[0].recordings[0].releases | sort_by(.date.year) | .[0].id'
   if ! [[ $album ]]
   then
     set 'fmt=json&inc=artist-credits+labels'
