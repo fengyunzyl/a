@@ -133,8 +133,8 @@ if [ -a /usr/local/bin/jq ]
 then
   download hulu.json "www.hulu.com/api/2.0/video?id=$BASH_REMATCH"
   set '.show.name, .season_number, .episode_number, .title'
-  IFS=$'\n'
-  set $(jq -r "$1" hulu.json | d2u)
+  IFS=$'\r\n'
+  set $(jq -r "$1" hulu.json)
   IFS=$' \t\n'
   flv="${1} ${2}x${3} ${4}"
 else
