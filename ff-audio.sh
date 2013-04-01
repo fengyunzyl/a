@@ -90,8 +90,9 @@ do
   # Adding "-preset" would only make small difference in size or speed. Make
   # sure input picture is at least 720. "-shortest" can mess up duration. Adding
   # "-analyzeduration" would only suppress warning, not change file.
+  # FIXME increase cutoff to 17000
   log ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -t $format_duration -qp 0 \
-    -c:a aac -strict -2 -b:a 440999 -v error -stats "$video"
+    -c:a aac -strict -2 -b:a 490870 -cutoff 15000 -v error -stats "$video"
   # category is case sensitive
   log google youtube post -c Music -n "${artist}, ${titles[$song]}" \
     -s "${meta}" -t "${album}, ${artist}" \
