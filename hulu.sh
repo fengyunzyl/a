@@ -48,7 +48,7 @@ coredump ()
   arg_pid=$!
   arg_prog=$1
   echo waiting for $arg_prog to load...
-  aaa=30
+  aaa=20
   set 0 0
   while sleep 1
   do
@@ -82,6 +82,12 @@ download ()
     echo
   } >&3
   sed '1,/^$/d' <&3 > $1
+}
+
+returns ()
+{
+  printf -v kk "$2"
+  [[ $($1 2>&1) =~ $kk ]]
 }
 
 [ $1 ] || usage
@@ -128,10 +134,11 @@ done < hulu.smil
 [ $? = 0 ] || usage
 [ $arg_cdn ] || exit
 [[ $arg_url =~ [0-9]+ ]]
+set $BASH_REMATCH
 
-if [ -a /usr/local/bin/jq ]
+if ! returns jq 'command not found'
 then
-  download hulu.json "www.hulu.com/api/2.0/video?id=$BASH_REMATCH"
+  download hulu.json "www.hulu.com/api/2.0/video?id=${1}"
   set '"\(.show.name) \(.season_number)x\(.episode_number) \(.title)"'
   flv=$(jq -r "$1" hulu.json | d2u)
 else
@@ -148,7 +155,7 @@ log rtmpdump \
   -y $stream \
   -o "$flv.flv"
 
-if [ -a /usr/local/bin/ffmpeg ]
+if ! returns ffmpeg 'command not found'
 then
   log ffmpeg -i "$flv.flv" -c copy -v warning "$flv.mp4"
   log rm "$flv.flv"
