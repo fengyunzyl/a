@@ -134,15 +134,19 @@ done < hulu.smil
 [ $? = 0 ] || usage
 [ $arg_cdn ] || exit
 [[ $arg_url =~ [0-9]+ ]]
-set $BASH_REMATCH
+flv=$BASH_REMATCH
 
 if ! returns jq 'command not found'
 then
-  download hulu.json "www.hulu.com/api/2.0/video?id=${1}"
-  set '"\(.show.name) \(.season_number)x\(.episode_number) \(.title)"'
-  flv=$(jq -r "$1" hulu.json | d2u)
-else
-  flv="$BASH_REMATCH"
+  if returns jq '\r'
+  then
+    echo Windows Native jq found, need Cygwin jq
+    echo http://code.google.com/p/any/downloads
+  else
+    download hulu.json "www.hulu.com/api/2.0/video?id=${flv}"
+    set '"\(.show.name) \(.season_number)x\(.episode_number) \(.title)"'
+    flv=$(jq -r "$1" hulu.json)
+  fi
 fi
 
 cd "$arg_pwd"
