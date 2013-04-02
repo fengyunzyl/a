@@ -87,7 +87,7 @@ download ()
 returns ()
 {
   printf -v kk "$2"
-  [[ $($1 2>&1) =~ $kk ]]
+  [[ $((eval $1) 2>&1) =~ $kk ]]
 }
 
 [ $1 ] || usage
