@@ -23,10 +23,10 @@ warn ()
 log ()
 {
   unset PS4
-  coproc yy (set -x; : "$@") 2>&1
-  read zz <&$yy
-  warn ${zz:2}
-  exec "$@"
+  set $((set -x; : "$@") 2>&1)
+  shift
+  warn $*
+  eval $*
 }
 
 [ $2 ] || usage
@@ -77,5 +77,4 @@ do
   bb[hh]=${name}${vs:+:$vs}
 done
 
-coproc yy (set -x; : "${bb[@]}") 2>&1
-cut -b6- <&$yy
+cut -b6- <<< $((set -x; : "${bb[@]}") 2>&1)

@@ -1,4 +1,3 @@
-#!/bin/bash
 # MP3 encode
 # FIXME ffmpeg -i a.wav -b:a 320k -id3v2_version 3 a.mp3
 
@@ -10,10 +9,10 @@ warn ()
 log ()
 {
   unset PS4
-  coproc yy (set -x; : "$@") 2>&1
-  read zz <&$yy
-  warn ${zz:2}
-  "$@"
+  set $((set -x; : "$@") 2>&1)
+  shift
+  warn $*
+  eval $*
 }
 
 unquote ()

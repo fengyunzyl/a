@@ -1,4 +1,3 @@
-#!/bin/sh
 # decompile and deobfuscate SWF
 # http://github.com/whitequark/furnace-avm2
 # http://canaldosconcursos.com.br/playercpf/player.swf
@@ -19,10 +18,10 @@ warn ()
 log ()
 {
   unset PS4
-  coproc yy (set -x; : "$@") 2>&1
-  read zz <&$yy
-  warn ${zz:2}
-  "$@"
+  set $((set -x; : "$@") 2>&1)
+  shift
+  warn $*
+  eval $*
 }
 
 clean ()
