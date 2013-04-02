@@ -3,8 +3,16 @@
 if [[ $OSTYPE =~ linux ]]
 then
   FIREFOX=firefox
+  JQ ()
+  {
+    jq -r "$@"
+  }
 else
   FIREFOX="$PROGRAMFILES/mozilla firefox/firefox"
+  JQ ()
+  {
+    jq -r "$@" | d2u
+  }
 fi
 
 warn ()
@@ -84,12 +92,6 @@ download ()
   sed '1,/^$/d' <&3 > $1
 }
 
-returns ()
-{
-  printf -v kk "$2"
-  [[ $((eval $1) 2>&1) =~ $kk ]]
-}
-
 [ $1 ] || usage
 [ $3 ] || set '' '' $1
 arg_cdn=$1
@@ -108,7 +110,7 @@ cp "$1" /tmp
 cd /tmp
 MOZ_DISABLE_OOP_PLUGINS=1 "$FIREFOX" -no-remote -profile . $arg_url &
 coredump firefox
-grep -ao '<video [[:print:]]*>' hulu.core | sort | uniq -w123 > hulu.smil
+grep -ao '<video [[:print:]]*/>' hulu.core | sort | uniq -w123 > hulu.smil
 
 if ! [ -s hulu.smil ]
 then
@@ -134,19 +136,14 @@ done < hulu.smil
 [ $? = 0 ] || usage
 [ $arg_cdn ] || exit
 [[ $arg_url =~ [0-9]+ ]]
-flv=$BASH_REMATCH
 
-if ! returns jq 'command not found'
+if [ -a /usr/local/bin/jq ]
 then
-  if returns jq '\r'
-  then
-    echo Windows Native jq found, need Cygwin jq
-    echo http://code.google.com/p/any/downloads
-  else
-    download hulu.json "www.hulu.com/api/2.0/video?id=${flv}"
-    set '"\(.show.name) \(.season_number)x\(.episode_number) \(.title)"'
-    flv=$(jq -r "$1" hulu.json)
-  fi
+  download hulu.json "www.hulu.com/api/2.0/video?id=${BASH_REMATCH}"
+  set '"\(.show.name) \(.season_number)x\(.episode_number) \(.title)"'
+  flv=$(JQ "$1" hulu.json)
+else
+  flv=$BASH_REMATCH
 fi
 
 cd "$arg_pwd"
@@ -159,7 +156,7 @@ log rtmpdump \
   -y $stream \
   -o "$flv.flv"
 
-if ! returns ffmpeg 'command not found'
+if [ -a /usr/local/bin/ffmpeg ]
 then
   log ffmpeg -i "$flv.flv" -c copy -v warning "$flv.mp4"
   log rm "$flv.flv"
