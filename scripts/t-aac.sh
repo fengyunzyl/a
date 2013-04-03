@@ -1,5 +1,5 @@
 # test ffmpeg aac encoder
-# 494402
+# 494143
 
 usage ()
 {
@@ -23,7 +23,7 @@ log ()
 
 ff ()
 {
-  log timeout 10 ffmpeg -i $HOMEDRIVE/steven/music/autechre/$1 -c:a aac \
+  log timeout 5 ffmpeg -i $HOMEDRIVE/steven/music/autechre/$1 -c:a aac \
     -strict -2 -v warning -stats -cutoff 17000 -map a -t 10 -b:a $arg_rate \
     -ss $2 -y $3
   [ $? = 0 ] || exit
@@ -34,7 +34,7 @@ arg_rate=$1
 
 ff oversteps/Oversteps-005-Autechre-qplay.flac 00:03:06 qplay.m4a
 
-ff oversteps/Oversteps-002-Autechre-ilanders.flac 00:04:53 ilanders.m4a
+ff oversteps/Oversteps-002-Autechre-ilanders.flac 00:01:09 ilanders.m4a
 
 ff exai/Exai-001-Autechre-Fleure.flac 0 fleure.m4a
 
