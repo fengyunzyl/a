@@ -1,5 +1,18 @@
 # create high quality video from song and picture
 
+if [[ $OSTYPE =~ linux ]]
+then
+  JQ ()
+  {
+    jq -r "$@" .json
+  }
+else
+  JQ ()
+  {
+    jq -r "$@" .json | d2u
+  }
+fi
+
 warn ()
 {
   printf '\e[36m%s\e[m\n' "$*" >&2
@@ -24,11 +37,6 @@ usage ()
   exit
 }
 
-json ()
-{
-  read $1 < <(jq -r "$2" jq.json)
-}
-
 [ $1 ] || usage
 if ! read img < <(find -name '*.jpg')
 then
@@ -41,31 +49,31 @@ declare -A titles
 
 for song in "${songs[@]}"
 do
-  tt=${song%.*}.txt
-  log fpcalc "$song" | sed '1d' > fp.sh
-  . fp.sh
+  declare $(log fpcalc "$song" | sed '1d')
   set "client=8XaBELgH&duration=${DURATION}&fingerprint=${FINGERPRINT}"
-  wget -qO jq.json "api.acoustid.org/v2/lookup?meta=recordings+releases&${1}"
-  json title '.results[0].recordings[0].title'
-  json id '.results[0].recordings[0].releases | sort_by(.date.year) | .[0].id'
+  wget -qO .json "api.acoustid.org/v2/lookup?meta=recordings+releases&${1}"
+  set '.id, (.releases | sort_by(.date.year) | .[0].id)'
+  ids=($(JQ ".results[0].recordings[0] | $1"))
+  log wget -qO .json "musicbrainz.org/ws/2/recording/${ids[0]}?fmt=json"
+  title=$(JQ '.title')
   if ! [[ $album ]]
   then
-    set 'fmt=json&inc=artist-credits+labels'
-    log wget -qO jq.json "musicbrainz.org/ws/2/release/${id}?${1}"
-    json album '.title'
-    json artist '.["artist-credit"][0].name'
-    json label '.["label-info"][0].label.name'
-    json date '.date'
+    set 'fmt=json&inc=artists+labels'
+    log wget -qO .json "musicbrainz.org/ws/2/release/${ids[1]}?${1}"
+    album=$(JQ '.title')
+    artist=$(JQ '.["artist-credit"][0].name')
+    label=$(JQ '.["label-info"][0].label.name')
+    date=$(JQ '.date')
   fi
-  rm fp.sh jq.json
+  rm .json
+  meta=${song%.*}.txt
   {
-    echo "Title: $title"
-    echo "Album: $album"
-    echo "Artist: $artist"
-    echo "Label: $label"
-    echo "Date: $date"
-  } > "$tt"
-  cat "$tt"
+    echo "Title: ${title}"
+    echo "Album: ${album}"
+    echo "Artist: ${artist}"
+    echo "Label: ${label}"
+    echo "Date: ${date}"
+  } | tee "$meta"
   warn 'enter "y" if metadata is ok'
   read uu
   [ $uu ] || exit
