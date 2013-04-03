@@ -2,7 +2,6 @@
 # http://googlecl.googlecode.com
 
 cd
-rm -rf googlecl
 wget googlecl.googlecode.com/files/googlecl-win32-0.9.14.zip
 unzip googlecl-win32-0.9.14.zip
 cd googlecl
