@@ -2,11 +2,19 @@
 
 if [[ $OSTYPE =~ linux ]]
 then
+  FFPROBE ()
+  {
+    ffprobe "$@"
+  }
   JQ ()
   {
     jq -r "$@" .json
   }
 else
+  FFPROBE ()
+  {
+    ffprobe "$@" | d2u
+  }
   JQ ()
   {
     jq -r "$@" .json | d2u
@@ -49,17 +57,15 @@ declare -A titles
 
 for song in "${songs[@]}"
 do
-  declare $(log fpcalc "$song" | sed '1d')
+  eval $(log fpcalc "$song" | sed '1d')
   set "client=8XaBELgH&duration=${DURATION}&fingerprint=${FINGERPRINT}"
   wget -qO .json "api.acoustid.org/v2/lookup?meta=recordings+releases&${1}"
-  set '.id, (.releases | sort_by(.date.year) | .[0].id)'
-  ids=($(JQ ".results[0].recordings[0] | $1"))
-  log wget -qO .json "musicbrainz.org/ws/2/recording/${ids[0]}?fmt=json"
-  title=$(JQ '.title')
+  title=$(JQ '.results[0].recordings[0].title')
+  id=$(JQ '.results[0].recordings[0].releases | sort_by(.date.year) | .[0].id')
   if ! [[ $album ]]
   then
     set 'fmt=json&inc=artists+labels'
-    log wget -qO .json "musicbrainz.org/ws/2/release/${ids[1]}?${1}"
+    log wget -qO .json "musicbrainz.org/ws/2/release/${id}?${1}"
     album=$(JQ '.title')
     artist=$(JQ '.["artist-credit"][0].name')
     label=$(JQ '.["label-info"][0].label.name')
@@ -85,10 +91,7 @@ do
   mp3gain -s d "$song"
   video=${song%.*}.mp4
   meta=${song%.*}.txt
-  ffprobe -v error -show_format -print_format flat=s=_ "$song" |
-    d2u > pb.sh
-  . pb.sh
-  rm pb.sh
+  eval $(FFPROBE -v error -show_format -print_format flat=s=_ "$song")
   # Adding "-preset" would only make small difference in size or speed. Make
   # sure input picture is at least 720. "-shortest" can mess up duration. Adding
   # "-analyzeduration" would only suppress warning, not change file.
