@@ -5,13 +5,13 @@ then
   FIREFOX=firefox
   JQ ()
   {
-    jq -r "$@"
+    jq -r "$@" hulu.json
   }
 else
   FIREFOX="$PROGRAMFILES/mozilla firefox/firefox"
   JQ ()
   {
-    jq -r "$@" | d2u
+    jq -r "$@" hulu.json | d2u
   }
 fi
 
@@ -56,7 +56,7 @@ coredump ()
   arg_pid=$!
   arg_prog=$1
   echo waiting for $arg_prog to load...
-  aaa=20
+  aaa=10
   set 0 0
   while sleep 1
   do
@@ -140,8 +140,7 @@ done < hulu.smil
 if [ -a /usr/local/bin/jq ]
 then
   download hulu.json "www.hulu.com/api/2.0/video?id=${BASH_REMATCH}"
-  set '"\(.show.name) \(.season_number)x\(.episode_number) \(.title)"'
-  flv=$(JQ "$1" hulu.json)
+  flv=$(JQ '"\(.show.name) \(.season_number)x\(.episode_number) \(.title)"')
 else
   flv=$BASH_REMATCH
 fi
