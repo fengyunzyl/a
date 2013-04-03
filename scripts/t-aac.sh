@@ -1,5 +1,5 @@
 # test ffmpeg aac encoder
-# 494143
+# 493713
 
 usage ()
 {
@@ -31,6 +31,8 @@ ff ()
 
 [ $1 ] || usage
 arg_rate=$1
+
+ff oversteps/Oversteps-007-Autechre-Treale.flac 00:00:25 treale.m4a
 
 ff oversteps/Oversteps-005-Autechre-qplay.flac 00:03:06 qplay.m4a
 
