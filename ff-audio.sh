@@ -60,6 +60,7 @@ do
   eval $(log fpcalc "$song" | sed '1d')
   set "client=8XaBELgH&duration=${DURATION}&fingerprint=${FINGERPRINT}"
   wget -qO .json "api.acoustid.org/v2/lookup?meta=recordings+releases&${1}"
+  warn $(JQ '.results[0].id')
   title=$(JQ '.results[0].recordings[0].title')
   id=$(JQ '.results[0].recordings[0].releases | sort_by(.date.year) | .[0].id')
   if ! [[ $album ]]
