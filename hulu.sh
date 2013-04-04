@@ -56,7 +56,7 @@ coredump ()
   arg_pid=$!
   arg_prog=$1
   echo waiting for $arg_prog to load...
-  bb=thumbnails
+  bb=downloads.sqlite
   until [ -a $bb ]
   do
     sleep 1
