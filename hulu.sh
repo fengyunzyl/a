@@ -56,18 +56,10 @@ coredump ()
   arg_pid=$!
   arg_prog=$1
   echo waiting for $arg_prog to load...
-  aaa=10
-  set 0 0
-  while sleep 1
+  bb=thumbnails
+  until [ -a $bb ]
   do
-    mapfile bbb </proc/$arg_pid/maps
-    (( ccc = ${2} - ${1} ))
-    (( ddd = ${#bbb[*]} - ${2} ))
-    if (( ${ccc/-} + ${ddd/-} < aaa ))
-    then
-      break
-    fi
-    set ${2} ${#bbb[*]}
+    sleep 1
   done
   echo dumping $arg_prog...
   read WINPID </proc/$arg_pid/winpid
@@ -115,7 +107,7 @@ grep -ao '<video [[:print:]]*/>' hulu.core | sort | uniq -w123 > hulu.smil
 if ! [ -s hulu.smil ]
 then
   warn dumped too soon, retry
-  echo $aaa $ccc $ddd
+  echo $bb
   exit
 fi
 
