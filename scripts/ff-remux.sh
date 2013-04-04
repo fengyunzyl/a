@@ -27,8 +27,10 @@ usage ()
 
 path ()
 {
-  cd "${!1%\\*}"
-  read $1 <<< "${PWD}/${!1##*\\}"
+  dn=$(dirname "${!1}")
+  bn=$(basename "${!1}")
+  cd "$dn"
+  read $1 <<< "$PWD/$bn"
   cd ~-
 }
 
