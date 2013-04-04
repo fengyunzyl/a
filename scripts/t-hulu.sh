@@ -18,5 +18,5 @@ for aa in {1..10}
 do
   printf '\ntry %s\n' $aa
   log sleep 60
-  timeout 20 hulu.sh limelight 1000_h264 hulu.com/watch/441271
+  timeout 30 hulu.sh limelight 1000_h264 hulu.com/watch/441271
 done
