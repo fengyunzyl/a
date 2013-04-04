@@ -25,15 +25,31 @@ usage ()
   exit
 }
 
+path ()
+{
+  cd "${!1%\\*}"
+  read $1 <<< "${PWD}/${!1##*\\}"
+  cd ~-
+}
+
 [ $1 ] || usage
 arg_fmt=$1
-printf -v nn '\n'
-while read -rp "Drag file here, or use a pipe.$nn" aa
+flac=nocopy
+wav=nocopy
+
+if ! [ ${!arg_fmt} ]
+then
+  cpy='-c copy'
+fi
+
+printf -v nwn '\n'
+while read -rp "Drag file here, or use a pipe.$nwn" inf
 do
-  [[ $aa ]] || exit
-  unquote aa
-  bb=${aa%.*}.${arg_fmt}
-  # "-nostdin" broken, thanks Stefano Sabatini
-  log ffmpeg -i "$aa" -c copy -v warning -stats "$bb" </dev/null
-  log rm "$aa"
+  [[ $inf ]] || exit
+  unquote inf
+  otf=${inf%.*}.${arg_fmt}
+  # Stefano Sabatini broke "-nostdin"
+  log ffmpeg -i "$inf" -v warning -stats $cpy "$otf" </dev/null
+  path inf
+  log rm "$inf"
 done
