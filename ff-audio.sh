@@ -64,9 +64,8 @@ do
   title=$(JQ '.results[0].recordings[0].title')
   if ! [[ $rid ]]
   then
-    set 'id, y: .date.year, m: (.date.month // 13)'
-    set ".results[0].recordings[0].releases[] | { $1 }"
-    rid=$(JQ "[ $1 ] | sort_by(.y, .m) | .[0].id")
+    set 'sort_by(.date.year, .date.month // 13)'
+    rid=$(JQ ".results[0].recordings[0].releases | $1 | .[0].id")
     set 'fmt=json&inc=artists+labels'
     log wget -qO .json "musicbrainz.org/ws/2/release/${rid}?${1}"
     album=$(JQ '.title')
