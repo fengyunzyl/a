@@ -1,5 +1,5 @@
 # test ffmpeg aac encoder
-# 488373
+# 487167
 
 usage ()
 {
@@ -37,6 +37,8 @@ ff ()
 
 [ $1 ] || usage
 arg_rate=$1
+
+ff chiastic-slide-flac/09-Nuane.flac 5 nuane.m4a
 
 ff chiastic-slide-flac/04-Cichli.flac 00:03:15 cichli.m4a
 
