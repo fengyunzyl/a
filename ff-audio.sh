@@ -62,11 +62,13 @@ do
   wget -qO .json "api.acoustid.org/v2/lookup?meta=recordings+releases&${1}"
   warn $(JQ '.results[0].id')
   title=$(JQ '.results[0].recordings[0].title')
-  id=$(JQ '.results[0].recordings[0].releases | sort_by(.date.year) | .[0].id')
-  if ! [[ $album ]]
+  if ! [[ $rid ]]
   then
+    set 'id, y: .date.year, m: (.date.month // 13)'
+    set ".results[0].recordings[0].releases[] | { $1 }"
+    rid=$(JQ "[ $1 ] | sort_by(.y, .m) | .[0].id")
     set 'fmt=json&inc=artists+labels'
-    log wget -qO .json "musicbrainz.org/ws/2/release/${id}?${1}"
+    log wget -qO .json "musicbrainz.org/ws/2/release/${rid}?${1}"
     album=$(JQ '.title')
     artist=$(JQ '.["artist-credit"][0].name')
     label=$(JQ '.["label-info"][0].label.name')
@@ -91,13 +93,18 @@ for song in "${songs[@]}"
 do
   mp3gain -s d "$song"
   video=${song%.*}.mp4
-  meta=${song%.*}.txt
   eval $(FFPROBE -v error -show_format -print_format flat=s=_ "$song")
   # Adding "-preset" would only make small difference in size or speed. Make
   # sure input picture is at least 720. "-shortest" can mess up duration. Adding
   # "-analyzeduration" would only suppress warning, not change file.
   log ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -t $format_duration -qp 0 \
-    -c:a aac -strict -2 -b:a 490957 -cutoff 17000 -v error -stats "$video"
+    -c:a aac -strict -2 -b:a 490785 -cutoff 17000 -v error -stats "$video"
+done
+
+for song in "${songs[@]}"
+do
+  meta=${song%.*}.txt
+  video=${song%.*}.mp4
   # category is case sensitive
   log google youtube post -c Music -n "${artist}, ${titles[$song]}" \
     -s "${meta}" -t "${album}, ${artist}" \
