@@ -46,13 +46,15 @@ usage ()
 }
 
 [ $1 ] || usage
-if ! read img < <(find -name '*.jpg')
+img=(*.jpg)
+if ! [ $img ]
 then
   echo no jpg found
   exit
 fi
 
-mapfile -t songs < <(find -name '*.flac' -o -name '*.mp3')
+shopt -s extglob
+songs=( @(*.flac|*.mp3) )
 declare -A titles
 
 for song in "${songs[@]}"
