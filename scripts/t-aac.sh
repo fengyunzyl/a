@@ -1,5 +1,5 @@
 # test ffmpeg aac encoder
-# 490785
+# 488373
 
 usage ()
 {
@@ -24,7 +24,7 @@ log ()
 ff ()
 {
   log timeout 5 ffmpeg -i $HOMEDRIVE/steven/music/autechre/$1 -c:a aac \
-    -strict -2 -v warning -stats -cutoff 17000 -map a -t 10 -b:a $arg_rate \
+    -strict -2 -v error -stats -cutoff 17000 -map a -t 10 -b:a $arg_rate \
     -ss $2 -y $3
   if [ $? = 0 ]
   then
@@ -37,6 +37,8 @@ ff ()
 
 [ $1 ] || usage
 arg_rate=$1
+
+ff chiastic-slide-flac/04-Cichli.flac 00:03:15 cichli.m4a
 
 ff Tri-Repetae-flac/07-C-Pach.flac 00:03:44 c-pach.m4a
 
