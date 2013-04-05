@@ -1,5 +1,5 @@
 # test ffmpeg aac encoder
-# 490957
+# 490785
 
 usage ()
 {
@@ -26,11 +26,19 @@ ff ()
   log timeout 5 ffmpeg -i $HOMEDRIVE/steven/music/autechre/$1 -c:a aac \
     -strict -2 -v warning -stats -cutoff 17000 -map a -t 10 -b:a $arg_rate \
     -ss $2 -y $3
-  [ $? = 0 ] || exit
+  if [ $? = 0 ]
+  then
+    printf '\nPASS\n'
+  else
+    printf '\nFAIL\n'
+    exit
+  fi
 }
 
 [ $1 ] || usage
 arg_rate=$1
+
+ff Tri-Repetae-flac/07-C-Pach.flac 00:03:44 c-pach.m4a
 
 ff oversteps/Oversteps-007-Autechre-Treale.flac 00:02:54 treale.m4a
 
