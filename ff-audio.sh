@@ -62,7 +62,7 @@ do
   wget -qO .json "api.acoustid.org/v2/lookup?meta=recordings+releases&${1}"
   warn $(JQ '.results[0].id')
   title=$(JQ '.results[0].recordings[0].title')
-  if ! [[ $rid ]]
+  if ! [ $rid ]
   then
     set 'sort_by(.date.year, .date.month // 13)'
     rid=$(JQ ".results[0].recordings[0].releases | $1 | .[0].id")
