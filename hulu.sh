@@ -57,7 +57,7 @@ coredump ()
   arg_prog=$1
   echo waiting for $arg_prog to load...
   bb=hulu.com/position
-  until grep -qr --exclude={parent.lock,places.sqlite-shm} $bb .
+  until grep -qr --include _CACHE_001_ $bb .
   do
     sleep 1
   done
