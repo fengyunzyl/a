@@ -1,5 +1,5 @@
 # test ffmpeg aac encoder
-# 487167
+# 483809
 
 usage ()
 {
@@ -38,6 +38,8 @@ ff ()
 [ $1 ] || usage
 arg_rate=$1
 
+ff lp5-flac/01-Acroyear2.flac 00:03:47 acroyear2.m4a
+
 ff chiastic-slide-flac/09-Nuane.flac 5 nuane.m4a
 
 ff chiastic-slide-flac/04-Cichli.flac 00:03:15 cichli.m4a
@@ -50,7 +52,7 @@ ff oversteps/Oversteps-005-Autechre-qplay.flac 00:03:06 qplay.m4a
 
 ff oversteps/Oversteps-002-Autechre-ilanders.flac 00:01:09 ilanders.m4a
 
-ff exai/Exai-001-Autechre-Fleure.flac 0 fleure.m4a
+ff exai-flac/Exai-001-Autechre-Fleure.flac 0 fleure.m4a
 
 ff incunabula-flac/Incunabula-009-Autechre-Windwind.flac 00:03:00 wind.m4a
 
