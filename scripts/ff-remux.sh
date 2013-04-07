@@ -50,7 +50,7 @@ do
   [[ $inf ]] || exit
   unquote inf
   otf=${inf%.*}.${arg_fmt}
-  log ffmpeg -i "$inf" -v error -stats -nostdin $cpy "$oft"
+  log ffmpeg -i "$inf" -v error -stats -nostdin $cpy "$otf"
   printf '\n'
   path inf
   log rm "$inf"
