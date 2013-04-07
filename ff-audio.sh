@@ -61,15 +61,17 @@ for song in "${songs[@]}"
 do
   eval $(log fpcalc "$song" | sed '1d')
   set "client=8XaBELgH&duration=${DURATION}&fingerprint=${FINGERPRINT}"
-  wget -qO .json "api.acoustid.org/v2/lookup?meta=recordings+releases&${1}"
+  wget -qO .json "api.acoustid.org/v2/lookup?meta=recordings&${1}"
   warn $(JQ '.results[0].id')
   title=$(JQ '.results[0].recordings[0].title')
-  if ! [ $rid ]
+  if ! [ $reid ]
   then
-    set 'sort_by(.date.year, .date.month // 13)'
-    rid=$(JQ ".results[0].recordings[0].releases | $1 | .[0].id")
+    rid=$(JQ '.results[0].recordings[0].id')
+    set "fmt=json&query=rid:${rid}"
+    log wget -qO .json "musicbrainz.org/ws/2/recording?${1}"
+    reid=$(JQ '.recording[0].releases[0].id')
     set 'fmt=json&inc=artists+labels'
-    log wget -qO .json "musicbrainz.org/ws/2/release/${rid}?${1}"
+    log wget -qO .json "musicbrainz.org/ws/2/release/${reid}?${1}"
     album=$(JQ '.title')
     artist=$(JQ '.["artist-credit"][0].name')
     label=$(JQ '.["label-info"][0].label.name')
@@ -98,7 +100,8 @@ do
   # Adding "-preset" would only make small difference in size or speed. Make
   # sure input picture is at least 720. "-shortest" can mess up duration. Adding
   # "-analyzeduration" would only suppress warning, not change file.
-  log ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -t $format_duration -qp 0 \
+  log ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -t $format_duration \
+    -qp 0 -filter:v 'crop=trunc(iw/2)*2' \
     -c:a aac -strict -2 -b:a 483809 -cutoff 17000 -v error -stats "$video"
 done
 
