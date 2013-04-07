@@ -27,6 +27,7 @@ arg_flc=$2
 # first we need to remux to wav
 otf=${arg_flc%.*}.wav
 log ffmpeg -i "$arg_flc" -v warning -stats "$otf"
+printf '\n'
 
 # fpcalc cannot read files with commas, good game
 log shntool split -f "$arg_cue" -t %n-%t -m ,-/- "$otf"

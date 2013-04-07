@@ -56,7 +56,7 @@ coredump ()
   arg_pid=$!
   arg_prog=$1
   echo waiting for $arg_prog to load...
-  bb=hulu.com/position
+  bb=hulu.com/videos
   until grep -qr --include _CACHE_001_ $bb .
   do
     sleep 1
