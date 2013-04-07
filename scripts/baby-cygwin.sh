@@ -10,7 +10,7 @@ CYGWIN_VERSION=$(uname -r | grep -o '[.0-9]*')
 u2d > README.txt <<q
 Baby Cygwin by Steven Penny
 
-Steven’s Home Page: http://svnpenn.github.com
+Steven’s Home Page: http://svnpenn.github.io
 
 Today’s date $DATE
 

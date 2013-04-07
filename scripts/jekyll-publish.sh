@@ -1,5 +1,10 @@
 # This script will push Jekyll branches.
 
+warn ()
+{
+  printf '\e[36m%s\e[m\n' "$*"
+}
+
 log ()
 {
   unset PS4
@@ -9,7 +14,14 @@ log ()
   eval $*
 }
 
-cd /opt/svnpenn.github.com
+usage ()
+{
+  echo usage: $0 REPO
+  exit
+}
+
+[ $1 ] || usage
+cd /opt/$1
 
 # Push source branch
 log git checkout source
