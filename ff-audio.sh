@@ -99,7 +99,7 @@ do
   # sure input picture is at least 720. "-shortest" can mess up duration. Adding
   # "-analyzeduration" would only suppress warning, not change file.
   log ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -t $format_duration -qp 0 \
-    -c:a aac -strict -2 -b:a 490785 -cutoff 17000 -v error -stats "$video"
+    -c:a aac -strict -2 -b:a 483809 -cutoff 17000 -v error -stats "$video"
 done
 
 for song in "${songs[@]}"
