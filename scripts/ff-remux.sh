@@ -50,8 +50,8 @@ do
   [[ $inf ]] || exit
   unquote inf
   otf=${inf%.*}.${arg_fmt}
-  # Stefano Sabatini broke "-nostdin"
-  log ffmpeg -i "$inf" -v warning -stats $cpy "$otf" </dev/null
+  log ffmpeg -i "$inf" -v error -stats -nostdin $cpy "$oft"
+  printf '\n'
   path inf
   log rm "$inf"
 done
