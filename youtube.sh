@@ -2,6 +2,13 @@
 # http://youtube.com/watch?v=LHelEIJVxiE
 # http://youtube.com/watch?v=L7ird1HeEjw
 
+if [[ $OSTYPE =~ linux ]]
+then
+  FIREFOX=firefox
+else
+  FIREFOX="$PROGRAMFILES/mozilla firefox/firefox"
+fi
+
 qual=(
   [5]='240p FLV h.263'
   [17]='144p 3GP mpeg4 simple'
@@ -37,7 +44,29 @@ usage ()
 
 decode ()
 {
-  read $1 < <(sed 's % \\\\x g' <<< ${!2} | xargs printf)
+  read $1 <<< $(sed 's % \\\\x g' <<< ${!2} | xargs printf)
+}
+
+log ()
+{
+  unset PS4
+  set $((set -x; : "$@") 2>&1)
+  shift
+  warn $*
+  eval $*
+}
+
+download ()
+{
+  IFS=/ read gg hh <<< "$1"
+  exec 3< /dev/tcp/$gg/80
+  {
+    echo GET /$hh HTTP/1.1
+    echo connection: close
+    echo host: $gg
+    echo
+  } >&3
+  sed '1,/^$/d' <&3
 }
 
 [ $1 ] || usage
@@ -51,9 +80,9 @@ arg_itag=$1
 set ${2//[&?]/ }
 shift
 declare $*
-read aa < <(wget -qO- www.youtube.com/get_video_info?video_id=$v)
-[ $aa ] || exit
-declare ${aa//&/ }
+set $(curl -s www.youtube.com/get_video_info?video_id=$v)
+[ $1 ] || exit
+declare ${1//&/ }
 decode fmt_stream_map url_encoded_fmt_stream_map
 
 set ${fmt_stream_map//,/ }
@@ -71,20 +100,4 @@ do
 done
 
 [ $arg_itag ] || usage
-set "$decoded_url&signature=$sig" ${qual[itag],,}
-
-gg='Length: ([0-9]*)'
-while read ff
-do
-  if [[ $ff =~ $gg ]]
-  then
-    break
-  fi
-done < <(wget -O a.$3 $1 2>&1)
-
-if [ ${BASH_REMATCH[1]} = 2147483646 ]
-then
-  wget --ignore-length -O a.$3 $1
-else
-  wget -O a.$3 $1
-fi
+"$FIREFOX" "$decoded_url&signature=$sig" &
