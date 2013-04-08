@@ -24,8 +24,12 @@ usage ()
 artist=$1
 album=$2
 
-FIREFOX "google.com/search?tbm=isch&q=${artist} ${album}"
-
 FIREFOX "musicbrainz.org/search?type=release&query=${artist} ${album}"
 
+FIREFOX "google.com/search?tbm=isch&q=${artist} ${album}"
+
 FIREFOX "fanart.tv/api/getdata.php?type=2&s=${artist}"
+
+FIREFOX "discogs.com/search?q=${artist} ${album}"
+
+FIREFOX "wikipedia.org/w/index.php?search=${artist}+${album// /+}"

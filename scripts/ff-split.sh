@@ -30,4 +30,4 @@ log ffmpeg -i "$arg_flc" -v warning -stats "$otf"
 printf '\n'
 
 # fpcalc cannot read files with commas, good game
-log shntool split -f "$arg_cue" -t %n-%t -m ' -,-/-' "$otf"
+log shntool split -f "$arg_cue" -t %n-%t -m ' -,-/-;-' "$otf"
