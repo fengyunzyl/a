@@ -23,8 +23,10 @@ unquote ()
 printf -v nn '\n'
 while read -rp "Drag file here, or use a pipe.$nn" hh
 do
+  [[ $hh ]] || exit
   unquote hh
   kk="${hh%.*}.mp3"
-  log ffmpeg -i "$hh" -q 0 -v warning "$kk"
+  log ffmpeg -i "$hh" -q 0 -v error -stats -nostdin "$kk"
+  printf '\n'
   log mp3gain -r -k -m 10 -s s "$kk"
 done
