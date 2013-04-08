@@ -33,3 +33,5 @@ FIREFOX "fanart.tv/api/getdata.php?type=2&s=${artist}"
 FIREFOX "discogs.com/search?q=${artist} ${album}"
 
 FIREFOX "wikipedia.org/w/index.php?search=${artist}+${album// /+}"
+
+FIREFOX "xiami.com"

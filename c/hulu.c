@@ -1,6 +1,5 @@
 /*
 i686-w64-mingw32-gcc hulu.c -Wall
-mapfile vids < <(grep -aoz "<video [^>]*>" a.core | sort | uniq -w123)
 */
 
 #include <stdio.h> // fopen

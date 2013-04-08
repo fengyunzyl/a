@@ -15,7 +15,6 @@ int main(){
   unsigned int offset = 0;
 
   // grep -axzm1 "[ -~]*$1[ -~]*" p.core
-  // IFS=? read a1 a2 < <(binparse "Frag")
   // grep -azm1 Frag p.core
   
   pcre *re = pcre_compile("http.*html", 0, &error, &erroffset, 0);

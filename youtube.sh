@@ -1,4 +1,3 @@
-#!/bin/bash
 # Bash download from YouTube
 # http://youtube.com/watch?v=LHelEIJVxiE
 # http://youtube.com/watch?v=L7ird1HeEjw

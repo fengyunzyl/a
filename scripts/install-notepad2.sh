@@ -13,7 +13,7 @@ $WINDIR/system32/cmd /c build_wdk.bat Build x64
 
 # install
 cd "$ProgramW6432"
-mkdir notepad2
+mkdir -p notepad2
 cd notepad2
 cp $SOURCE/bin/wdk/release_x64/notepad2 .
 cat > notepad2.ini <<q
