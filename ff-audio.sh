@@ -47,7 +47,7 @@ usage ()
 
 [ $1 ] || usage
 img=(*.jpg)
-if ! [ $img ]
+if ! [ -a $img ]
 then
   echo no jpg found
   exit
