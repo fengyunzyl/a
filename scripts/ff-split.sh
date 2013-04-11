@@ -2,7 +2,7 @@
 
 usage ()
 {
-  echo usage: $0 CUE FLAC
+  echo usage: $0 CUE AUDIO
   exit
 }
 
@@ -22,12 +22,12 @@ log ()
 
 [[ $2 ]] || usage
 arg_cue=$1
-arg_flc=$2
+arg_aud=$2
 
 # first we need to remux to wav
-otf=${arg_flc%.*}.wav
-log ffmpeg -i "$arg_flc" -v warning -stats "$otf"
+otf=${arg_aud%.*}.wav
+log ffmpeg -i "$arg_aud" -v warning -stats "$otf"
 printf '\n'
 
 # fpcalc cannot read files with commas, good game
-log shntool split -f "$arg_cue" -t %n-%t -m ' -,-/-;-' "$otf"
+log shntool split -f "$arg_cue" -t %n-%t -m ' -&-(-)-,-/-;-' "$otf"
