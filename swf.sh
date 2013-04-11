@@ -1,9 +1,9 @@
 # decompile and deobfuscate SWF
 # http://github.com/whitequark/furnace-avm2
 
-usage()
+usage ()
 {
-  echo usage: $0 [ABC_TAG_NAME] FILE
+  echo usage: $0 FILE
   exit
 }
 
@@ -42,4 +42,4 @@ do
   log furnace-avm2-decompiler -i b.abc -d -D funids > $aa.as
 done
 
-log rm a.abc b.abc
+rm a.abc b.abc
