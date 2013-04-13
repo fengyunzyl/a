@@ -56,7 +56,7 @@ coredump ()
   arg_pid=$!
   arg_prog=$1
   echo waiting for $arg_prog to load...
-  bb=huluad.com/crossdomain.xml
+  bb=macromedia.com/xml/dtds/cross-domain-policy.dtd
   until grep -qr --include _CACHE_001_ $bb .
   do
     sleep 1
