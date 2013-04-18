@@ -1,4 +1,3 @@
-#!/bin/sh
 # Merge commits from another branch
 
 git clone git@github.com:svnpenn/rtmpdump.git
