@@ -1,4 +1,3 @@
-#!/bin/sh
 # FFplay with cookies
 
 usage ()
