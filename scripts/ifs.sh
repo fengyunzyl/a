@@ -21,7 +21,7 @@ chars=(
   7B 7C 7D 7E
 )
 
-for char in "${chars[@]}"
+for char in ${chars[*]}
 do
   printf -v foo "\x$char"
   log declare bar="$foo"
