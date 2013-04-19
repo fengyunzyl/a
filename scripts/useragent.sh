@@ -1,11 +1,10 @@
-#!/bin/sh
 # techpatterns.com/forums/about304.html
 # Mozilla/5.0 (iPad; U; CPU OS 4_2_1 like Mac OS X; ja-jp) AppleWebKit/533.17.9
 
 # Find the shortest User Agent string
 # From my tests it was "iPad"
 
-wget -qO- techpatterns.com/downloads/firefox/useragentswitcher.xml |
+curl -sA iPad techpatterns.com/downloads/firefox/useragentswitcher.xml |
   tr '"();' '\n' |
   sort -u |
   while read aa
@@ -17,8 +16,7 @@ wget -qO- techpatterns.com/downloads/firefox/useragentswitcher.xml |
   while read aa
   do
     echo $aa
-    if wget -qO- -U "$aa" youtube.com/watch?v=ReP9pN5jJDY |
-      grep -q videoplayback?
+    if curl -sLA "$aa" youtube.com/watch?v=ReP9pN5jJDY | grep -q videoplayback?
     then
       exit
     fi

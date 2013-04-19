@@ -1,7 +1,7 @@
 
 usage ()
 {
-  echo usage: $0 SEARCH COMMAND
+  echo "usage: $0 <fail string> <command>"
   exit
 }
 
@@ -37,13 +37,13 @@ do
   bb[aa++]=$hh
 done
 
-arg_search=$bb
+arg_fail=$bb
 unset bb[0]
 unset bb[1]
 
 for hh in ${!bb[*]}
 do
-  if [[ ${bb[hh]} = -o ]]
+  if [[ ${bb[hh]} =~ -[Oo] ]]
   then
     arg_url=${bb[hh-1]}
     unset bb[hh-1]
@@ -58,7 +58,7 @@ do
   unset bb[hh]
   two=${bb[hh+1]}
   [[ $two =~ ^- ]] && unset two || unset bb[hh+1]
-  if log curl "${bb[@]}" "$arg_url" | grep --color -m1 "$arg_search"
+  if log curl "${bb[@]}" "$arg_url" | grep --color -m1 "$arg_fail"
   then
     # restore if download failed
     bb[hh]=$one
