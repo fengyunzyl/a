@@ -1,8 +1,7 @@
-#!/bin/sh
 # for each file in current directory, print date of last
 # commit (not including renames)
 
-ls | while read aa
+for aa in *
 do
   printf . >&2
   git log --follow --name-status --format="%ai  $aa" "$aa" |
