@@ -25,7 +25,7 @@ tag=$1
 url=$2
 
 log curl -s "$url" |
-awk -vtag=$tag '
+awk '
 BEGIN {
   FS = "(<[^>]*>)+"
   OFS = ","
@@ -33,4 +33,4 @@ BEGIN {
 $4 ~ tag {
   print $2, $4, $5
 }
-' | sort -k3 -rt,
+' tag=$tag | sort -k3 -rt,
