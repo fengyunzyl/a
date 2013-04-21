@@ -25,15 +25,6 @@ usage ()
   exit
 }
 
-path ()
-{
-  dn=$(dirname "${!1}")
-  bn=$(basename "${!1}")
-  cd "$dn"
-  read $1 <<< "$PWD/$bn"
-  cd ~-
-}
-
 [ $1 ] || usage
 arg_fmt=$1
 flac=nocopy
@@ -51,7 +42,5 @@ do
   unquote inf
   otf=${inf%.*}.${arg_fmt}
   log ffmpeg -i "$inf" -v error -stats -nostdin $cpy "$otf"
-  printf '\n'
-  path inf
-  log rm "$inf"
+  echo
 done
