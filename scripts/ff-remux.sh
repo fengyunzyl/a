@@ -22,6 +22,8 @@ unquote ()
 usage ()
 {
   echo usage: $0 FORMAT
+  echo
+  echo this will not delete original file
   exit
 }
 
