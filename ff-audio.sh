@@ -45,44 +45,62 @@ usage ()
   exit
 }
 
+qsjoin ()
+{
+  sed 's/ /\&/g' <<< "${qs[*]}"
+}
+
 [ $1 ] || usage
 img=(*.jpg)
-if ! [ -a $img ]
-then
-  echo no jpg found
-  exit
-fi
-
+[ -a $img ] || usage
 shopt -s extglob
-songs=( @(*.flac|*.mp3) )
+songs=(
+  @(*.flac|*.mp3)
+)
 declare -A titles
 
 for song in "${songs[@]}"
 do
-  eval $(log fpcalc "$song" | sed '1d')
-  set "client=8XaBELgH&duration=${DURATION}&fingerprint=${FINGERPRINT}"
-  curl -so .json "api.acoustid.org/v2/lookup?meta=recordings&${1}"
-  warn $(JQ '.results[0].id')
-  title=$(JQ '.results[0].recordings[0].title')
-  if ! [ $rid ]
+  warn $song
+  eval $(fpcalc "$song" | sed 1d)
+  qs=(
+    client=8XaBELgH
+    duration=$DURATION
+    fingerprint=$FINGERPRINT
+    meta=recordingids
+  )
+  warn connect to acoustid.org...
+  curl -s api.acoustid.org/v2/lookup?`qsjoin` |
+    jq '.results[0]' > .json
+  warn $(JQ '.id')
+  rid=$(JQ '.recordings[0].id')
+  # hit musicbrainz API for entire album
+  if ! [ $date ]
   then
-    rid=$(JQ '.results[0].recordings[0].id')
-    set "fmt=json&inc=artist-credits+labels&recording=${rid}"
-    log curl -s "musicbrainz.org/ws/2/release?${1}" |
+    qs=(
+      fmt=json
+      inc=artist-credits+labels+recordings
+      recording=$rid
+    )
+    warn connect to musicbrainz.org...
+    curl -s musicbrainz.org/ws/2/release?`qsjoin` |
       jq '.releases | sort_by(.["cover-art-archive"]) | .[length - 1]' > .json
+    cp .json release.json
     album=$(JQ '.title')
-    artist=$(JQ '.["artist-credit"][0].name')
     label=$(JQ '.["label-info"][0].label.name')
     date=$(JQ '.date')
   fi
-  rm .json
+  cat release.json |
+    jq ".media[0].tracks[] | select(.recording.id == \"$rid\")" > .json
+  title=$(JQ '.title')
+  artist=$(JQ '.["artist-credit"][] | .name, .joinphrase')
   meta=${song%.*}.txt
   {
-    echo "Title: ${title}"
-    echo "Album: ${album}"
-    echo "Artist: ${artist}"
-    echo "Label: ${label}"
-    echo "Date: ${date}"
+    echo Title: $title
+    echo Album: $album
+    echo Artist: $artist
+    echo Label: $label
+    echo Date: $date
   } | tee "$meta"
   warn 'enter "y" if metadata is ok'
   read uu
