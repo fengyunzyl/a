@@ -121,12 +121,16 @@ do
     -c:a aac -strict -2 -b:a 384k -v error -stats "$video"
 done
 
+if (( ${#album} > 30 ))
+then
+  album=${album/ /,}
+fi
+
 for song in "${songs[@]}"
 do
   meta=${song%.*}.txt
   video=${song%.*}.mp4
   # category is case sensitive
-  log google youtube post -c Music -n "${artist}, ${titles[$song]}" \
-    -s "${meta}" -t "${album}, ${artist}" \
-    -u svnpenn "${video}"
+  log google youtube post -c Music -n "$artist, ${titles[$song]}" -s "$meta" \
+    -t "$album, $artist" -u svnpenn "$video"
 done
