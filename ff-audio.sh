@@ -45,7 +45,7 @@ usage ()
   exit
 }
 
-qsjoin ()
+querystring ()
 {
   sed 's/ /\&/g' <<< "${qs[*]}"
 }
@@ -70,7 +70,7 @@ do
     meta=recordingids
   )
   warn connect to acoustid.org...
-  curl -s api.acoustid.org/v2/lookup?`qsjoin` |
+  curl -s api.acoustid.org/v2/lookup?`querystring` |
     jq '.results[0]' > .json
   warn $(JQ '.id')
   rid=$(JQ '.recordings[0].id')
@@ -83,7 +83,7 @@ do
       recording=$rid
     )
     warn connect to musicbrainz.org...
-    curl -s musicbrainz.org/ws/2/release?`qsjoin` |
+    curl -s musicbrainz.org/ws/2/release?`querystring` |
       jq '.releases | sort_by(.["cover-art-archive"]) | .[length - 1]' > .json
     cp .json release.json
     album=$(JQ '.title')
