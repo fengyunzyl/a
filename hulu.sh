@@ -51,26 +51,6 @@ serialize_xml ()
   done
 }
 
-coredump ()
-{
-  arg_pid=$!
-  arg_prog=$1
-  echo waiting for $arg_prog to load...
-  bb=macromedia.com/xml/dtds/cross-domain-policy.dtd
-  until grep -qr --include _CACHE_001_ $bb .
-  do
-    sleep 1
-  done
-  echo dumping $arg_prog...
-  read WINPID </proc/$arg_pid/winpid
-  dumper hulu $WINPID 2>&- &
-  until [ -s hulu.core ]
-  do
-    sleep 1
-  done
-  kill -13 $arg_pid
-}
-
 download ()
 {
   IFS=/ read gg hh <<< "$2"
@@ -101,15 +81,26 @@ set $(find -name prefs.js -exec ls -t {} +)
 cp "$1" /tmp
 cd /tmp
 MOZ_DISABLE_OOP_PLUGINS=1 "$FIREFOX" -no-remote -profile . $arg_url &
-coredump firefox
-grep -ao '<video [[:print:]]*/>' hulu.core | sort | uniq -w123 > hulu.smil
+PID=$!
+echo waiting for firefox to load...
+bb=macromedia.com/xml/dtds/cross-domain-policy.dtd
 
-if ! [ -s hulu.smil ]
-then
-  warn dumped too soon, retry
-  echo $bb
-  exit
-fi
+until grep -qr --include _CACHE_001_ $bb .
+do
+  sleep 1
+done
+
+echo dumping firefox...
+read WINPID </proc/$PID/winpid
+dumper hulu $WINPID 2>&- &
+
+until grep -ao '<video [[:print:]]*/>' hulu.core > hulu.smil
+do
+  sleep 1
+done
+
+kill -13 $PID
+sort hulu.smil | uniq -w123 > hulu.smil
 
 while read video
 do
