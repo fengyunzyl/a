@@ -4,7 +4,7 @@
 wget zlib.net/zlib-1.2.7.tar.bz2
 tar xf zlib-1.2.7.tar.bz2
 cd zlib-1.2.7
-make install -f win32/Makefile.gcc \
+make -f win32/Makefile.gcc install \
   BINARY_PATH=/bin \
   INCLUDE_PATH=/include \
   LIBRARY_PATH=/lib \
@@ -13,9 +13,9 @@ make install -f win32/Makefile.gcc \
 cd -
 
 # Install PolarSSL
-wget polarssl.org/download/polarssl-1.2.0-gpl.tgz
-tar xf polarssl-1.2.0-gpl.tgz
-cd polarssl-1.2.0
+wget polarssl.org/download/polarssl-1.2.7-gpl.tgz
+tar xf polarssl-1.2.7-gpl.tgz
+cd polarssl-1.2.7
 make lib \
   AR=i686-w64-mingw32-ar \
   CC=i686-w64-mingw32-gcc
@@ -27,11 +27,10 @@ cd -
 git clone git://github.com/svnpenn/rtmpdump.git
 cd rtmpdump
 git checkout pu
-read RTMPDUMP_VERSION < <(git describe --tags)
 make install \
   SYS=mingw \
   CRYPTO=POLARSSL \
   CROSS_COMPILE=i686-w64-mingw32- \
   SHARED= \
   XLDFLAGS=-static \
-  VERSION=$RTMPDUMP_VERSION
+  VERSION=$(git describe --tags)
