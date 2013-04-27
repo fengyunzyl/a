@@ -25,7 +25,7 @@ deps=(
 )
 
 P7ZIP="${ProgramW6432}/7-zip/7z"
-log "$P7ZIP" x $HOMEDRIVE/steven/public/wdk/GRMWDK_EN_7600_1.ISO ${deps[*]}
+log "$P7ZIP" x $HOMEDRIVE/$USERNAME/public/wdk/GRMWDK_EN_7600_1.ISO ${deps[*]}
 mv wdk baby-wdk
 cd ${0%/*}
 set $(git log --follow --oneline $0 | wc -l)
