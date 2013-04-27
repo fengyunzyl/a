@@ -17,11 +17,7 @@ make -j5 install-binaries install-libraries
 
 # gitk
 cd /usr/local/bin
+echo 'wish86s "$@"' > wish
 wget raw.github.com/git/git/master/gitk-git/gitk
+sed -i '3s.\$0./cygwin/usr/local/bin/gitk.' gitk
 chmod +x gitk
-echo '
-gitk ()
-{
-  wish86s /cygwin/usr/local/bin/gitk $* &
-}
-' >> ~/.bash_profile
