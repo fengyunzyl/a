@@ -1,9 +1,6 @@
 # Cygwin packages
-setup -nqP git
 setup -nqP libicu-devel
-setup -nqP make
 setup -nqP ruby
-setup -nqP wget
 setup -nqP zlib
 
 # Install charlock_holmes, you must clone it
