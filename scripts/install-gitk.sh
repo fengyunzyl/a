@@ -22,7 +22,6 @@ chmod +x gitk
 echo '
 gitk ()
 {
-  run wish86s /cygwin/usr/local/bin/gitk
-  exit
+  wish86s /cygwin/usr/local/bin/gitk $* &
 }
 ' >> ~/.bash_profile
