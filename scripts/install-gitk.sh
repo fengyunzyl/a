@@ -19,4 +19,10 @@ make -j5 install-binaries install-libraries
 cd /usr/local/bin
 wget raw.github.com/git/git/master/gitk-git/gitk
 chmod +x gitk
-git config --global alias.k '! wish86s /cygwin/usr/local/bin/gitk'
+echo '
+gitk ()
+{
+  run wish86s /cygwin/usr/local/bin/gitk
+  exit
+}
+' >> ~/.bash_profile
