@@ -83,9 +83,15 @@ cd /tmp
 MOZ_DISABLE_OOP_PLUGINS=1 "$FIREFOX" -no-remote -profile . $arg_url &
 PID=$!
 echo waiting for firefox to load...
-bb=macromedia.com/xml/dtds/cross-domain-policy.dtd
 
-until grep -qr --include _CACHE_001_ $bb .
+until [ -a cache ]
+do
+  sleep 1
+done
+
+bb=85751
+
+until (( $(stat -c%s cache/_cache_001_) > bb ))
 do
   sleep 1
 done
@@ -94,13 +100,26 @@ echo dumping firefox...
 read WINPID </proc/$PID/winpid
 dumper hulu $WINPID 2>&- &
 
-until grep -ao '<video [[:print:]]*/>' hulu.core > hulu.smil
+until [ -a hulu.core ]
+do
+  sleep 1
+done
+
+until (( $(stat -c%s hulu.core) > 100000000 ))
 do
   sleep 1
 done
 
 kill -13 $PID
-sort hulu.smil | uniq -w123 > hulu.smil
+grep -ao '<video [[:print:]]*/>' hulu.core | sort | uniq -w123 > hulu.smil
+
+if ! [ -s hulu.smil ]
+then
+  warn dumped too soon, post reply at
+  warn ffmpeg.zeranoe.com/forum/viewtopic.php?t=1055
+  echo error $bb
+  exit
+fi
 
 while read video
 do
