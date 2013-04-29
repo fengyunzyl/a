@@ -31,24 +31,13 @@ log ()
 
 usage ()
 {
-  echo "usage: $0 [CDN FILETYPE] URL"
+  echo "usage: $0 [CDN TYPE] URL"
   echo
-  echo "CDN       content delivery network"
-  echo "FILETYPE  quality"
+  echo "CDN     content delivery network"
+  echo "TYPE    quality"
   echo
-  echo "run with just URL to get CDN and FILETYPE params"
+  echo "run with just URL to get CDN and TYPE params"
   exit
-}
-
-serialize_xml ()
-{
-  set "${!1/<}"
-  eval set ${1/>}
-  for oo
-  do
-    set ${oo/=/ }
-    read ${1/[-:]} <<< $2
-  done
 }
 
 download ()
@@ -67,7 +56,7 @@ download ()
 [ $1 ] || usage
 [ $3 ] || set '' '' $1
 arg_cdn=$1
-arg_filetype=$2
+arg_type=$2
 arg_url=$3
 arg_pwd=$PWD
 cd $WINDIR
@@ -123,11 +112,11 @@ fi
 
 while read video
 do
-  serialize_xml video
+  eval $(awk NF=NF FPAT='[^ -:]*="[^"]*"' <<< $video)
   if ! [ $arg_cdn ]
   then
-    printf '%-9s  %9s\n' $cdn $filetype
-  elif [ $cdn$filetype = $arg_cdn$arg_filetype ]
+    printf '%-9s  %9s\n' $cdn $type
+  elif [ $cdn$type = $arg_cdn$arg_type ]
   then
     break
   else
