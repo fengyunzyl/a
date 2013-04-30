@@ -13,7 +13,6 @@ sed -i '
 51 s/^/have_library "icuuc" or abort "libicuuc missing"/
 ' ext/charlock_holmes/extconf.rb
 gem build charlock_holmes.gemspec
-gem uninstall -I charlock_holmes
 gem install charlock_holmes
 cd -
 
