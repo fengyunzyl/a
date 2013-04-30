@@ -1,26 +1,28 @@
 # Cygwin packages
 setup -nqP libicu-devel
+setup -nqP patch
 setup -nqP ruby
 setup -nqP zlib
 
-# Install charlock_holmes, you must clone it
+# charlock_holmes
 git clone --depth 1 git://github.com/brianmario/charlock_holmes.git
-cd charlock_holmes/ext/charlock_holmes
-# http://github.com/brianmario/charlock_holmes/issues/10
-wget raw.github.com/a3li/a3li-overlay/master/dev-ruby/charlock_holmes/files\
-/extconf.patch
-git apply extconf.patch
-cd ../..
+cd charlock_holmes
+# github.com/brianmario/charlock_holmes/issues/32
+sed -i '
+50 s/^/have_library "z" or abort "libz missing"/
+51 s/^/have_library "icuuc" or abort "libicuuc missing"/
+' ext/charlock_holmes/extconf.rb
 gem build charlock_holmes.gemspec
+gem uninstall -I charlock_holmes
 gem install charlock_holmes
-cd ..
+cd -
 
 # Install posix-spawn
 git clone --depth 1 git://github.com/rtomayko/posix-spawn.git
 cd posix-spawn
 gem build posix-spawn.gemspec
 gem install posix-spawn
-cd ..
 
 # Install github-linguist
 gem install github-linguist
+linguist /usr/lib/ruby/1.9.1/csv.rb
