@@ -1,4 +1,19 @@
 # baby cygwin
+
+warn ()
+{
+  printf '\e[36m%s\e[m\n' "$*"
+}
+
+log ()
+{
+  unset PS4
+  set $((set -x; : "$@") 2>&1)
+  shift
+  warn $*
+  eval $*
+}
+
 set $PWD
 mkdir baby-cygwin
 cd baby-cygwin
@@ -6,7 +21,7 @@ cd baby-cygwin
 # /
 echo '@start bin\bash -l' > cygwin.bat
 DATE=$(date)
-CYGWIN_VERSION=$(uname -r | grep -o '[.0-9]*')
+CYGWIN_VERSION=$(uname -r | sed 's/(.*//')
 u2d > README.txt <<q
 Baby Cygwin by Steven Penny
 
@@ -48,33 +63,32 @@ cd -
 
 # /usr/bin
 deps=(
-  /bin/bash.exe
-  /bin/cp.exe
-  /bin/diff.exe
-  /bin/dumper.exe
-  /bin/find.exe
-  /bin/grep.exe
-  /bin/mkdir.exe
-  /bin/ls.exe
-  /bin/printf.exe
-  /bin/rm.exe
-  /bin/sed.exe
-  /bin/sleep.exe
-  /bin/sort.exe
-  /bin/tee.exe
-  /bin/tr.exe
-  /bin/uniq.exe
-  /bin/wget.exe
-  /bin/xargs.exe
+  /bin/awk
+  /bin/bash
+  /bin/cp
+  /bin/diff
+  /bin/dumper
+  /bin/find
+  /bin/gawk
+  /bin/grep
+  /bin/mkdir
+  /bin/ls
+  /bin/printf
+  /bin/rm
+  /bin/sed
+  /bin/sleep
+  /bin/sort
+  /bin/stat
+  /bin/tee
+  /bin/tr
+  /bin/uniq
+  /bin/wget
+  /bin/xargs
 )
 mkdir bin
 cd bin
 cp ${deps[*]} .
-ldd ${deps[*]} |
-  grep usr |
-  sort -u |
-  cut -d' ' -f3 |
-  xargs cp -t .
+ldd ${deps[*]} | awk '/usr/ && !($0 in aa) {aa[$0]; print $3}' | xargs cp -t.
 cd -
 
 # /usr/local/bin
@@ -84,12 +98,9 @@ mkdir -p usr/local/bin
 mkdir -p usr/share
 cd usr/share
 cp -r /usr/share/terminfo .
-cd -
 
 # archive
 cd ${0%/*}
 BABY_VERSION=$(git log --follow --oneline $0 | wc -l)
 cd $1
-P7ZIP="${ProgramW6432}/7-zip/7z"
-"$P7ZIP" a -mx=9 baby-cygwin-${BABY_VERSION}.zip baby-cygwin
-rm -r baby-cygwin
+log zip -9mqr baby-cygwin-${BABY_VERSION}.zip baby-cygwin
