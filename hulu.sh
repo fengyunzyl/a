@@ -114,7 +114,7 @@ debug hulu.core has exceeded 100 MB
 kill -13 $PID
 debug waiting for firefox to be killed
 wait $PID
-debug finish dump
+debug firefox killed
 grep -ao '<video [[:print:]]*/>' hulu.core | sort | uniq -w123 > hulu.smil
 
 if ! [ -s hulu.smil ]
