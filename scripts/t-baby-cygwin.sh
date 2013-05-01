@@ -2,13 +2,26 @@
 
 usage ()
 {
-  echo usage: $0 VERSION
+  echo usage: $0 ZIP
   exit
 }
 
+warn ()
+{
+  printf '\e[36m%s\e[m\n' "$*"
+}
+
+log ()
+{
+  unset PS4
+  set $((set -x; : "$@") 2>&1)
+  shift
+  warn $*
+  eval $*
+}
+
 [ $1 ] || usage
-wget strm.googlecode.com/files/baby-cygwin-$1.tar.gz
-tar xf baby-cygwin-$1.tar.gz
+log unzip -q $1
 cd baby-cygwin/usr/local/bin
-find /opt/a -maxdepth 1 -type f -exec cp -t. {} +
+log find /opt/a -maxdepth 1 -type f -exec cp -t. {} +
 echo 'baby cygwin ready.'
