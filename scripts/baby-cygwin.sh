@@ -88,7 +88,7 @@ deps=(
 mkdir bin
 cd bin
 cp ${deps[*]} .
-ldd ${deps[*]} | awk '/usr/ && !($0 in aa) {aa[$0]; print $3}' | xargs cp -t.
+ldd ${deps[*]} | awk '/usr/ && ! aa[$0]++ {print $3}' | xargs cp -t.
 cd -
 
 # /usr/local/bin
