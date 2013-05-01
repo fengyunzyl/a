@@ -78,9 +78,9 @@ do
   sleep 1
 done
 
-bb=80644
+: ${SIZE=80644}
 
-until (( $(stat -c%s cache/_cache_001_) > bb ))
+until (( $(stat -c%s cache/_cache_001_) > SIZE ))
 do
   sleep 1
 done
@@ -104,9 +104,9 @@ grep -ao '<video [[:print:]]*/>' hulu.core | sort | uniq -w123 > hulu.smil
 
 if ! [ -s hulu.smil ]
 then
-  warn dumped too soon, post reply at
-  warn ffmpeg.zeranoe.com/forum/viewtopic.php?t=1055
-  echo error $bb
+  warn Dumped too soon, try increasing SIZE value. Example using current value
+  warn SIZE=$SIZE ${0##*/} URL
+  warn or post reply at ffmpeg.zeranoe.com/forum/viewtopic.php?t=1055
   exit
 fi
 
