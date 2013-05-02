@@ -1,6 +1,6 @@
 # Bash download from YouTube
 # http://youtube.com/watch?v=LHelEIJVxiE
-# http://youtube.com/watch?v=L7ird1HeEjw
+# http://youtube.com/watch?v=blnCm0YX4ls
 
 if [[ $OSTYPE =~ linux ]]
 then
