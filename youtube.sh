@@ -72,12 +72,13 @@ download ()
 [ $1 ] || usage
 [ $2 ] || set '' $1
 arg_itag=$1
+arg_url=$2
 
 # set
 # declare
 # decode
 
-set ${2//[&?]/ }
+set ${arg_url//[&?]/ }
 shift
 declare $*
 set $(curl -s www.youtube.com/get_video_info?video_id=$v)
