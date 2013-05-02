@@ -12,8 +12,8 @@ bsplit()
 
 bjoin()
 {
-  kk=$2[*]
-  IFS=';' read $1 <<< "${!kk}"
+  set $*[*]
+  IFS=';' read $1 <<< "${!2}"
 }
 
 warn ()

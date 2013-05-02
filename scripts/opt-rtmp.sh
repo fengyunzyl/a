@@ -89,8 +89,8 @@ qsplit ()
 
 qjoin ()
 {
-  kk=$2[*]
-  IFS='&' read $1 <<< "${!kk}"
+  set $*[*]
+  IFS='&' read $1 <<< "${!2}"
 }
 
 for hh in ${!bb[@]}
