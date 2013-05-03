@@ -67,9 +67,7 @@ log ()
 arg_itag=$1
 arg_url=$2
 declare $(awk NF=NF FPAT='[^&?]*=[^&]*' <<< $arg_url)
-set $(curl -s www.youtube.com/get_video_info?video_id=$v)
-[ $1 ] || exit
-declare $(sed 'y/&/ /' <<< $1)
+declare $(curl -s www.youtube.com/get_video_info?video_id=$v | sed 'y/&/ /')
 set $(decode url_encoded_fmt_stream_map | sed 'y/,/ /')
 
 for oo
