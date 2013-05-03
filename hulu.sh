@@ -89,14 +89,14 @@ do
 done
 
 debug cache loaded
-: ${SIZE=80644}
+: ${SIZE=4535}
 
-until (( `stat -c%s cache/_cache_001_` > SIZE ))
+until (( `du -s cache | cut -f1` > SIZE ))
 do
   sleep 1
 done
 
-debug cache/_cache_001_ has exceeded $SIZE bytes
+debug cache has exceeded $SIZE bytes
 echo dumping firefox...
 read WINPID </proc/$PID/winpid
 dumper hulu $WINPID 2>&- &
