@@ -2,23 +2,38 @@
 
 usage ()
 {
-  echo usage: $0 COMMAND [INI]
+  echo "usage: ${0##*/} MODE REGEX"
   echo
-  echo include INI to print packages that would install this package
+  echo "MODES"
+  echo
+  echo "local"
+  echo "  search local repos for REGEX"
+  echo "require"
+  echo "  print packages that require REGEX"
+  echo "contain"
+  echo "  print packages that contain REGEX"
   exit
 }
 
-[ $1 ] || usage
-# commented results ok
-egrep -r --color --exclude-dir .git "^(|.*[^.\"])$1" /opt/{a,dotfiles}
+[ $2 ] || usage
+mode=$1
+regex=$2
 
-[ $2 ] || exit
-
-awk '
-/^@ / {
-  foo=$0
-}
-$0 ~ "^requires:.*"bar {
-  print foo"\n"$0"\n"
-}
-' bar="$1" /usr/local/bin/http%3a%2f%2fbox-soft.com%2f/setup.ini
+if [ $mode = local ]
+then
+  # commented results ok
+  egrep -r --color --exclude-dir .git "^(|.*[^.\"])$regex" /opt/{a,dotfiles}
+elif [ $mode = require ]
+then
+  awk '
+  /^@ / {
+    foo=$0
+  }
+  $0 ~ "^requires:.*"bar {
+    print foo"\n"$0"\n"
+  }
+  ' bar=$regex /usr/local/bin/http*/setup.ini
+elif [ $mode = contain ]
+then
+  cygcheck -p $regex | awk 'NR>1 && ! /-src\t/ && ! a[$1]++ {print $1}' FS=/
+fi
