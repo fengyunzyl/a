@@ -31,7 +31,7 @@ log ()
 
 usage ()
 {
-  echo "usage: $0 [CDN TYPE] URL"
+  echo "usage: ${0##*/} [CDN TYPE] URL"
   echo
   echo "CDN     content delivery network"
   echo "TYPE    quality"
@@ -58,8 +58,11 @@ debug ()
   echo $(date +%T.%N) $* >> hulu.log
 }
 
-[ $1 ] || usage
-[ $3 ] || set '' '' $1
+case $# in
+  [02]) usage ;;
+  1) set '' '' $1 ;;
+esac
+
 arg_cdn=$1
 arg_type=$2
 arg_url=$3
@@ -140,8 +143,10 @@ do
   fi
 done < hulu.smil
 
-[ $? = 0 ] || usage
-[ $arg_cdn ] || exit
+# check for bogus CDN
+(( $? )) && usage
+# check for missing CDN
+[ $arg_cdn ] || usage
 [[ $arg_url =~ [0-9]+ ]]
 
 if [ -a /usr/local/bin/jq ]
