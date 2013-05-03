@@ -4,9 +4,15 @@
 
 if [[ $OSTYPE =~ linux ]]
 then
-  FIREFOX=firefox
+  FIREFOX ()
+  {
+    firefox $1
+  }
 else
-  FIREFOX="$PROGRAMFILES/mozilla firefox/firefox"
+  FIREFOX ()
+  {
+    $WINDIR/system32/cmd.exe /c "start firefox \"$1\""
+  }
 fi
 
 qual=(
@@ -44,7 +50,7 @@ usage ()
 
 decode ()
 {
-  read $1 <<< $(sed 's % \\\\x g' <<< ${!2} | xargs printf)
+  sed 's % \\\\x g' <<< ${!1} | xargs printf
 }
 
 log ()
@@ -56,41 +62,19 @@ log ()
   eval $*
 }
 
-download ()
-{
-  IFS=/ read gg hh <<< "$1"
-  exec 3< /dev/tcp/$gg/80
-  {
-    echo GET /$hh HTTP/1.1
-    echo connection: close
-    echo host: $gg
-    echo
-  } >&3
-  sed '1,/^$/d' <&3
-}
-
 [ $1 ] || usage
 [ $2 ] || set '' $1
 arg_itag=$1
 arg_url=$2
-
-# set
-# declare
-# decode
-
-set ${arg_url//[&?]/ }
-shift
-declare $*
+declare $(awk NF=NF FPAT='[^&?]*=[^&]*' <<< $arg_url)
 set $(curl -s www.youtube.com/get_video_info?video_id=$v)
 [ $1 ] || exit
-declare ${1//&/ }
-decode fmt_stream_map url_encoded_fmt_stream_map
+declare $(sed 'y/&/ /' <<< $1)
+set $(decode url_encoded_fmt_stream_map | sed 'y/,/ /')
 
-set ${fmt_stream_map//,/ }
 for oo
 do
-  declare ${oo//&/ }
-  decode decoded_url url
+  declare $(sed 'y/&/ /' <<< $oo)
   if ! [ $arg_itag ]
   then
     printf ' %3.3s  %s\n' $itag "${qual[itag]}"
@@ -101,4 +85,4 @@ do
 done
 
 [ $arg_itag ] || usage
-"$FIREFOX" "$decoded_url&signature=$sig" &
+FIREFOX `decode url`"&signature=$sig"
