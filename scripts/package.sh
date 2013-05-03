@@ -27,10 +27,10 @@ elif [ $mode = require ]
 then
   awk '
   /^@ / {
-    foo=$0
+    foo=$2
   }
   $0 ~ "^requires:.*"bar {
-    print foo"\n"$0"\n"
+    print foo
   }
   ' bar=$regex /usr/local/bin/http*/setup.ini
 elif [ $mode = contain ]
