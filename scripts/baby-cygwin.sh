@@ -66,8 +66,10 @@ deps=(
   /bin/awk
   /bin/bash
   /bin/cp
+  /bin/cut
   /bin/date
   /bin/diff
+  /bin/du
   /bin/dumper
   /bin/find
   /bin/gawk
