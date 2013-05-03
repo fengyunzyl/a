@@ -31,12 +31,13 @@ log ()
 
 usage ()
 {
-  echo "usage: ${0##*/} [CDN TYPE] URL"
-  echo
-  echo "CDN     content delivery network"
-  echo "TYPE    quality"
-  echo
-  echo "run with just URL to get CDN and TYPE params"
+  echo "USAGE"
+  echo "  ${0##*/} [CDN TYPE] URL"
+  echo "  run with just URL to get CDN and TYPE params"
+  echo "CDN"
+  echo "  content delivery network"
+  echo "TYPE"
+  echo "  quality"
   exit
 }
 
@@ -134,7 +135,7 @@ do
   eval $(awk NF=NF FPAT='[^ -:]*="[^"]*"' <<< $video)
   if ! [ $arg_cdn ]
   then
-    printf '%-9s  %9s\n' $cdn $type
+    printf '\e[36m%-9s  %9s\e[m\n' $cdn $type
   elif [ $cdn$type = $arg_cdn$arg_type ]
   then
     break
