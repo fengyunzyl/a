@@ -15,9 +15,15 @@ else
   }
 fi
 
+debug ()
+{
+  echo $(date +%T.%N | cut -b-11) $* >> hulu.log
+}
+
 warn ()
 {
   printf '\e[36m%s\e[m\n' "$*"
+  debug $*
 }
 
 log ()
@@ -54,11 +60,6 @@ download ()
   sed '1,/^$/d' <&3 > $1
 }
 
-debug ()
-{
-  echo $(date +%T.%N) $* >> hulu.log
-}
-
 case $# in
   [02]) usage ;;
   1) set '' '' $1 ;;
@@ -82,39 +83,14 @@ MOZ_DISABLE_OOP_PLUGINS=1 "$FIREFOX" -no-remote -profile . $arg_url &
 PID=$!
 debug firefox started
 echo waiting for firefox to load...
-
-until [ -a cache ]
-do
-  sleep 1
-done
-
-debug cache loaded
-: ${SIZE=4535}
-
-until (( `du -s cache | cut -f1` > SIZE ))
-do
-  sleep 1
-done
-
-debug cache has exceeded $SIZE bytes
+: ${S1=8}
+sleep $S1
 echo dumping firefox...
 read WINPID </proc/$PID/winpid
 dumper hulu $WINPID 2>&- &
 debug starting dump
-
-until [ -a hulu.core ]
-do
-  sleep 1
-done
-
-debug waiting for hulu.core to exceed 100 MB
-
-until (( `stat -c%s hulu.core` > 100000000 ))
-do
-  sleep 1
-done
-
-debug hulu.core has exceeded 100 MB
+: ${S2=1}
+sleep $S2
 kill -13 $PID
 debug waiting for firefox to be killed
 wait $PID
@@ -123,8 +99,9 @@ grep -ao '<video [[:print:]]*/>' hulu.core | sort | uniq -w123 > hulu.smil
 
 if ! [ -s hulu.smil ]
 then
-  warn Dumped too soon, try increasing SIZE value. Example using current value
-  warn SIZE=$SIZE ${0##*/} URL
+  warn Dumped too soon, try increasing sleep values.
+  warn Example using current values
+  warn S1=$S1 S2=$S2 ${0##*/} URL
   warn or post contents of /tmp/hulu.log to
   warn ffmpeg.zeranoe.com/forum/viewtopic.php?t=1055
   exit
