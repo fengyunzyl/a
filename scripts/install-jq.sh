@@ -1,11 +1,9 @@
 # up to date Windows native jq
-setup -nqP bison
-setup -nqP flex
-setup -nqP python
+setup -nqP bison,flex,python
 
 git clone --depth 1 git://github.com/stedolan/jq.git
 cd jq
-make CC=i686-w64-mingw32-gcc
+make binaries PLATFORMS=win32
 
 # archive
 cd ${0%/*}
