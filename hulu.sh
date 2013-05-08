@@ -29,10 +29,9 @@ warn ()
 log ()
 {
   unset PS4
-  set $((set -x; : "$@") 2>&1)
-  shift
-  warn $*
-  eval $*
+  qq=$((set -x; : "$@") 2>&1)
+  warn "${qq:1}"
+  eval "${qq:1}"
 }
 
 usage ()
@@ -83,7 +82,7 @@ MOZ_DISABLE_OOP_PLUGINS=1 "$FIREFOX" -no-remote -profile . $arg_url &
 PID=$!
 debug firefox started
 echo waiting for firefox to load...
-: ${S1=8}
+: ${S1=10}
 sleep $S1
 echo dumping firefox...
 read WINPID </proc/$PID/winpid
