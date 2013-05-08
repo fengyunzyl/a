@@ -2,19 +2,11 @@
 
 if [[ $OSTYPE =~ linux ]]
 then
-  FFPROBE ()
-  {
-    ffprobe "$@"
-  }
   JQ ()
   {
     jq -r "$@" .json
   }
 else
-  FFPROBE ()
-  {
-    ffprobe "$@" | d2u
-  }
   JQ ()
   {
     jq -r "$@" .json | d2u
@@ -112,11 +104,11 @@ for song in "${songs[@]}"
 do
   mp3gain -s d "$song"
   video=${song%.*}.mp4
-  eval $(FFPROBE -v error -show_format -print_format flat=s=_ "$song")
+  ffprobe -v error -show_format -print_format json "$song" > .json
   # Adding "-preset" would only make small difference in size or speed. Make
   # sure input picture is at least 720. "-shortest" can mess up duration. Adding
   # "-analyzeduration" would only suppress warning, not change file.
-  log ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -t $format_duration \
+  log ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -t `JQ .format.duration` \
     -qp 0 -filter:v 'crop=trunc(iw/2)*2' \
     -c:a aac -strict -2 -b:a 384k -v error -stats "$video"
 done
