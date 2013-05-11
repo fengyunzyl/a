@@ -59,11 +59,34 @@ do
   unset bb[hh]
   two=${bb[hh+1]}
   [[ $two =~ ^- ]] && unset two || unset bb[hh+1]
-  if log curl "${bb[@]}" "$arg_url" | grep --color -m1 "$arg_fail"
+  if log curl -L --compressed "${bb[@]}" "$arg_url" |
+    grep --color -m1 "$arg_fail"
   then
     # restore if download failed
     bb[hh]=$one
     bb[hh+1]=$two
   fi
   [[ $two ]] && (( hh++ ))
+done
+
+for hh in ${!bb[*]}
+do
+  # break up cookies
+  IFS=':' read name vs <<< "${bb[hh]}"
+  bsplit va vs
+  for ff in ${!va[*]}
+  do
+    one=${va[ff]}
+    unset va[ff]
+    bjoin vs va
+    bb[hh]=${name}${vs:+:$vs}
+    if log curl -L --compressed "${bb[@]}" "$arg_url" |
+      grep --color -m1 "$arg_fail"
+    then
+      echo FAIL
+      va[ff]=$one
+    fi
+  done
+  bjoin vs va
+  bb[hh]=${name}${vs:+:$vs}
 done
