@@ -44,7 +44,6 @@ git rm -qr .
 cp -r _site/. .
 rm -r _site
 git add -A
-read aa < <(git status -s | cut -c4-)
 git status -s | git commit -F-
 git push origin master || exit
 log git checkout source
