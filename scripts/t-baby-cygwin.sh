@@ -23,5 +23,5 @@ log ()
 [ $1 ] || usage
 log unzip -q $1
 cd baby-cygwin/usr/local/bin
-log find /opt/a -maxdepth 1 -type f -exec cp -t. {} +
+log find /opt/a -maxdepth 1 -name '*.sh' -exec cp -t. {} +
 echo 'baby cygwin ready.'
