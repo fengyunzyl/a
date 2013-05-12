@@ -8,10 +8,9 @@ warn ()
 log ()
 {
   unset PS4
-  set $((set -x; : "$@") 2>&1)
-  shift
-  warn $*
-  eval $*
+  qq=$((set -x; : "$@") 2>&1)
+  warn "${qq:1}"
+  eval "${qq:1}"
 }
 
 unquote ()
