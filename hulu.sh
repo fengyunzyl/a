@@ -59,6 +59,13 @@ download ()
   sed '1,/^$/d' <&3 > $1
 }
 
+post ()
+{
+  warn post contents of /tmp/hulu.log to
+  warn ffmpeg.zeranoe.com/forum/viewtopic.php?t=1055
+  exit
+}
+
 case $# in
   [02]) usage ;;
   1) set '' '' $1 ;;
@@ -68,8 +75,16 @@ arg_cdn=$1
 arg_type=$2
 arg_url=$3
 arg_pwd=$PWD
-cd $WINDIR
-echo ProtectedMode=0 > system32/macromed/flash/mms.cfg
+cd $WINDIR/system32/macromed/flash
+
+if [ -w . ]
+then
+  echo ProtectedMode=0 > mms.cfg
+else
+  warn you must be an administrator
+  post
+fi
+
 rm -r /tmp
 mkdir /tmp
 cd "$APPDATA/mozilla/firefox"
@@ -101,9 +116,7 @@ then
   warn Dumped too soon, try increasing sleep values.
   warn Example using current values
   warn S1=$S1 S2=$S2 ${0##*/} URL
-  warn or post contents of /tmp/hulu.log to
-  warn ffmpeg.zeranoe.com/forum/viewtopic.php?t=1055
-  exit
+  post
 fi
 
 while read video
