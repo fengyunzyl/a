@@ -8,10 +8,9 @@ warn ()
 log ()
 {
   unset PS4
-  set $((set -x; : "$@") 2>&1)
-  shift
-  warn $*
-  eval $*
+  qq=$((set -x; : "$@") 2>&1)
+  warn "${qq:2}"
+  eval "${qq:2}"
 }
 
 usage ()
@@ -26,13 +25,7 @@ usage ()
 log mkdir cygwin
 cd cygwin
 
-items=(
-  ~/.bash_history
-  /opt
-  /usr/local
-)
-
-for item in ${items[*]}
+for item in /usr/local ~/.bash_history
 do
   set .${item%/*}
   log mkdir -p $1
