@@ -8,10 +8,9 @@ warn ()
 log ()
 {
   unset PS4
-  set $((set -x; : "$@") 2>&1)
-  shift
-  warn $*
-  eval $*
+  qq=$((set -x; : "$@") 2>&1)
+  warn "${qq:2}"
+  eval "${qq:2}"
 }
 
 set $PWD
@@ -84,6 +83,7 @@ deps=(
   /bin/rm
   /bin/rmdir
   /bin/sed
+  /bin/sh
   /bin/sleep
   /bin/sort
   /bin/stat
