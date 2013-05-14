@@ -62,38 +62,11 @@ cd -
 
 # /usr/bin
 deps=(
-  /bin/awk
-  /bin/bash
-  /bin/cat
-  /bin/chmod
-  /bin/cp
-  /bin/cut
-  /bin/d2u
-  /bin/date
-  /bin/diff
-  /bin/du
-  /bin/dumper
-  /bin/expr
-  /bin/find
-  /bin/gawk
-  /bin/grep
-  /bin/mkdir
-  /bin/mv
-  /bin/ls
-  /bin/printf
-  /bin/rm
-  /bin/rmdir
-  /bin/sed
-  /bin/sh
-  /bin/sleep
-  /bin/sort
-  /bin/stat
-  /bin/tee
-  /bin/tr
-  /bin/uname
-  /bin/uniq
-  /bin/wget
-  /bin/xargs
+  /bin/awk   /bin/bash  /bin/cat   /bin/chmod  /bin/cp     /bin/cut  /bin/d2u
+  /bin/date  /bin/diff  /bin/du    /bin/dumper /bin/expr   /bin/find /bin/gawk
+  /bin/grep  /bin/mkdir /bin/mv    /bin/ls     /bin/printf /bin/rm   /bin/rmdir
+  /bin/sed   /bin/sh    /bin/sleep /bin/sort   /bin/stat   /bin/tee  /bin/tr
+  /bin/uname /bin/uniq  /bin/wget  /bin/xargs
 )
 mkdir bin
 cd bin
