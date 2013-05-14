@@ -97,13 +97,13 @@ MOZ_DISABLE_OOP_PLUGINS=1 "$FIREFOX" -no-remote -profile . $arg_url &
 PID=$!
 debug firefox started
 echo waiting for firefox to load...
-: ${S1=13}
+: ${S1=20}
 sleep $S1
 echo dumping firefox...
 read WINPID </proc/$PID/winpid
 dumper hulu $WINPID 2>&- &
 debug starting dump
-: ${S2=1}
+: ${S2=4}
 sleep $S2
 kill -13 $PID
 debug waiting for firefox to be killed
