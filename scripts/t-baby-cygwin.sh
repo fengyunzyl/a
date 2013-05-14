@@ -14,14 +14,13 @@ warn ()
 log ()
 {
   unset PS4
-  set $((set -x; : "$@") 2>&1)
-  shift
-  warn $*
-  eval $*
+  qq=$((set -x; : "$@") 2>&1)
+  warn "${qq:2}"
+  eval "${qq:2}"
 }
 
 [ $1 ] || usage
 log unzip -q $1
 cd baby-cygwin/usr/local/bin
-log find /opt/a -maxdepth 1 -name '*.sh' -exec cp -t. {} +
+log find /opt/a /usr/local/bin -maxdepth 1 -type f -exec cp -t. {} +
 echo 'baby cygwin ready.'

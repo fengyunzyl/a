@@ -68,6 +68,7 @@ deps=(
   /bin/chmod
   /bin/cp
   /bin/cut
+  /bin/d2u
   /bin/date
   /bin/diff
   /bin/du
