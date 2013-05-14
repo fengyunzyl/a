@@ -25,7 +25,13 @@ usage ()
 log mkdir cygwin
 cd cygwin
 
-for item in /usr/local ~/.bash_history
+items=(
+  /mingw32
+  /usr/local
+  ~/.bash_history
+)
+
+for item in ${items[*]}
 do
   set .${item%/*}
   log mkdir -p $1
