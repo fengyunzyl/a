@@ -17,7 +17,7 @@ fi
 
 debug ()
 {
-  echo $(date +%T.%N | cut -b-11) $* >> hulu.log
+  echo $(date +%T.%N | cut -b-11) $* >> /tmp/hulu.log
 }
 
 warn ()
