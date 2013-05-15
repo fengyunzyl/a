@@ -157,6 +157,8 @@ log rtmpdump \
   -y $stream \
   -o "$flv.flv"
 
+(( $? )) && exit
+
 if [ -a /usr/local/bin/ffmpeg ]
 then
   log ffmpeg -i "$flv.flv" -c copy -v warning "$flv.mp4"
