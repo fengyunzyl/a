@@ -1,23 +1,4 @@
 <pre>
-
-Forum rules
-
-[quote=Forum rules v1.1]If you truly want definitive answers quickly and without
-delay, please include link(s) to the web-page(s) with video(s)[/quote]
-[url="stream-recorder.com/forum/announcement.php?f=4"]
-stream-recorder.com/forum/announcement.php?f=4[/url]
-
-Insert code
-
-[quote][font="Lucida Console"]
-[/font][/quote]
-
-Space character
-
-&amp;#8203; <!--
-&#8203;
--->
-
 RTMP
 
 0.839s  NA  <a href=http://cwtv.com/cw-video/the-next>cwtv</a>
