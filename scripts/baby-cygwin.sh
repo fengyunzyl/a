@@ -41,10 +41,6 @@ q
 
 # /dev
 mkdir dev
-cd dev
-cp -r /dev/fd .
-$WINDIR/system32/attrib -s
-cd -
 
 # /etc
 mkdir etc
@@ -53,20 +49,21 @@ cat > profile <<'q'
 PATH=/bin:/usr/local/bin
 PROMPT_COMMAND='history -a'
 PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ '
-[ -d dev/fd ] || $WINDIR/system32/attrib +s dev/fd
 [ -d $HOME ] || mkdir -p $HOME
 [ -a ~/.bash_history ] || echo %% > ~/.bash_history
+[ -a /bin/awk ] || ln -s /bin/gawk /bin/awk
+[ -a /dev/fd ] || ln -s /proc/self/fd /dev/fd
 cd
 q
 cd -
 
 # /usr/bin
 deps=(
-  /bin/awk   /bin/bash  /bin/cat   /bin/chmod  /bin/cp     /bin/cut  /bin/d2u
-  /bin/date  /bin/diff  /bin/du    /bin/dumper /bin/expr   /bin/find /bin/gawk
-  /bin/grep  /bin/mkdir /bin/mv    /bin/ls     /bin/printf /bin/rm   /bin/rmdir
-  /bin/sed   /bin/sh    /bin/sleep /bin/sort   /bin/stat   /bin/tee  /bin/tr
-  /bin/uname /bin/uniq  /bin/wget  /bin/xargs
+  /bin/bash  /bin/cat   /bin/chmod  /bin/cp    /bin/cut    /bin/d2u  /bin/date
+  /bin/diff  /bin/du    /bin/dumper /bin/expr  /bin/find   /bin/gawk /bin/grep
+  /bin/ln    /bin/ls    /bin/mkdir  /bin/mv    /bin/printf /bin/rm   /bin/rmdir
+  /bin/sed   /bin/sh    /bin/sleep  /bin/sort  /bin/stat   /bin/tee  /bin/tr
+  /bin/uname /bin/uniq  /bin/wget   /bin/xargs
 )
 mkdir bin
 cd bin
