@@ -9,8 +9,8 @@ log ()
 {
   unset PS4
   qq=$((set -x; : "$@") 2>&1)
-  warn "${qq:1}"
-  eval "${qq:1}"
+  warn "${qq:2}"
+  eval "${qq:2}"
 }
 
 unquote ()
