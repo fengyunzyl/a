@@ -25,7 +25,7 @@ do
 done | sed '/\./d; s./[^/]*$..; s/^/--prefix /'
 
 warn LIB
-$1 -\#\#\# foo.c |& sed '/LIBRARY_PATH=/!d; s///; y/;/\n/' | while read -r b
+$1 -\#\#\# foo.c |& sed '/LIBRARY_PATH=/!d; s///; y/:/\n/' | while read -r b
 do
   if [ -a $b ] 2>&-
   then
