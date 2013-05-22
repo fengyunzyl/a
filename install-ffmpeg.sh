@@ -43,7 +43,7 @@ cd ffmpeg
   --extra-ldflags=-static \
   --cross-prefix=$HOST- \
   --host-cc=$HOST-gcc
-make -j5
+make -j5 install
 
 # test
 set 'Breaking Bad - S03E12 - Half Measures.mp4'
