@@ -16,10 +16,9 @@ usage ()
 log ()
 {
   unset PS4
-  set $((set -x; : "$@") 2>&1)
-  shift
-  warn $*
-  eval $*
+  qq=$((set -x; : "$@") 2>&1)
+  warn "${qq:2}"
+  eval "${qq:2}"
 }
 
 unquote ()
@@ -32,6 +31,7 @@ unquote ()
 warn 'Careful, screencaps will dump in current directory.
 Drag video here, then press enter (backslashes ok).'
 read -r vd
+[[ $vd ]] || exit
 unquote vd
 log atomicparsley "$vd" --artwork REMOVE_ALL --overWrite || exit
 
@@ -48,6 +48,7 @@ done
 
 warn 'Drag picture here, then press enter (backslashes ok).'
 read -r pc
+[[ $pc ]] || exit
 unquote pc
 log atomicparsley "$vd" --artwork "$pc" --overWrite
-ls | grep png | xargs rm -f
+rm *.png
