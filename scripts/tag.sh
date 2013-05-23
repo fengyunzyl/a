@@ -14,16 +14,23 @@ warn ()
 log ()
 {
   unset PS4
-  set $((set -x; : "$@") 2>&1)
-  shift
-  warn $*
-  eval $*
+  qq=$((set -x; : "$@") 2>&1)
+  warn "${qq:2}"
+  eval "${qq:2}"
 }
 
 [ $2 ] || usage
 tag=$1
 url=$2
 
-log curl -s "$url" |
-  awk '$4 ~ tag {print $2, $4, $5}' FS='(<[^>]*>)+' OFS=_ tag=$tag |
-  sort -k3 -rt_
+log curl -s $url |
+awk '
+$4 ~ tag {
+  a[++b]=$5" "$2" "$4
+}
+END {
+  asort(a)
+  for (; b > 0; b--)
+    print a[b]
+}
+' FS='(<[^>]*>)+' tag=$tag
