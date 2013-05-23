@@ -29,6 +29,18 @@ cd x264
 make -j5 install
 cd -
 
+# zlib
+wget zlib.net/zlib-1.2.8.tar.xz
+tar xf zlib-1.2.8.tar.xz
+cd zlib-1.2.8
+make -f win32/Makefile.gcc install \
+  PREFIX=$HOST- \
+  DESTDIR=$PREFIX \
+  BINARY_PATH=/bin \
+  INCLUDE_PATH=/include \
+  LIBRARY_PATH=/lib
+cd -
+
 # ffmpeg
 git clone --depth 1 git://source.ffmpeg.org/ffmpeg.git
 cd ffmpeg
@@ -48,3 +60,4 @@ make -j5 install
 # test
 set 'Breaking Bad - S03E12 - Half Measures.mp4'
 ./ffmpeg -i "c:/steven/videos/breaking bad/season 3/$1" -t 10 -y outfile.mp4
+./ffmpeg -v warning -codecs | grep png
