@@ -34,14 +34,15 @@ metas=(
 
 eval $(fpcalc "$1" | sed 1d)
 
+qs=(
+  client=8XaBELgH
+  duration=$DURATION
+  fingerprint=$FINGERPRINT
+)
+
 for meta in "${metas[@]}"
 do
   warn $meta
-  qs=(
-    client=8XaBELgH
-    duration=$DURATION
-    fingerprint=$FINGERPRINT
-    $meta
-  )
+  qs[3]=$meta
   curl -s api.acoustid.org/v2/lookup?`querystring` | jq .
 done
