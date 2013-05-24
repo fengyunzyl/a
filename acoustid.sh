@@ -32,7 +32,7 @@ metas=(
   meta=sources
 )
 
-eval $(fpcalc "$1" | sed 1d)
+. <(fpcalc "$1" | sed 1d)
 
 qs=(
   client=8XaBELgH
