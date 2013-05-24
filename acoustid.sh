@@ -12,7 +12,7 @@ querystring ()
 
 warn ()
 {
-  printf '\e[36m%s\e[m\n' "$*"
+  printf '\e[36m%s\e[m\n' "$*" >&2
 }
 
 [[ $1 ]] || usage
