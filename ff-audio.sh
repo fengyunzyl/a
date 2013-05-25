@@ -42,10 +42,10 @@ querystring ()
 
 exten ()
 {
-  sed "s/[^.]*$/$2/;s/[^.[:alnum:]]/-/g" <<< ${!1}
+  sed "s/[^.]*$/$2/;s/[^.[:alnum:]]//g" <<< ${!1}
 }
 
-if ! [ -a ~/googlecl ]
+if ! [ -a /bin/google ]
 then
   echo google not found
   exit
