@@ -37,7 +37,7 @@ usage ()
 
 querystring ()
 {
-  sed 's/ /\&/g' <<< ${qs[*]}
+  sed 'y/ /&/' <<< ${qs[*]}
 }
 
 exten ()
