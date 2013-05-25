@@ -15,14 +15,18 @@ warn ()
 log ()
 {
   unset PS4
-  set $((set -x; : "$@") 2>&1)
-  shift
-  warn $*
-  eval $*
+  qq=$((set -x; : "$@") 2>&1)
+  warn "${qq:2}"
+  eval "${qq:2}"
 }
 
 [ $1 ] || usage
 arg_file=$1
+
+if ! [ -a /bin/gem ]
+then
+  log setup -nqP ruby
+fi
 
 if ! [ -a /bin/furnace-swf ]
 then
