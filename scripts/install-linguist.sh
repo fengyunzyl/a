@@ -1,8 +1,5 @@
 # Cygwin packages
-setup -nqP libicu-devel
-setup -nqP patch
-setup -nqP ruby
-setup -nqP zlib
+setup -nqP libicu-devel,patch,ruby,zlib-devel
 
 # charlock_holmes
 git clone --depth 1 git://github.com/brianmario/charlock_holmes.git
