@@ -2,13 +2,11 @@
 
 if [[ $OSTYPE =~ linux ]]
 then
-  FIREFOX=firefox
   JQ ()
   {
     jq -r "$@" hulu.json
   }
 else
-  FIREFOX="$PROGRAMFILES/mozilla firefox/firefox"
   JQ ()
   {
     jq -r "$@" hulu.json | d2u
@@ -71,6 +69,9 @@ quiet ()
   $* &>/dev/null
 }
 
+PATH=/bin:/usr/local/bin:${TMP%U*}progra~2/mozill~1
+hash firefox || exit
+
 case $# in
   [02]) usage ;;
   1) set '' '' $1 ;;
@@ -98,7 +99,7 @@ cp "$1" /tmp
 set $(find -name prefs.js -exec ls -t {} +)
 cp "$1" /tmp
 cd /tmp
-MOZ_DISABLE_OOP_PLUGINS=1 "$FIREFOX" -no-remote -profile . $arg_url &
+MOZ_DISABLE_OOP_PLUGINS=1 firefox -no-remote -profile . $arg_url &
 PID=$!
 debug firefox started
 echo waiting for firefox to load...
@@ -144,16 +145,16 @@ done < hulu.smil
 [ $arg_cdn ] || usage
 [[ $arg_url =~ [0-9]+ ]]
 
-if [ -a /usr/local/bin/jq ]
+if quiet command -v jq
 then
-  download hulu.json "www.hulu.com/api/2.0/video?id=${BASH_REMATCH}"
+  download hulu.json www.hulu.com/api/2.0/video?id=$BASH_REMATCH
   flv=$(JQ '"\(.show.name) \(.season_number)x\(.episode_number) \(.title)"')
 else
   flv=$BASH_REMATCH
 fi
 
 cd "$arg_pwd"
-app="${server#*//*/}?${token//amp;}"
+app=${server#*//*/}?${token//amp;}
 
 log rtmpdump \
   -W http://download.hulu.com/huludesktop.swf \
@@ -164,7 +165,7 @@ log rtmpdump \
 
 (( $? )) && exit
 
-if [ -a /usr/local/bin/ffmpeg ]
+if quiet command -v ffmpeg
 then
   log ffmpeg -i "$flv.flv" -c copy -v warning "$flv.mp4"
   log rm "$flv.flv"
