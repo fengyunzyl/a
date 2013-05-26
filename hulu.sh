@@ -66,6 +66,11 @@ post ()
   exit
 }
 
+quiet ()
+{
+  $* &>/dev/null
+}
+
 case $# in
   [02]) usage ;;
   1) set '' '' $1 ;;
@@ -101,7 +106,7 @@ echo waiting for firefox to load...
 sleep $S1
 echo dumping firefox...
 read WINPID </proc/$PID/winpid
-dumper hulu $WINPID 2>&- &
+quiet dumper hulu $WINPID &
 debug starting dump
 : ${S2=4}
 sleep $S2
