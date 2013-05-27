@@ -1,17 +1,9 @@
 # download from Hulu
 
-if [[ $OSTYPE =~ linux ]]
-then
-  JQ ()
-  {
-    jq -r "$@" hulu.json
-  }
-else
-  JQ ()
-  {
-    jq -r "$@" hulu.json | d2u
-  }
-fi
+JQ ()
+{
+  jq -r "$@" hulu.json | tr -d '\r'
+}
 
 debug ()
 {
