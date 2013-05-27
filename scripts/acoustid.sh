@@ -20,7 +20,7 @@ warn ()
 metas=(
   meta=
   meta=recordings
-  meta=recordingids
+  meta=recordingids+sources
   meta=releases
   meta=releaseids
   meta=releasegroups
@@ -29,7 +29,6 @@ metas=(
   meta=puids
   meta=compress
   meta=usermeta
-  meta=sources
 )
 
 . <(fpcalc "$1" | sed 1d)
