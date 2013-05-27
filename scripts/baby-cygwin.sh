@@ -59,12 +59,12 @@ cd -
 
 # /usr/bin
 deps=(
-  /bin/bash  /bin/cat    /bin/chmod   /bin/cp    /bin/cut    /bin/d2u
-  /bin/date  /bin/diff   /bin/dirname /bin/du    /bin/dumper /bin/expr
-  /bin/find  /bin/gawk   /bin/grep    /bin/ln    /bin/ls     /bin/mkdir
-  /bin/mv    /bin/printf /bin/rm      /bin/rmdir /bin/sed    /bin/sh
-  /bin/sleep /bin/sort   /bin/stat    /bin/tee   /bin/tr     /bin/uname
-  /bin/uniq  /bin/wget   /bin/xargs
+  /bin/bash   /bin/cat     /bin/chmod /bin/cp     /bin/cut   /bin/date
+  /bin/diff   /bin/dirname /bin/du    /bin/dumper /bin/expr  /bin/find
+  /bin/gawk   /bin/grep    /bin/ln    /bin/ls     /bin/mkdir /bin/mv
+  /bin/printf /bin/rm      /bin/rmdir /bin/sed    /bin/sh    /bin/sleep
+  /bin/sort   /bin/stat    /bin/tee   /bin/tr     /bin/uname /bin/uniq
+  /bin/wget   /bin/xargs
 )
 mkdir bin
 cd bin
