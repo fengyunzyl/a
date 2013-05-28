@@ -61,8 +61,7 @@ songs=(
 )
 
 hash google || exit
-declare -A titles
-declare -A artists
+declare -A artists titles
 
 for song in "${songs[@]}"
 do
