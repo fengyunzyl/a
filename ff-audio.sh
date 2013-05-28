@@ -1,17 +1,9 @@
 # create high quality video from song and picture
 
-if [[ $OSTYPE =~ linux ]]
-then
-  JQ ()
-  {
-    jq -r "$@" .json
-  }
-else
-  JQ ()
-  {
-    jq -r "$@" .json | d2u
-  }
-fi
+JQ ()
+{
+  jq -r "$@" .json | tr -d '\n\r'
+}
 
 warn ()
 {
@@ -42,16 +34,23 @@ querystring ()
 
 exten ()
 {
-  sed "s/[^.]*$/$2/;s/[^.[:alnum:]]//g" <<< ${!1}
+  sed "
+  s/[^.]*$//
+  s/[^[:alnum:]]//g
+  s/$/.$2/
+  " <<< ${!1}
 }
 
-if ! [ -a /bin/google ]
+[ $1 ] || usage
+
+set $(reg query 'hkcu\console' -v WindowSize)
+if (( 0x${5: -5:4} < 0x55 ))
 then
-  echo google not found
-  exit
+  reg add 'hkcu\console' -f -t reg_dword -v WindowSize -d 0x190055
+  reg add 'hkcu\console' -f -t reg_dword -v ScreenBufferSize -d 0x7d00055
+  taskkill -im bash.exe
 fi
 
-[ $1 ] || usage
 shopt -s extglob
 img=(
   @(*.png|*.jpg)
@@ -60,7 +59,10 @@ img=(
 songs=(
   @(*.flac|*.mp3)
 )
+
+hash google || exit
 declare -A titles
+declare -A artists
 
 for song in "${songs[@]}"
 do
@@ -70,12 +72,12 @@ do
     client=8XaBELgH
     duration=$DURATION
     fingerprint=$FINGERPRINT
-    meta=recordings
+    meta=recordingids+sources
   )
   warn connect to acoustid.org...
   curl -s api.acoustid.org/v2/lookup?`querystring` | jq .results[0] > .json
   warn `JQ .id`
-  rid=$(JQ ".recordings | min_by($DURATION - (.duration // 0) | . * .).id")
+  rid=$(JQ '.recordings | max_by(.sources).id')
   # hit musicbrainz API for entire album
   if ! [ $date ]
   then
@@ -91,6 +93,7 @@ do
     album=`JQ .title`
     label=$(JQ '.["label-info"][0].label.name')
     date=`JQ .date`
+    release_artist=$(JQ '.["artist-credit"][0].name')
   fi
   jq ".media[0].tracks[] | select(.recording.id == \"$rid\")" rls.json > .json
   title=`JQ .title`
@@ -106,6 +109,7 @@ do
   read uu
   [ $uu ] || exit
   titles[$song]=$title
+  artists[$song]=$artist
 done
 
 for song in "${songs[@]}"
@@ -115,19 +119,17 @@ do
   # Adding "-preset" would only make small difference in size or speed.
   # "-shortest" can mess up duration. Adding "-analyzeduration" would only
   # suppress warning, not change file.
-  log ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -t `JQ .format.duration` -qp 0 \
-    -filter:v 'scale=trunc(oh*a/2)*2:720' -b:a 384k -v error \
+  log ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -t `JQ .format.duration` \
+    -qp 0 -filter:v 'scale=trunc(oh*a/2)*2:720' -b:a 384k -v error \
     -stats `exten song mp4`
 done
 
-if (( ${#album} > 30 ))
-then
-  album=${album/ /,}
-fi
+(( ${#album} > 30 )) && unset album
 
 for song in "${songs[@]}"
 do
   # category is case sensitive
-  log google youtube post -c Music -n "$artist, ${titles[$song]}" \
-    -s `exten song txt` -t "$album, $artist" -u svnpenn `exten song mp4`
+  log google youtube post `exten song mp4` Music \
+    -n "${artists[$song]}, ${titles[$song]}" -s `exten song txt` \
+    -t "$album, $release_artist" -u svnpenn
 done
