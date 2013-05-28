@@ -41,7 +41,7 @@ exten ()
   " <<< ${!1}
 }
 
-if (( 0x`reg query 'hkcu\console' | awk /WindowSize/,NF=1 FPAT=....$` < 0x55 ))
+if (( 0x`reg query 'hkcu\console' | awk /wS/,NF=1 FPAT=....$` < 0x55 ))
 then
   reg add 'hkcu\console' -f -t reg_dword -v WindowSize -d 0x190055
   reg add 'hkcu\console' -f -t reg_dword -v ScreenBufferSize -d 0x7d00055
