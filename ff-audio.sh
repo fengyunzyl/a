@@ -41,10 +41,7 @@ exten ()
   " <<< ${!1}
 }
 
-[ $1 ] || usage
-
-set $(reg query 'hkcu\console' -v WindowSize)
-if (( 0x${5: -5:4} < 0x55 ))
+if (( 0x`reg query 'hkcu\console' | awk /WindowSize/,NF=1 FPAT=....$` < 0x55 ))
 then
   reg add 'hkcu\console' -f -t reg_dword -v WindowSize -d 0x190055
   reg add 'hkcu\console' -f -t reg_dword -v ScreenBufferSize -d 0x7d00055
@@ -60,6 +57,7 @@ songs=(
   @(*.flac|*.mp3)
 )
 
+[ $1 ] || usage
 hash google || exit
 declare -A artists titles
 
@@ -92,7 +90,7 @@ do
     album=`JQ .title`
     label=$(JQ '.["label-info"][0].label.name')
     date=`JQ .date`
-    release_artist=$(JQ '.["artist-credit"][0].name')
+    tags=$(JQ '.["artist-credit"][0].name')
   fi
   jq ".media[0].tracks[] | select(.recording.id == \"$rid\")" rls.json > .json
   title=`JQ .title`
@@ -123,12 +121,12 @@ do
     -stats `exten song mp4`
 done
 
-(( ${#album} > 30 )) && unset album
+(( ${#album} <= 30 )) && tags+=,$album
 
 for song in "${songs[@]}"
 do
   # category is case sensitive
   log google youtube post `exten song mp4` Music \
     -n "${artists[$song]}, ${titles[$song]}" -s `exten song txt` \
-    -t "$album, $release_artist" -u svnpenn
+    -t "$tags" -u svnpenn
 done
