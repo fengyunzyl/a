@@ -1,35 +1,19 @@
 # get cover art
 
-if [[ $OSTYPE =~ linux ]]
-then
-  FIREFOX ()
-  {
-    firefox $1
-  }
-else
-  FIREFOX ()
-  {
-    "$PROGRAMFILES/mozilla firefox/firefox" "$1"
-  }
-fi
-
 usage ()
 {
   echo usage: $0 ARTIST ALBUM
   exit
 }
 
+PATH=/bin:/usr/local/bin:${TMP%U*}progra~2/mozill~1
+hash firefox || exit
 [[ $2 ]] || usage
+ARTIST=$1
+ALBUM=$2
 
-artist=$1
-album=$2
-
-FIREFOX "musicbrainz.org/search?type=release&query=${artist} ${album}"
-
-FIREFOX "google.com/search?tbm=isch&q=${artist} ${album}"
-
-FIREFOX "fanart.tv/api/getdata.php?type=2&s=${artist}"
-
-FIREFOX "discogs.com/search?q=${artist} ${album}"
-
-FIREFOX "wikipedia.org/w/index.php?search=${artist// /+}+${album// /+}"
+firefox "musicbrainz.org/search?type=release&query=$ARTIST $ALBUM"
+firefox "google.com/search?tbm=isch&q=$ARTIST $ALBUM"
+firefox "fanart.tv/api/getdata.php?type=2&s=$ARTIST"
+firefox "discogs.com/search?q=$ARTIST $ALBUM"
+firefox "wikipedia.org/w/index.php?search=${ARTIST// /+}+${ALBUM// /+}"
