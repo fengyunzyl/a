@@ -2,7 +2,7 @@
 
 JQ ()
 {
-  jq -r "$@" .json | tr -d '\n\r'
+  jq -r "$@" .json | tr -d '\r'
 }
 
 warn ()
@@ -97,7 +97,7 @@ do
   fi
   jq ".media[0].tracks[] | select(.recording.id == \"$rid\")" rls.json > .json
   title=`JQ .title`
-  artist=$(JQ '.["artist-credit"][] | .name, .joinphrase')
+  artist=$(JQ '[.["artist-credit"][] | .name, .joinphrase] | add')
   {
     echo Title: $title
     echo Album: $album
