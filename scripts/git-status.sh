@@ -1,22 +1,14 @@
-#!/bin/sh
 
 warn ()
 {
   printf '\e[1;35m%s\e[m\n' "$*"
 }
 
-if [[ $OSTYPE =~ linux ]]
-then
-  CLEAR=clear
-else
-  CLEAR='printf \ec'
-fi
-
-compgen -d /opt/ | while read k
+for k in /opt/*/
 do
-  $CLEAR
+  printf '\ec'
   cd $k
   git status
   warn $k
-  read </dev/tty
+  read
 done
