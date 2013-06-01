@@ -1,4 +1,3 @@
-#!/bin/bash
 # Optimize RTMP string
 
 warn ()

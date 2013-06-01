@@ -1,4 +1,3 @@
-#!/bin/bash
 # stackoverflow.com/q/9027584/how-to-change-the-file-mode-on-github
 
 warn ()
@@ -15,10 +14,9 @@ usage ()
 log ()
 {
   unset PS4
-  set $((set -x; : "$@") 2>&1)
-  shift
-  warn $*
-  eval $*
+  qq=$((set -x; : "$@") 2>&1)
+  warn "${qq:2}"
+  eval "${qq:2}"
 }
 
 [ $1 ] || usage

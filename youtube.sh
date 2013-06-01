@@ -11,7 +11,7 @@ then
 else
   FIREFOX ()
   {
-    $WINDIR/system32/cmd.exe /c "start firefox \"$1\""
+    cmd.exe /c "start firefox \"$1\""
   }
 fi
 
@@ -56,10 +56,9 @@ decode ()
 log ()
 {
   unset PS4
-  set $((set -x; : "$@") 2>&1)
-  shift
-  warn $*
-  eval $*
+  qq=$((set -x; : "$@") 2>&1)
+  warn "${qq:2}"
+  eval "${qq:2}"
 }
 
 [ $1 ] || usage
