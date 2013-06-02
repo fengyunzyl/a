@@ -61,6 +61,27 @@ songs=(
 hash google || exit
 declare -A artists titles
 
+show ()
+{
+  for bb
+  do
+    echo ${bb^}: ${!bb}
+  done
+}
+
+readu ()
+{
+  unset aa
+  until [ $aa ]
+  do
+    show $1
+    warn "y - accept, e - edit, q - quit"
+    read aa
+  done
+  [ $aa = q ] && exit
+  [ $aa = e ] && read -ei "${!1}" $1
+}
+
 for song in "${songs[@]}"
 do
   warn $song
@@ -87,24 +108,20 @@ do
     curl -s musicbrainz.org/ws/2/release?`querystring` |
       jq '.releases | max_by(.["cover-art-archive"])' > .json
     cp .json rls.json
-    album=`JQ .title`
-    label=$(JQ '.["label-info"][0].label.name')
-    date=`JQ .date`
     tags=$(JQ '.["artist-credit"][0].name')
+    album=`JQ .title`
+    show album
+    label=$(JQ '.["label-info"][0].label.name')
+    show label
+    date=`JQ .date`
+    readu date
   fi
   jq ".media[0].tracks[] | select(.recording.id == \"$rid\")" rls.json > .json
-  title=`JQ .title`
   artist=$(JQ '[.["artist-credit"][] | .name, .joinphrase] | add')
-  {
-    echo Title: $title
-    echo Album: $album
-    echo Artist: $artist
-    echo Label: $label
-    echo Date: $date
-  } | tee `exten song txt`
-  warn 'enter "y" if metadata is ok'
-  read uu
-  [ $uu ] || exit
+  show artist
+  title=`JQ .title`
+  readu title
+  show title album artist label date > `exten song txt`
   titles[$song]=$title
   artists[$song]=$artist
 done
