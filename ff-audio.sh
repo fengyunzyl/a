@@ -32,6 +32,27 @@ querystring ()
   sed 'y/ /&/' <<< ${qs[*]}
 }
 
+show ()
+{
+  for bb
+  do
+    echo ${bb^}: ${!bb}
+  done
+}
+
+readu ()
+{
+  unset aa
+  until [ $aa ]
+  do
+    show $1
+    warn "y - accept, e - edit, q - quit"
+    read aa
+  done
+  [ $aa = q ] && exit
+  [ $aa = e ] && read -ei "${!1}" $1
+}
+
 exten ()
 {
   sed "
@@ -60,27 +81,6 @@ songs=(
 [ $1 ] || usage
 hash google || exit
 declare -A artists titles
-
-show ()
-{
-  for bb
-  do
-    echo ${bb^}: ${!bb}
-  done
-}
-
-readu ()
-{
-  unset aa
-  until [ $aa ]
-  do
-    show $1
-    warn "y - accept, e - edit, q - quit"
-    read aa
-  done
-  [ $aa = q ] && exit
-  [ $aa = e ] && read -ei "${!1}" $1
-}
 
 for song in "${songs[@]}"
 do
