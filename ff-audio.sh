@@ -107,6 +107,7 @@ do
   warn connect to acoustid.org...
   curl -s api.acoustid.org/v2/lookup?`querystring` | jq .results[0] > .json
   warn `JQ .id`
+  # FIXME should be length and sources
   rid=$(JQ '.recordings | max_by(.sources).id')
   # hit musicbrainz API for entire album
   if ! [ $date ]
