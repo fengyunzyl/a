@@ -42,15 +42,27 @@ show ()
 
 readu ()
 {
-  unset aa
-  until [ $aa ]
+  while :
   do
     show $1
-    warn "y - accept, e - edit, q - quit"
-    read aa
+    warn [y,e,q]?
+    read line
+    if [[ $line = y ]]
+    then
+      break
+    elif [[ $line = e ]]
+    then
+      read -ei "${!1}" $1
+      break
+    elif [[ $line = q ]]
+    then
+      exit
+    else
+      warn y - accept
+      warn e - edit
+      warn q - quit
+    fi
   done
-  [ $aa = q ] && exit
-  [ $aa = e ] && read -ei "${!1}" $1
 }
 
 exten ()
@@ -101,12 +113,13 @@ do
   then
     qs=(
       fmt=json
-      inc=artist-credits+labels+recordings
+      inc=artist-credits+labels+discids+recordings
       recording=$rid
     )
     warn connect to musicbrainz.org...
+    set 'min_by((.date | tostring) + "4", (.media[0].discs | length) * -1)'
     curl -s musicbrainz.org/ws/2/release?`querystring` |
-      jq '.releases | max_by(.["cover-art-archive"])' > .json
+      jq ".releases | $1" > .json
     cp .json rls.json
     tags=$(JQ '.["artist-credit"][0].name')
     album=`JQ .title`
