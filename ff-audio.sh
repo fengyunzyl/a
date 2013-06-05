@@ -102,13 +102,13 @@ do
     client=8XaBELgH
     duration=$DURATION
     fingerprint=$FINGERPRINT
-    meta=recordingids+sources
+    meta=recordings+sources
   )
   warn connect to acoustid.org...
   curl -s api.acoustid.org/v2/lookup?`querystring` | jq .results[0] > .json
   warn `JQ .id`
-  # FIXME should be length and sources
-  rid=$(JQ '.recordings | max_by(.sources).id')
+  set "min_by(($DURATION - (.duration // 0) | . * .), .sources * -1).id"
+  rid=$(JQ ".recordings | $1")
   # hit musicbrainz API for entire album
   if ! [ $date ]
   then
@@ -118,7 +118,7 @@ do
       recording=$rid
     )
     warn connect to musicbrainz.org...
-    set 'min_by((.date | tostring) + "4", (.media[0].discs | length) * -1)'
+    set 'min_by((.date // "") + "4", (.media[0].discs | length) * -1)'
     curl -s musicbrainz.org/ws/2/release?`querystring` |
       jq ".releases | $1" > .json
     cp .json rls.json
