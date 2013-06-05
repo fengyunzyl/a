@@ -47,21 +47,18 @@ readu ()
     show $1
     warn [y,e,q]?
     read line
-    if [[ $line = y ]]
-    then
-      break
-    elif [[ $line = e ]]
-    then
-      read -ei "${!1}" $1
-      break
-    elif [[ $line = q ]]
-    then
-      exit
-    else
-      warn y - accept
-      warn e - edit
-      warn q - quit
-    fi
+    case $line in
+    y) break
+       ;;
+    e) read -ei "${!1}" $1
+       break
+       ;;
+    q) exit
+       ;;
+    esac
+    warn y - accept
+    warn e - edit
+    warn q - quit
   done
 }
 
