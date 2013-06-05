@@ -19,12 +19,12 @@ usage ()
 mode=$1
 regex=$2
 
-if [ $mode = local ]
-then
+case $mode in
+local)
   # commented results ok
   egrep -r --color --exclude-dir .git "^(|.*[^.\"])$regex" /opt/{a,dotfiles}
-elif [ $mode = require ]
-then
+  ;;
+require)
   awk '
   /^@ / {
     foo=$2
@@ -33,7 +33,8 @@ then
     print foo
   }
   ' bar=$regex /usr/local/bin/http*/setup.ini
-elif [ $mode = contain ]
-then
+  ;;
+contain)
   cygcheck -p $regex | awk 'NR>1 && ! /-src\t/ && ! a[$1]++ {print $1}' FS=/
-fi
+  ;;
+esac

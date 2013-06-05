@@ -72,13 +72,14 @@ set $(decode url_encoded_fmt_stream_map | sed 'y/,/ /')
 for oo
 do
   declare $(sed 'y/&/ /' <<< $oo)
-  if ! [ $arg_itag ]
-  then
+  case $arg_itag in
+  '')
     printf ' %3.3s  %s\n' $itag "${qual[itag]}"
-  elif [ $arg_itag = $itag ]
-  then
+    ;;
+  $itag)
     break
-  fi
+    ;;
+  esac
 done
 
 [ $arg_itag ] || usage
