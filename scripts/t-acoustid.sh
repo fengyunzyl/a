@@ -14,7 +14,7 @@ try ()
 {
   qs[2]=trackid=$2
   curl -s api.acoustid.org/v2/lookup?`querystring` | jq .results[0] > .json
-  JQ ".recordings | min_by(($1 - (.duration // 0) | . * .), .sources * -1)"
+  JQ ".recordings | max_by(.sources - 3 * ($1 - (.duration // 0) | . * .))"
 }
 
 qs[0]=client=8XaBELgH
