@@ -51,13 +51,12 @@ done
 
 watch ()
 {
-  aaa=$1
-  shift
+  : ${KB=1000}
   printf -v bbb '\r'
   while read -d $bbb ccc
   do
     [[ $ccc =~ [0-9]+ ]]
-    if (( BASH_REMATCH >= aaa ))
+    if (( BASH_REMATCH >= KB ))
     then
       kill $!
       echo
@@ -73,7 +72,7 @@ do
   unset bb[hh]
   two=${bb[hh+1]}
   [[ $two =~ ^- ]] && unset two || unset bb[hh+1]
-  if ! watch 1000 ${bb[@]} -o a.flv -m 9
+  if ! watch ${bb[@]} -o a.flv -m 9
   then
     bb[hh]=$one
     bb[hh+1]=$two
@@ -103,7 +102,7 @@ do
     unset qa[ff]
     qjoin qs qa
     bb[hh]=${url}${qs:+?$qs}
-    if ! watch 1000 ${bb[@]} -o a.flv -m 9
+    if ! watch ${bb[@]} -o a.flv -m 9
     then
       qa[ff]=$one
     fi
