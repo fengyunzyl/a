@@ -104,8 +104,8 @@ do
   warn connect to acoustid.org...
   curl -s api.acoustid.org/v2/lookup?`querystring` | jq .results[0] > .json
   warn `JQ .id`
-  set "min_by(($DURATION - (.duration // 0) | . * .), .sources * -1).id"
-  rid=$(JQ ".recordings | $1")
+  set "$DURATION - (.duration // 0) | . * ."
+  rid=$(JQ ".recordings | max_by(.sources - 3 * ($1)).id")
   # hit musicbrainz API for entire album
   if ! [ $date ]
   then
