@@ -5,6 +5,14 @@ warn ()
   printf '\e[36m%s\e[m\n' "$*"
 }
 
+exten ()
+{
+  sed "
+  s/[^.]*$//
+  s/$/.$2/
+  " <<< ${!1}
+}
+
 log ()
 {
   unset PS4
@@ -13,35 +21,47 @@ log ()
   eval "${qq:2}"
 }
 
-unquote ()
-{
-  read -r $1 <<< "${!1//\"}"
-}
-
 usage ()
 {
-  echo usage: $0 FORMAT
+  echo usage: $0 FILES
   echo
   echo this will not delete original file
   exit
 }
 
-[ $1 ] || usage
-arg_fmt=$1
-flac=nocopy
-wav=nocopy
-
-if ! [ ${!arg_fmt} ]
+if (( 0x`reg query 'hkcu\console' | awk /nB/,NF=1 FPAT=....$` < 0x58 ))
 then
-  cpy='-c copy'
+  reg add 'hkcu\console' -f -t reg_dword -v WindowSize -d 0x190058
+  reg add 'hkcu\console' -f -t reg_dword -v ScreenBufferSize -d 0x7d00058
+  kill -7 $PPID
 fi
 
-printf -v nwn '\n'
-while read -rp "Drag file here, or use a pipe.$nwn" inf
+(( $# )) || usage
+
+declare -A foo=(
+  [0,1]=flac
+  [1,1]=wav
+  [2,0]='-c copy -sn'
+  [2,1]=mp4
+)
+
+(( ee = 0 ))
+while [ ${foo[$ee,1]} ]
 do
-  [[ $inf ]] || exit
-  unquote inf
-  otf=${inf%.*}.${arg_fmt}
-  log ffmpeg -i "$inf" -v error -stats -nostdin $cpy "$otf"
+  bar[ee]="ffmpeg -i infile ${foo[$ee,0]} outfile.${foo[$ee,1]}"
+  (( ee++ ))
+done
+
+select baz in "${bar[@]}"
+do
+  [[ $baz ]] && break
+done
+
+(( REPLY-- ))
+
+for baz
+do
+  log ffmpeg -stats -v error \
+    -i "$baz" ${foo[$REPLY,0]} "${baz%.*}.${foo[$REPLY,1]}"
   echo
 done
