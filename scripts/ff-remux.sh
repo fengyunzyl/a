@@ -5,14 +5,6 @@ warn ()
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-exten ()
-{
-  sed "
-  s/[^.]*$//
-  s/$/.$2/
-  " <<< ${!1}
-}
-
 log ()
 {
   unset PS4
