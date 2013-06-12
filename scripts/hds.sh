@@ -23,7 +23,7 @@ do
     php /opt/scripts/adobehds.php --play --start $line $* |
       ffplay -v warning - &
     sleep 6
-    [ $OLD ] && kill -7 $OLD
+    [ $OLD ] && kill -13 $OLD
     OLD=$!
   elif [[ $line = q ]]
   then
