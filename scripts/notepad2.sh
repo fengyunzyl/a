@@ -1,1 +1,1 @@
-cygpath -m $1 | xargs notepad2
+notepad2 $(cygpath -m $1)
