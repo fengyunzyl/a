@@ -1,39 +1,20 @@
 # backup files
 
-warn ()
-{
-  printf '\e[36m%s\e[m\n' "$*"
-}
-
-log ()
-{
-  unset PS4
-  qq=$((set -x; : "$@") 2>&1)
-  warn "${qq:2}"
-  eval "${qq:2}"
-}
-
 usage ()
 {
   cp $0 /tmp
-  echo usage: /tmp/${0/*\/}
+  echo "usage: /tmp/${0##*/}"
   exit
 }
 
 [ ${0::5} = /tmp/ ] || usage
 
-log mkdir cygwin
+mkdir cygwin
 cd cygwin
 
-items=(
-  /mingw32
-  /usr/local
-  ~/.bash_history
-)
-
-for item in ${items[*]}
+for item in /mingw32 /usr/local ~/.bash_history
 do
   set .${item%/*}
-  log mkdir -p $1
-  log mv $item $1
+  mkdir -p $1
+  mv $item $1
 done
