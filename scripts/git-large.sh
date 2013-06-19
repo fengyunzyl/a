@@ -1,4 +1,3 @@
-#!/bin/bash
 # Find large files in git repo, that dont exist in HEAD
 # stackoverflow.com/questions/298314
 
