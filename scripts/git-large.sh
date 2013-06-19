@@ -1,5 +1,6 @@
+#!/bin/bash
+# need shebang
 # Find large files in git repo, that dont exist in HEAD
-# stackoverflow.com/questions/298314
 
 usage ()
 {
