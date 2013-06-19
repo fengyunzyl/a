@@ -40,4 +40,3 @@ git add -A
 git status -s | git commit -F-
 git push origin master || exit
 log git checkout source
-echo 'Publish complete!'
