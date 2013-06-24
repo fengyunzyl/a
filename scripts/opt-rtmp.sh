@@ -52,13 +52,13 @@ done
 watch ()
 {
   : ${KB=1000}
-  printf -v bbb '\r'
-  while read -d $bbb ccc
+  while read -d $'\r' ccc
   do
     [[ $ccc =~ [0-9]+ ]]
     if (( BASH_REMATCH >= KB ))
     then
-      kill $!
+      read WINPID </proc/$!/winpid
+      /bin/kill -f $WINPID
       echo
       return
     fi
