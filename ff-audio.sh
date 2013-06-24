@@ -20,10 +20,10 @@ log ()
 
 usage ()
 {
-  echo "Script will search current directory for FLAC, MP3, PNG or JPG files."
-  echo "It will use these files to create high quality videos. Finally it will"
-  echo "upload videos to YouTube. Once you are sure environment is correct run"
-  echo "$0 -f"
+  echo usage: $0 PICTURE SONGS
+  echo
+  echo Script will use files to create high quality videos,
+  echo then upload videos to YouTube.
   exit
 }
 
@@ -78,16 +78,10 @@ then
   kill -7 $PPID
 fi
 
-shopt -s extglob
-img=(
-  @(*.png|*.jpg)
-)
-[ -a $img ] || usage
-songs=(
-  @(*.flac|*.mp3)
-)
-
-[ $1 ] || usage
+[[ $2 ]] || usage
+img=$1
+shift
+songs=("$@")
 hash google || exit
 declare -A artists titles
 
@@ -115,9 +109,9 @@ do
       recording=$rid
     )
     warn connect to musicbrainz.org...
-    set 'min_by((.date // "") + "4", (.media[0].discs | length) * -1)'
+    set '(.media[0].discs | length)' '.["cover-art-archive"].count'
     curl -s musicbrainz.org/ws/2/release?`querystring` |
-      jq ".releases | $1" > .json
+      jq ".releases | max_by(.3 * $1 + .7 * $2)" > .json
     cp .json rls.json
     tags=$(JQ '.["artist-credit"][0].name')
     album=`JQ .title`
