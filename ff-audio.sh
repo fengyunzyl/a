@@ -97,9 +97,11 @@ do
   )
   warn connect to acoustid.org...
   curl -s api.acoustid.org/v2/lookup?`querystring` | jq .results[0] > .json
-  warn `JQ .id`
-  set "$DURATION - (.duration // 0) | . * ."
-  rid=$(JQ ".recordings | max_by(.sources - 3 * ($1)).id")
+  warn acoustid `JQ .id`
+  set .sources "($DURATION - (.duration // 0) | . * .)"
+  rid=$(JQ ".recordings | max_by(.2 * $1 - .8 * $2).id")
+  # FIXME allow edit of recording id
+  warn musicbrainz recording id $rid
   # hit musicbrainz API for entire album
   if ! [ $date ]
   then
@@ -112,6 +114,7 @@ do
     set '(.media[0].discs | length)' '.["cover-art-archive"].count'
     curl -s musicbrainz.org/ws/2/release?`querystring` |
       jq ".releases | max_by(.3 * $1 + .7 * $2)" > .json
+    warn musicbrainz release id `JQ .id`
     cp .json rls.json
     tags=$(JQ '.["artist-credit"][0].name')
     album=`JQ .title`
@@ -121,7 +124,8 @@ do
     date=`JQ .date`
     readu date
   fi
-  jq ".media[0].tracks[] | select(.recording.id == \"$rid\")" rls.json > .json
+  # must leave "media" open
+  jq ".media[].tracks[] | select(.recording.id == \"$rid\")" rls.json > .json
   artist=$(JQ '[.["artist-credit"][] | .name, .joinphrase] | add')
   show artist
   title=`JQ .title`
