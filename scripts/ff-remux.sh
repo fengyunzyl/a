@@ -25,6 +25,7 @@ if (( 0x`reg query 'hkcu\console' | awk /nB/,NF=1 FPAT=....$` < 0x58 ))
 then
   reg add 'hkcu\console' -f -t reg_dword -v WindowSize -d 0x190058
   reg add 'hkcu\console' -f -t reg_dword -v ScreenBufferSize -d 0x7d00058
+  cygstart bash -l
   kill -7 $PPID
 fi
 
