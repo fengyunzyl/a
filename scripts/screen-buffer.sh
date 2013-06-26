@@ -30,4 +30,5 @@ printf -v columns %04x $2
 set -- -f -t reg_dword
 log reg add 'hkcu\console' -v WindowSize -d 0x0019$columns "$@"
 log reg add 'hkcu\console' -v ScreenBufferSize -d 0x$rows$columns "$@"
-echo Restart console to see changes.
+cygstart bash -l
+kill -7 $PPID
