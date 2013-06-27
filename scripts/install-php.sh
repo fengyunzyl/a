@@ -1,7 +1,7 @@
 # install PHP
 
-mkdir -p ~/php
-cd ~/php
+mkdir -p /php
+cd /php
 wget windows.php.net/downloads/releases/sha1sum.txt
 set $(awk '/VC9/ {a=$6} END {print a}' RS='\n\n' sha1sum.txt)
 wget windows.php.net/downloads/releases/$1
