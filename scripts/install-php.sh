@@ -1,10 +1,27 @@
 # install PHP
+setup -nqP libpcre1
 
-wget windows.php.net/downloads/releases/sha1sum.txt
-set $(awk '/VC9/ {a=$6} END {print a}' RS='\n\n' sha1sum.txt)
-wget windows.php.net/downloads/releases/$1
-unzip -d php $1
-cp -r php /usr/local
-cd /usr/local/php
-chmod +x php.exe php5ts.dll libeay32.dll ssleay32.dll ext/php_curl.dll
-echo extension=ext/php_curl.dll > php.ini
+# php
+wget downloads.sf.net/cygwin-ports/php-5.4.11-1.tar.bz2
+tar xf php-5.4.11-1.tar.bz2 -C/
+
+# php-bcmath
+wget downloads.sf.net/cygwin-ports/php-bcmath-5.4.11-1.tar.bz2
+tar xf php-bcmath-5.4.11-1.tar.bz2 -C/
+
+# php-curl
+wget downloads.sf.net/cygwin-ports/php-curl-5.4.11-1.tar.bz2
+tar xf php-curl-5.4.11-1.tar.bz2 -C/
+
+# php-simplexml
+wget downloads.sf.net/cygwin-ports/php-simplexml-5.4.11-1.tar.bz2
+tar xf php-simplexml-5.4.11-1.tar.bz2 -C/
+
+# look for the script using PATH environment variable
+cd /bin
+mv php php5
+cd /usr/local/bin
+cat > php <<'EOF'
+read < <(command -v $1) && shift
+php5 $REPLY $*
+EOF
