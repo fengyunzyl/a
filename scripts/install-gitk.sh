@@ -17,6 +17,6 @@ make -j5 install-binaries install-libraries
 
 # gitk
 cd /usr/local/bin
-echo 'wish86s $PUBLIC/$*' > wish
+echo 'wish86s /cygwin~$*' > wish
 wget raw.github.com/git/git/master/gitk-git/gitk
 chmod +x gitk
