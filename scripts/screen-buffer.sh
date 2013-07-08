@@ -10,25 +10,12 @@ usage ()
   exit
 }
 
-warn ()
-{
-  printf '\e[36m%s\e[m\n' "$*"
-}
-
-log ()
-{
-  unset PS4
-  qq=$((set -x; : "$@") 2>&1)
-  warn "${qq:2}"
-  eval "${qq:2}"
-}
-
 [ $1 ] || usage
 # convert to hex
 printf -v rows %04x $1
 printf -v columns %04x $2
 set -- -f -t reg_dword
-log reg add 'hkcu\console' -v WindowSize -d 0x0019$columns "$@"
-log reg add 'hkcu\console' -v ScreenBufferSize -d 0x$rows$columns "$@"
+reg add 'hkcu\console' -v WindowSize -d 0x0019$columns "$@"
+reg add 'hkcu\console' -v ScreenBufferSize -d 0x$rows$columns "$@"
 cygstart bash -l
 kill -7 $PPID
