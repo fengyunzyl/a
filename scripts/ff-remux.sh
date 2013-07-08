@@ -21,14 +21,24 @@ usage ()
   exit
 }
 
-if (( 0x`reg query 'hkcu\console' | awk /nB/,NF=1 FPAT=....$` < 0x58 ))
-then
-  reg add 'hkcu\console' -f -t reg_dword -v WindowSize -d 0x190058
-  reg add 'hkcu\console' -f -t reg_dword -v ScreenBufferSize -d 0x7d00058
-  cygstart bash -l
-  kill -7 $PPID
-fi
+d2h ()
+{
+  printf %04x $*
+}
 
+buffer ()
+{
+  target=$1
+  set $(reg query 'hkcu\console' | awk /nB/,NF=1 FPAT='....$') $(d2h $target)
+  [ $1 = $2 ] && return
+  set reg add 'hkcu\console' -f -t reg_dword
+  "$@" -v ScreenBufferSize -d 0x$(d2h 2000 $target)
+  "$@" -v WindowSize -d 0x$(d2h 25 $target)
+  cygstart bash -l
+  kill -7 $$ $PPID
+}
+
+buffer 88
 (( $# )) || usage
 
 declare -A foo=(
@@ -59,3 +69,5 @@ do
     -i "$baz" ${foo[$REPLY,0]} "${baz%.*}~.${foo[$REPLY,1]}"
   echo
 done
+
+buffer 80
