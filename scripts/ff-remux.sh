@@ -55,6 +55,6 @@ done
 for baz
 do
   log ffmpeg -stats -v error \
-    -i "$baz" ${foo[$REPLY,0]} "${baz%.*}.${foo[$REPLY,1]}"
+    -i "$baz" ${foo[$REPLY,0]} "~${baz%.*}.${foo[$REPLY,1]}"
   echo
 done
