@@ -71,13 +71,18 @@ exten ()
   " <<< ${!1}
 }
 
-if (( 0x`reg query 'hkcu\console' | awk /nB/,NF=1 FPAT=....$` < 0x55 ))
-then
-  reg add 'hkcu\console' -f -t reg_dword -v WindowSize -d 0x190055
-  reg add 'hkcu\console' -f -t reg_dword -v ScreenBufferSize -d 0x7d00055
-  kill -7 $PPID
-fi
+buffer ()
+{
+  set $1 $(reg query 'hkcu\console' | grep ScreenBufferSize)
+  (( $(( $4 & 0xffff )) == $1 )) && return
+  set $(printf '%04x ' $1 2000 25)
+  reg add 'hkcu\console' -f -t reg_dword -v ScreenBufferSize -d 0x$2$1
+  reg add 'hkcu\console' -f -t reg_dword -v WindowSize -d 0x$3$1
+  cygstart bash -l
+  kill -7 $$ $PPID
+}
 
+buffer 85
 [[ $2 ]] || usage
 img=$1
 shift
@@ -157,3 +162,5 @@ do
     -n "${artists[$song]}, ${titles[$song]}" -s `exten song txt` \
     -t "$tags" -u svnpenn
 done
+
+buffer 80
