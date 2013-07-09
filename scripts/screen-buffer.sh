@@ -3,19 +3,16 @@
 usage ()
 {
   echo usage: $0 ROWS COLUMNS
-  set '3!d; s/....$/ 0x&/'
-  set $(reg query 'hkcu\console' -v ScreenBufferSize | sed "$1")
-  echo current buffer rows $(($3))
-  echo current buffer columns $(($4))
+  set $(reg query 'hkcu\console' | grep ScreenBufferSize)
+  echo current buffer rows $(( $3 >> 16 ))
+  echo current buffer columns $(( $3 & 0xffff ))
   exit
 }
 
 [ $1 ] || usage
 # convert to hex
-printf -v rows %04x $1
-printf -v columns %04x $2
-set -- -f -t reg_dword
-reg add 'hkcu\console' -v WindowSize -d 0x0019$columns "$@"
-reg add 'hkcu\console' -v ScreenBufferSize -d 0x$rows$columns "$@"
+set $(printf '%04x ' $1 $2 25)
+reg add 'hkcu\console' -f -t reg_dword -v ScreenBufferSize -d 0x$1$2
+reg add 'hkcu\console' -f -t reg_dword -v WindowSize -d 0x$3$2
 cygstart bash -l
 kill -7 $PPID
