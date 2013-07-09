@@ -21,19 +21,12 @@ usage ()
   exit
 }
 
-d2h ()
-{
-  printf %04x $*
-}
-
 buffer ()
 {
-  target=$1
-  set $(reg query 'hkcu\console' | awk /nB/,NF=1 FPAT='....$') $(d2h $target)
-  [ $1 = $2 ] && return
-  set reg add 'hkcu\console' -f -t reg_dword
-  "$@" -v ScreenBufferSize -d 0x$(d2h 2000 $target)
-  "$@" -v WindowSize -d 0x$(d2h 25 $target)
+  set $(printf '%04x ' $1 2000 25)
+  [ $(reg query 'hkcu\console' | awk /nB/,NF=1 FPAT='....$') = $1 ] && return
+  reg add 'hkcu\console' -f -t reg_dword -v ScreenBufferSize -d 0x$2$1
+  reg add 'hkcu\console' -f -t reg_dword -v WindowSize -d 0x$3$1
   cygstart bash -l
   kill -7 $$ $PPID
 }
