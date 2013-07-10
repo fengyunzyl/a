@@ -36,11 +36,11 @@ buffer 88
 (( $# )) || usage
 
 declare -A foo=(
-                                           [0,1]=flac
-                                           [1,1]=wav
-  [2,0]='-c copy'                          [2,1]=mp4
-  [3,0]='-c copy -sn'                      [3,1]=mp4
-  [4,0]='-c copy -vn -movflags +faststart' [4,1]=m4a
+                                          [0,1]=flac
+                                          [1,1]=wav
+  [2,0]='-c copy'                         [2,1]=mp4
+  [3,0]='-c copy -sn'                     [3,1]=mp4
+  [4,0]='-c copy -vn -movflags faststart' [4,1]=m4a
 )
 
 (( ee = 0 ))
