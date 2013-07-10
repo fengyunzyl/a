@@ -24,7 +24,7 @@ usage ()
 buffer ()
 {
   set $1 $(reg query 'hkcu\console' | grep ScreenBufferSize)
-  (( $(( $4 & 0xffff )) == $1 )) && return
+  [ $(( $4 & 0xffff )) = $1 ] && return
   set $(printf '%04x ' $1 2000 25)
   reg add 'hkcu\console' -f -t reg_dword -v ScreenBufferSize -d 0x$2$1
   reg add 'hkcu\console' -f -t reg_dword -v WindowSize -d 0x$3$1
