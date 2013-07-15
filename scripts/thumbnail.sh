@@ -5,14 +5,6 @@ warn ()
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-usage ()
-{
-  echo usage: $0 INTERVAL [OUTPUT]
-  echo
-  echo default OUTPUT is %d.png
-  exit
-}
-
 log ()
 {
   unset PS4
@@ -26,24 +18,18 @@ unquote ()
   read -r $1 <<< "${!1//\"}"
 }
 
-[ $1 ] || usage
-[ $2 ] || set $1 %d.png
 warn 'Careful, screencaps will dump in current directory.
 Drag video here, then press enter (backslashes ok).'
 read -r vd
 [[ $vd ]] || exit
 unquote vd
 log atomicparsley "$vd" --artwork REMOVE_ALL --overWrite || exit
+duration=$(ffprobe -show_format "$vd" |& awk '/duration/{print $2}' FS=[=.])
+(( interval = duration / 30 ))
 
-ee=0
-ff=0
-while :
+for (( ss = interval; ss < duration; ss += interval ))
 do
-  printf -v gg $2 $ee
-  log ffmpeg -ss $ff -i "$vd" -frames 1 -v warning $gg
-  [ -a $gg ] || break
-  (( ee += 1 ))
-  (( ff += $1 ))
+  log ffmpeg -ss $ss -i "$vd" -frames 1 -v warning $ss.png
 done
 
 warn 'Drag picture here, then press enter (backslashes ok).'
