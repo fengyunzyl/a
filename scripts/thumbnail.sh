@@ -28,7 +28,7 @@ log atomicparsley "$vd" --artwork REMOVE_ALL --overWrite || exit
 
 ((
   duration = ${stream_0_duration%.*},
-  pics = stream_0_height > 800 ? 30 : 36,
+  pics = stream_0_height < 720 ? 36 : 30,
   interval = duration / pics
 ))
 
