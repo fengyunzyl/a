@@ -39,7 +39,7 @@ set $(awk '{
 
 for ss
 do
-  log ffmpeg -ss $ss -i "$vd" -frames 1 -v warning $ss.png
+  log ffmpeg -ss $ss -i "$vd" -frames 1 -v error $ss.png
 done
 
 warn 'Drag picture here, then press enter (backslashes ok).'
