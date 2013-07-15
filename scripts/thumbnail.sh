@@ -24,8 +24,13 @@ read -r vd
 [[ $vd ]] || exit
 unquote vd
 log atomicparsley "$vd" --artwork REMOVE_ALL --overWrite || exit
-duration=$(ffprobe -show_format "$vd" |& awk '/duration/{print $2}' FS=[=.])
-(( interval = duration / 30 ))
+. <(ffprobe -v 0 -show_streams -of flat=h=0:s=_ "$vd" | awk 1)
+
+((
+  duration = ${stream_0_duration%.*},
+  pics = stream_0_height > 800 ? 30 : 36,
+  interval = duration / pics
+))
 
 for (( ss = interval; ss < duration; ss += interval ))
 do
