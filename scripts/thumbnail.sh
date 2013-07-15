@@ -24,15 +24,20 @@ read -r vd
 [[ $vd ]] || exit
 unquote vd
 log atomicparsley "$vd" --artwork REMOVE_ALL --overWrite || exit
-. <(ffprobe -v 0 -show_streams -of flat=h=0:s=_ "$vd" | awk 1)
+. <(ffprobe -v 0 -show_streams -of flat=h=0:s=_ "$vd")
 
-((
-  duration = ${stream_0_duration%.*},
-  pics = stream_0_height < 720 ? 36 : 30,
-  interval = duration / pics
-))
+set $(awk '{
+  w = $1
+  h = $2
+  d = $3
+  ar = w / h
+  pics = ar > 2 ? 36 : 30
+  interval = d / pics
+  for (ss = interval; ss < d; ss += interval)
+    print ss
+}' <<< "$stream_0_width $stream_0_height $stream_0_duration")
 
-for (( ss = interval; ss < duration; ss += interval ))
+for ss
 do
   log ffmpeg -ss $ss -i "$vd" -frames 1 -v warning $ss.png
 done
