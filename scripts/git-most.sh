@@ -1,7 +1,7 @@
 # Git, find out which files have had the most commits
 
 git rev-list --objects --all |
-awk '"" != $2'               |
+awk '$2 != ""'               |
 sort -k2                     |
 uniq -cf1                    |
 sort -rn                     |
