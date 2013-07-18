@@ -40,7 +40,8 @@ awk "BEGIN {
 }" |
 while read ss
 do
-  log ffmpeg -ss $ss -i "$vd" -frames 1 -v error -nostdin $ss.png
+  printf '%g\r' $ss
+  ffmpeg -ss $ss -i "$vd" -frames 1 -v error -nostdin $ss.png
 done
 
 warn 'Drag picture here, then press enter (backslashes ok).'
