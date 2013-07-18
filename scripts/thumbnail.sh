@@ -32,8 +32,10 @@ awk "BEGIN {
   d = $stream_0_duration
   ar = w / h
   pics = ar > 2 ? 36 : 30
-  interval = d / pics
-  for (ss = interval / 2; ss < d; ss += interval)
+  a = .05 * d
+  b = d - a
+  interval = (b - a) / (pics - 1)
+  for (ss = a; pics-- > 0; ss += interval)
     print ss
 }" |
 while read ss
