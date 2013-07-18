@@ -33,7 +33,7 @@ awk "BEGIN {
   ar = w / h
   pics = ar > 2 ? 36 : 30
   interval = d / pics
-  for (ss = interval; ss < d; ss += interval)
+  for (ss = interval / 2; ss < d; ss += interval)
     print ss
 }" |
 while read ss
