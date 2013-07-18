@@ -32,7 +32,7 @@ awk "BEGIN {
   d = $stream_0_duration
   ar = w / h
   pics = ar > 2 ? 36 : 30
-  a = .07 * d
+  a = .08 * d
   b = d - a
   interval = (b - a) / (pics - 1)
   for (ss = a; pics-- > 0; ss += interval)
