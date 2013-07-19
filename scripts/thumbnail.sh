@@ -20,11 +20,13 @@ unquote ()
 
 warn 'Careful, screencaps will dump in current directory.
 Drag video here, then press enter (backslashes ok).'
-read -r vd
-[[ $vd ]] || exit
-unquote vd
-log atomicparsley "$vd" --artwork REMOVE_ALL --overWrite || exit
-. <(ffprobe -v 0 -show_streams -of flat=h=0:s=_ "$vd")
+read -r if
+[[ $if ]] || exit
+unquote if
+cd $(dirname "$if")
+if=$(basename "$if")
+log atomicparsley "$if" --artwork REMOVE_ALL --overWrite || exit
+. <(ffprobe -v 0 -show_streams -of flat=h=0:s=_ "$if")
 
 awk "BEGIN {
   w = $stream_0_width
@@ -32,7 +34,7 @@ awk "BEGIN {
   d = $stream_0_duration
   ar = w / h
   pics = ar > 2 ? 36 : 30
-  a = .08 * d
+  a = .09 * d
   b = d - a
   interval = (b - a) / (pics - 1)
   for (ss = a; pics-- > 0; ss += interval)
@@ -41,12 +43,15 @@ awk "BEGIN {
 while read ss
 do
   printf '%g\r' $ss
-  ffmpeg -ss $ss -i "$vd" -frames 1 -v error -nostdin $ss.png
+  ffmpeg -ss $ss -i "$if" -frames 1 -v error -nostdin $ss.png
 done
 
 warn 'Drag picture here, then press enter (backslashes ok).'
 read -r pc
 [[ $pc ]] || exit
 unquote pc
-log atomicparsley "$vd" --artwork "$pc" --overWrite
+of=${if%.*}~.mp4
+log dd if="$if" of="$of" bs=16M count=1
+log atomicparsley "$of" --artwork "$pc" --overWrite
+log dd if="$if" of="$of" bs=16M skip=1 conv=notrunc oflag=append
 rm *.png
