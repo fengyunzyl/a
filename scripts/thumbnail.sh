@@ -15,7 +15,8 @@ log ()
 
 unquote ()
 {
-  read -r $1 <<< ${!1//\"}
+  # need quotes for github
+  read -r $1 <<< "${!1//\"}"
 }
 
 warn 'Careful, screencaps will dump in current directory.
