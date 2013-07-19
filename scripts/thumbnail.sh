@@ -52,5 +52,5 @@ read -r pc
 [[ $pc ]] || exit
 unquote pc
 # moov could be anywhere in the file, so we cannot use "dd"
-log atomicparsley "${if%.*}~.mp4" --artwork "$pc" --overWrite
+log atomicparsley "$if" --artwork "$pc" --overWrite
 rm *.png
