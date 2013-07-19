@@ -56,3 +56,4 @@ log dd if="$if" of="$of" bs=16M count=1
 log atomicparsley "$of" --artwork "$pc" --overWrite
 log dd if="$if" of="$of" bs=16M skip=1 conv=notrunc oflag=append
 rm *.png
+mv "$of" "$if"
