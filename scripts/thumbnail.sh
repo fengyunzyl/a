@@ -51,9 +51,6 @@ warn 'Drag picture here, then press enter (backslashes ok).'
 read -r pc
 [[ $pc ]] || exit
 unquote pc
-of=${if%.*}~.mp4
-log dd if="$if" of="$of" bs=16M count=1
-log atomicparsley "$of" --artwork "$pc" --overWrite
-log dd if="$if" of="$of" bs=16M skip=1 conv=notrunc oflag=append
+# moov could be anywhere in the file, so we cannot use "dd"
+log atomicparsley "${if%.*}~.mp4" --artwork "$pc" --overWrite
 rm *.png
-mv "$of" "$if"
