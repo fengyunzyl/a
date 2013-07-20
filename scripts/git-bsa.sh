@@ -1,4 +1,3 @@
-#!/bin/sh
 # Binary search algorithm
 
 warn ()
@@ -16,26 +15,27 @@ usage ()
 
 # HTTPS is faster because no redirect
 url=https://github.com/$1/commit/HEAD~
-up=1
+((up = 1))
 
-while wget --spider $url$up
+while wget -q --spider $url$up
 do
-  lw=$up
+  printf '%d\t' $up
+  printf '\e[1;32m%s\e[m\n' GOOD
+  ((lw = up))
   ((up *= 2))
 done
 
 while :
 do
   ((k = (lw + up) / 2))
-  if [ $k = $lw ]
+  ((k == lw)) && break
+  printf '%d\t' $k
+  if wget -q --spider $url$k
   then
-    break
-  fi
-  warn $k
-  if wget --spider $url$k
-  then
-    lw=$k
+    printf '\e[1;32m%s\e[m\n' GOOD
+    ((lw = k))
   else
-    up=$k
+    printf '\e[1;31m%s\e[m\n' BAD
+    ((up = k))
   fi
 done
