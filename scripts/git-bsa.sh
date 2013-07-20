@@ -1,10 +1,5 @@
 # Binary search algorithm
 
-warn ()
-{
-  printf '\e[36m%s\e[m\n' "$*"
-}
-
 usage ()
 {
   echo usage: $0 torvalds/linux
