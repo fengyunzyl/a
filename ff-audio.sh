@@ -130,7 +130,7 @@ do
     readu date
   fi
   # must leave "media" open
-  # FIXME use "or" to allow multipl recording ids
+  # FIXME use "or" to allow multiple recording ids
   jq ".media[].tracks[] | select(.recording.id == \"$rid\")" rls.json > .json
   artist=$(JQ '[.["artist-credit"][] | .name, .joinphrase] | add')
   show artist
