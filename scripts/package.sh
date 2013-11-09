@@ -35,6 +35,6 @@ require)
   ' bar=$regex /usr/local/bin/http*/setup.ini
   ;;
 contain)
-  cygcheck -p $regex | awk 'NR>1 && ! /-src\t/ && ! a[$1]++ {print $1}' FS=/
+  cygcheck -p $regex | awk 'NR>1 && ! /-src\t/ && ! a[$2]++ {print $2}' FS=/
   ;;
 esac
