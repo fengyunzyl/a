@@ -1,5 +1,5 @@
 # Install Jekyll with Cygwin
-setup -nqP gcc4-core,ruby
+setup-x86 -nqP gcc4-core,ruby
 
 # install jekyll
 gem install jekyll
@@ -14,6 +14,10 @@ gem install posix-spawn
 gem install coderay
 
 # install coderay_bash
-gem install coderay_bash
-set $(find /lib/ruby -name scanners)
-cp $2/bash.rb $1
+set raw.github.com/rubychan/coderay/master/lib/coderay/scanners/bash.rb
+if ! wget --spider $1
+then
+  gem install coderay_bash
+  set $(find /lib/ruby -name scanners)
+  cp $2/bash.rb $1
+fi
