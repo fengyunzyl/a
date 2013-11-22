@@ -20,7 +20,7 @@ usage ()
 }
 
 [ $1 ] || usage
-cd /opt/$1
+cd /srv/$1
 
 # Push source branch
 log git checkout source
