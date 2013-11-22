@@ -14,7 +14,7 @@ usage ()
 }
 
 [ $1 ] || usage
-cd /opt/$1
+cd /srv/$1
 rm -rf _site
 jekyll serve -w &
 
