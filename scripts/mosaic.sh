@@ -10,9 +10,11 @@ usage ()
 (( $# )) || usage
 
 # option order matters
+ow='w>h ? 1280 : 640'
+
 convert \
   -resize x1080 \
-  -crop 640x1080+0+0 \
-  -gravity center \
+  -set option:distort:viewport "%[fx: $ow]x+%[fx: ow = $ow; (w-ow)/2]+0" \
+  -distort SRT 0 \
   +append \
   $* $(date +%s).png
