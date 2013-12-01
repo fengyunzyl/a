@@ -24,7 +24,7 @@ Drag video here, then press enter (backslashes ok).'
 read -r if
 [[ $if ]] || exit
 unquote if
-cd $(dirname "$if")
+cd "$(dirname '$if')"
 if=$(basename "$if")
 log atomicparsley "$if" --artwork REMOVE_ALL --overWrite || exit
 . <(ffprobe -v 0 -show_streams -of flat=h=0:s=_ "$if")
