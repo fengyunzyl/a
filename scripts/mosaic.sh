@@ -17,4 +17,4 @@ convert \
   -set option:distort:viewport "%[fx: $ow]x+%[fx: ow = $ow; (w-ow)/2]+0" \
   -distort SRT 0 \
   +append \
-  $* $(date +%s).png
+  "$@" $(date +%s).png
