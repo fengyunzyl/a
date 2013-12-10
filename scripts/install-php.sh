@@ -1,9 +1,7 @@
 # install PHP
 
 # libxml2
-setup-x86 -nq \
-  -s http://box-soft.com \
-  -P libxml2
+setup-x86 -nq -P libxml2
 
 # php
 setup-x86 -nq -K http://cygwinports.org/ports.gpg \
