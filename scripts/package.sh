@@ -22,7 +22,7 @@ regex=$2
 case $mode in
 local)
   # commented results ok
-  egrep -r --color --exclude-dir .git "^(|.*[^.\"])$regex" /opt/{a,dotfiles}
+  egrep -r --color --exclude-dir .git "^(|.*[^.\"])$regex" /srv/{a,dotfiles}
   ;;
 require)
   awk '
