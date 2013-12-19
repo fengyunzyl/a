@@ -10,7 +10,7 @@ mingw32-make install DESTDIR=/mingw32/i686-w64-mingw32
 cd -
 
 # Install RtmpDump
-git clone git://github.com/svnpenn/rtmpdump.git
+git clone git://git.ffmpeg.org/rtmpdump
 cd rtmpdump
 git checkout pu
 mingw32-make \
