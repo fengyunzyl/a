@@ -8,3 +8,5 @@
 <a href="http://stackoverflow.com/a/17665443">
   publish jekyll generated to gh-pages and not overwite the .git in \_site
 </a>
+
+Use HTTP instead of SSH clone URLs
