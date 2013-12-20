@@ -2,7 +2,7 @@
 setup-x86 -nqP gcc4-core,ruby
 
 # install posix-spawn
-git clone git@github.com:rtomayko/posix-spawn
+git clone git://github.com/rtomayko/posix-spawn
 cd posix-spawn
 gem build posix-spawn.gemspec
 gem install posix-spawn
