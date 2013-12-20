@@ -22,7 +22,7 @@ log ()
 
 gemi ()
 {
-  git clone --depth 1 git@github.com:$1/$2
+  git clone --depth 1 git://github.com/$1/$2
   cd $2
   gem build $2.gemspec
   gem install $2
