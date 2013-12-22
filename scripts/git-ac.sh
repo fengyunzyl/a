@@ -2,10 +2,10 @@
 git add -A "$1"
 
 # print first added line if found, else print first removed line
-b=$(git diff --cached | awk '
-  /^+[^+]/       {m=$0;exit}
-  /^-[^-]/ && !m {m=$0}
-  END            {sub(/^[-+# ]+/, "", m); print m}
+y=$(git diff --cached | awk '
+  /^+[^+]/       {z=$0;exit}
+  /^-[^-]/ && !z {z=$0}
+  END            {sub(/^[-+# ]+/, "", z); print z}
 ')
 
-git commit -m "$b"
+git commit -m "$y"
