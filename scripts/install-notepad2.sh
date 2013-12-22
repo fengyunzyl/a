@@ -1,5 +1,7 @@
 # install notepad2
-git clone --depth 1 git://github.com/XhmikosR/notepad2-mod
+# you must do full clone to get correct version
+# number on about page
+git clone git://github.com/XhmikosR/notepad2-mod
 cd notepad2-mod
 SOURCE=$PWD
 
