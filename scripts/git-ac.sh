@@ -1,8 +1,11 @@
-# git add .      modified and new files
-# git add -u     modified and deleted files
-# git add -A     modified, new and deleted files
-# git commit -a  modified and deleted files
 
-set -- "$(git diff | awk '/^[+-][^+-]/ {print;exit}')"
-git add -A
-git commit -m "$1"
+# we need a catch in case $1 is nonsense
+if (( $# ))
+then
+  git add $1
+else
+  git add -A
+fi
+
+b=$(git diff --cached | awk '/^[+-][^+-]/{print;exit}')
+git commit -m "$b"
