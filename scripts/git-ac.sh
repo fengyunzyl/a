@@ -1,10 +1,5 @@
-# we need a catch in case $1 is nonsense
-if (( $# ))
-then
-  git add $1
-else
-  git add -A
-fi
+
+git add -A "$1"
 
 # print first added line if found, else print first removed line
 b=$(git diff --cached | awk '
