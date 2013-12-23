@@ -26,7 +26,7 @@ url=$2
 log curl -s $url |
 awk '
 $4 ~ tag {
-  a[++b]=$5" "$2" "$4
+  a[b++]=$5" "$2" "$4
 }
 END {
   asort(a)
