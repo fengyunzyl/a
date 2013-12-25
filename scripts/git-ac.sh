@@ -6,7 +6,7 @@ y=$(git diff --cached --color | awk '
   c=$4
   if (c==1 && m) next
   gsub(/\033[^m]+m/, "")
-  sub(/^[-+# ]+/, "")
+  sub(/^[+-] *(#+ )*/, "")
   m=$0
   if (c==2 && m) exit
 }
