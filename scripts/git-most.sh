@@ -1,12 +1,13 @@
-# Git, find out which files have had the most commits
+# find current files with most commits, including renames
 
-git rev-list --objects --all |
-awk '$2 != ""'               |
-sort -k2                     |
-uniq -cf1                    |
-sort -rn                     |
-while read frequency sample path
-do 
-  [[ -a $path ]] && [ $(git cat-file -t $sample) = blob ] &&
-    printf '%s\t%s\n' "$frequency" "$path"
-done
+git ls-files |
+while read aa
+do
+  printf . >&2
+  set $(git log --follow --oneline "$aa" | wc)
+  printf '%s\t%s\n' $1 "$aa"
+done > bb
+
+echo
+sort -nr bb
+rm bb
