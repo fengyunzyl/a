@@ -103,7 +103,7 @@ do
   warn connect to acoustid.org...
   curl -s api.acoustid.org/v2/lookup?`querystring` | jq .results[0] > .json
   warn acoustid `JQ .id`
-  set .sources "($DURATION - (.duration // 0) | . * .)"
+  set .sources "($DURATION - (.duration // 0) | length)"
   rid=$(JQ ".recordings | max_by(.2 * $1 - .8 * $2).id")
   # FIXME allow edit of recording id
   warn musicbrainz recording id $rid
