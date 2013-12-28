@@ -1,11 +1,8 @@
-# Install Jekyll with Cygwin
+# cygwin packages
 setup-x86 -nqP gcc4-core,ruby
 
-# install jekyll
-gem install jekyll
-
-# install coderay
-gem install coderay
+# gems
+gem install jekyll kramdown coderay
 
 # install coderay_bash
 set raw.github.com/rubychan/coderay/master/lib/coderay/scanners/bash.rb
