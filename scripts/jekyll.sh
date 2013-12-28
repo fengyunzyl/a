@@ -13,7 +13,7 @@ usage ()
   exit
 }
 
-[ $1 ] || usage
+(( $# )) || usage
 cd /srv/$1
 rm -rf _site
 jekyll serve -w &
