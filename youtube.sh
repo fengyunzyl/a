@@ -4,34 +4,28 @@
 
 if [[ $OSTYPE =~ linux ]]
 then
-  FIREFOX ()
-  {
-    firefox $1
-  }
+  XDG_OPEN=xdg-open
 else
-  FIREFOX ()
-  {
-    cmd.exe /c "start firefox \"$1\""
-  }
+  XDG_OPEN='cmd /c start ""'
 fi
 
 qual=(
   [5]='240p FLV h.263'
-  [17]='144p 3GP mpeg4 simple'
-  [18]='360p MP4 h.264 baseline'
-  [22]='720p MP4 h.264 high'
-  [34]='360p FLV h.264 main'
-  [35]='480p FLV h.264 main'
-  [36]='240p 3GP mpeg4 simple'
-  [37]='1080p MP4 h.264 high'
+  [17]='144p 3GP mpeg4'
+  [18]='360p MP4 h.264'
+  [22]='720p MP4 h.264'
+  [34]='360p FLV h.264'
+  [35]='480p FLV h.264'
+  [36]='240p 3GP mpeg4'
+  [37]='1080p MP4 h.264'
   [43]='360p WebM vp8'
   [44]='480p WebM vp8'
   [45]='720p WebM vp8'
   [46]='1080p WebM vp8'
-  [82]='360p MP4 h.264 3D'
-  [84]='720p MP4 h.264 3D'
-  [100]='360p WebM vp8 3D'
-  [102]='720p WebM vp8 3D'
+  [82]='360p MP4 3D'
+  [84]='720p MP4 3D'
+  [100]='360p WebM 3D'
+  [102]='720p WebM 3D'
 )
 
 warn ()
@@ -56,16 +50,21 @@ decode ()
 log ()
 {
   unset PS4
-  qq=$((set -x; : "$@") 2>&1)
+  qq=$(( set -x
+         : "$@" )2>&1)
   warn "${qq:2}"
   eval "${qq:2}"
 }
 
-[ $1 ] || usage
-[ $2 ] || set '' $1
+case $# in
+  0) usage     ;;
+  1) set '' $1 ;;
+esac
+
 arg_itag=$1
 arg_url=$2
-declare $(awk NF=NF FPAT='[^&?]*=[^&]*' <<< $arg_url)
+v=$arg_url
+declare -l $(awk NF=NF FPAT='[^&?]*=[^&]*' <<< $arg_url)
 declare $(curl -s www.youtube.com/get_video_info?video_id=$v | sed 'y/&/ /')
 set $(decode url_encoded_fmt_stream_map | sed 'y/,/ /')
 
@@ -73,14 +72,10 @@ for oo
 do
   declare $(sed 'y/&/ /' <<< $oo)
   case $arg_itag in
-  '')
-    printf ' %3.3s  %s\n' $itag "${qual[itag]}"
-    ;;
-  $itag)
-    break
-    ;;
+       '') printf ' %3.3s  %s\n' $itag "${qual[itag]}" ;;
+    $itag) break                                       ;;
   esac
 done
 
 [ $arg_itag ] || usage
-FIREFOX `decode url`"&signature=$sig"
+$XDG_OPEN "$(decode url)&signature=$sig&title=videoplayback "
