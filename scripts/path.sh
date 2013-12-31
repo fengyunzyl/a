@@ -14,6 +14,7 @@ usage ()
 (( $# )) || usage
 good='\.(exe|sh)$'
 declare -A bad
+ct=0
 
 for item in "$1"/*
 do
@@ -24,8 +25,8 @@ do
     (( ct++ ))
   else
     # make note of the extension
-    exn=${item##*.}
-    bad[$exn]=
+    exn=$(awk '$NF ~ /\./ {sub(/.*\./,"",$NF); print $NF}' FS=/ <<< $item)
+    [ $exn ] && bad[$exn]=
   fi
 done
 
