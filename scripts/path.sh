@@ -12,12 +12,13 @@ usage ()
 }
 
 (( $# )) || usage
-good='\.(exe|sh)$'
+good='\.(EXE|exe|php|sh)$'
 declare -A bad
 ct=0
 
 for item in "$1"/*
 do
+  printf . >&2
   # need to filter out directories
   [ -d "$item" ] && continue
   if [[ $item =~ $good ]]
@@ -30,6 +31,7 @@ do
   fi
 done
 
+printf '\n'
 printf '%s\n  %s\n\n' 'good extensions'      "$ct"
 printf '%s\n'         'discarded extensions'
 
