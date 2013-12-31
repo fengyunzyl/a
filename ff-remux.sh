@@ -60,9 +60,11 @@ done
 
 for baz
 do
-  # FIXME use "outfile~.ext" if extension is the same
-  log ffmpeg -stats -v error \
-    -i "$baz" ${foo[$REPLY,0]} "${baz%.*}.${foo[$REPLY,1]}"
+  ie=${baz##*.}
+  ob=${baz%.*}
+  oe=${foo[$REPLY,1]}
+  [ $ie = $oe ] && ob+='~'
+  log ffmpeg -stats -v error -i "$baz" ${foo[$REPLY,0]} "$ob.$oe"
   echo
 done
 
