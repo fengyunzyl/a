@@ -8,7 +8,8 @@ warn ()
 log ()
 {
   unset PS4
-  qq=$((set -x; : "$@") 2>&1)
+  qq=$(( set -x
+         : "$@" ) 2>&1)
   warn "${qq:2}"
   eval "${qq:2}"
 }
@@ -49,7 +50,7 @@ cat > profile <<'q'
 PATH=/bin:/usr/local/bin
 PROMPT_COMMAND='history -a'
 PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ '
-[ -d $HOME ] || mkdir -p $HOME
+mkdir -p ~
 [ -a ~/.bash_history ] || echo %% > ~/.bash_history
 [ -a /bin/awk ] || ln -s /bin/gawk /bin/awk
 [ -a /dev/fd ] || ln -s /proc/self/fd /dev/fd
