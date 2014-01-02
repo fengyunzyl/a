@@ -49,7 +49,6 @@ mkdir etc
 cd etc
 cat > profile <<'q'
 PATH=/bin:/usr/local/bin
-PROMPT_COMMAND='history -a'
 PS1='\e];\a\n\e[33m\w\n\e[m# '
 mkdir -p ~
 [ -a ~/.bash_history ] || echo cd > ~/.bash_history
