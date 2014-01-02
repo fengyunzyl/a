@@ -50,9 +50,9 @@ cd etc
 cat > profile <<'q'
 PATH=/bin:/usr/local/bin
 PROMPT_COMMAND='history -a'
-PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ '
+PS1='\e];\a\n\e[33m\w\n\e[m# '
 mkdir -p ~
-[ -a ~/.bash_history ] || echo %% > ~/.bash_history
+[ -a ~/.bash_history ] || echo cd > ~/.bash_history
 [ -a /bin/awk ] || ln -s /bin/gawk /bin/awk
 [ -a /dev/fd ] || ln -s /proc/self/fd /dev/fd
 cd
