@@ -14,12 +14,13 @@ log ()
   eval "${qq:2}"
 }
 
-set $PWD
+set "$PWD"
 mkdir baby-cygwin
 cd baby-cygwin
 
 # /
 echo '@start bin\bash -l' > cygwin.bat
+chmod +x cygwin.bat
 DATE=$(date)
 CYGWIN_VERSION=$(uname -r | sed 's/(.*//')
 u2d > README.txt <<q
@@ -34,7 +35,7 @@ The build script for this build can be found at
 
 Included with this package
   Cygwin $CYGWIN_VERSION
-  
+
 OPERATING INSTRUCTIONS
   Put any scripts into /usr/local/bin
   Double click cygwin.bat
@@ -60,12 +61,12 @@ cd -
 
 # /usr/bin
 deps=(
-  /bin/bash   /bin/cat     /bin/chmod /bin/cp     /bin/cut   /bin/date
-  /bin/diff   /bin/dirname /bin/du    /bin/dumper /bin/expr  /bin/find
-  /bin/gawk   /bin/grep    /bin/ln    /bin/ls     /bin/mkdir /bin/mv
-  /bin/printf /bin/rm      /bin/rmdir /bin/sed    /bin/sh    /bin/sleep
-  /bin/sort   /bin/stat    /bin/tee   /bin/tr     /bin/uname /bin/uniq
-  /bin/wget   /bin/xargs
+  /bin/bash  /bin/cat     /bin/chmod /bin/cp     /bin/cut   /bin/date
+  /bin/diff  /bin/dirname /bin/du    /bin/dumper /bin/expr  /bin/find
+  /bin/gawk  /bin/grep    /bin/ln    /bin/ls     /bin/mkdir /bin/mount
+  /bin/mv    /bin/printf  /bin/rm    /bin/rmdir  /bin/sed   /bin/sh
+  /bin/sleep /bin/sort    /bin/stat  /bin/tee    /bin/tr    /bin/uname
+  /bin/uniq  /bin/wget    /bin/xargs
 )
 mkdir bin
 cd bin
@@ -84,5 +85,5 @@ cp -r /usr/share/terminfo .
 # archive
 cd ${0%/*}
 BABY_VERSION=$(git log --follow --oneline $0 | wc -l)
-cd $1
+cd "$1"
 log zip -9mqr baby-cygwin-${BABY_VERSION}.zip baby-cygwin

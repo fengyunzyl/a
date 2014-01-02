@@ -2,7 +2,7 @@
 
 usage ()
 {
-  echo usage: $0 ZIP
+  echo usage: $0 ZIP [BIN]
   exit
 }
 
@@ -14,13 +14,17 @@ warn ()
 log ()
 {
   unset PS4
-  qq=$((set -x; : "$@") 2>&1)
+  qq=$(( set -x
+         : "$@" ) 2>&1)
   warn "${qq:2}"
   eval "${qq:2}"
 }
 
-[ $1 ] || usage
+(( $# )) || usage
 log unzip -q $1
 cd baby-cygwin/usr/local/bin
-log find /opt/a /usr/local/bin -maxdepth 1 -type f -exec cp -t. {} +
+if (( $# == 2 ))
+then
+  log find /opt/a /usr/local/bin -maxdepth 1 -type f -exec cp -t. {} +
+fi
 echo 'baby cygwin ready.'
