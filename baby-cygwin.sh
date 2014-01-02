@@ -23,7 +23,7 @@ echo '@start bin\bash -l' > cygwin.bat
 chmod +x cygwin.bat
 DATE=$(date)
 CYGWIN_VERSION=$(uname -r | sed 's/(.*//')
-u2d > README.txt <<q
+u2d > README.txt <<bb
 Baby Cygwin by Steven Penny
 
 Steven’s Home Page: http://svnpenn.github.io
@@ -39,7 +39,7 @@ Included with this package
 OPERATING INSTRUCTIONS
   Put any scripts into /usr/local/bin
   Double click cygwin.bat
-q
+bb
 
 # /dev
 mkdir dev
@@ -47,25 +47,30 @@ mkdir dev
 # /etc
 mkdir etc
 cd etc
-cat > profile <<'q'
+cat > profile <<'bb'
 PATH=/bin:/usr/local/bin
 PS1='\e];\a\n\e[33m\w\n\e[m# '
 mkdir -p ~
 [ -a ~/.bash_history ] || echo cd > ~/.bash_history
 [ -a /bin/awk ] || ln -s /bin/gawk /bin/awk
 [ -a /dev/fd ] || ln -s /proc/self/fd /dev/fd
+if ! [ -a /etc/passwd ]
+then
+  mkpasswd > /etc/passwd
+  su -l "$USERNAME"
+fi
 cd
-q
+bb
 cd -
 
 # /usr/bin
 deps=(
-  /bin/bash  /bin/cat     /bin/chmod /bin/cp     /bin/cut   /bin/date
-  /bin/diff  /bin/dirname /bin/du    /bin/dumper /bin/expr  /bin/find
-  /bin/gawk  /bin/grep    /bin/ln    /bin/ls     /bin/mkdir /bin/mount
-  /bin/mv    /bin/printf  /bin/rm    /bin/rmdir  /bin/sed   /bin/sh
-  /bin/sleep /bin/sort    /bin/stat  /bin/tee    /bin/tr    /bin/uname
-  /bin/uniq  /bin/wget    /bin/xargs
+  /bin/bash  /bin/cat     /bin/chmod  /bin/cp     /bin/cut   /bin/date
+  /bin/diff  /bin/dirname /bin/du     /bin/dumper /bin/expr  /bin/find
+  /bin/gawk  /bin/grep    /bin/ln     /bin/ls     /bin/mkdir /bin/mkpasswd
+  /bin/mount /bin/mv      /bin/printf /bin/rm     /bin/rmdir /bin/sed
+  /bin/sh    /bin/sleep   /bin/sort   /bin/stat   /bin/tee   /bin/tr
+  /bin/uname /bin/uniq    /bin/wget   /bin/xargs
 )
 mkdir bin
 cd bin
