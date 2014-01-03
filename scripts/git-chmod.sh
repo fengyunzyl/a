@@ -14,16 +14,16 @@ usage ()
 log ()
 {
   unset PS4
-  qq=$((set -x; : "$@") 2>&1)
+  qq=$(( set -x
+         : "$@") 2>&1)
   warn "${qq:2}"
   eval "${qq:2}"
 }
 
-[ $1 ] || usage
-
+(( $# )) || usage
 # Change mode locally
 log chmod 755 $1
-# --add is needed for mode change
-log git update-index --add --chmod=+x $1
+log git update-index --skip-worktree --chmod=+x $1
+log git update-index --no-skip-worktree $1
 log git commit -m "change mode $1"
 log git push
