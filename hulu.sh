@@ -19,7 +19,8 @@ warn ()
 log ()
 {
   unset PS4
-  qq=$((set -x; : "$@") 2>&1)
+  qq=$(( set -x
+         : "$@" ) 2>&1)
   warn "${qq:2}"
   eval "${qq:2}"
 }
@@ -54,11 +55,6 @@ post ()
   warn post contents of /tmp/hulu.log to
   warn ffmpeg.zeranoe.com/forum/viewtopic.php?t=1055
   exit
-}
-
-quiet ()
-{
-  $* &>/dev/null
 }
 
 PATH=/bin:/usr/local/bin:${TMP%U*}progra~2/mozill~1
@@ -137,7 +133,7 @@ done < hulu.smil
 [ $arg_cdn ] || usage
 [[ $arg_url =~ [0-9]+ ]]
 
-if quiet command -v jq
+if type jq
 then
   download hulu.json www.hulu.com/api/2.0/video?id=$BASH_REMATCH
   flv=$(JQ '"\(.show.name) \(.season_number)x\(.episode_number) \(.title)"')
@@ -157,7 +153,7 @@ log rtmpdump \
 
 (( $? )) && exit
 
-if quiet command -v ffmpeg
+if type ffmpeg
 then
   log ffmpeg -i "$flv.flv" -c copy -v warning "$flv.mp4"
   log rm "$flv.flv"
