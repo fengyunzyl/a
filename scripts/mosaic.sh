@@ -10,7 +10,7 @@ usage ()
 (( $# )) || usage
 # option order matters
 ow='w>h ? 1280 : 640'
-[ -a /bin/convert ] || echo /bin/convert not found
+type /bin/convert >/dev/null || exit
 
 convert \
   -resize x1080 \
