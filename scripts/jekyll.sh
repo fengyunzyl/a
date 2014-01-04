@@ -4,7 +4,7 @@ if [[ $OSTYPE =~ linux ]]
 then
   XDG_OPEN=xdg-open
 else
-  XDG_OPEN="$WINDIR/system32/cmd /c start"
+  XDG_OPEN='cmd /c start'
 fi
 
 usage ()
