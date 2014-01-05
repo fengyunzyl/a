@@ -1,11 +1,9 @@
 # Launch Jekyll
 
-if [[ $OSTYPE =~ linux ]]
-then
-  XDG_OPEN=xdg-open
-else
-  XDG_OPEN='cmd /c start'
-fi
+case $OSTYPE in
+linux-gnu) XDG_OPEN=xdg-open       ;;
+   cygwin) XDG_OPEN='cmd /c start' ;;
+esac
 
 usage ()
 {
