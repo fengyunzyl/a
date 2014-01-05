@@ -48,17 +48,18 @@ mkdir dev
 mkdir etc
 cd etc
 cat > profile <<'bb'
-PATH=/bin:/usr/local/bin
+PATH=/bin:/usr/local/bin:$PATH
 PS1='\e];\a\n\e[33m\w\n\e[m# '
-mkdir -p ~
-[ -a ~/.bash_history ] || echo cd > ~/.bash_history
-[ -a /bin/awk ] || ln -s /bin/gawk /bin/awk
-[ -a /dev/fd ] || ln -s /proc/self/fd /dev/fd
 if ! [ -a /etc/passwd ]
 then
   mkpasswd > /etc/passwd
-  su -l "$USERNAME"
+  cmd /c start bash -l
+  kill -7 $$
 fi
+[ -d ~ ] || mkdir -p ~
+[ -a ~/.bash_history ] || echo cd > ~/.bash_history
+[ -a /bin/awk ] || ln -s /bin/gawk /bin/awk
+[ -a /dev/fd ] || ln -s /proc/self/fd /dev/fd
 cd
 bb
 cd -
@@ -68,9 +69,9 @@ deps=(
   /bin/bash  /bin/cat     /bin/chmod  /bin/cp     /bin/cut   /bin/date
   /bin/diff  /bin/dirname /bin/du     /bin/dumper /bin/expr  /bin/find
   /bin/gawk  /bin/grep    /bin/ln     /bin/ls     /bin/mkdir /bin/mkpasswd
-  /bin/mount /bin/mv      /bin/printf /bin/rm     /bin/rmdir /bin/sed
-  /bin/sh    /bin/sleep   /bin/sort   /bin/stat   /bin/tee   /bin/tr
-  /bin/uname /bin/uniq    /bin/wget   /bin/xargs
+  /bin/mount /bin/mv      /bin/printf /bin/ps     /bin/rm    /bin/rmdir
+  /bin/sed   /bin/sh      /bin/sleep  /bin/sort   /bin/stat  /bin/tee
+  /bin/tr    /bin/uname   /bin/uniq   /bin/wget   /bin/xargs
 )
 mkdir bin
 cd bin
