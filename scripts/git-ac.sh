@@ -1,3 +1,4 @@
+git reset -q
 git add -A "$1"
 
 # print first added line if found, else print first removed line
