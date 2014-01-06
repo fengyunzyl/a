@@ -58,11 +58,11 @@ post ()
 }
 
 PATH=/bin:/usr/local/bin:${TMP%U*}progra~2/mozill~1
-hash firefox || exit
+type firefox >/dev/null || exit
 
 case $# in
-  [02]) usage ;;
-  1) set '' '' $1 ;;
+     1) set '' '' $1 ;;
+  [02]) usage        ;;
 esac
 
 arg_cdn=$1
