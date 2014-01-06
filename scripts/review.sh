@@ -1,17 +1,18 @@
 # get reviews
 
-usage ()
-{
+type xdg-open &>/dev/null || xdg-open () {
+  cmd /c start '' "$1"
+}
+
+usage () {
   echo usage: $0 ARTIST
   exit
 }
 
-PATH=/bin:/usr/local/bin:${TMP%U*}progra~2/mozill~1
-hash firefox || exit
-[[ $1 ]] || usage
+(( $# )) || usage
 ARTIST=$*
 
-firefox "allmusic.com/search/all/$ARTIST"
-firefox "metacritic.com/search/all/${ARTIST// /+}/results"
-firefox "pitchfork.com/search/?query=$ARTIST"
-firefox "albumoftheyear.org/search.php?q=${ARTIST// /+}"
+xdg-open "allmusic.com/search/all/$ARTIST"
+xdg-open "metacritic.com/search/all/${ARTIST// /+}/results"
+xdg-open "pitchfork.com/search/?query=$ARTIST"
+xdg-open "albumoftheyear.org/search.php?q=${ARTIST// /+}"
