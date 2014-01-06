@@ -1,25 +1,23 @@
 # This script will push Jekyll branches.
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log ()
-{
+log () {
   unset PS4
-  qq=$((set -x; : "$@") 2>&1)
+  qq=$(( set -x
+         : "$@" ) 2>&1)
   warn "${qq:2}"
   eval "${qq:2}"
 }
 
-usage ()
-{
+usage () {
   echo usage: $0 REPO
   exit
 }
 
-[ $1 ] || usage
+(( $# )) || usage
 cd /srv/$1
 
 # Push source branch
@@ -31,7 +29,7 @@ git push origin source || exit
 # Push master branch
 jekyll build || exit
 grep --color -r 'Liquid.error' . && exit
-hash coderay || exit
+type coderay || exit
 log git checkout master
 git rm -qr .
 cp -r _site/. .
