@@ -87,7 +87,7 @@ buffer 85
 img=$1
 shift
 songs=("$@")
-hash google || exit
+type google || exit
 declare -A artists titles
 
 for song in "${songs[@]}"
