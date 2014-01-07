@@ -1,23 +1,19 @@
 # download from Hulu
 
-JQ ()
-{
+JQ () {
   jq -r "$@" hulu.json | tr -d '\r'
 }
 
-debug ()
-{
+debug () {
   echo $(date +%T.%N | cut -b-11) $* >> /tmp/hulu.log
 }
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*"
   debug $*
 }
 
-log ()
-{
+log () {
   unset PS4
   qq=$(( set -x
          : "$@" ) 2>&1)
@@ -25,8 +21,7 @@ log ()
   eval "${qq:2}"
 }
 
-usage ()
-{
+usage () {
   echo "USAGE"
   echo "  ${0##*/} [CDN TYPE] URL"
   echo "  run with just URL to get CDN and TYPE params"
@@ -37,8 +32,7 @@ usage ()
   exit
 }
 
-download ()
-{
+download () {
   IFS=/ read gg hh <<< "$2"
   exec 3< /dev/tcp/$gg/80
   {
@@ -50,14 +44,13 @@ download ()
   sed '1,/^$/d' <&3 > $1
 }
 
-post ()
-{
+post () {
   warn post contents of /tmp/hulu.log to
   warn ffmpeg.zeranoe.com/forum/viewtopic.php?t=1055
   exit
 }
 
-PATH=/bin:/usr/local/bin:${TMP%U*}progra~2/mozill~1
+PATH=/usr/bin:/usr/local/bin:${TMP%U*}progra~2/mozill~1
 type firefox >/dev/null || exit
 
 case $# in
