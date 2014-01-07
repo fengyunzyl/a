@@ -1,12 +1,10 @@
 # baby cygwin
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log ()
-{
+log () {
   unset PS4
   qq=$(( set -x
          : "$@" ) 2>&1)
@@ -48,7 +46,7 @@ mkdir dev
 mkdir etc
 cd etc
 cat > profile <<'bb'
-PATH=/bin:/usr/local/bin:$PATH
+PATH=/usr/bin:/usr/local/bin:$PATH
 PS1='\e];\a\n\e[33m\w\n\e[m# '
 if ! [ -a /etc/passwd ]
 then
