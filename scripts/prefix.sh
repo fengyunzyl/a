@@ -1,17 +1,15 @@
 # get compiler prefix
 
-usage ()
-{
+usage () {
   echo usage: $0 COMPILER
   exit
 }
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-[ $1 ] || usage
+(( $# )) || usage
 touch foo.c
 
 warn INCLUDE
