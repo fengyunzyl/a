@@ -1,5 +1,5 @@
 # Cygwin packages
-setup -nqP libicu-devel,patch,ruby
+setup-x86 -nqP libicu-devel,patch,ruby
 
 # charlock_holmes
 git clone --single-branch git://github.com/brianmario/charlock_holmes
