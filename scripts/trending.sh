@@ -1,6 +1,5 @@
 
-usage ()
-{
+usage () {
   echo usage: $0 PAGE LANGUAGE SIZE
   exit
 }
