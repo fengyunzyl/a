@@ -5,8 +5,7 @@
 # symbolic links. Good thing about extension is we dont have to worry if the
 # file is executable.
 
-usage ()
-{
+usage () {
   echo "usage: ${0##*/} FOLDER"
   exit
 }
