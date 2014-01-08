@@ -1,20 +1,18 @@
 # Set thumbnail for MP4 video
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log ()
-{
+log () {
   unset PS4
-  qq=$((set -x; : "$@") 2>&1)
+  qq=$(( set -x
+         : "$@" ) 2>&1)
   warn "${qq:2}"
   eval "${qq:2}"
 }
 
-unquote ()
-{
+unquote () {
   # need quotes for github
   read -r $1 <<< "${!1//\"}"
 }
