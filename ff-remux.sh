@@ -1,12 +1,10 @@
 # ffmpeg remux to format of choice
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log ()
-{
+log () {
   unset PS4
   qq=$(( set -x
          : "$@" ) 2>&1)
@@ -14,16 +12,14 @@ log ()
   eval "${qq:2}"
 }
 
-usage ()
-{
+usage () {
   echo usage: $0 FILES
   echo
   echo this will not delete original file
   exit
 }
 
-buffer ()
-{
+buffer () {
   set $1 $(reg query 'hkcu\console' | grep ScreenBufferSize)
   [ $(( $4 & 0xffff )) = $1 ] && return
   set $(printf '%04x ' $1 2000 25)
