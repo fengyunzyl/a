@@ -1,17 +1,15 @@
 # Binary search algorithm
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-usage ()
-{
+usage () {
   echo usage: $0 LBOUND UBOUND
   exit
 }
 
-[ $1 ] || usage
+(( $# < 2 )) && usage
 lb=$1
 ub=$2
 
