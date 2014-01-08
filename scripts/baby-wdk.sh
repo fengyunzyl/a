@@ -1,15 +1,14 @@
 # create baby wdk
 # http://microsoft.com/en-us/download/details.aspx?id=11800
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log ()
-{
+log () {
   unset PS4
-  qq=$((set -x; : "$@") 2>&1)
+  qq=$(( set -x
+         : "$@" )2>&1)
   warn "${qq:2}"
   eval "${qq:2}"
 }

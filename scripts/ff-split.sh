@@ -1,25 +1,23 @@
 # split album flac file
 
-usage ()
-{
+usage () {
   echo usage: $0 CUE AUDIO
   exit
 }
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log ()
-{
+log () {
   unset PS4
-  qq=$((set -x; : "$@") 2>&1)
+  qq=$(( set -x
+         : "$@" )2>&1)
   warn "${qq:2}"
   eval "${qq:2}"
 }
 
-[[ $2 ]] || usage
+(( $# < 2 )) && usage
 arg_cue=$1
 arg_aud=$2
 

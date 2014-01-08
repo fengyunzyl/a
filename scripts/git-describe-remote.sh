@@ -1,25 +1,23 @@
 # Should be v1.8.0.1-343-gf94c325
 
-usage ()
-{
+usage () {
   echo usage: $0 torvalds/linux
   exit
 }
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*" >&2
 }
 
-log ()
-{
+log () {
   unset PS4
-  qq=$((set -x; : "$@") 2>&1)
+  qq=$(( set -x
+         : "$@" )2>&1)
   warn "${qq:2}"
   eval "${qq:2}"
 }
 
-[ $1 ] || usage
+(( $# )) || usage
 arg_rpo=$1
 git ls-remote git://github.com/$arg_rpo.git > y
 

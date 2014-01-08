@@ -1,14 +1,13 @@
 # find a good character to use for IFS
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log ()
-{
+log () {
   unset PS4
-  qq=$((set -x; : "$@") 2>&1)
+  qq=$(( set -x
+         : "$@" )2>&1)
   warn "${qq:2}"
   eval "${qq:2}"
 }

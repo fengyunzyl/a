@@ -1,21 +1,18 @@
 # test baby cygwin
 
-usage ()
-{
+usage () {
   echo usage: $0 ZIP [BIN]
   exit
 }
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log ()
-{
+log () {
   unset PS4
   qq=$(( set -x
-         : "$@" ) 2>&1)
+         : "$@" )2>&1)
   warn "${qq:2}"
   eval "${qq:2}"
 }

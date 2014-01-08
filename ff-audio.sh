@@ -1,25 +1,22 @@
 # create high quality video from song and picture
 
-JQ ()
-{
+JQ () {
   jq -r "$@" .json | tr -d '\r'
 }
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*" >&2
 }
 
-log ()
-{
+log () {
   unset PS4
-  qq=$((set -x; : "$@") 2>&1)
+  qq=$(( set -x
+         : "$@" )2>&1)
   warn "${qq:2}"
   eval "${qq:2}"
 }
 
-usage ()
-{
+usage () {
   echo usage: $0 PICTURE SONGS
   echo
   echo Script will use files to create high quality videos,
@@ -27,21 +24,18 @@ usage ()
   exit
 }
 
-querystring ()
-{
+querystring () {
   sed 'y/ /&/' <<< ${qs[*]}
 }
 
-show ()
-{
+show () {
   for bb
   do
     echo ${bb^}: ${!bb}
   done
 }
 
-readu ()
-{
+readu () {
   while :
   do
     show $1
@@ -62,8 +56,7 @@ readu ()
   done
 }
 
-exten ()
-{
+exten () {
   sed "
   s/[^.]*$//
   s/[^[:alnum:]]//g
@@ -71,8 +64,7 @@ exten ()
   " <<< ${!1}
 }
 
-buffer ()
-{
+buffer () {
   set $1 $(reg query 'hkcu\console' | grep ScreenBufferSize)
   [ $(( $4 & 0xffff )) = $1 ] && return
   set $(printf '%04x ' $1 2000 25)
@@ -83,7 +75,7 @@ buffer ()
 }
 
 buffer 85
-[[ $2 ]] || usage
+(( $# < 2 )) && usage
 img=$1
 shift
 songs=("$@")

@@ -12,7 +12,7 @@ warn () {
 log () {
   unset PS4
   qq=$(( set -x
-         : "$@" ) 2>&1)
+         : "$@" )2>&1)
   warn "${qq:2}"
   eval "${qq:2}"
 }

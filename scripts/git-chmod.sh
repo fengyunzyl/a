@@ -1,21 +1,18 @@
 # stackoverflow.com/q/9027584/how-to-change-the-file-mode-on-github
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-usage ()
-{
+usage () {
   echo usage: $0 FILE
   exit
 }
 
-log ()
-{
+log () {
   unset PS4
   qq=$(( set -x
-         : "$@") 2>&1)
+         : "$@" )2>&1)
   warn "${qq:2}"
   eval "${qq:2}"
 }

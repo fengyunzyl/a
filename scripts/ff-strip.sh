@@ -1,25 +1,23 @@
 # strip metadata and chapters
 
-usage ()
-{
+usage () {
   echo usage: $0 FILE
   exit
 }
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log ()
-{
+log () {
   unset PS4
-  qq=$((set -x; : "$@") 2>&1)
+  qq=$(( set -x
+         : "$@" )2>&1)
   warn "${qq:2}"
   eval "${qq:2}"
 }
 
-[[ $1 ]] || usage
+(( $# )) || usage
 arg_in=${1}
 arg_out=strip.${1/*.}
 
