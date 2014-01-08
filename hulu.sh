@@ -1,16 +1,7 @@
 # download from Hulu
 
-JQ () {
-  jq -r "$@" hulu.json | tr -d '\r'
-}
-
-debug () {
-  echo $(date +%T.%N | cut -b-11) $* >> /tmp/hulu.log
-}
-
 warn () {
   printf '\e[36m%s\e[m\n' "$*"
-  debug $*
 }
 
 log () {
@@ -32,27 +23,6 @@ usage () {
   exit
 }
 
-download () {
-  IFS=/ read gg hh <<< "$2"
-  exec 3< /dev/tcp/$gg/80
-  {
-    echo GET /$hh HTTP/1.1
-    echo connection: close
-    echo host: $gg
-    echo
-  } >&3
-  sed '1,/^$/d' <&3 > $1
-}
-
-post () {
-  warn post contents of /tmp/hulu.log to
-  warn ffmpeg.zeranoe.com/forum/viewtopic.php?t=1055
-  exit
-}
-
-PATH=/usr/bin:/usr/local/bin:${TMP%U*}progra~2/mozill~1
-type firefox >/dev/null || exit
-
 case $# in
      1) set '' '' $1 ;;
   [02]) usage        ;;
@@ -62,6 +32,9 @@ arg_cdn=$1
 arg_type=$2
 arg_url=$3
 arg_pwd=$PWD
+mount -f "$PROGRAMFILES" /programfiles
+PATH='/bin:/usr/local/bin:/programfiles/mozilla firefox'
+type firefox >/dev/null || exit
 cd $WINDIR/system32/macromed/flash
 
 if [ -w . ]
@@ -69,7 +42,7 @@ then
   echo ProtectedMode=0 > mms.cfg
 else
   warn you must be an administrator
-  post
+  exit
 fi
 
 rm -r /tmp
@@ -82,20 +55,16 @@ cp "$1" /tmp
 cd /tmp
 MOZ_DISABLE_OOP_PLUGINS=1 firefox -no-remote -profile . $arg_url &
 PID=$!
-debug firefox started
 echo waiting for firefox to load...
 : ${S1=20}
 sleep $S1
 echo dumping firefox...
 read WINPID </proc/$PID/winpid
-quiet dumper hulu $WINPID &
-debug starting dump
+dumper hulu $WINPID &
 : ${S2=4}
 sleep $S2
 kill -13 $PID
-debug waiting for firefox to be killed
 wait $PID
-debug firefox killed
 grep -ao '<video [[:print:]]*/>' hulu.core | sort | uniq -w123 > hulu.smil
 
 if ! [ -s hulu.smil ]
@@ -103,7 +72,7 @@ then
   warn Dumped too soon, try increasing sleep values.
   warn Example using current values
   warn S1=$S1 S2=$S2 ${0##*/} URL
-  post
+  exit
 fi
 
 while read video
@@ -125,15 +94,7 @@ done < hulu.smil
 # check for missing CDN
 [ $arg_cdn ] || usage
 [[ $arg_url =~ [0-9]+ ]]
-
-if type jq
-then
-  download hulu.json www.hulu.com/api/2.0/video?id=$BASH_REMATCH
-  flv=$(JQ '"\(.show.name) \(.season_number)x\(.episode_number) \(.title)"')
-else
-  flv=$BASH_REMATCH
-fi
-
+flv=$BASH_REMATCH
 cd "$arg_pwd"
 app=${server#*//*/}?${token//amp;}
 
