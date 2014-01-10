@@ -26,7 +26,7 @@ do
   else
     # make note of the extension
     exn=$(awk '$NF ~ /\./ {sub(/.*\./,"",$NF); print $NF}' FS=/ <<< $item)
-    [ $exn ] && bad[$exn]=
+    (( ${#exn} )) && bad[$exn]=
   fi
 done
 

@@ -2,13 +2,12 @@
 # need shebang
 # Find large files in git repo, that dont exist in HEAD
 
-usage ()
-{
+usage () {
   echo usage: $0 SIZE
   exit
 }
 
-[ $1 ] || usage
+(( $# )) || usage
 declare -A big_files
 big_files=()
 echo printing results

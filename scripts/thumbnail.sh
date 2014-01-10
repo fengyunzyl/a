@@ -20,7 +20,7 @@ unquote () {
 warn 'Careful, screencaps will dump in current directory.
 Drag video here, then press enter (backslashes ok).'
 read -r if
-[[ $if ]] || exit
+(( ${#if} )) || exit
 unquote if
 cd "$(dirname '$if')"
 if=$(basename "$if")
@@ -47,7 +47,7 @@ done
 
 warn 'Drag picture here, then press enter (backslashes ok).'
 read -r pc
-[[ $pc ]] || exit
+(( ${#pc} )) || exit
 unquote pc
 # moov could be anywhere in the file, so we cannot use "dd"
 log atomicparsley "$if" --artwork "$pc" --overWrite

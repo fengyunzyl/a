@@ -1,7 +1,6 @@
 # check usage of a package
 
-usage ()
-{
+usage () {
   echo "usage: ${0##*/} MODE REGEX"
   echo
   echo "MODES"
@@ -15,7 +14,7 @@ usage ()
   exit
 }
 
-[ $2 ] || usage
+(( $# < 2 )) && usage
 mode=$1
 regex=$2
 

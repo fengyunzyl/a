@@ -1,13 +1,11 @@
 # find unused variable names
 
-usage ()
-{
+usage () {
   echo usage: $0 NUMBER [FILE]
   exit
 }
 
-build ()
-{
+build () {
   printf -v ccc "%$1s"
   bbb=()
   for aaa in {a..z}
@@ -22,7 +20,7 @@ build ()
     else
       bbb+=($ccc)
     fi
-    if [ ${#bbb[*]} = $arg_num ]
+    if (( ${#bbb[*]} == arg_num ))
     then
       echo ${bbb[*]}
       exit
@@ -30,10 +28,10 @@ build ()
   done
 }
 
-[ $1 ] || usage
+(( $# )) || usage
 arg_num=$1
 
-if [ $2 ]
+if (( ${#2} ))
 then
   read -d '' arg_file < "$2"
 else

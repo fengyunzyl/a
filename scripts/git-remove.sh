@@ -1,14 +1,12 @@
-#!/bin/sh
 # Git remove sensitive data
 # help.github.com/articles/remove-sensitive-data
 
-usage ()
-{
+usage () {
   echo "Usage:  $0 FILE"
   exit
 }
 
-[ $1 ] || usage
+(( $# )) || usage
 
 git filter-branch \
   --index-filter "git rm --cached --ignore-unmatch '$1'" \

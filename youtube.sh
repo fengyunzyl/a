@@ -26,13 +26,11 @@ qual=(
   [102]='720p WebM 3D'
 )
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-usage ()
-{
+usage () {
   echo usage
   echo $0 URL
   echo or
@@ -40,13 +38,11 @@ usage ()
   exit
 }
 
-decode ()
-{
+decode () {
   sed 's % \\\\x g' <<< ${!1} | xargs printf
 }
 
-log ()
-{
+log () {
   unset PS4
   qq=$(( set -x
          : "$@" )2>&1)
@@ -75,5 +71,5 @@ do
   esac
 done
 
-[ $arg_itag ] || usage
+(( ${#arg_itag} )) || usage
 $XDG_OPEN "$(decode url)&signature=$sig&title=videoplayback "

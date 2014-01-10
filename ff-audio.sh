@@ -100,7 +100,7 @@ do
   # FIXME allow edit of recording id
   warn musicbrainz recording id $rid
   # hit musicbrainz API for entire album
-  if ! [ $date ]
+  if ! (( ${#date} ))
   then
     qs=(
       fmt=json

@@ -1,13 +1,11 @@
 # Binary search algorithm
 
-usage ()
-{
+usage () {
   echo usage: $0 torvalds/linux
   exit
 }
 
-[ $1 ] || usage
-
+(( $# )) || usage
 # HTTPS is faster because no redirect
 url=https://github.com/$1/commit/HEAD~
 ((up = 1))

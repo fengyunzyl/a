@@ -41,16 +41,14 @@ declare -A foo=(
   [5,0]='-c copy -vn -movflags faststart' [5,1]=m4a
 )
 
-(( ee = 0 ))
-while [ ${foo[$ee,1]} ]
+for ((ee=0; ${#foo[$ee,1]}; ee++))
 do
   bar[ee]="ffmpeg -i infile ${foo[$ee,0]} outfile.${foo[$ee,1]}"
-  (( ee++ ))
 done
 
 select baz in "${bar[@]}"
 do
-  [[ $baz ]] && break
+  (( ${#baz} )) && break
 done
 
 (( REPLY-- ))

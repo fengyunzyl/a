@@ -61,7 +61,7 @@ do
     bb[hh]=$one
     bb[hh+1]=$two
   fi
-  [[ $two ]] && (( hh++ ))
+  (( ${#two} )) && (( hh++ ))
 done
 
 for hh in ${!bb[*]}
