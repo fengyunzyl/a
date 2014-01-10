@@ -1,5 +1,5 @@
 git reset -q
-git add -A "$1"
+git add -A "$@"
 
 # print first added line if found, else print first removed line
 y=$(git diff --cached --color | awk '

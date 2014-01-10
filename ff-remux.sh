@@ -26,7 +26,7 @@ buffer () {
   reg add 'hkcu\console' -f -t reg_dword -v ScreenBufferSize -d 0x$2$1
   reg add 'hkcu\console' -f -t reg_dword -v WindowSize -d 0x$3$1
   cmd /c start bash -l
-  kill -7 $$ $PPID
+  kill -7 $PPID
 }
 
 buffer 88
