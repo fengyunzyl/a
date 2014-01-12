@@ -24,6 +24,8 @@ local)
   egrep -r --color --exclude-dir .git "^(|.*[^.\"])$regex" /srv/{a,dotfiles}
   ;;
 require)
+  cd /usr/local/bin
+  set $(du -d1 | sort -nr | awk 'NR==2 {print $2}')
   awk '
   /^@ / {
     foo=$2
@@ -31,7 +33,7 @@ require)
   $0 ~ "^requires:.*"bar {
     print foo
   }
-  ' bar=$regex /usr/local/bin/http*/setup.ini
+  ' bar=$regex $1/x86/setup.ini
   ;;
 contain)
   cygcheck -p $regex | awk 'NR>1 && ! /-src\t/ && ! a[$2]++ {print $2}' FS=/
