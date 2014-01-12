@@ -10,6 +10,5 @@ cd /bin
 mv php php5
 cd /usr/local/bin
 cat > php <<'EOF'
-read < <(type -p $1) && shift
-php5 $REPLY $*
+php5 "$(type -p $1)" "${@:2}"
 EOF
