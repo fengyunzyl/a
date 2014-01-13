@@ -3,7 +3,7 @@
 usage () {
   echo make an image sequence from a video
   echo
-  echo usage: $0 START DURATION FILE
+  echo usage: ${0##*/} START DURATION FILE
   exit
 }
 
