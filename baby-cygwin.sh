@@ -47,7 +47,7 @@ mkdir etc
 cd etc
 cat > profile <<'bb'
 PATH=/usr/bin:/usr/local/bin:$PATH
-PS1='\e];\a\n\e[33m\w\n\e[m# '
+PS1='\e];\a\n\e[33m\w\n\e[m$ '
 if ! [ -a /etc/passwd ]
 then
   mkpasswd > /etc/passwd
