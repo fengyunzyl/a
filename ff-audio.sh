@@ -1,7 +1,7 @@
 # create high quality video from song and picture
 
 JQ () {
-  jq -r "$@" .json | tr -d '\r'
+  jq -r "$@" .json | sed 's/\r//'
 }
 
 warn () {
