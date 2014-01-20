@@ -1,12 +1,10 @@
 # FIXME weighted categories
 
-querystring ()
-{
+querystring () {
   sed 'y/ /&/' <<< ${qs[*]}
 }
 
-try ()
-{
+try () {
   dur=$1
   qs[2]=trackid=$2
   json=$3
@@ -14,7 +12,7 @@ try ()
   then
     curl -s api.acoustid.org/v2/lookup?`querystring` | jq .results[0] > $json
   fi
-  set .sources "($dur - (.duration // 0) | . * .)"
+  set .sources "($dur - (.duration // 0) | length)"
   jq ".recordings | max_by(.2 * $1 - .8 * $2)" $json
 }
 
