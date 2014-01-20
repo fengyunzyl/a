@@ -1,8 +1,7 @@
 # A mosaic in digital imaging is a plurality of non-overlapping images, arranged
 # in some tessellation.
 
-usage ()
-{
+usage () {
   echo usage: ${0/*\/} FILES
   exit
 }
@@ -10,7 +9,7 @@ usage ()
 (( $# )) || usage
 # option order matters
 ow='w>h ? 1280 : 640'
-type /bin/convert >/dev/null || exit
+type convert | grep -i system32 && exit
 
 convert \
   -resize x1080 \
