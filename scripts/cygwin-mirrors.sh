@@ -1,17 +1,15 @@
 # Print Cygwin mirrors
 
-warn ()
-{
+warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log ()
-{
+log () {
   warn $*
   eval $*
 }
 
-curl -s sourceware.org/cygwin/mirrors.lst |
+wget -qO- sourceware.org/cygwin/mirrors.lst |
   awk '/http/ && /United States/ && NF=1' FS=';' > mirrors.lst
 
 while read ee
