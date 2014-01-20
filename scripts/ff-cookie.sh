@@ -9,4 +9,5 @@ usage () {
 
 (( $# < 2 )) && usage
 printf -v q 'Cookie: %s\r\n' "$1"
+type ffplay >/dev/null || exit
 ffplay -headers "$q" "$2"
