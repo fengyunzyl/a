@@ -1,12 +1,12 @@
 # Launch Jekyll
 
-case $OSTYPE in
-linux-gnu) XDG_OPEN=xdg-open       ;;
-   cygwin) XDG_OPEN='cmd /c start' ;;
-esac
+type xdg-open &>/dev/null || xdg-open () {
+  # there are one or more whitespace characters
+  # between the two quote characters
+  cmd /c start '' "$1 "
+}
 
-usage ()
-{
+usage () {
   echo usage: $0 REPO_NAME
   exit
 }
@@ -21,5 +21,5 @@ do
   sleep 1
 done
 
-$XDG_OPEN .
-$XDG_OPEN http://127.0.0.1:4000
+xdg-open .
+xdg-open http://127.0.0.1:4000
