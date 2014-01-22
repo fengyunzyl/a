@@ -1,10 +1,12 @@
 # FFmpeg with libfdk_aac
-HOST=i686-w64-mingw32
-PREFIX=/usr/i686-w64-mingw32/sys-root/mingw
-# libtool           autoreconf
-# mingw64-i686-gcc  need g++ for fdk-aac
-# yasm              need for x264
-setup-x86 -nqP libtool,mingw64-i686-gcc,yasm
+HOST=x86_64-w64-mingw32
+PREFIX=/usr/x86_64-w64-mingw32/sys-root/mingw
+# autobuild               needed for autoreconf which requires aclocal
+#                         requires perl but so does autoconf
+# libtool                 needed by autoreconf
+# mingw64-x86_64-gcc-g++  need g++ for fdk-aac
+# yasm                    need for x264
+setup-x86_64 -nqP autobuild,libtool,mingw64-x86_64-gcc-g++,yasm
 
 # fdk-aac
 git clone --depth 1 git://github.com/mstorsjo/fdk-aac
@@ -47,6 +49,6 @@ cd ffmpeg
 # --logfile            verbose
 # --target-os          must specify OS when cross-compiling
 ./configure --enable-gpl --enable-libx264 --enable-nonfree --enable-libfdk-aac \
-  --arch=x86 --target-os=mingw32 --logfile=/dev/stdout --extra-ldflags=-static \
-  --cross-prefix=$HOST- --disable-doc
+  --arch=x86_64 --target-os=mingw32 --logfile=/dev/stdout \
+  --extra-ldflags=-static --cross-prefix=$HOST- --disable-doc
 make -j5 install

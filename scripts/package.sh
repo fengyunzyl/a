@@ -14,7 +14,7 @@ usage () {
   exit
 }
 
-(( $# < 2 )) && usage
+(( $# == 2 )) || usage
 mode=$1
 regex=$2
 
@@ -33,7 +33,7 @@ require)
   $0 ~ "^requires:.*"bar {
     print foo
   }
-  ' bar=$regex $1/x86/setup.ini
+  ' bar=$regex $1/x86_64/setup.ini
   ;;
 contain)
   cygcheck -p $regex | awk 'NR>1 && ! /-src\t/ && ! a[$2]++ {print $2}' FS=/
