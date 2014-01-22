@@ -11,7 +11,7 @@ usage () {
   exit
 }
 
-(( $# < 2 )) && usage
+(( $# == 2 )) || usage
 ARTIST=$1
 ALBUM=$2
 
