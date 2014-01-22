@@ -1,5 +1,5 @@
 # cygwin packages
-setup-x86 -nqP gcc4-core,ruby
+setup-x86_64 -nqP gcc4-core,ruby
 
 # gems
 gem install jekyll kramdown coderay
