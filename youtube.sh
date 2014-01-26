@@ -2,10 +2,9 @@
 # http://youtube.com/watch?v=LHelEIJVxiE
 # http://youtube.com/watch?v=blnCm0YX4ls
 
-case $OSTYPE in
-linux-gnu) XDG_OPEN=xdg-open          ;;
-   cygwin) XDG_OPEN='cmd /c start ""' ;;
-esac
+[ $OSTYPE = cygwin ] && xdg-open () {
+  cygstart "$1"
+}
 
 qual=(
   [5]='240p FLV h.263'
@@ -72,4 +71,4 @@ do
 done
 
 (( ${#arg_itag} )) || usage
-$XDG_OPEN "$(decode url)&signature=$sig&title=videoplayback "
+xdg-open "$(decode url)&signature=$sig&title=videoplayback "

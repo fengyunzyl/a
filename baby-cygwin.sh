@@ -51,7 +51,7 @@ PS1='\e];\a\n\e[33m\w\n\e[m$ '
 if ! [ -a /etc/passwd ]
 then
   mkpasswd > /etc/passwd
-  cmd /c start bash -l
+  cygstart bash
   kill -7 $$
 fi
 [ -d ~ ] || mkdir -p ~

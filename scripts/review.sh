@@ -1,7 +1,7 @@
 # get reviews
 
-type xdg-open &>/dev/null || xdg-open () {
-  cmd /c start '' "$1"
+[ $OSTYPE = cygwin ] && xdg-open () {
+  cygstart "$1"
 }
 
 usage () {

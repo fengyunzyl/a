@@ -1,9 +1,7 @@
 # get cover art
 
-type xdg-open &>/dev/null || xdg-open () {
-  # there are one or more whitespace characters
-  # between the two quote characters
-  cmd /c start '' "$1 "
+[ $OSTYPE = cygwin ] && xdg-open () {
+  cygstart "$1"
 }
 
 usage () {
