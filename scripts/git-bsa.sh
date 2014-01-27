@@ -1,7 +1,7 @@
 # Binary search algorithm
 
 usage () {
-  echo usage: $0 torvalds/linux
+  echo usage: ${0##*/} torvalds/linux
   exit
 }
 
