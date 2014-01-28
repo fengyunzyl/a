@@ -1,7 +1,7 @@
 # get compiler prefix
 
 usage () {
-  echo usage: $0 COMPILER
+  echo usage: ${0##*/} COMPILER
   exit
 }
 
@@ -13,23 +13,34 @@ warn () {
 touch foo.c
 
 warn INCLUDE
-$1 -v foo.c |& grep '^ [^ ]*$' | while read -r b
+$1 -v foo.c |& grep '^ [^ ]*$' | while read -r ic
 do
-  if [ -a $b ] 2>&-
+  if [ -a $ic ]
   then
-    cd $b
+    cd $ic/..
     pwd
   fi
-done | sed '/\./d; s./[^/]*$..; s/^/--prefix /'
+done | sed '
+/\./d
+s/^/--prefix /
+' | sort
 
 warn LIB
-$1 -\#\#\# foo.c |& sed '/LIBRARY_PATH=/!d; s///; y/:/\n/' | while read -r b
+$1 -\#\#\# foo.c |& sed '
+/LIBRARY_PATH=/!d
+s///
+y/:/\n/
+' |
+while read -r lb
 do
-  if [ -a $b ] 2>&-
+  if [ -a $lb ]
   then
-    cd $b
+    cd $lb/..
     pwd
   fi
-done | sed '/\./d; s./[^/]*$..; s/^/--prefix /'
+done | sed '
+/\./d
+s/^/--prefix /
+' | sort -u
 
 rm -f foo.c foo.o
