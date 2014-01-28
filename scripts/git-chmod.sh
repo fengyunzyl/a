@@ -5,7 +5,7 @@ warn () {
 }
 
 usage () {
-  echo usage: $0 FILE
+  echo usage: ${0##*/} FILE
   exit
 }
 
