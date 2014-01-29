@@ -13,17 +13,21 @@ warn () {
 touch foo.c
 
 warn INCLUDE
-$1 -v foo.c |& grep '^ [^ ]*$' | while read -r ic
+$1 -v foo.c |& egrep '^ [^ ]+$' | while read -r ic
 do
   if [ -a $ic ]
   then
-    cd $ic/..
+    cd $ic
+    until ! [[ $PWD =~ include ]]
+    do
+      cd ..
+    done
     pwd
   fi
 done | sed '
 /\./d
 s/^/--prefix /
-' | sort
+' | sort -u
 
 warn LIB
 $1 -\#\#\# foo.c |& sed '
@@ -35,7 +39,11 @@ while read -r lb
 do
   if [ -a $lb ]
   then
-    cd $lb/..
+    cd $lb
+    until ! [[ $PWD =~ lib ]]
+    do
+      cd ..
+    done
     pwd
   fi
 done | sed '
