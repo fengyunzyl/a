@@ -7,8 +7,9 @@ usage () {
   echo "usage: ${0##*/} SEARCH SORT CATEGORY"
   echo
   echo "SORT"
-  echo "3  date descending"
-  echo "6  size ascending"
+  echo "3  date ↓"
+  echo "6  size ↑"
+  echo "7  seeders ↓"
   echo
   echo "CATEGORY"
   echo "207  HD Movies"
