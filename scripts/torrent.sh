@@ -1,7 +1,7 @@
-
-[ $OSTYPE = cygwin ] && xdg-open () {
-  cygstart "$1"
-}
+case $OSTYPE in
+  cygwin) xdg-open (){ cygstart "$1"; } ;;
+    msys) xdg-open (){ start '' "$1"; } ;;
+esac
 
 usage () {
   echo "usage: ${0##*/} SEARCH SORT CATEGORY"
