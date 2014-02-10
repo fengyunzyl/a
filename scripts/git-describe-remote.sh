@@ -11,10 +11,10 @@ warn () {
 
 log () {
   unset PS4
-  qq=$(( set -x
+  sx=$(( set -x
          : "$@" )2>&1)
-  warn "${qq:2}"
-  eval "${qq:2}"
+  warn "${sx:2}"
+  eval "${sx:2}"
 }
 
 (( $# )) || usage
@@ -22,7 +22,7 @@ arg_rpo=$1
 git ls-remote git://github.com/$arg_rpo.git > ,
 
 # Get last tag
-tag=$(awk -F[/^] 'END{print $3}' ,)
+tag=$(awk 'END{print$3}' FS=[/^] ,)
 
 # Get HEAD SHA
 sha=$(awk NR==1,NF=1 FPAT=.{7} ,)
