@@ -2,18 +2,18 @@ git reset -q
 git add -A "$@"
 
 # print first added line if found, else print first removed line
-y=$(git diff --cached --color | awk '
+mg=$(git diff --cached --color | awk '
 /^\033\[3[12]m/ {
-  c=$4
-  if (c==1 && m) next
+  co=$4
+  if (co==1 && rd) next
   gsub(/\033[^m]+m/, "")
   sub(/^[+-] *(#+ )*/, "")
-  m=$0
-  if (c==2 && m) exit
+  rd=$0
+  if (co==2 && rd) exit
 }
 END {
-  print m
+  print rd
 }
 ' FPAT=.)
 
-git commit -m "$y"
+git commit -m "$mg"
