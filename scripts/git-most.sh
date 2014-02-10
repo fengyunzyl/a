@@ -6,8 +6,8 @@ do
   printf . >&2
   set $(git log --follow --oneline "$aa" | wc)
   printf '%s\t%s\n' $1 "$aa"
-done > bb
+done > gm
 
 echo
-sort -nr bb
-rm bb
+sort -nr gm
+rm gm

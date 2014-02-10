@@ -6,8 +6,8 @@ do
   printf . >&2
   git log --follow --name-status --format="%ai  $aa" "$aa" |
     sed 'h;N;N;/\nR/d;g;q'
-done > bb
+done > gs
 
 echo
-sort bb
-rm bb
+sort gs
+rm gs
