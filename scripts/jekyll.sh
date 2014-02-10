@@ -12,7 +12,7 @@ done
 
 cd $repo
 rm -rf _site
-jekyll serve -w &
+start bash -c 'jekyll serve -w'
 
 until [ -a _site ]
 do
@@ -21,3 +21,4 @@ done
 
 xdg-open .
 xdg-open http://127.0.0.1:4000
+kill -7 $PPID
