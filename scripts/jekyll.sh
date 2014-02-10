@@ -1,16 +1,16 @@
 # Launch Jekyll
-
-[ $OSTYPE = cygwin ] && xdg-open () {
-  cygstart "$1"
+[ $OSTYPE = msys ] && xdg-open () {
+  start $1
 }
 
-usage () {
-  echo usage: ${0##*/} REPO_NAME
-  exit
-}
+cd /srv
 
-(( $# )) || usage
-cd /srv/$1
+select repo in $(find -name css | sed 's,./,,;s,/css,,')
+do
+  break
+done
+
+cd $repo
 rm -rf _site
 jekyll serve -w &
 
