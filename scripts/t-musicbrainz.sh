@@ -1,12 +1,10 @@
 # jq -r '.releases[].date' foo.json | xargs -l date +%s -d
 
-querystring ()
-{
+querystring () {
   sed 'y/ /&/' <<< ${qs[*]}
 }
 
-try ()
-{
+try () {
   qs[2]=recording=$1
   json=$2
   if ! [ -a $json ]
