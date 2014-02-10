@@ -5,7 +5,7 @@
 
 cd /srv
 
-select repo in $(find -name css | sed 's,./,,;s,/css,,')
+select repo in $(find -maxdepth 2 -name css | sed 's,./,,;s,/css,,')
 do
   break
 done
