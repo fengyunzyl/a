@@ -4,13 +4,12 @@
 }
 
 cd /srv
-
 select repo in $(find -maxdepth 2 -name css | sed 's,./,,;s,/css,,')
 do
   break
 done
-
 cd $repo
+
 rm -rf _site
 start bash -c 'jekyll serve -w'
 
