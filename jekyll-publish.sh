@@ -21,8 +21,7 @@ cd $repo
 
 # Push source branch
 log git checkout source
-git add -A
-git status -s | git commit -F-
+type git-ac.sh >/dev/null && git-ac.sh || exit
 git push origin source || exit
 
 # Push master branch
@@ -32,7 +31,6 @@ log git checkout master
 git rm -qr .
 cp -r _site/. .
 rm -r _site
-git add -A
-git status -s | git commit -F-
+git ac.sh
 git push origin master || exit
 log git checkout source
