@@ -22,6 +22,6 @@ log unzip -q $1
 cd baby-cygwin/usr/local/bin
 if (( $# == 2 ))
 then
-  log find /opt/a /usr/local/bin -maxdepth 1 -type f -exec cp -t. {} +
+  log find /srv/a /usr/local/bin -maxdepth 1 -type f -exec cp -t. {} +
 fi
 echo 'baby cygwin ready.'
