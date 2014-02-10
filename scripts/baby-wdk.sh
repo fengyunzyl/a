@@ -7,10 +7,10 @@ warn () {
 
 log () {
   unset PS4
-  qq=$(( set -x
+  sx=$(( set -x
          : "$@" )2>&1)
-  warn "${qq:2}"
-  eval "${qq:2}"
+  warn "${sx:2}"
+  eval "${sx:2}"
 }
 
 deps=(
