@@ -1,5 +1,5 @@
 usage () {
-  echo usage: $0 ITEM
+  echo usage: ${0##*/} ITEM
   exit
 }
 
