@@ -5,7 +5,7 @@ warn () {
 }
 
 usage () {
-  echo usage: $0 LBOUND UBOUND
+  echo usage: ${0##*/} LBOUND UBOUND
   exit
 }
 
