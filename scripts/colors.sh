@@ -1,4 +1,3 @@
-#!/bin/sh
 # Print different text colors
 
 # 30 is black so you wont see it
