@@ -1,21 +1,20 @@
-# Cygwin packages
-setup-x86 -nqP libicu-devel,patch,ruby
+# packages
+pacman -S gcc icu-devel libcrypt-devel patch ruby zlib-devel
+
+# faster_require
+gem i faster_require
+sed -i "1crequire '$(gem w faster_require)'" $(gem w rubygems)
 
 # charlock_holmes
 git clone --single-branch git://github.com/brianmario/charlock_holmes
 cd charlock_holmes
 # github.com/brianmario/charlock_holmes/issues/32
-sed -i '51 s/^/have_library "icuuc"/' ext/charlock_holmes/extconf.rb
-gem build charlock_holmes.gemspec
-gem install charlock_holmes
-cd -
+sed -i '51s/^/have_library "icuuc"/' ext/charlock_holmes/extconf.rb
+gem b charlock_holmes.gemspec
+echo ac_cv_build=x86_64-unknown-cygwin > ~/config.site
+export CONFIG_SITE=~/config.site
+gem i charlock_holmes
 
-# Install posix-spawn
-git clone git://github.com/rtomayko/posix-spawn
-cd posix-spawn
-gem build posix-spawn.gemspec
-gem install posix-spawn
-
-# Install github-linguist
-gem install github-linguist
-linguist /usr/lib/ruby/1.9.1/csv.rb
+# linguist
+gem i github-linguist
+linguist /lib/ruby/2.0.0/csv.rb
