@@ -8,7 +8,7 @@ sed -bi 's/sc.Match("$((")/& || sc.Match("$(")/' scintilla/lexers/lexbash.cxx
 # build
 cd build
 export WDKBASEDIR=$HOMEDRIVE/winddk/7600.16385.win7_wdk.100208-1538
-start build_wdk build x64
+powershell saps build_wdk '"build x64"'
 cd -
 
 # install
