@@ -17,8 +17,8 @@ mkdir baby-cygwin
 cd baby-cygwin
 
 # /
-echo '@start bin\bash -l' > cygwin.bat
-chmod +x cygwin.bat
+echo 'bin/bash -l' > cygwin.ps1
+chmod +x cygwin.ps1
 DATE=$(date)
 CYGWIN_VERSION=$(uname -r | sed 's/(.*//')
 u2d > README.txt <<bb
@@ -36,7 +36,7 @@ Included with this package
 
 OPERATING INSTRUCTIONS
   Put any scripts into /usr/local/bin
-  Double click cygwin.bat
+  Right click cygwin.ps1
 bb
 
 # /dev
@@ -51,7 +51,7 @@ PS1='\e];\a\n\e[33m\w\n\e[m$ '
 if ! [ -a /etc/passwd ]
 then
   mkpasswd > /etc/passwd
-  cygstart bash
+  powershell saps bash
   kill -7 $$
 fi
 [ -d ~ ] || mkdir -p ~
