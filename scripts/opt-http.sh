@@ -1,5 +1,5 @@
 usage () {
-  echo "usage: ${0##*/} <fail string> <command>"
+  echo "${0##*/} <fail string> <command>"
   exit
 }
 
