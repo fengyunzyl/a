@@ -1,5 +1,5 @@
 usage () {
-  echo usage: ${0##*/} INPUT
+  echo ${0##*/} INPUT
   exit
 }
 
