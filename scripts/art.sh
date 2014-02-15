@@ -1,11 +1,11 @@
 # get cover art
 
-[ $OSTYPE = cygwin ] && xdg-open () {
-  cygstart "$1"
+[ $OS ] && xdg-open () {
+  powershell saps "'$1'"
 }
 
 usage () {
-  echo usage: $0 ARTIST ALBUM
+  echo ${0##*/} ARTIST ALBUM
   exit
 }
 
