@@ -1,18 +1,18 @@
 # get reviews
 
-[ $OSTYPE = cygwin ] && xdg-open () {
-  cygstart "$1"
+[ $OS ] && xdg-open () {
+  powershell saps "'$1'"
 }
 
 usage () {
-  echo usage: $0 ARTIST
+  echo ${0##*/} ARTIST
   exit
 }
 
 (( $# )) || usage
 ARTIST=$*
 
-xdg-open "allmusic.com/search/all/$ARTIST"
-xdg-open "metacritic.com/search/all/${ARTIST// /+}/results"
-xdg-open "pitchfork.com/search/?query=$ARTIST"
-xdg-open "albumoftheyear.org/search.php?q=${ARTIST// /+}"
+xdg-open "http://allmusic.com/search/all/$ARTIST"
+xdg-open "http://metacritic.com/search/all/${ARTIST// /+}/results"
+xdg-open "http://pitchfork.com/search/?query=$ARTIST"
+xdg-open "http://albumoftheyear.org/search.php?q=${ARTIST// /+}"
