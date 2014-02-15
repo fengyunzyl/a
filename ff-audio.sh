@@ -10,14 +10,14 @@ warn () {
 
 log () {
   unset PS4
-  qq=$(( set -x
+  sx=$(( set -x
          : "$@" )2>&1)
-  warn "${qq:2}"
-  eval "${qq:2}"
+  warn "${sx:2}"
+  eval "${sx:2}"
 }
 
 usage () {
-  echo usage: $0 PICTURE SONGS
+  echo $0 PICTURE SONGS
   echo
   echo Script will use files to create high quality videos,
   echo then upload videos to YouTube.
@@ -70,7 +70,7 @@ buffer () {
   set $(printf '%04x ' $1 2000 25)
   reg add 'hkcu\console' -f -t reg_dword -v ScreenBufferSize -d 0x$2$1
   reg add 'hkcu\console' -f -t reg_dword -v WindowSize -d 0x$3$1
-  cygstart bash
+  powershell saps bash
   kill -7 $PPID
 }
 
