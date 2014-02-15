@@ -2,7 +2,7 @@
 # in some tessellation.
 
 usage () {
-  echo usage: ${0/*\/} FILES
+  echo ${0##*/} FILES
   exit
 }
 
