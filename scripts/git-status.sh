@@ -1,14 +1,12 @@
-
-warn ()
-{
+warn () {
   printf '\e[1;35m%s\e[m\n' "$*"
 }
 
-for k in /srv/*/
+for rp in /srv/*/
 do
   printf '\ec'
-  cd $k
+  cd $rp
   git status
-  warn $k
+  warn ${rp%/}
   read
 done
