@@ -1,10 +1,9 @@
-case $OSTYPE in
-  cygwin) xdg-open (){ cygstart "$1"; } ;;
-    msys) xdg-open (){ start '' "$1"; } ;;
-esac
+[ $OS ] && xdg-open () {
+  powershell saps "'$1'"
+}
 
 usage () {
-  echo "usage: ${0##*/} SEARCH SORT CATEGORY"
+  echo "${0##*/} SEARCH SORT CATEGORY"
   echo
   echo "SORT"
   echo "3  date ↓"
