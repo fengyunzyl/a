@@ -13,7 +13,7 @@ log () {
 }
 
 usage () {
-  echo usage: ${0##*/} FILES
+  echo ${0##*/} FILES
   echo
   echo this will not delete original file
   exit
@@ -25,7 +25,7 @@ buffer () {
   set $(printf '%04x ' $1 2000 25)
   reg add 'hkcu\console' -f -t reg_dword -v ScreenBufferSize -d 0x$2$1
   reg add 'hkcu\console' -f -t reg_dword -v WindowSize -d 0x$3$1
-  start bash
+  powershell saps bash
   kill -7 $PPID
 }
 
