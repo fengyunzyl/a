@@ -1,9 +1,7 @@
 # Bash download from YouTube
-# http://youtube.com/watch?v=LHelEIJVxiE
-# http://youtube.com/watch?v=blnCm0YX4ls
 
-[ $OSTYPE = cygwin ] && xdg-open () {
-  cygstart "$1"
+[ $OS ] && xdg-open () {
+  powershell saps "'$1'"
 }
 
 qual=(
@@ -30,10 +28,7 @@ warn () {
 }
 
 usage () {
-  echo usage
-  echo $0 URL
-  echo or
-  echo $0 ITAG URL
+  echo "${0##*/} [ITAG] <video ID | URL>"
   exit
 }
 
@@ -43,10 +38,10 @@ decode () {
 
 log () {
   unset PS4
-  qq=$(( set -x
+  sx=$(( set -x
          : "$@" )2>&1)
-  warn "${qq:2}"
-  eval "${qq:2}"
+  warn "${sx:2}"
+  eval "${sx:2}"
 }
 
 case $# in
@@ -59,6 +54,13 @@ arg_url=$2
 v=$arg_url
 declare -l $(awk NF=NF FPAT='[^&?]*=[^&]*' <<< $arg_url)
 declare $(curl -s www.youtube.com/get_video_info?video_id=$v | sed 'y/&/ /')
+
+if [ $reason ]
+then
+  echo $reason
+  exit
+fi
+
 set $(decode url_encoded_fmt_stream_map | sed 'y/,/ /')
 
 for oo
@@ -71,4 +73,4 @@ do
 done
 
 (( ${#arg_itag} )) || usage
-xdg-open "$(decode url)&signature=$sig&title=videoplayback "
+xdg-open "$(decode url)&signature=$sig"
