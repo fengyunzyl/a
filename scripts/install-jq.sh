@@ -10,5 +10,5 @@ pacman -S autoconf automake bison flex libtool
 git clone --depth 1 git://github.com/stedolan/jq
 cd jq
 autoreconf -i
-./configure --host x86_64-w64-mingw32
-make -j4
+./configure
+make -j4 LDFLAGS=-all-static
