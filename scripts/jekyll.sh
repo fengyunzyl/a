@@ -1,6 +1,6 @@
 # Launch Jekyll
-[ $OSTYPE = msys ] && xdg-open () {
-  start $1
+[ $OS ] && xdg-open () {
+  powershell saps $1
 }
 
 cd /srv
@@ -11,7 +11,7 @@ done
 cd $repo
 
 rm -rf _site
-start bash -c 'jekyll serve -w'
+jekyll serve -w &
 
 until [ -a _site ]
 do
