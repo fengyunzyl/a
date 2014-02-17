@@ -20,12 +20,14 @@ usage () {
 }
 
 buffer () {
-  set $1 $(reg query 'hkcu\console' | grep ScreenBufferSize)
-  [ $(( $4 & 0xffff )) = $1 ] && return
+  set $1 $(powershell '(gp hkcu:console)'.ScreenBufferSize)
+  [ $(( $2 & 0xffff )) = $1 ] && return
   set $(printf '%04x ' $1 2000 25)
-  reg add 'hkcu\console' -f -t reg_dword -v ScreenBufferSize -d 0x$2$1
-  reg add 'hkcu\console' -f -t reg_dword -v WindowSize -d 0x$3$1
-  powershell saps bash
+  powershell "
+  sp hkcu:console ScreenBufferSize 0x${2}${1}
+  sp hkcu:console WindowSize 0x${3}${1}
+  saps bash
+  "
   kill -7 $PPID
 }
 
