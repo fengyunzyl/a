@@ -5,12 +5,8 @@ pacman -S gcc libcrypt-devel libffi-devel pkg-config ruby
 gem i faster_require
 sed -i "1crequire '$(gem w faster_require)'" $(gem w rubygems)
 
-# v1.4.3
-git clone git://github.com/jekyll/jekyll
-cd jekyll
-gem b jekyll.gemspec
+# jekyll
 gem i jekyll
 
-# rouge
+# rougify style > rouge.css
 gem i rouge
-rougify style > rouge.css
