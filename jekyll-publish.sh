@@ -20,17 +20,17 @@ done
 cd $repo
 
 # Push source branch
-log git checkout source
+log git checkout -q source
 type git-ac.sh >/dev/null && git-ac.sh || exit
 git push origin source || exit
 
 # Push master branch
 jekyll build || exit
 grep --color -r 'Liquid.error' . && exit
-log git checkout master
+log git checkout -q master
 git rm -qr .
 cp -r _site/. .
 rm -r _site
-git ac.sh
+git-ac.sh
 git push origin master || exit
 log git checkout source
