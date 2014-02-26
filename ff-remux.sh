@@ -20,15 +20,14 @@ usage () {
 }
 
 buffer () {
-  set $1 $(powershell '(gp hkcu:console)'.ScreenBufferSize)
-  [ $(( $2 & 0xffff )) = $1 ] && return
-  set $(printf '%04x ' $1 2000 25)
-  powershell "
-  sp hkcu:console ScreenBufferSize 0x${2}${1}
-  sp hkcu:console WindowSize 0x${3}${1}
+  powershell '&{
+  $0 = (gp hkcu:console).ScreenBufferSize -band 0xffff
+  if ($0 -eq $args[0]) {exit}
+  sp hkcu:console ScreenBufferSize ("0x{0:x}{1:x4}" -f 2000,$args[0])
+  sp hkcu:console WindowSize       ("0x{0:x}{1:x4}" -f   25,$args[0])
+  kill -n bash
   saps bash
-  "
-  kill -7 $PPID
+  }' $1
 }
 
 buffer 88
@@ -41,6 +40,7 @@ declare -A foo=(
   [3,0]='-c copy'                         [3,1]=mp4
   [4,0]='-c copy -sn'                     [4,1]=mp4
   [5,0]='-c copy -vn -movflags faststart' [5,1]=m4a
+  [6,0]='-b:a 384k   -movflags faststart' [6,1]=m4a
 )
 
 for ((ee=0; ${#foo[$ee,1]}; ee++))
