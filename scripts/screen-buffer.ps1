@@ -1,5 +1,5 @@
 ${0+: \} <#}
-exec powershell $(cygpath -m $0) $*
+exec powershell $(cygpath -m $(realpath $0)) $*
 #>
 
 if ($args.length -eq 0) {
