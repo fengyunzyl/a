@@ -36,6 +36,6 @@ require)
   ' bar=$regex $1/x86_64/setup.ini
   ;;
 contain)
-  cygcheck -p $regex | awk 'NR>1 && ! /-src\t/ && ! a[$2]++ {print $2}' FS=/
+  cygcheck -p $regex | awk 'NR>1 && !/-src\t/ && !a[$2]++ && $0=$2' FS=/
   ;;
 esac
