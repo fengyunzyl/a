@@ -4,19 +4,16 @@ warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log () {
+say () {
   unset PS4
-  qq=$(( set -x
-         : "$@" )2>&1)
-  warn "${qq:2}"
-  eval "${qq:2}"
+  qq=$((set -x
+    : "$@") 2>&1)
+  echo "${qq:2}"
 }
 
-usage () {
-  echo ${0##*/} FILES
-  echo
-  echo this will not delete original file
-  exit
+log () {
+  warn $(say "$@")
+  "$@"
 }
 
 buffer () {
@@ -31,21 +28,39 @@ buffer () {
 }
 
 buffer 88
-(( $# )) || usage
+if (( $# == 0 ))
+then
+  echo ${0##*/} FILES
+  echo
+  echo this will not delete original file
+  exit
+fi
 
-declare -A foo=(
-                                          [0,1]=flac
-                                          [1,1]=wav
-  [2,0]='-c copy'                         [2,1]=flv
-  [3,0]='-c copy'                         [3,1]=mp4
-  [4,0]='-c copy -sn'                     [4,1]=mp4
-  [5,0]='-c copy -vn -movflags faststart' [5,1]=m4a
-  [6,0]='-b:a 384k   -movflags faststart' [6,1]=m4a
+files=("$@")
+r1=(flac)
+r2=(wav)
+r3=(-c copy flv)
+r4=(-c copy mp4)
+r5=(-c copy -sn mp4)
+r6=(-c copy -vn -movflags faststart m4a)
+r7=(-b:a 256k -movflags faststart m4a)
+r8=(
+  -c:v copy
+  -b:a 256k
+  -af 'pan=stereo|\
+    FL < FL + 1.414FC + .5BL + .5SL|\
+    FR < FR + 1.414FC + .5BR + .5SR'
+  mp4
 )
 
-for ((ee=0; ${#foo[$ee,1]}; ee++))
+while {
+  (( ee++ ))
+  set r$ee[@]
+  up=("${!1}")
+  (( ${#up} ))
+}
 do
-  bar[ee]="ffmpeg -i infile ${foo[$ee,0]} outfile.${foo[$ee,1]}"
+  bar[ee]=$(say ffmpeg -i infile "${up[@]::${#up[*]}-1}" outfile.${up[*]: -1})
 done
 
 select baz in "${bar[@]}"
@@ -53,15 +68,16 @@ do
   (( ${#baz} )) && break
 done
 
-(( REPLY-- ))
+set r$REPLY[@]
+up=("${!1}")
 
-for baz
+for baz in "${files[@]}"
 do
   ie=${baz##*.}
   ob=${baz%.*}
-  oe=${foo[$REPLY,1]}
+  oe=${up[*]: -1}
   [ $ie = $oe ] && ob+='~'
-  log ffmpeg -stats -v error -i "$baz" ${foo[$REPLY,0]} "$ob.$oe"
+  log ffmpeg -stats -v error -i "$baz" "${up[@]::${#up[*]}-1}" "$ob.$oe"
   echo
 done
 
