@@ -1,23 +1,21 @@
-# count occurances of a tag
-
-usage () {
-  echo usage: $0 TAG URL
-  exit
-}
-
 warn () {
   printf '\e[36m%s\e[m\n' "$*" >&2
 }
 
 log () {
   unset PS4
-  qq=$(( set -x
-         : "$@" )2>&1)
-  warn "${qq:2}"
-  eval "${qq:2}"
+  sx=$((set -x
+    : "$@") 2>&1)
+  warn "${sx:2}"
+  "$@"
 }
 
-(( $# < 2 )) && usage
+if (( $# != 2 ))
+then
+  echo ${0##*/} TAG URL
+  exit
+fi
+
 tag=$1
 url=$2
 
