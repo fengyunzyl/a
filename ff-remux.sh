@@ -12,23 +12,26 @@ say () {
 }
 
 log () {
-  warn $(say "$@")
+  sy=$(say "$@")
+  warn "$sy"
   "$@"
 }
 
 buffer () {
+  (echo . ~/.bashrc
+    say $0 "${pm[@]}") > +
   powershell '&{
-  $0 = (gp hkcu:console).ScreenBufferSize -band 0xffff
-  if ($0 -eq $args[0]) {exit}
-  sp hkcu:console ScreenBufferSize ("0x{0:x}{1:x4}" -f 2000,$args[0])
-  sp hkcu:console WindowSize       ("0x{0:x}{1:x4}" -f   25,$args[0])
+  $0 = $args[0]
+  $1 = (gp hkcu:console).ScreenBufferSize -band 0xffff
+  if ($0 -eq $1) {exit}
+  sp hkcu:console ScreenBufferSize ("0x{0:x}{1:x4}" -f 2000,$0)
+  sp hkcu:console WindowSize       ("0x{0:x}{1:x4}" -f   25,$0)
   kill -n bash
-  saps bash
+  saps bash @("--rcfile +"," ")[$0 -eq 80]
   }' $1
 }
 
-buffer 88
-if (( $# == 0 ))
+if (( ! $# ))
 then
   echo ${0##*/} FILES
   echo
@@ -36,7 +39,8 @@ then
   exit
 fi
 
-files=("$@")
+pm=("$@")
+buffer 88
 r1=(flac)
 r2=(wav)
 r3=(-c copy flv)
@@ -71,7 +75,7 @@ done
 set r$REPLY[@]
 up=("${!1}")
 
-for baz in "${files[@]}"
+for baz in "${pm[@]}"
 do
   ie=${baz##*.}
   ob=${baz%.*}
