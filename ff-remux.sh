@@ -19,12 +19,11 @@ log () {
 
 buffer () {
   powershell '&{
-  $0 = $args[0]
-  sp hkcu:console ScreenBufferSize ("0x{0:x}{1:x4}" -f 2000,$0)
-  sp hkcu:console WindowSize       ("0x{0:x}{1:x4}" -f   25,$0)
-  kill -n bash
-  saps bash @("rx.sh"," ")[$0 -eq 80]
-  }' $1
+  sp hkcu:console ScreenBufferSize ("0x{0:x}{1:x4}" -f 2000,$args[0])
+  sp hkcu:console WindowSize       ("0x{0:x}{1:x4}" -f   25,$args[0])
+  }' $(( ${#1} ? 88 : 80 ))
+  cygstart bash $1
+  kill -7 $PPID
 }
 
 if (( ! $# ))
@@ -79,7 +78,7 @@ up=("${!1}")
    say log ffmpeg -stats -v error -i "$baz" "${up[@]::${#up[*]}-1}" "$ob.$oe"
    echo echo
  done
- echo buffer 80) > rx.sh
+ echo buffer) > rx.sh
 
 export -f buffer log say warn
-buffer 88
+buffer rx.sh
