@@ -6,9 +6,9 @@ warn () {
 
 say () {
   unset PS4
-  qq=$((set -x
+  sx=$((set -x
     : "$@") 2>&1)
-  echo "${qq:2}"
+  echo "${sx:2}"
 }
 
 log () {
