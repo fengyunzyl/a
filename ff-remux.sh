@@ -18,16 +18,12 @@ log () {
 }
 
 buffer () {
-  (echo . ~/.bashrc
-    say $0 "${pm[@]}") > +
   powershell '&{
   $0 = $args[0]
-  $1 = (gp hkcu:console).ScreenBufferSize -band 0xffff
-  if ($0 -eq $1) {exit}
   sp hkcu:console ScreenBufferSize ("0x{0:x}{1:x4}" -f 2000,$0)
   sp hkcu:console WindowSize       ("0x{0:x}{1:x4}" -f   25,$0)
   kill -n bash
-  saps bash @("--rcfile +"," ")[$0 -eq 80]
+  saps bash @("rx.sh"," ")[$0 -eq 80]
   }' $1
 }
 
@@ -40,7 +36,6 @@ then
 fi
 
 pm=("$@")
-buffer 88
 r1=(flac)
 r2=(wav)
 r3=(-c copy flv)
@@ -75,14 +70,16 @@ done
 set r$REPLY[@]
 up=("${!1}")
 
-for baz in "${pm[@]}"
-do
-  ie=${baz##*.}
-  ob=${baz%.*}
-  oe=${up[*]: -1}
-  [ $ie = $oe ] && ob+='~'
-  log ffmpeg -stats -v error -i "$baz" "${up[@]::${#up[*]}-1}" "$ob.$oe"
-  echo
-done
+(for baz in "${pm[@]}"
+ do
+   ie=${baz##*.}
+   ob=${baz%.*}
+   oe=${up[*]: -1}
+   [ $ie = $oe ] && ob+='~'
+   say log ffmpeg -stats -v error -i "$baz" "${up[@]::${#up[*]}-1}" "$ob.$oe"
+   echo echo
+ done
+ echo buffer 80) > rx.sh
 
-buffer 80
+export -f buffer log say warn
+buffer 88
