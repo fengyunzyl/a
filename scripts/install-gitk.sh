@@ -1,22 +1,17 @@
 # Use gitk on Cygwin without X11
 
-# Tcl
-wget downloads.sf.net/tcl/tcl8.6.0-src.tar.gz
-tar xf tcl8.6.0-src.tar.gz
-cd tcl8.6.0/win
-./configure --host i686-w64-mingw32 --disable-shared
-make -j5 binaries install-libraries TCL_EXE=:
-cd -
-
-# Tk
-wget downloads.sf.net/tcl/tk8.6.0-src.tar.gz
-tar xf tk8.6.0-src.tar.gz
-cd tk8.6.0/win
-./configure --host i686-w64-mingw32 --disable-shared
-make -j5 install-binaries install-libraries
+# tcl tk zlib
+cd /var/cache
+for pc in tcl-8.6.1-3 tk-8.6.1-3 zlib-1.2.8-2
+do
+  wget downloads.sf.net/msys2/mingw-w64-x86_64-$pc-any.pkg.tar.xz
+  tar xf mingw-w64-x86_64-$pc-any.pkg.tar.xz
+done
+cd mingw64
+cp -r bin lib /usr/local
 
 # gitk
 cd /usr/local/bin
-echo 'wish86s /cygwin~$*' > wish
 wget raw.github.com/git/git/master/gitk-git/gitk
+sed -i '3s/wish "/wish < "/' gitk
 chmod +x gitk
