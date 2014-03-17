@@ -13,5 +13,8 @@ cp -r bin lib /usr/local
 # gitk
 cd /usr/local/bin
 wget raw.github.com/git/git/master/gitk-git/gitk
-sed -i '3s/wish "/wish < "/' gitk
 chmod +x gitk
+
+gitk () {
+  cygstart wish $(cygpath -m $(type -P gitk)) "$@"
+}
