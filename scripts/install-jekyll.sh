@@ -1,5 +1,5 @@
 # packages
-setup-x86_64 -nqP gcc-core,libcrypt-devel,libffi-devel,pkg-config,ruby
+apt-cyg gcc-core libcrypt-devel libffi-devel pkg-config ruby
 
 # faster_require
 gem i faster_require
