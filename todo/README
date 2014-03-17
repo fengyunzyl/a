@@ -1,9 +1,6 @@
 FIX LINKS
 http://ffmpeg.org/ffmpeg-codecs.html#AC_002d3-Metadata
 
-command_not_found_handle
-http://askubuntu.com/q/73262/how-do-i-teach-bash-in-ubuntu-some-curse-words
-
 OTHER STUFF
 http://forum.doom9.org/showthread.php?t=166797
 http://networkedmediatank.com/showthread.php?tid=49045#pid458740
@@ -13,5 +10,6 @@ http://github.com/FFmpeg/FFmpeg/blob/2dcaa1b/libavutil/mathematics.h#L52
 Yet Another FAT Sorter
 http://luisrios.eti.br/public/en_us/projects/yafs
 
-Unpacking 7z archives on Cygwin64
-http://cygwin.com/ml/cygwin/2014-03/msg00012.html
+720p-mp4-h264
+replace these with new ones
+put in metadata too
