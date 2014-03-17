@@ -1,20 +1,16 @@
-# check usage of a package
-
-usage () {
-  echo "usage: ${0##*/} MODE REGEX"
-  echo
-  echo "MODES"
-  echo
-  echo "local"
-  echo "  search local repos for REGEX"
-  echo "require"
-  echo "  print packages that require REGEX"
-  echo "contain"
-  echo "  print packages that contain REGEX"
+if (( $# != 2 ))
+then
+  rw=(
+    "${0##*/} MODE REGEX"
+    ""
+    "MODES"
+    "   local     check usage of a package by searching local repos"
+    "   require   print packages that require REGEX"
+  )
+  printf '%s\n' "${rw[@]}"
   exit
-}
+fi
 
-(( $# == 2 )) || usage
 mode=$1
 regex=$2
 
@@ -34,8 +30,5 @@ require)
     print foo
   }
   ' bar=$regex $1/x86_64/setup.ini
-  ;;
-contain)
-  cygcheck -p $regex | awk 'NR>1 && !/-src\t/ && !a[$2]++ && $0=$2' FS=/
   ;;
 esac
