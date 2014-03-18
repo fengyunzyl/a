@@ -1,4 +1,4 @@
-# ffmpeg remux to format of choice
+# title : Les Nuits
 
 warn () {
   printf '\e[36m%s\e[m\n' "$*"
@@ -35,47 +35,43 @@ then
 fi
 
 pm=("$@")
-r1=(flac)
-r2=(wav)
-r3=(-c copy flv)
-r4=(-c copy mp4)
-r5=(-c copy -sn mp4)
-r6=(-c copy -vn -movflags faststart m4a)
-r7=(-b:a 256k -movflags faststart m4a)
-r8=(
-  -c:v copy
-  -b:a 256k
-  -af 'pan=stereo|\
-    FL < FL + 1.414FC + .5BL + .5SL|\
-    FR < FR + 1.414FC + .5BR + .5SR'
-  mp4
-)
+r1=(ffmpeg -i %q %q.wav)
+r2=(ffmpeg -i %q %q.flac)
+r3=(ffmpeg -i %q -c copy %q.flv)
+r4=(ffmpeg -i %q -c copy %q.mp4)
+r5=(ffmpeg -i %q -c copy -sn %q.mp4)
+r6=(ffmpeg -i %q -c copy -vn -movflags faststart %q.m4a)
+r7=(ffmpeg -i %q -b:a 256k -movflags faststart %q.m4a)
+r8=(ffmpeg -i %q -c:v copy -b:a 256k -af 'pan=stereo|\
+  FL < FL + 1.414FC + .5BL + .5SL|\
+  FR < FR + 1.414FC + .5BR + .5SR' %q.mp4)
 
 while {
-  (( ee++ ))
-  set r$ee[@]
+  (( vu++ ))
+  set r$vu[@]
   up=("${!1}")
   (( ${#up} ))
 }
 do
-  bar[ee]=$(say ffmpeg -i infile "${up[@]::${#up[*]}-1}" outfile.${up[*]: -1})
+  cm[vu]=$(say "${up[@]}")
 done
 
-select baz in "${bar[@]}"
+select wd in "${cm[@]}"
 do
-  (( ${#baz} )) && break
+  (( ${#wd} )) && break
 done
 
 set r$REPLY[@]
 up=("${!1}")
 
-(for baz in "${pm[@]}"
+(for ip in "${pm[@]}"
  do
-   ie=${baz##*.}
-   ob=${baz%.*}
-   oe=${up[*]: -1}
-   [ $ie = $oe ] && ob+='~'
-   say log ffmpeg -stats -v error -i "$baz" "${up[@]::${#up[*]}-1}" "$ob.$oe"
+   ie=${ip##*.}
+   ob=${ip%.*}
+   [[ ${up[*]} =~ $ie ]] && ob+='~'
+   printf -v stage1 '%q ' "${up[@]}"
+   printf -v stage2 "$stage1" "$ip" "$ob"
+   eval say log "$stage2"
    echo echo
  done
  echo buffer) > rx.sh
