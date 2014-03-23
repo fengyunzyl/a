@@ -1,21 +1,24 @@
 [ $OS ] && xdg-open () {
-  powershell saps "'$1'"
+  cygstart "$1"
 }
 
-usage () {
-  echo "${0##*/} SEARCH SORT CATEGORY"
-  echo
-  echo "SORT"
-  echo "3  date ↓"
-  echo "6  size ↑"
-  echo "7  seeders ↓"
-  echo
-  echo "CATEGORY"
-  echo "207  HD Movies"
-  echo "208  HD TV shows"
-  echo "301  Applications Windows"
+if (( $# != 3 ))
+then
+  rw=(
+    "${0##*/} SEARCH SORT CATEGORY"
+    ""
+    "SORT"
+    "3  date ↓"
+    "6  size ↑"
+    "7  seeders ↓"
+    ""
+    "CATEGORY"
+    "207  HD Movies"
+    "208  HD TV shows"
+    "301  Applications Windows"
+  )
+  printf '%s\n' "${rw[@]}"
   exit
-}
+fi
 
-(( $# == 3 )) || usage
 xdg-open "http://thepiratebay.se/search/$1/0/$2/$3"
