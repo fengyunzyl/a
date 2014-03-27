@@ -1,11 +1,11 @@
 # Find large files in git repo, that dont exist in HEAD
 
-usage () {
-  echo usage: $0 SIZE
+if (( $# != 1 ))
+then
+  echo $0 SIZE
   exit
-}
+fi
 
-(( $# )) || usage
 declare -A big_files
 big_files=()
 echo printing results
