@@ -1,19 +1,19 @@
 # A mosaic in digital imaging is a plurality of non-overlapping images, arranged
 # in some tessellation.
 
-usage () {
+if (( ! $# ))
+then
   echo ${0##*/} FILES
   exit
-}
+fi
 
-(( $# )) || usage
 # option order matters
 ow='w>h ? 1280 : 640'
-type convert | grep -i system32 && exit
+type magick >/dev/null || exit
 
-convert \
+magick \
+  "$@" \
   -resize x1080 \
-  -set option:distort:viewport "%[fx: $ow]x+%[fx: ow = $ow; (w-ow)/2]+0" \
-  -distort SRT 0 \
+  -crop "%[fx: $ow]x+%[fx: ow = $ow; (w-ow)/2]+0" \
   +append \
-  "$@" $(date +%s).png
+  $(date +%s).png
