@@ -8,12 +8,12 @@ then
 fi
 
 # option order matters
-ow='w>h ? 1280 : 640'
 type magick >/dev/null || exit
 
 magick \
   "$@" \
   -resize x1080 \
-  -crop "%[fx: $ow]x+%[fx: ow = $ow; (w-ow)/2]+0" \
+  -gravity center \
+  -extent '%[fx: w>h ? 1280 : 640]' \
   +append \
   $(date +%s).png
