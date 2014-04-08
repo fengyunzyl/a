@@ -1,5 +1,3 @@
-# title : Les Nuits
-
 warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
@@ -40,7 +38,7 @@ r2=(ffmpeg -i %q %q.flac)
 r3=(ffmpeg -i %q -c copy %q.flv)
 r4=(ffmpeg -i %q -c copy %q.mp4)
 r5=(ffmpeg -i %q -c copy -sn %q.mp4)
-r6=(ffmpeg -i %q -c copy -vn -movflags faststart %q.m4a)
+r6=(ffmpeg -i %q -c copy -vn -movflags faststart -metadata title=%q %q.m4a)
 r7=(ffmpeg -i %q -b:a 256k -movflags faststart %q.m4a)
 r8=(ffmpeg -i %q -c:v copy -b:a 256k -af 'pan=stereo|\
   FL < FL + 1.414FC + .5BL + .5SL|\
@@ -66,11 +64,14 @@ up=("${!1}")
 
 (for ip in "${pm[@]}"
  do
+   ib=${ip%.*}
    ie=${ip##*.}
-   ob=${ip%.*}
-   [[ ${up[*]} =~ $ie ]] && ob+='~'
+   am[0]=$ip
+   [[ ${up[*]} =~ metadata ]] && am[1]=${ib//-/ }
+   am[2]=$ib
+   [[ ${up[*]} =~ $ie ]] && am[2]+='~'
    printf -v stage1 '%q ' "${up[@]}"
-   printf -v stage2 "$stage1" "$ip" "$ob"
+   printf -v stage2 "$stage1" "${am[@]}"
    eval say log "$stage2"
    echo echo
  done
