@@ -6,7 +6,8 @@ mg=$(git diff --cached --color | awk '
   cr=$4
   if (cr==1 && rd) next
   gsub(/\033[^m]+m/, "")
-  sub(/^[+-] *(#+ )*/, "")
+  sub(/./, "")
+  if (match($0, "^(/\\*|-)")) next
   rd=$0
   if (cr==2 && rd) exit
 }
