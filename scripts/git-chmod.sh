@@ -4,20 +4,20 @@ warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-usage () {
-  echo usage: ${0##*/} FILE
-  exit
-}
-
 log () {
   unset PS4
-  qq=$(( set -x
-         : "$@" )2>&1)
-  warn "${qq:2}"
-  eval "${qq:2}"
+  sx=$((set -x
+    : "$@") 2>&1)
+  warn "${sx:2}"
+  "$@"
 }
 
-(( $# )) || usage
+if (( $# != 1 ))
+then
+  echo ${0##*/} FILE
+  exit
+fi
+
 # Change mode locally
 log chmod 755 $1
 log git update-index --skip-worktree --chmod=+x $1
