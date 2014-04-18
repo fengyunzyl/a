@@ -16,7 +16,7 @@ if (( $# != 3 ))
 then
   echo make an image sequence from a video
   echo
-  echo usage: ${0##*/} START DURATION FILE
+  echo ${0##*/} START DURATION FILE
   exit
 fi
 
