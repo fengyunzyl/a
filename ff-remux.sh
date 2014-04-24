@@ -79,6 +79,7 @@ up=("${!1}")
    eval say log "$stage2"
    echo echo
  done
+ echo 'read -p "Press any key to continue . . ."'
  echo buffer) > rx.sh
 
 export -f buffer log say warn
