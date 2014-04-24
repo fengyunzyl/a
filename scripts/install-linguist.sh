@@ -3,9 +3,10 @@ set gcc-core gcc-g++ libcrypt-devel libicu-devel patch ruby zlib-devel
 apt-cyg install $*
 
 # faster_require
+git clone git://github.com/rdp/faster_require
+cd faster_require
+gem b faster_require.gemspec
 gem i faster_require
-cd $(find /lib -type d -name 'faster_require*')
-curl -L github.com/rdp/faster_require/commit/dd680bb.diff | git apply
 sed -i "1crequire '$(gem w faster_require)'" $(gem w rubygems)
 cd -
 
