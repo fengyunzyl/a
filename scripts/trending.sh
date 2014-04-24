@@ -1,10 +1,8 @@
-
-usage () {
-  echo usage: ${0##*/} PAGE LANGUAGE MAXSIZE
+if (( $# != 3 ))
+then
+  echo ${0##*/} PAGE LANGUAGE MAXSIZE
   exit
-}
-
-(( $# == 3 )) || usage
+fi
 
 # For unauthenticated requests, the rate limit allows you to make up to 5
 # requests per minute.
