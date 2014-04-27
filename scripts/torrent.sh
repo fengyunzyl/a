@@ -14,6 +14,7 @@ then
     ''
     CATEGORY
     '100  Audio'
+    '205  TV shows'
     '207  HD Movies'
     '208  HD TV shows'
     '301  Applications Windows'
