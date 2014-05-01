@@ -31,8 +31,8 @@ for ((o = 0; o < $#; o++))
 do
   magick "${ia[o]}" $shave \
     -resize ${wd[o]}x1080^ -gravity ${gv[o]} \
-    -extent ${wd[o]}x1080 outfile-$o.png
+    -extent ${wd[o]}x1080 -compress lossless outfile-$o.jpg
 done
 
 # combine
-magick outfile-*.png +append $(date +%s).png
+magick outfile-*.jpg +append -compress lossless $(date +%s).jpg
