@@ -24,14 +24,6 @@ log () {
   eval "${sx:2}"
 }
 
-usage () {
-  echo $0 PICTURE SONGS
-  echo
-  echo Script will use files to create high quality videos,
-  echo then upload videos to YouTube.
-  exit
-}
-
 querystring () {
   sed 'y/ /&/' <<< ${qs[*]}
 }
@@ -73,23 +65,26 @@ exten () {
 }
 
 buffer () {
-  set $1 $(powershell '(gp hkcu:console)'.ScreenBufferSize)
-  [ $(( $2 & 0xffff )) = $1 ] && return
-  set $(printf '%04x ' $1 2000 25)
-  powershell "
-  sp hkcu:console ScreenBufferSize 0x${2}${1}
-  sp hkcu:console WindowSize 0x${3}${1}
-  saps bash
-  "
+  powershell '&{
+  sp hkcu:console ScreenBufferSize ("0x{0:x}{1:x4}" -f 2000,$args[0])
+  sp hkcu:console WindowSize       ("0x{0:x}{1:x4}" -f   25,$args[0])
+  }' $(( ${#1} ? 88 : 80 ))
+  cygstart bash $1
   kill -7 $PPID
 }
 
-buffer 85
-(( $# < 2 )) && usage
+if (( $# < 2 ))
+then
+  echo ${0##*/} PICTURE SONGS
+  echo
+  echo Script will use files to create high quality videos,
+  echo then upload videos to YouTube.
+  exit
+fi
+
 img=$1
 shift
 songs=("$@")
-type google || exit
 declare -A artists titles
 
 for song in "${songs[@]}"
@@ -156,6 +151,7 @@ do
 done
 
 (( ${#album} <= 30 )) && tags+=,$album
+type google || exit
 
 for song in "${songs[@]}"
 do
