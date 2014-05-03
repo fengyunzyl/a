@@ -30,7 +30,7 @@ fi
 
 ia=("$@")
 
-case $(identify -format '%[fx:w/h>1]' "${ia[@]}") in
+case $(identify -format '%[fx:w/h>1]' "$@") in
   0101) wd=(640 1280 640 1280) ;;
   0110) wd=(640 1280 1280 640) ;;
   1001) wd=(1280 640 640 1280) ;;
