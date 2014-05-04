@@ -1,6 +1,7 @@
 if (( $# != 2 ))
 then
   echo ${0##*/} ROWS COLUMNS
+  echo max columns is 184
   powershell '
   $0 = (gp hkcu:console).ScreenBufferSize
   "current buffer rows {0}" -f ($0 -shr 16)
