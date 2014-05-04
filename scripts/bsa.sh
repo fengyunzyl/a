@@ -4,12 +4,12 @@ warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-usage () {
-  echo usage: ${0##*/} LBOUND UBOUND
+if (( $# != 2 ))
+then
+  echo ${0##*/} LBOUND UBOUND
   exit
-}
+fi
 
-(( $# < 2 )) && usage
 lb=$1
 ub=$2
 
