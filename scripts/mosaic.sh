@@ -59,3 +59,4 @@ done
 
 # combine
 magick outfile-*.jpg +append -compress lossless $(date +%s).jpg
+rm outfile-*.jpg
