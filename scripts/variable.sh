@@ -1,21 +1,29 @@
 # find unused variable names
-
-usage () {
-  echo usage: ${0##*/} WORD FILE
+if (( $# != 3 ))
+then
+  echo ${0##*/} WORD LENGTH FILE
   exit
-}
+fi
 
-(( $# < 2 )) && usage
-read -d '' arg_file < "$2"
-b=$(awk NF=NF OFS=, FPAT=[^aeilou] <<< ${1:1})
-eval set ${1::1}{$b}
+arg_wd=$1
+arg_ln=$2
+read -d '' arg_fe < "$3"
+sc=$(awk NF=NF OFS=, FPAT=[^aeilou] <<< "${arg_wd:1}")
+
+if (( arg_ln == 2 ))
+then
+  eval set "${arg_wd::1}"{$sc}
+else
+  eval set "${arg_wd::1}"{$sc}{$sc}
+fi
+
 declare -A cans
 
-for foo
+for pm
 do
-  [[ $arg_file =~ $foo  ]] && continue
-  [[ $foo      =~ ar|at ]] && continue
-  cans[$foo]=
+  [[ $pm     =~ ar|at|pr ]] && continue
+  [[ $arg_fe =~ $pm      ]] && continue
+  cans[$pm]=
 done
 
 for can in "${!cans[@]}"
