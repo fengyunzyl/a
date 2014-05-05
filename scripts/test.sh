@@ -1,9 +1,8 @@
-usage () {
-  echo usage: ${0##*/} ITEM1 ITEM2
+if (( $# != 2 ))
+then
+  echo ${0##*/} ITEM1 ITEM2
   exit
-}
-
-(( $# == 2 )) || usage
+fi
 
 for ts in a b c d e f g h k p r s t u w x G L N O S
 do
