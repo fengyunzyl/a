@@ -80,7 +80,8 @@ up=("${!1}")
    echo echo
  done
  echo 'read -p "Press any key to continue . . ."'
- echo buffer) > rx.sh
+ echo buffer
+ echo rm rx.sh) > rx.sh
 
 export -f buffer log say warn
 buffer rx.sh
