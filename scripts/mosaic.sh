@@ -4,13 +4,16 @@ type magick >/dev/null || exit
 
 if (( ! $# ))
 then
-  echo ${0##*/} [-s shave] [-g gravity] FILES
+  echo ${0##*/} [-s shave] [-g gravity] [-r resize] FILES
   echo
   echo '-s   how much to shave from width and height'
   echo '     example   10x10'
   echo
   echo '-g   comma separated list of output gravities'
   echo '     example   center,center,north,east'
+  echo
+  echo '-r   comma separated list of resize markers'
+  echo '     example   yes,yes,yes,no'
   exit
 fi
 
@@ -26,6 +29,14 @@ then
   shift 2
 else
   gv=(center center center center center center)
+fi
+
+if [[ $1 = -r ]]
+then
+  rz=(${2//,/ })
+  shift 2
+else
+  rz=(yes yes yes yes yes yes)
 fi
 
 ia=("$@")
@@ -52,11 +63,17 @@ esac
 # crop images
 for ((o = 0; o < $#; o++))
 do
-  magick "${ia[o]}" $shave \
-    -resize ${wd[o]}x1080^ -gravity ${gv[o]} \
-    -extent ${wd[o]}x1080 -compress lossless outfile-$o.jpg
+  if [[ ${rz[o]} = yes ]]
+  then
+    resize="-resize ${wd[o]}x1080^"
+  else
+    resize=
+  fi
+  magick "${ia[o]}" $shave $resize -gravity ${gv[o]} -extent ${wd[o]}x1080 \
+    -compress lossless inter-$o.jpg
 done
 
 # combine
-magick outfile-*.jpg +append -compress lossless $(date +%s).jpg
-rm outfile-*.jpg
+ot=$(printf '%s\n' ${gv[*]} - ${rz[*]} | awk NF=1 FPAT=. ORS=)
+magick inter-*.jpg +append -compress lossless outfile-$ot.jpg
+rm inter-*.jpg
