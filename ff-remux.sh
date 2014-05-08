@@ -75,7 +75,7 @@ up=("${!1}")
    am[0]=$ip
    [[ ${up[*]} =~ metadata ]] && am[1]=${ib//-/ }
    am[2]=$ib
-   [[ ${up[*]} =~ $ie ]] && am[2]+='~'
+   [[ ${up[*]: -1} =~ $ie ]] && am[2]+='~'
    printf -v stage1 '%q ' "${up[@]}"
    printf -v stage2 "$stage1" "${am[@]}"
    eval say log "$stage2"
