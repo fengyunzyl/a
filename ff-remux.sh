@@ -40,7 +40,8 @@ r4=(ffmpeg -i %q -c copy %q.mp4)
 r5=(ffmpeg -i %q -c copy -sn %q.mp4)
 r6=(ffmpeg -i %q -c copy %q.m4a)
 r7=(ffmpeg -i %q -c copy -vn %q.m4a)
-r8=(ffmpeg -i %q -c copy -vn -movflags faststart -metadata title=%q %q.m4a)
+r8=(ffmpeg -i %q -c copy -vn -movflags faststart -metadata title=%q
+  -f mp4 %q.m4a)
 r9=(ffmpeg -i %q -b:a 256k -movflags faststart %q.m4a)
 r10=(ffmpeg -i %q -c:v copy -b:a 256k -af 'pan=stereo|\
   FL < FL + 1.414FC + .5BL + .5SL|\
