@@ -7,7 +7,7 @@ then
   echo ${0##*/} [-s shave] [-g gravity] [-r resize] FILES
   echo
   echo '-s   how much to shave from width and height'
-  echo '     example   10x10'
+  echo '     example   6x6'
   echo
   echo '-g   comma separated list of output gravities'
   echo '     example   center,center,north,east'
