@@ -4,7 +4,7 @@ type magick >/dev/null || exit
 
 if (( ! $# ))
 then
-  echo ${0##*/} [-s shave] [-g gravity] [-r resize] FILES
+  echo ${0##*/} [-s shave] [-g gravity] [-r resize] [-w width] FILES
   echo
   echo '-s   how much to shave from width and height'
   echo '     example   6x6'
@@ -14,34 +14,26 @@ then
   echo
   echo '-r   comma separated list of resize markers'
   echo '     example   yes,yes,yes,no'
+  echo
+  echo '-w   comma separated list of widths'
+  echo '     example   640,1280,960,960'
   exit
 fi
 
-if [[ $1 = -s ]]
-then
-  shave="-shave $2"
+while [[ ${1::1} == - ]]
+do
+  case $1 in
+  -s) shave="-shave $2" ;;
+  -g) gv=(${2//,/ }) ;;
+  -r) rz=(${2//,/ }) ;;
+  -w) wd=(${2//,/ }) ;;
+  esac
   shift 2
-fi
+done
 
-if [[ $1 = -g ]]
-then
-  gv=(${2//,/ })
-  shift 2
-else
-  gv=(center center center center center center)
-fi
-
-if [[ $1 = -r ]]
-then
-  rz=(${2//,/ })
-  shift 2
-else
-  rz=(yes yes yes yes yes yes)
-fi
-
-ia=("$@")
-
-case $(identify -format '%[fx:w/h>1]' "$@") in
+[[ $gv ]] || gv=(center center center center center center)
+[[ $rz ]] || rz=(yes yes yes yes yes yes)
+[[ $wd ]] || case $(identify -format '%[fx:w/h>1]' "$@") in
   0101) wd=(640 1280 640 1280) ;;
   0110) wd=(640 1280 1280 640) ;;
   1001) wd=(1280 640 640 1280) ;;
@@ -59,6 +51,8 @@ case $(identify -format '%[fx:w/h>1]' "$@") in
   11000) wd=(960 960 640 640 640) ;;
   000000) wd=(640 640 640 640 640 640) ;;
 esac
+
+ia=("$@")
 
 # crop images
 for ((o = 0; o < $#; o++))
