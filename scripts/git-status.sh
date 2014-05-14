@@ -7,6 +7,6 @@ do
   printf '\ec'
   cd "$rp"
   git status
-  warn ${rp%/}
+  warn "${rp%/}"
   read
 done
