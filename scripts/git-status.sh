@@ -5,7 +5,7 @@ warn () {
 for rp in /srv/*/
 do
   printf '\ec'
-  cd $rp
+  cd "$rp"
   git status
   warn ${rp%/}
   read
