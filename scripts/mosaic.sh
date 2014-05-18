@@ -4,10 +4,10 @@ type magick >/dev/null || exit
 
 if (( ! $# ))
 then
-  echo ${0##*/} [-s shave] [-g gravity] [-r resize] [-w width] FILES
+  echo ${0##*/} [-s shave] [-g gravity] [-r resize] [-w width] [-c crop] FILES
   echo
-  echo '-s   how much to shave from width and height'
-  echo '     example   6x6'
+  echo '-s   how much to shave from height'
+  echo '     example   6'
   echo
   echo '-g   comma separated list of output gravities'
   echo '     example   center,center,north,east'
@@ -17,22 +17,28 @@ then
   echo
   echo '-w   comma separated list of widths'
   echo '     example   640,1280,960,960'
+  echo
+  echo '-c   comma separated list of crops'
+  echo '     example   -300,0,+300,0'
   exit
 fi
 
 while [[ ${1::1} == - ]]
 do
   case $1 in
-  -s) shave="-shave $2" ;;
+  -s) shave="-shave x$2" ;;
   -g) gv=(${2//,/ }) ;;
   -r) rz=(${2//,/ }) ;;
   -w) wd=(${2//,/ }) ;;
+  -c) eg=(${2//,/ }) ;;
   esac
+  ot+=$2
   shift 2
 done
 
-[[ $gv ]] || gv=(center center center center center center)
+[[ $eg ]] || eg=(0 0 0 0 0 0)
 [[ $rz ]] || rz=(yes yes yes yes yes yes)
+[[ $gv ]] || gv=(center center center center center center)
 [[ $wd ]] || case $(identify -format '%[fx:w/h>1]' "$@") in
   0101) wd=(640 1280 640 1280) ;;
   0110) wd=(640 1280 1280 640) ;;
@@ -63,11 +69,10 @@ do
   else
     resize=
   fi
-  magick "${ia[o]}" $shave $resize -gravity ${gv[o]} -extent ${wd[o]}x1080 \
-    -compress lossless inter-$o.jpg
+  magick "${ia[o]}" $shave -crop ${eg[o]} $resize -gravity ${gv[o]} \
+    -extent ${wd[o]}x1080 -compress lossless inter-$o.jpg
 done
 
 # combine
-ot=$(printf '%s\n' ${gv[*]} - ${rz[*]} | awk NF=1 FPAT=. ORS=)
-magick inter-*.jpg +append -compress lossless outfile-$ot.jpg
+magick inter-*.jpg +append -compress lossless "outfile $ot".jpg
 rm inter-*.jpg
