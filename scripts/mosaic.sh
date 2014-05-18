@@ -4,13 +4,10 @@ type magick >/dev/null || exit
 
 if (( ! $# ))
 then
-  echo ${0##*/} [-s shave] [-g gravity] [-r resize] [-w width] [-c crop] FILES
+  echo ${0##*/} [-s shave] [-r resize] [-w width] [-c crop] FILES
   echo
   echo '-s   how much to shave from height'
   echo '     example   6'
-  echo
-  echo '-g   comma separated list of output gravities'
-  echo '     example   center,center,north,east'
   echo
   echo '-r   comma separated list of resize markers'
   echo '     example   yes,yes,yes,no'
@@ -27,7 +24,6 @@ while [[ ${1::1} == - ]]
 do
   case $1 in
   -s) shave="-shave x$2" ;;
-  -g) gv=(${2//,/ }) ;;
   -r) rz=(${2//,/ }) ;;
   -w) wd=(${2//,/ }) ;;
   -c) eg=(${2//,/ }) ;;
@@ -38,7 +34,6 @@ done
 
 [[ $eg ]] || eg=(0 0 0 0 0 0)
 [[ $rz ]] || rz=(yes yes yes yes yes yes)
-[[ $gv ]] || gv=(center center center center center center)
 [[ $wd ]] || case $(identify -format '%[fx:w/h>1]' "$@") in
   0101) wd=(640 1280 640 1280) ;;
   0110) wd=(640 1280 1280 640) ;;
@@ -69,7 +64,7 @@ do
   else
     resize=
   fi
-  magick "${ia[o]}" $shave -crop ${eg[o]} $resize -gravity ${gv[o]} \
+  magick "${ia[o]}" $shave -crop ${eg[o]} $resize -gravity center \
     -extent ${wd[o]}x1080 -compress lossless inter-$o.jpg
 done
 
