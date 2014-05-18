@@ -1,40 +1,47 @@
-set "$HOMEDRIVE\program files" "$HOMEDRIVE\program files (x86)"
-echo these items can be removed
+pf=(
+  "$HOMEDRIVE/program files"
+  "$HOMEDRIVE/program files (x86)"
+)
 
-# clean up program files
-for ac
+echo clean up program files
+for ac in "${pf[@]}"
 do
   cd "$ac"
   for pg in *
   do
-    if ! find "$pg" -iname '*.exe' | read
-    then
-      printf '\e[1;31m%s\e[m\n' "$ac\\$pg"
-    fi
+    grep -iq 'windows defender' <<< "$pg" && continue
+    find "$pg" -iname '*.exe' | read && continue
+    printf '\e[1;31m%s\e[m\n' "$PWD\\$pg"
   done
 done
 
-# clean up local appdata
+echo clean up local appdata
 cd "$LOCALAPPDATA"
 for pg in *
 do
   [ -f "$pg" -o -h "$pg" ] && continue
-  if ! find "$@" -maxdepth 1 -iname "$pg*" | read
-  then
-    printf '\e[1;31m%s\e[m\n' "$LOCALAPPDATA\\$pg"
-  fi
+  grep -iq temp <<< "$pg" && continue
+  find "${pf[@]}" -maxdepth 1 -iname "$pg*" | read && continue
+  printf '\e[1;31m%s\e[m\n' "$PWD\\$pg"
 done
 
-# clean up appdata
+echo clean up appdata
 cd "$APPDATA"
-for pg in *
+for parent in *
 do
-  [ -f "$pg" -o -h "$pg" ] && continue
-  if ! find "$@" -maxdepth 1 -iname "$pg*" | read
-  then
-    if ! find "$pg" -iname '*.exe' | read
-    then
-      printf '\e[1;31m%s\e[m\n' "$APPDATA\\$pg"
-    fi
-  fi
+  find "$parent" -iname '*.exe' | read && continue
+
+  # try parent
+  find "${pf[@]}" -maxdepth 2 -iname "$parent*" | read && continue
+
+  # try child
+  cd "$parent"
+  children=(*)
+  cd ..
+  for child in "${children[@]}"
+  do
+    find "${pf[@]}" -maxdepth 1 -iname "$child" | read && continue 2
+  done
+
+  printf '\e[1;31m%s\e[m\n' "$PWD\\$parent"
 done
