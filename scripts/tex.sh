@@ -7,7 +7,6 @@
 # web2c-lib.tar.xz  Basic library files of TeX
 # web2c-w32.tar.xz  Binary files of TeX and its friends
 set $HOMEDRIVE/tex ctan.ijs.si/mirror/w32tex/current
-export CYGWIN=nodosfilewarning 
 mkdir -p $1
 cd $1
 
