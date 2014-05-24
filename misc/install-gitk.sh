@@ -1,20 +1,24 @@
 # Use gitk on Cygwin without X11
+mr=http://sourceforge.net/projects/msys2/files/REPOS/MINGW/x86_64
 
 # tcl tk zlib
 cd /var/cache
 for pc in tcl-8.6.1-3 tk-8.6.1-3 zlib-1.2.8-2
 do
-  wget downloads.sf.net/msys2/mingw-w64-x86_64-$pc-any.pkg.tar.xz
-  tar xf mingw-w64-x86_64-$pc-any.pkg.tar.xz
+  av=mingw-w64-x86_64-$pc-any.pkg.tar.xz
+  wget -nc $mr/$av
+  tar xf $av
 done
 cd mingw64
-cp -r bin lib /usr/local
+cp -r bin lib /
 
 # gitk
-cd /usr/local/bin
-wget raw.github.com/git/git/master/gitk-git/gitk
+cd /bin
+wget -nc github.com/git/git/raw/master/gitk-git/gitk
 chmod +x gitk
 
+echo '
 gitk () {
   cygstart wish $(cygpath -m $(type -P gitk)) "$@"
 }
+' >> ~/.bashrc
