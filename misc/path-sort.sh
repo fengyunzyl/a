@@ -1,8 +1,8 @@
 # find duplicates on the path
 
-for dr in ${PATH//:/ }
+sed 'y/:/\n/' <<< "$PATH" | while read dr
 do
-  if [ -a "$dr" ]
+  if [ -d "$dr" ]
   then
     cd "$dr"
   fi
