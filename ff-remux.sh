@@ -79,7 +79,7 @@ up=("${!1}")
    [[ ${up[*]: -1} =~ $ie ]] && am[2]+='~'
    printf -v stage1 '%q ' "${up[@]}"
    printf -v stage2 "$stage1" "${am[@]}"
-   eval say log "$stage2"
+   eval say log "$stage2" -hide_banner
    echo echo
  done
  echo 'read -p "Press any key to continue . . ."'
