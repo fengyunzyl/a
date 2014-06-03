@@ -28,7 +28,8 @@ sc=$1
 
 # lets split out the good downmix, because that might be a while
 echo Checking downmix
-wget -q github.com/FFmpeg/FFmpeg/raw/master/libswresample/swresample.c
+wget -q https://raw.githubusercontent.com/FFmpeg/FFmpeg/master/libswresample\
+/swresample.c
 (( $? )) && exit
 awk '/center_mix_level/ && /C_30DB/ {exit 1}' swresample.c
 bad=$?
