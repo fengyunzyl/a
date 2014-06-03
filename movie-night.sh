@@ -47,14 +47,14 @@ c6=$(awk '/5\.1/,$0=$2' FS=, streams.csv)
 rm streams.csv
 
 ag=(
-  -hide_banner
-  -i "$sc"
-  -c:v copy
-  -b:a 256k
-  -ac 2
-  -clev 3dB
-  -slev -6dB
-  -metadata '"comment=clev 3dB slev -6dB"'
+  "-hide_banner"
+  "-i '$sc'"
+  "-c:v copy"
+  "-b:a 256k"
+  "-ac 2"
+  "-clev 3dB"
+  "-slev -6dB"
+  "-metadata 'comment=clev 3dB slev -6dB'"
 )
 
 case ${#c2}${#c6} in
