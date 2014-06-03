@@ -59,23 +59,22 @@ ag=(
 
 case ${#c2}${#c6} in
 01)
-  echo echo One 5.1 stream, use my downmix  
-  echo log ffmpeg "${ag[@]}" mn-"$sc"
+  ao+=("echo One 5.1 stream, use my downmix")
+  ao+=("log ffmpeg ${ag[*]} mn-'$sc'")
 ;;
 10)
-  echo echo One stereo stream, reject file
+  ao+=("echo One stereo stream, reject file")
 ;;
 11)
-  echo echo Dual audio, use my downmix on 5.1 stream
-  echo log ffmpeg "${ag[@]}" -map v -map :$c6 mn-"$sc"
+  ao+=("echo Dual audio, use my downmix on 5.1 stream")
+  ao+=("log ffmpeg ${ag[*]} -map v -map :$c6 mn-'$sc'")
 ;;
-esac > rx.sh
-echo '
-warn Press any key to continue . . .
-read
-rm rx.sh
-buffer
-' >> rx.sh
+esac
+ao+=("warn Press any key to continue . . .")
+ao+=("read")
+ao+=("rm rx.sh")
+ao+=("buffer")
+printf '%s\n' "${ao[@]}" > rx.sh
 export -f buffer log warn
 buffer rx.sh
 
