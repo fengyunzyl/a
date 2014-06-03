@@ -49,6 +49,8 @@ rm streams.csv
 ag=(
   "-hide_banner"
   "-i '$sc'"
+  "-map v"
+  "-map :$c6"
   "-c:v copy"
   "-b:a 256k"
   "-ac 2"
@@ -67,7 +69,7 @@ case ${#c2}${#c6} in
 ;;
 11)
   ao+=("echo Dual audio, use my downmix on 5.1 stream")
-  ao+=("log ffmpeg ${ag[*]} -map v -map :$c6 mn-'$sc'")
+  ao+=("log ffmpeg ${ag[*]} mn-'$sc'")
 ;;
 esac
 ao+=("warn Press any key to continue . . .")
