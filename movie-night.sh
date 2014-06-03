@@ -16,7 +16,7 @@ buffer () {
   sp hkcu:console WindowSize       ("0x{0:x}{1:x4}" -f   25,$args[0])
   }' $(( ${#1} ? 88 : 80 ))
   cygstart bash $1
-  kill -7 $PPID
+  kill -7 $$ $PPID
 }
 
 if (( $# != 1 ))
@@ -73,8 +73,8 @@ esac > rx.sh
 echo '
 warn Press any key to continue . . .
 read
-buffer
 rm rx.sh
+buffer
 ' >> rx.sh
 export -f buffer log warn
 buffer rx.sh
