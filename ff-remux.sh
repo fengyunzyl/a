@@ -21,7 +21,7 @@ buffer () {
   sp hkcu:console WindowSize       ("0x{0:x}{1:x4}" -f   25,$args[0])
   }' $(( ${#1} ? 88 : 80 ))
   cygstart bash $1
-  kill -7 $PPID
+  kill -7 $$ $PPID
 }
 
 if (( ! $# ))
@@ -64,22 +64,26 @@ done
 set r$REPLY[@]
 up=("${!1}")
 
-(for ip in "${pm[@]}"
- do
-   ib=${ip%.*}
-   ie=${ip##*.}
-   am[0]=$ip
-   [[ ${up[*]} =~ metadata ]] && am[1]=${ib//-/ }
-   am[2]=$ib
-   [[ ${up[*]: -1} =~ $ie ]] && am[2]+='~'
-   printf -v stage1 '%q ' "${up[@]}"
-   printf -v stage2 "$stage1" "${am[@]}"
-   eval say log "$stage2" -hide_banner
-   echo echo
- done
- echo 'read -p "Press any key to continue . . ."'
- echo buffer
- echo rm rx.sh) > rx.sh
-
+for ip in "${pm[@]}"
+do
+  ib=${ip%.*}
+  ie=${ip##*.}
+  am[0]=$ip
+  if [[ ${up[*]} =~ metadata ]]
+  then
+    am[1]=$(sed 's/-/ /g;s/  */ /g' <<< "$ib")
+  fi
+  am[2]=$ib
+  [[ ${up[*]: -1} =~ $ie ]] && am[2]+='~'
+  printf -v stage1 '%q ' "${up[@]}"
+  printf -v stage2 "$stage1" "${am[@]}"
+  (( oc++ )) && ao+=("echo")
+  ao+=("log $stage2 -hide_banner")
+done
+ao+=("warn Press any key to continue . . .")
+ao+=("read")
+ao+=("rm rx.sh")
+ao+=("buffer")
+printf '%s\n' "${ao[@]}" > rx.sh
 export -f buffer log say warn
 buffer rx.sh
