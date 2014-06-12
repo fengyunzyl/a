@@ -33,8 +33,8 @@ declare -A cans
 
 for pm
 do
-  [[ $pm     =~ ar|at|cp|dc|pg|pr ]] && continue
-  [[ $arg_fe =~ $pm               ]] && continue
+  [[ $pm     =~ ar|at|cc|cp|dc|pg|pr ]] && continue
+  [[ $arg_fe =~ $pm                  ]] && continue
   cans[$pm]=
 done
 
