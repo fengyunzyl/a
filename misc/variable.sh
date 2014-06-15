@@ -1,44 +1,53 @@
 # find unused variable names
+get_withdraws_without_replacement () {
+  local n=$1 h r=()
+  shift
+  (( n > 0 )) || return
+  if (( n == 1 ))
+  then
+    gwwr_ret=("$@")
+    return
+  fi
+  while (( $# >= n ))
+  do
+    h=$1
+    shift
+    get_withdraws_without_replacement $((n-1)) "$@"
+    r+=("${gwwr_ret[@]/#/$h}")
+  done
+  gwwr_ret=("${r[@]}")
+}
+
 if (( $# < 3 ))
 then
   echo ${0##*/} WORD LENGTH [ALL] FILE
   echo
-  echo 'if you use "ALL", vowels will be included'
+  echo 'if you use "ALL", "aeilou" will be included'
   exit
 fi
 
-arg_wd=$1
-shift
-arg_ln=$1
-shift
-if [[ $2 ]]
+awd=$1
+ale=$2
+if [[ $4 ]]
 then
-  fa='.'
-  shift
+  gd=.
 else
-  fa='[^aeilou]'
+  gd=[^aeilou]
 fi
-read -d '' arg_fe < "$1"
+read -d '' afi < "${!#}"
+c1=${awd::1}
+set $(awk '!s[RT]++ && RT~gd && $0=RT' gd=$gd RS=[[:alnum:]] <<< ${awd:1})
+get_withdraws_without_replacement $((ale-1)) $*
+shopt -s nocasematch
 
-sc=$(awk NF=NF OFS=, FPAT="$fa" <<< "${arg_wd:1}")
-
-if (( arg_ln == 2 ))
-then
-  eval set "${arg_wd::1}"{$sc}
-else
-  eval set "${arg_wd::1}"{$sc}{$sc}
-fi
-
-declare -A cans
-
-for pm
+for each in ${gwwr_ret[*]}
 do
-  [[ $pm     =~ ar|at|cc|cp|dc|pg|pr ]] && continue
-  [[ $arg_fe =~ $pm                  ]] && continue
-  cans[$pm]=
-done
-
-for can in "${!cans[@]}"
-do
-  echo $can
+  case $c1$each in
+    ar | cc | cp | dc | pg | pr ) continue ;;
+  esac
+  if [[ $afi =~ $c1$each ]]
+  then
+    continue
+  fi
+  echo $c1$each
 done
