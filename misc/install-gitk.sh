@@ -10,3 +10,6 @@ apt-msys2 install ${pk[*]}
 cd /var/cache
 wget -nc github.com/git/git/raw/master/gitk-git/gitk
 install gitk /bin
+
+# once we fix this fix
+# http://stackoverflow.com/q/8055029/is-there-a-simple-way-to-git-describe
