@@ -1,34 +1,33 @@
 # Binary search algorithm
-
 warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
 if (( $# != 2 ))
 then
-  echo ${0##*/} LBOUND UBOUND
+  echo ${0##*/} GOOD BAD
   exit
 fi
 
-lb=$1
-ub=$2
+gb=$1
+bb=$2
 
 while :
 do
-  (( k = (lb + ub) / 2 ))
-  if (( k == lb ))
+  (( ty = (gb + bb) / 2 ))
+  if (( sg[ty]++ ))
   then
     break
   fi
-  warn $k
-  select foo in higher lower
+  warn $ty
+  select co in good bad
   do
     break
   done
-  if [ $foo = higher ]
+  if [ $co = good ]
   then
-    (( lb = k ))
+    (( gb = ty ))
   else
-    (( ub = k ))
+    (( bb = ty ))
   fi
 done
