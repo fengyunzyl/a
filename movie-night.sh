@@ -80,4 +80,8 @@ printf '%s\n' "${ao[@]}" > rx.sh
 export -f buffer log warn
 buffer rx.sh
 
-# final step is check the gain
+# if i am going to be transcoding anyway, i might as well use ffmpeg for the
+# volume too
+# ffmpeg -i a.mkv -c:v copy -af volume=3dB -b:a 384k out.mp4
+# ffmpeg -i infile -vn -af volumedetect -f null -
+# ffmpeg -i infile -vn -filter_complex ebur128=peak=true -f null -
