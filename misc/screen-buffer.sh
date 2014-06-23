@@ -11,8 +11,9 @@ then
 fi
 
 powershell '&{
-sp hkcu:console ScreenBufferSize ("0x{0:x}{1:x4}" -f $args[0],$args[1])
-sp hkcu:console WindowSize       ("0x{0:x}{1:x4}" -f       25,$args[1])
+param($rw,$cm)
+sp hkcu:console ScreenBufferSize ("0x{0:x}{1:x4}" -f $rw,$cm)
+sp hkcu:console WindowSize       ("0x{0:x}{1:x4}" -f  25,$cm)
 }' $*
 
 cygstart bash
