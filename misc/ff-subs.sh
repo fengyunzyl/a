@@ -17,8 +17,9 @@ log () {
 
 buffer () {
   powershell '&{
-  sp hkcu:console ScreenBufferSize ("0x{0:x}{1:x4}" -f 2000,$args[0])
-  sp hkcu:console WindowSize       ("0x{0:x}{1:x4}" -f   25,$args[0])
+  param($cm)
+  sp hkcu:console ScreenBufferSize ("0x{0:x}{1:x4}" -f 2000,$cm)
+  sp hkcu:console WindowSize       ("0x{0:x}{1:x4}" -f   25,$cm)
   }' $(( ${#1} ? 88 : 80 ))
   cygstart bash $1
   kill -7 $PPID
