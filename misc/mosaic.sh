@@ -7,7 +7,7 @@ then
   echo ${0##*/} [-s shave] [-r resize] [-w width] [-c crop] FILES
   echo
   echo '-s   how much to shave from height'
-  echo '     example   6'
+  echo '     example   6x6'
   echo
   echo '-r   comma separated list of resize markers'
   echo '     example   yes,yes,yes,no'
@@ -23,7 +23,7 @@ fi
 while [[ ${1::1} == - ]]
 do
   case $1 in
-  -s) shave="-shave x$2" ;;
+  -s) shave="-shave $2" ;;
   -r) rz=(${2//,/ }) ;;
   -w) wd=(${2//,/ }) ;;
   -c) eg=(${2//,/ }) ;;
