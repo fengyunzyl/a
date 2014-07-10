@@ -10,7 +10,7 @@ do
   for pg in *
   do
     grep -iq 'windows defender' <<< "$pg" && continue
-    find "$pg" -iname '*.exe' | read && continue
+    find "$pg" -name '*.exe' -o -name '*.dll' | read && continue
     printf '\e[1;31m%s\e[m\n' "$PWD\\$pg"
   done
 done
