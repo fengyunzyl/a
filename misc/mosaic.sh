@@ -6,7 +6,7 @@ if (( ! $# ))
 then
   echo ${0##*/} [-s shave] [-r resize] [-w width] [-c crop] FILES
   echo
-  echo '-s   how much to shave from height'
+  echo '-s   how much to shave'
   echo '     example   6x6'
   echo
   echo '-r   comma separated list of resize markers'
@@ -35,6 +35,7 @@ done
 [[ $eg ]] || eg=(0 0 0 0 0 0)
 [[ $rz ]] || rz=(yes yes yes yes yes yes)
 [[ $wd ]] || case $(identify -format '%[fx:w/h>1]' "$@") in
+  11) wd=(1920 1920) ;;
   0101) wd=(640 1280 640 1280) ;;
   0110) wd=(640 1280 1280 640) ;;
   1001) wd=(1280 640 640 1280) ;;
