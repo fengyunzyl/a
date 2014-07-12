@@ -25,59 +25,52 @@ buffer () {
   kill -7 $$ $PPID
 }
 
-if (( ! $# ))
+ga=(
+  'ffmpeg -i %q %q.wav'
+  'ffmpeg -i %q %q.flac'
+  'ffmpeg -i %q -c copy %q.flv'
+  'ffmpeg -i %q -c copy %q.mp4'
+  'ffmpeg -i %q -c copy -sn %q.mp4'
+  'ffmpeg -i %q -c copy %q.m4a'
+  'ffmpeg -i %q -c copy -vn %q.m4a'
+  'ffmpeg -i %q -c copy -movflags faststart %q.m4a'
+  'ffmpeg -i %q -c copy -vn -movflags faststart -metadata title=%q %q.m4a'
+  'ffmpeg -i %q -vn -b:a 256k -movflags faststart %q.m4a'
+  'ffmpeg -i %q -c:v copy -b:a 256k -ac 2 -clev 3dB -slev -6dB %q.mp4'
+  'ffmpeg -i %q -b:a 256k -ac 2 -clev 3dB -slev -6dB %q.mp4'
+)
+
+if (( $# < 2 )) || ! seq ${#ga[*]} | grep -qx "$1"
 then
-  echo ${0##*/} FILES
+  echo ${0##*/} CHOICE FILES
   echo
   echo this will not delete original file
+  echo
+  for each in "${ga[@]}"
+  do
+    printf '%2s  %s\n' $((++bar)) "$each"
+  done
   exit
 fi
 
+choice=$1
+shift
 pm=("$@")
-r1=(ffmpeg -i %q %q.wav)
-r2=(ffmpeg -i %q %q.flac)
-r3=(ffmpeg -i %q -c copy %q.flv)
-r4=(ffmpeg -i %q -c copy %q.mp4)
-r5=(ffmpeg -i %q -c copy -sn %q.mp4)
-r6=(ffmpeg -i %q -c copy %q.m4a)
-r7=(ffmpeg -i %q -c copy -vn %q.m4a)
-r8=(ffmpeg -i %q -c copy -movflags faststart %q.m4a)
-r9=(ffmpeg -i %q -c copy -vn -movflags faststart -metadata title=%q %q.m4a)
-r10=(ffmpeg -i %q -vn -b:a 256k -movflags faststart %q.m4a)
-r11=(ffmpeg -i %q -c:v copy -b:a 256k -ac 2 -clev 3dB -slev -6dB %q.mp4)
-r12=(ffmpeg -i %q -b:a 256k -ac 2 -clev 3dB -slev -6dB %q.mp4)
-
-while {
-  (( vu++ ))
-  set r$vu[@]
-  up=("${!1}")
-  (( ${#up} ))
-}
-do
-  ce[vu]=$(say "${up[@]}")
-done
-
-select wd in "${ce[@]}"
-do
-  (( ${#wd} )) && break
-done
-
-set r$REPLY[@]
-up=("${!1}")
+up=${ga[choice-1]}
 
 for ip in "${pm[@]}"
 do
   ib=${ip%.*}
   ie=${ip##*.}
+  oe=${up##*.}
   am[0]=$ip
-  if [[ ${up[*]} =~ metadata ]]
+  if [[ $up =~ metadata ]]
   then
     am[1]=$(sed 's/-/ /g;s/  */ /g' <<< "$ib")
   fi
   am[2]=$ib
-  [[ ${up[*]: -1} =~ $ie ]] && am[2]+='~'
-  printf -v stage1 '%q ' "${up[@]}"
-  printf -v stage2 "$stage1" "${am[@]}"
+  [[ $oe = $ie ]] && am[2]+='~'
+  printf -v stage2 "$up" "${am[@]}"
   (( oc++ )) && ao+=("echo")
   ao+=("log $stage2 -hide_banner")
 done
