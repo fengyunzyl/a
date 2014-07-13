@@ -2,16 +2,11 @@ warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-say () {
+log () {
   unset PS4
   sx=$((set -x
     : "$@") 2>&1)
-  echo "${sx:2}"
-}
-
-log () {
-  sy=$(say "$@")
-  warn "$sy"
+  warn "${sx:2}"
   "$@"
 }
 
@@ -35,6 +30,7 @@ ga=(
   'ffmpeg -i %q -c copy -vn %q.m4a'
   'ffmpeg -i %q -c copy -movflags faststart %q.m4a'
   'ffmpeg -i %q -c copy -vn -movflags faststart -metadata title=%q %q.m4a'
+  'ffmpeg -i %q -b:a 256k -movflags faststart -metadata title=%q %q.m4a'
   'ffmpeg -i %q -vn -b:a 256k -movflags faststart %q.m4a'
   'ffmpeg -i %q -c:v copy -b:a 256k -ac 2 -clev 3dB -slev -6dB %q.mp4'
   'ffmpeg -i %q -b:a 256k -ac 2 -clev 3dB -slev -6dB %q.mp4'
@@ -79,5 +75,5 @@ ao+=("read")
 ao+=("rm rx.sh")
 ao+=("buffer")
 printf '%s\n' "${ao[@]}" > rx.sh
-export -f buffer log say warn
+export -f buffer log warn
 buffer rx.sh
