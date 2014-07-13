@@ -1,26 +1,26 @@
 # strip metadata and chapters
 
-usage () {
-  echo usage: $0 FILE
-  exit
-}
-
 warn () {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
 log () {
   unset PS4
-  qq=$(( set -x
-         : "$@" )2>&1)
-  warn "${qq:2}"
-  eval "${qq:2}"
+  sx=$((set -x
+    : "$@") 2>&1)
+  warn "${sx:2}"
+  "$@"
 }
 
-(( $# )) || usage
+if (( $# != 1 ))
+then
+  echo ${0##*/} FILE
+  exit
+fi
+
 arg_in=${1}
 arg_out=strip.${1/*.}
 
 # "-analyzeduration" doesnt do anything other than remove the warning
-log ffmpeg -i "$arg_in" -c copy -map_metadata -1 -map_chapters -1 \
-  -v warning -stats "$arg_out"
+log ffmpeg -i "$arg_in" -c copy -map_metadata -1 -map_chapters -1 "$arg_out" \
+  -hide_banner
