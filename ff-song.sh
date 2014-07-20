@@ -1,5 +1,6 @@
 # create high quality video from song and picture
 # site:musicbrainz.org acoustid -site:forums.musicbrainz.org
+# http://github.com/stedolan/jq/issues/105
 : '
 blog.musicbrainz.org/2013/03/21/
 puids-are-deprecated-and-will-be-removed-on-15-october-2013
