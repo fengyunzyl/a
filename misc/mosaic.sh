@@ -13,7 +13,7 @@ then
   echo '     example   yes,yes,yes,no'
   echo
   echo '-w   comma separated list of widths'
-  echo '     example   640,1280,960,960'
+  echo '     example   1920,1280,960,640'
   echo
   echo '-c   comma separated list of crops'
   echo '     example   -300,0,+300,0'
