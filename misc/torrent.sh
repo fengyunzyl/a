@@ -57,7 +57,11 @@ do
   (( sz < lower )) && continue
   (( sz > upper )) && continue
   # check kbps
-  grep -iq 'kb[p/]s' $each || continue
+  br=$(sed '
+  /[kK][bB][pP/][sS]/ ! d
+  s/[^[:digit:]]//g
+  ' $each | sort -nr | head -1)
+  (( br < 1000 )) && continue
   # check seeders
   sd=$(awk '/Seeders/ {print RT}' RS=[[:digit:]]+ $each)
   (( sd < 2 )) && continue
