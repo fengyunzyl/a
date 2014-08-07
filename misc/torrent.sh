@@ -6,6 +6,18 @@ function hr {
   ' <<< "$1"
 }
 
+function warn {
+  printf '\e[36m%s\e[m\n' "$*"
+}
+
+function log {
+  unset PS4
+  sx=$((set -x
+    : "$@") 2>&1)
+  warn "${sx:2}"
+  "$@"
+}
+
 if (( $# != 3 ))
 then
   hr "
@@ -42,28 +54,40 @@ cd /tmp
 rm -f *.htm
 lower=$(awk 'BEGIN {print 1.5 * 1024^3}')
 upper=$(awk 'BEGIN {print 3 * 1024^3}')
+log curl --com -so search.htm "thepiratebay.se/search/$sc/0/$sr/$cg"
 
-curl "http://thepiratebay.se/search/$sc/0/$sr/$cg" |
-awk '$2 == "torrent" {print $3}' FS=/ |
+awk '$2 == "torrent" {print $3}' FS=/ search.htm |
 while read each
 do
-  curl -o $each.htm http://thepiratebay.se/torrent/$each
-done
-
-for each in *.htm
-do
+  curl --com -so $each.htm thepiratebay.se/torrent/$each
   # check size
-  sz=$(awk '/Bytes/ {print $NF}' FPAT=[[:digit:]]+ $each)
-  (( sz < lower )) && continue
-  (( sz > upper )) && continue
+  sz=$(awk '/Bytes/ {print $NF}' FPAT=[[:digit:]]+ $each.htm)
+  if (( sz < lower ))
+  then
+    echo too small
+    continue
+  fi
+  if (( sz > upper ))
+  then
+    echo too large
+    continue
+  fi
   # check kbps
   br=$(sed '
   /[kK][bB][pP/][sS]/ ! d
   s/[^[:digit:]]//g
-  ' $each | sort -nr | head -1)
-  (( br < 1000 )) && continue
+  ' $each.htm | sort -nr | head -1)
+  if (( br < 1000 ))
+  then
+    echo bad quality
+    continue
+  fi
   # check seeders
-  sd=$(awk '/Seeders/ {print RT}' RS=[[:digit:]]+ $each)
-  (( sd < 2 )) && continue
+  sd=$(awk '/Seeders/ {print RT}' RS=[[:digit:]]+ $each.htm)
+  if (( sd < 2 ))
+  then
+    echo low seeders
+    continue
+  fi
   cygstart http://thepiratebay.se/torrent/$each
 done
