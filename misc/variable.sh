@@ -36,7 +36,7 @@ else
 fi
 read -d '' afi < "${!#}"
 c1=${awd::1}
-set $(awk '!s[RT]++ && RT~gd && $0=RT' gd=$gd RS=[[:alnum:]] <<< ${awd:1})
+set -- $(awk '!s[RT]++ && RT~gd && $0=RT' gd=$gd RS=[[:alnum:]] <<< ${awd:1})
 get_withdraws_without_replacement $((ale-1)) $*
 shopt -s nocasematch
 
