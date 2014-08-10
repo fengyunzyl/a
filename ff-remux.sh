@@ -1,8 +1,8 @@
-warn () {
+function warn {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log () {
+function log {
   unset PS4
   sx=$((set -x
     : "$@") 2>&1)
@@ -10,7 +10,7 @@ log () {
   "$@"
 }
 
-buffer () {
+function buffer {
   powershell '&{
   param($cm)
   sp hkcu:console ScreenBufferSize ("0x{0:x}{1:x4}" -f 2000,$cm)
@@ -28,6 +28,7 @@ ga=(
   'ffmpeg -i %q -c copy -sn %q.mp4'
   'ffmpeg -i %q -c copy %q.m4a'
   'ffmpeg -i %q -c copy -vn %q.m4a'
+  'ffmpeg -i %q -c copy -vn %q.mp3'
   'ffmpeg -i %q -c copy -movflags faststart %q.m4a'
   'ffmpeg -i %q -c copy -vn -movflags faststart -metadata title=%q %q.m4a'
   'ffmpeg -i %q -b:a 256k -movflags faststart -metadata title=%q %q.m4a'
