@@ -1,36 +1,50 @@
 # A mosaic in digital imaging is a plurality of non-overlapping images, arranged
 # in some tessellation.
+function hr {
+  sed '
+  1d
+  $d
+  s/  //
+  ' <<< "$1"
+}
+
 type magick >/dev/null || exit
 
 if (( ! $# ))
 then
-  echo ${0##*/} [-s shave] [-r resize] [-w width] [-c crop] FILES
-  echo
-  echo '-s   how much to shave'
-  echo '     example   6x6'
-  echo
-  echo '-r   comma separated list of resize markers'
-  echo '     example   yes,yes,yes,no'
-  echo
-  echo '-w   comma separated list of widths'
-  echo '     example   1920,1280,960,640'
-  echo
-  echo '-c   comma separated list of crops'
-  echo '     example   -300,0,+300,0'
+  hr "
+  ${0##*/} [-d] [-c crop] [-r resize] [-w width] [-s shave] [FILES]
+
+  -d   dry run
+       create pieces only
+
+  -c   comma separated list of crops
+       example   -300,0,+300,0
+
+  -r   comma separated list of resize markers
+       example   yes,yes,yes,no
+
+  -w   comma separated list of widths
+       example   1920,1280,960,640
+
+  -s   how much to shave
+       example   6x6
+  "
   exit
 fi
 
-while [[ ${1::1} == - ]]
+while getopts dc:r:w:s: name
 do
-  case $1 in
-  -s) shave="-shave $2" ;;
-  -r) rz=(${2//,/ }) ;;
-  -w) wd=(${2//,/ }) ;;
-  -c) eg=(${2//,/ }) ;;
+  case $name in
+  d) (( dry++ ))            ;;
+  c) eg=(${OPTARG//,/ })    ;;
+  r) rz=(${OPTARG//,/ })    ;;
+  w) wd=(${OPTARG//,/ })    ;;
+  s) shave="-shave $OPTARG" ;;
   esac
-  ot+=$2
-  shift 2
+  ot+=$OPTARG
 done
+shift $((--OPTIND))
 
 [[ $eg ]] || eg=(0 0 0 0 0 0)
 [[ $rz ]] || rz=(yes yes yes yes yes yes)
@@ -66,9 +80,10 @@ do
     resize=
   fi
   magick "${ia[o]}" $shave -crop ${eg[o]} $resize -gravity center \
-    -extent ${wd[o]}x1080 -compress lossless inter-$o.jpg
+    -extent ${wd[o]}x1080 -compress lossless ~"${ia[o]}"
 done
 
 # combine
-magick inter-*.jpg +append -compress lossless "outfile $ot".jpg
-rm inter-*.jpg
+(( dry )) && exit
+magick ~*.jpg +append -compress lossless "outfile $ot".jpg
+rm ~*.jpg
