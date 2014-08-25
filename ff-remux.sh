@@ -84,7 +84,7 @@ do
   (( oc++ )) && ao+=("echo")
   ao+=("log $stage2 -hide_banner")
 done
-ao+=("warn Press any key to continue . . .")
+ao+=("warn Press any key to continue...")
 ao+=("read")
 ao+=("rm rx.sh")
 ao+=("bf 80")
