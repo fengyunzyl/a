@@ -69,18 +69,18 @@ do
   ib=${ip%.*}
   ie=${ip##*.}
   oe=${up##*.}
-  am[0]=$ip
+  ae[0]=$ip
   if [[ $up =~ title ]]
   then
-    am[1]=$te
+    ae[1]=$te
   fi
   if [[ $up =~ artist ]]
   then
-    am[2]=$ai
+    ae[2]=$ai
   fi
-  am[3]=$ib
-  [[ $oe = $ie ]] && am[2]+='~'
-  printf -v stage2 "$up" "${am[@]}"
+  [[ $oe = $ie ]] && ae[3]='~'
+  ae[3]+=$ib
+  printf -v stage2 "$up" "${ae[@]}"
   (( oc++ )) && ao+=("echo")
   ao+=("log $stage2 -hide_banner")
 done
