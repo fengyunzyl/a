@@ -21,8 +21,22 @@ function bf {
   kill -7 $$ $PPID
 }
 
+function hr {
+  sed '
+  1d
+  $d
+  s/  //
+  ' <<< "$1"
+}
+
 function ug {
-  echo ${0##*/} [-c choice] [-t title] [-a artist] [files]
+  hr '
+  ff-remux.sh [-c choice] [-u] [-t title] [-a artist] [files]
+
+  -u  instead of literal metadata, interpret "-t" and "-a" values as fields for
+      "cut" of input filename
+
+  '
   for each in "${ga[@]}"
   do
     printf '%2s  %s\n' $((++bar)) "$each"
@@ -42,16 +56,16 @@ ga=(
   'ffmpeg -i %q -c copy -movflags faststart %q.m4a'
   'ffmpeg -i %q -c copy -vn -movflags faststart -metadata title=%q \
     -metadata artist=%q %q.m4a'
-  'ffmpeg -i %q -b:a 256k -movflags faststart -metadata title=%q %q.m4a'
   'ffmpeg -i %q -vn -b:a 256k -movflags faststart %q.m4a'
   'ffmpeg -i %q -c:v copy -b:a 256k -ac 2 -clev 3dB -slev -6dB %q.mp4'
   'ffmpeg -i %q -b:a 256k -ac 2 -clev 3dB -slev -6dB %q.mp4'
 )
 
-while getopts c:t:a: name
+while getopts c:ut:a: name
 do
   case $name in
   c) ci=$OPTARG ;;
+  u) (( fd++ )) ;;
   t) te=$OPTARG ;;
   a) ai=$OPTARG ;;
   esac
@@ -70,12 +84,13 @@ do
   ie=${ip##*.}
   oe=${up##*.}
   ae[0]=$ip
-  if [[ $up =~ title ]]
+  if (( fd ))
+  then
+    ae[1]=$(cut --de "-" --ou " " --fi "$te" <<< "$ip")
+    ae[2]=$(cut --de "-" --ou " " --fi "$ai" <<< "$ip")
+  elif [[ $up =~ metadata ]]
   then
     ae[1]=$te
-  fi
-  if [[ $up =~ artist ]]
-  then
     ae[2]=$ai
   fi
   [[ $oe = $ie ]] && ae[3]='~'
