@@ -96,6 +96,7 @@ do
   [[ $oe = $ie ]] && ae[3]='~'
   ae[3]+=$ib
   printf -v stage2 "$up" "${ae[@]}"
+  unset ae
   (( oc++ )) && ao+=("echo")
   ao+=("log $stage2 -hide_banner")
 done
