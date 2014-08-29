@@ -93,10 +93,9 @@ do
     ae[1]=$te
     ae[2]=$ai
   fi
-  [[ $oe = $ie ]] && ae[3]='~'
-  ae[3]+=$ib
+  ae[3]=$ib
+  [[ $oe = $ie ]] && ae[3]+='~'
   printf -v stage2 "$up" "${ae[@]}"
-  unset ae
   (( oc++ )) && ao+=("echo")
   ao+=("log $stage2 -hide_banner")
 done
