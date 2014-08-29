@@ -13,7 +13,7 @@ type magick >/dev/null || exit
 if (( ! $# ))
 then
   hr "
-  ${0##*/} [-d] [-c crop] [-r resize] [-w width] [-s shave] [FILES]
+  ${0##*/} [-d] [-c crop] [-r resize] [-w width] [-s shave] [files]
 
   -d   dry run
        create pieces only
@@ -66,6 +66,10 @@ shift $((--OPTIND))
   00011) wd=(640 640 640 960 960) ;;
   11000) wd=(960 960 640 640 640) ;;
   000000) wd=(640 640 640 640 640 640) ;;
+  11111111)
+    montage "$@" -geometry x540 -compress lossless outfile.jpg
+    exit
+  ;;
 esac
 
 ia=("$@")
