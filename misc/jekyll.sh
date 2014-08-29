@@ -1,6 +1,9 @@
 # Launch Jekyll
-[ $OS ] && xdg-open () {
-  powershell saps $1
+function browse {
+  case $OSTYPE in
+  linux-gnu) xdg-open "$1" ;;
+  cygwin)    cygstart "$1" ;;
+  esac
 }
 
 cd /srv
@@ -18,6 +21,6 @@ do
   sleep 1
 done
 
-xdg-open .
-xdg-open http://127.0.0.1:4000
+browse .
+browse http://127.0.0.1:4000
 kill -7 $PPID
