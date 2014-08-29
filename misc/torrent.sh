@@ -1,3 +1,10 @@
+function browse {
+  case $OSTYPE in
+  linux-gnu) xdg-open "$1" ;;
+  cygwin)    cygstart "$1" ;;
+  esac
+}
+
 function hr {
   sed '
   1d
@@ -46,7 +53,7 @@ cg=$3
 
 if (( cg != 207 ))
 then
-  cygstart "http://thepiratebay.se/search/$sc/0/$sr/$cg"
+  browse "http://thepiratebay.se/search/$sc/0/$sr/$cg"
   exit
 fi
 
@@ -89,5 +96,5 @@ do
     echo low seeders
     continue
   fi
-  cygstart http://thepiratebay.se/torrent/$each
+  browse http://thepiratebay.se/torrent/$each
 done
