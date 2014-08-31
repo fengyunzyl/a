@@ -23,3 +23,14 @@ ao=$2
 
 # fpcalc cannot read files with commas, good game
 log shntool split -f "$ce" -t %n-%t -m ' -&-(-)-,-/-;-' -o flac "$ao"
+
+# mux to m4a
+dr=$(basename "$PWD")
+mkdir "$dr"
+for each in *.flac
+do
+  [[ $each = $ao ]] && continue
+  warn "$each"
+  ffmpeg -hide_banner -i "$each" -b:a 256k \
+    -movflags faststart "$dr"/"${each%.*}".m4a
+done
