@@ -18,13 +18,8 @@ then
   exit
 fi
 
-arg_cue=$1
-arg_aud=$2
-
-# first we need to remux to wav
-otf=${arg_aud%.*}.wav
-log ffmpeg -i "$arg_aud" -v warning -stats "$otf"
-echo
+ce=$1
+ao=$2
 
 # fpcalc cannot read files with commas, good game
-log shntool split -f "$arg_cue" -t %n-%t -m ' -&-(-)-,-/-;-' "$otf"
+log shntool split -f "$ce" -t %n-%t -m ' -&-(-)-,-/-;-' -o flac "$ao"
