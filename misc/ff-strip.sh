@@ -1,10 +1,10 @@
 # strip metadata and chapters
 
-warn () {
+function warn {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log () {
+function log {
   unset PS4
   sx=$((set -x
     : "$@") 2>&1)
