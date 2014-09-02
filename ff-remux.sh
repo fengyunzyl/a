@@ -31,9 +31,9 @@ function hr {
 
 function ug {
   hr '
-  ff-remux.sh [-c choice] [-u] [-t title] [-a artist] [files]
+  ff-remux.sh [-c choice] [-u] [-a artist] [-t title] [files]
 
-  -u  instead of literal metadata, interpret "-t" and "-a" values as fields for
+  -u  instead of literal metadata, interpret "-a" and "-t" values as fields for
       "cut" of input filename
 
   '
@@ -54,20 +54,20 @@ ga=(
   'ffmpeg -i %q -c copy -vn %q.m4a'
   'ffmpeg -i %q -c copy -vn %q.mp3'
   'ffmpeg -i %q -c copy -movflags faststart %q.m4a'
-  'ffmpeg -i %q -c copy -vn -movflags faststart -metadata title=%q \
-    -metadata artist=%q %q.m4a'
+  'ffmpeg -i %q -c copy -vn -movflags faststart -metadata artist=%q \
+    -metadata title=%q %q.m4a'
   'ffmpeg -i %q -vn -b:a 256k -movflags faststart %q.m4a'
   'ffmpeg -i %q -c:v copy -b:a 256k -ac 2 -clev 3dB -slev -6dB %q.mp4'
   'ffmpeg -i %q -b:a 256k -ac 2 -clev 3dB -slev -6dB %q.mp4'
 )
 
-while getopts c:ut:a: name
+while getopts c:ua:t: name
 do
   case $name in
   c) ci=$OPTARG ;;
   u) (( fd++ )) ;;
-  t) te=$OPTARG ;;
   a) ai=$OPTARG ;;
+  t) te=$OPTARG ;;
   esac
 done
 shift $((--OPTIND))
@@ -75,8 +75,8 @@ shift $((--OPTIND))
 (( $# )) || ug
 seq ${#ga[*]} | grep -qx "$ci" || ug
 up=${ga[ci-1]}
-[[ $up =~ title ]] && [[ ! $te ]] && ug
 [[ $up =~ artist ]] && [[ ! $ai ]] && ug
+[[ $up =~ title ]] && [[ ! $te ]] && ug
 
 for ip
 do
@@ -86,12 +86,12 @@ do
   ae[0]=$ip
   if (( fd ))
   then
-    ae[1]=$(cut --de "-" --ou " " --fi "$te" <<< "$ip")
-    ae[2]=$(cut --de "-" --ou " " --fi "$ai" <<< "$ip")
+    ae[1]=$(cut --de "-" --ou " " --fi "$ai" <<< "$ip")
+    ae[2]=$(cut --de "-" --ou " " --fi "$te" <<< "$ip")
   elif [[ $up =~ metadata ]]
   then
-    ae[1]=$te
-    ae[2]=$ai
+    ae[1]=$ai
+    ae[2]=$te
   fi
   ae[3]=$ib
   [[ $oe = $ie ]] && ae[3]+='~'
