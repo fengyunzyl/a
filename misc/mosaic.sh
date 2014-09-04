@@ -89,5 +89,5 @@ done
 
 # combine
 (( dry )) && exit
-magick ~*.jpg +append -compress lossless "outfile $ot".jpg
-rm ~*.jpg
+magick ~* +append -compress lossless "outfile $ot".jpg
+rm ~*
