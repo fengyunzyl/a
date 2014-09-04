@@ -53,7 +53,7 @@ ga=(
   'ffmpeg -i %q -c copy %q.m4a'
   'ffmpeg -i %q -c copy -vn %q.m4a'
   'ffmpeg -i %q -c copy -vn %q.mp3'
-  'ffmpeg -i %q -c copy -movflags faststart %q.m4a'
+  'ffmpeg -i %q -c copy -vn -movflags faststart %q.m4a'
   'ffmpeg -i %q -c copy -vn -movflags faststart -metadata artist=%q \
     -metadata title=%q %q.m4a'
   'ffmpeg -i %q -vn -b:a 256k -movflags faststart %q.m4a'
