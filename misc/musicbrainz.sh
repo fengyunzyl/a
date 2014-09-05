@@ -94,11 +94,12 @@ date-get)
   seq -f %02g 1 31 |
   while read each
   do
-    datefull="$date-$each"
-    printf -v qs 'v=1.0&q="%s" %s' "$album" "$datefull"
-    proxy "$datefull" "ajax.googleapis.com/ajax/services/search/web?$qs"
+    fd="$date-$each"
+    qy="%22$album%22 $fd"
+    [ $each -eq 1 ] && bw 'http://google.com/search?q='"$qy"
+    proxy "$fd" "ajax.googleapis.com/ajax/services/search/web?v=1.0&q=$qy"
     count=$(jo .responseData.cursor.resultCount web.json)
-    printf '%s\t%s\n' $count "$datefull"
+    printf '%s\t%s\n' $count "$fd"
   done |
   sort -nr
 ;;
