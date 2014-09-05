@@ -1,23 +1,37 @@
-# get cover art
+# cover art
+function hr {
+  sed '
+  1d
+  $d
+  s/  //
+  ' <<< "$1"
+}
 
-function browse {
+function bw {
   case $OSTYPE in
   linux-gnu) xdg-open "$1" ;;
   cygwin)    cygstart "$1" ;;
   esac
 }
 
-if (( $# != 2 ))
-then
-  echo ${0##*/} ARTIST ALBUM
+case $# in
+0)
+  hr '
+  art.sh ARTIST ALBUM
+  art.sh IMAGE
+  '
   exit
-fi
-
-ARTIST=$1
-ALBUM=$2
-
-browse "http://google.com/search?tbm=isch&q=$ARTIST $ALBUM"
-browse "http://fanart.tv/api/getdata.php?type=2&s=$ARTIST"
-browse "http://discogs.com/search?q=$ARTIST $ALBUM"
-browse "http://wikipedia.org/w/index.php?search=${ARTIST// /+}+${ALBUM// /+}"
-browse "http://musicbrainz.org/search?type=release&query=$ARTIST $ALBUM"
+;;
+1)
+  magick "$1" -resize x1000 -compress lossless 1000-"$1"
+;;
+2)
+  ARTIST=$1
+  ALBUM=$2
+  bw "http://google.com/search?tbm=isch&q=$ARTIST $ALBUM"
+  bw "http://fanart.tv/api/getdata.php?type=2&s=$ARTIST"
+  bw "http://discogs.com/search?q=$ARTIST $ALBUM"
+  bw "http://wikipedia.org/w/index.php?search=${ARTIST// /+}+${ALBUM// /+}"
+  bw "http://musicbrainz.org/search?type=release&query=$ARTIST $ALBUM"
+;;
+esac
