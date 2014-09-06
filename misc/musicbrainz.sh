@@ -38,12 +38,12 @@ function proxy {
       wget -q -O $dt txt.proxyspy.net/$dt
     fi
     read px cn <<< $1
-    if [[ ! $cn =~ US ]]
+    if [[ ! $px =~ : ]]
     then
       shift
       continue
     fi
-    if ! wget -q -T 1 -t 1 -O web.json -e http_proxy=$px "$url"
+    if ! wget -q -T 2 -t 1 -O web.json -e http_proxy=$px "$url"
     then
       shift
       continue
