@@ -1,8 +1,8 @@
-warn () {
+function warn {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log () {
+function log {
   unset PS4
   sx=$((set -x
     : "$@") 2>&1)
@@ -10,13 +10,14 @@ log () {
   "$@"
 }
 
-buffer () {
-  powershell '&{
-  param($cm)
-  sp hkcu:console ScreenBufferSize ("0x{0:x}{1:x4}" -f 2000,$cm)
-  sp hkcu:console WindowSize       ("0x{0:x}{1:x4}" -f   25,$cm)
-  }' $(( ${#1} ? 88 : 80 ))
-  cygstart bash $1
+function hx {
+  printf 0x%04x%04x $*
+}
+
+function bf {
+  regtool set /user/console/ScreenBufferSize $(hx 2000 $1)
+  regtool set /user/console/WindowSize       $(hx   25 $1)
+  cygstart bash $2
   kill -7 $$ $PPID
 }
 
@@ -30,7 +31,7 @@ sc=$1
 # lets split out the good downmix, because that might be a while
 echo Checking downmix
 wget -q https://raw.githubusercontent.com/FFmpeg/FFmpeg/master/libswresample\
-/swresample.c
+/options.c
 (( $? )) && exit
 awk '/center_mix_level/ && /C_30DB/ {exit 1}' swresample.c
 bad=$?
@@ -76,10 +77,10 @@ esac
 ao+=("warn Press any key to continue . . .")
 ao+=("read")
 ao+=("rm rx.sh")
-ao+=("buffer")
+ao+=("bf 80")
 printf '%s\n' "${ao[@]}" > rx.sh
-export -f buffer log warn
-buffer rx.sh
+export -f bf hx log warn
+bf 88 rx.sh
 
 # if i am going to be transcoding anyway, i might as well use ffmpeg for the
 # volume too
