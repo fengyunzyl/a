@@ -72,6 +72,16 @@ case "$1" in
   musicbrainz.sh  img-set <image>
   
   date must be this format: 1982-12
+
+  when adding release, make sure to include
+  - release title
+  - artist
+  - type
+  - status
+  - date
+  - format
+  - track titles
+  - track lengths
   '
   exit
 ;;
