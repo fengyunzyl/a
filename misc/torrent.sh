@@ -25,10 +25,20 @@ function log {
   "$@"
 }
 
+function exp {
+  printf '
+  BEGIN {
+    $0 = %s
+    print
+    exit ! $0
+  }
+  ' "$1" | awk -f-
+}
+
 if (( $# != 3 ))
 then
-  hr "
-  ${0##*/} SEARCH SORT CATEGORY
+  hr '
+  torrent.sh SEARCH SORT CATEGORY
 
   SORT
   3  date ↓
@@ -43,7 +53,7 @@ then
   207  Video HD Movies
   208  Video HD TV shows
   301  Applications Windows
-  "
+  '
   exit
 fi
 
@@ -59,8 +69,7 @@ fi
 
 cd /tmp
 rm -f *.htm
-lower=$(awk 'BEGIN {print 1.5 * 1024^3}')
-upper=$(awk 'BEGIN {print 3 * 1024^3}')
+upper=$(exp '3 * 1024 ^ 3')
 log curl --com -so search.htm "thepiratebay.se/search/$sc/0/$sr/$cg"
 
 awk '$2 == "torrent" {print $3}' FS=/ search.htm |
@@ -69,24 +78,33 @@ do
   curl --com -so $each.htm thepiratebay.se/torrent/$each
   # check size
   sz=$(awk '/Bytes/ {print $NF}' FPAT=[[:digit:]]+ $each.htm)
-  if (( sz < lower ))
-  then
-    echo too small
-    continue
-  fi
   if (( sz > upper ))
   then
     echo too large
     continue
   fi
-  # check kbps
-  br=$(sed '
-  /[kK][bB][pP/][sS]/ ! d
-  s/[^[:digit:]]//g
-  ' $each.htm | sort -nr | head -1)
-  if (( br < 1000 ))
+  # check bitrate
+  br=$(awk '
+  /[kK][bB][pP/][sS]/ {
+    $0 = $(NF-1)
+    sub(" ", "")
+    print
+  }
+  ' FS='[^[:digit:]]{2,}' $each.htm | sort -nr | head -1)
+  if [[ ! $br ]]
   then
-    echo bad quality
+    echo no bitrate
+    continue
+  fi
+  if exp "$br < 2000" >/dev/null
+  then
+    echo low bitrate
+    continue
+  fi
+  # check size / bitrate
+  if exp "$sz / $br < 900000" >/dev/null
+  then
+    echo bad size / bitrate ratio
     continue
   fi
   # check seeders
