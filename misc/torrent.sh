@@ -26,13 +26,7 @@ function log {
 }
 
 function exp {
-  printf '
-  BEGIN {
-    $0 = %s
-    print
-    exit ! $0
-  }
-  ' "$1" | awk -f-
+  printf 'BEGIN {print %s}' "$1" | awk -f-
 }
 
 if (( $# != 3 ))
@@ -96,13 +90,13 @@ do
     echo no bitrate
     continue
   fi
-  if exp "$br < 2080" >/dev/null
+  if exp "$br < 2080" | grep -q 1
   then
     echo low bitrate
     continue
   fi
   # check size / bitrate
-  if exp "$sz / $br < 900000" >/dev/null
+  if exp "$sz / $br < 900000" | grep -q 1
   then
     echo bad size / bitrate ratio
     continue
