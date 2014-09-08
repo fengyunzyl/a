@@ -96,7 +96,7 @@ do
     echo no bitrate
     continue
   fi
-  if exp "$br < 2000" >/dev/null
+  if exp "$br < 2080" >/dev/null
   then
     echo low bitrate
     continue
