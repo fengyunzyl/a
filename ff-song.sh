@@ -9,34 +9,34 @@ blog.musicbrainz.org/2013/09/03/
 changes-for-upcoming-schema-change-release-2013-10-14
 '
 
-JQ () {
+function JQ {
   jq -r "$@" .json | sed 's/\r//'
 }
 
-warn () {
+function warn {
   printf '\e[36m%s\e[m\n' "$*" >&2
 }
 
-log () {
+function log {
   unset PS4
-  sx=$(( set -x
-         : "$@" )2>&1)
+  sx=$((set -x
+    : "$@") 2>&1)
   warn "${sx:2}"
-  eval "${sx:2}"
+  "$@"
 }
 
-querystring () {
+function querystring {
   sed 'y/ /&/' <<< ${qs[*]}
 }
 
-show () {
+function show {
   for bb
   do
     echo ${bb^}: ${!bb}
   done
 }
 
-readu () {
+function readu {
   while :
   do
     show $1
@@ -57,7 +57,7 @@ readu () {
   done
 }
 
-exten () {
+function exten {
   sed "
   s/[^.]*$//
   s/[^[:alnum:]]//g
@@ -65,14 +65,11 @@ exten () {
   " <<< ${!1}
 }
 
-buffer () {
-  powershell '&{
-  param($cm)
-  sp hkcu:console ScreenBufferSize ("0x{0:x}{1:x4}" -f 2000,$cm)
-  sp hkcu:console WindowSize       ("0x{0:x}{1:x4}" -f   25,$cm)
-  }' $(( ${#1} ? 88 : 80 ))
-  cygstart bash $1
-  kill -7 $PPID
+function bf {
+  regtool set /user/console/ScreenBufferSize $(hx 2000 $1)
+  regtool set /user/console/WindowSize       $(hx   25 $1)
+  cygstart bash $2
+  kill -7 $$ $PPID
 }
 
 if (( $# < 2 ))
