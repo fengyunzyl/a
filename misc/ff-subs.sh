@@ -1,28 +1,29 @@
-warn () {
+function warn {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-say () {
+function say {
   unset PS4
   sx=$((set -x
     : "$@") 2>&1)
   echo "${sx:2}"
 }
 
-log () {
+function log {
   sy=$(say "$@")
   warn "$sy"
   "$@"
 }
 
-buffer () {
-  powershell '&{
-  param($cm)
-  sp hkcu:console ScreenBufferSize ("0x{0:x}{1:x4}" -f 2000,$cm)
-  sp hkcu:console WindowSize       ("0x{0:x}{1:x4}" -f   25,$cm)
-  }' $(( ${#1} ? 88 : 80 ))
-  cygstart bash $1
-  kill -7 $PPID
+function hx {
+  printf 0x%04x%04x $*
+}
+
+function bf {
+  regtool set /user/console/ScreenBufferSize $(hx 2000 $1)
+  regtool set /user/console/WindowSize       $(hx   25 $1)
+  cygstart bash $2
+  kill -7 $$ $PPID
 }
 
 if (( $# != 2 ))
