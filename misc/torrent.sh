@@ -69,6 +69,7 @@ log curl --com -so search.htm "thepiratebay.se/search/$sc/0/$sr/$cg"
 awk '$2 == "torrent" {print $3}' FS=/ search.htm |
 while read each
 do
+  printf '%8d\t' $each
   curl --com -so $each.htm thepiratebay.se/torrent/$each
   # check size
   sz=$(awk '/Bytes/ {print $NF}' FPAT=[[:digit:]]+ $each.htm)
@@ -96,7 +97,7 @@ do
     continue
   fi
   # check size / bitrate
-  if exp "$sz / $br < 900000" | grep -q 1
+  if exp "$sz / $br < 500000" | grep -q 1
   then
     echo bad size / bitrate ratio
     continue
@@ -108,5 +109,6 @@ do
     echo low seeders
     continue
   fi
+  echo good
   browse http://thepiratebay.se/torrent/$each
 done
