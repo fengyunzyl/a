@@ -104,7 +104,8 @@ do
   fi
   # check seeders
   sd=$(awk '/Seeders/ {print RT}' RS=[[:digit:]]+ $each.htm)
-  if (( sd < 2 ))
+  # thepiratebay.se/torrent/9941270
+  if (( sd < 1 ))
   then
     echo low seeders
     continue
