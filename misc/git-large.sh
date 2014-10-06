@@ -1,8 +1,9 @@
+#!/bin/bash
 # Find large files in git repo, that dont exist in HEAD
 
 if (( $# != 1 ))
 then
-  echo $0 SIZE
+  echo git large.sh SIZE
   exit
 fi
 
