@@ -23,6 +23,6 @@ then
 fi
 
 regtool set /user/console/ScreenBufferSize $(hx $1 $2)
-regtool set /user/console/WindowSize       $(hx 25 $2)
+regtool set /user/console/WindowSize       $(hx 22 $2)
 cygstart bash
 kill -7 $PPID
