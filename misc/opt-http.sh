@@ -1,22 +1,22 @@
-usage () {
+function usage {
   echo "${0##*/} <fail string> <command>"
   exit
 }
 
-bsplit() {
+function bsplit {
   IFS=';' read -a $1 <<< "${!2}"
 }
 
-bjoin() {
+function bjoin {
   set $*[*]
   IFS=';' read $1 <<< "${!2}"
 }
 
-warn () {
+function warn {
   printf '\e[36m%s\e[m\n' "$*" >&2
 }
 
-log () {
+function log {
   unset PS4
   qq=$(( set -x
          : "$@" )2>&1)
