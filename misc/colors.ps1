@@ -1,5 +1,5 @@
 # black is invisible
-& {
+@(
   'blue'
   'cyan'
   'darkblue'
@@ -15,6 +15,6 @@
   'red'
   'white'
   'yellow'
-} | % {
+) | % {
   Write-Host -ForegroundColor $_ $_
 }
