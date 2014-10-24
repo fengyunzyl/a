@@ -38,7 +38,7 @@ unset bb[1]
 
 for hh in ${!bb[*]}
 do
-  if [[ ${bb[hh]} =~ -[Oo] ]]
+  if [[ ${bb[hh]} = -[Oo] ]]
   then
     arg_url=${bb[hh-1]}
     unset bb[hh-1]
