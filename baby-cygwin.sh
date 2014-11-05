@@ -1,15 +1,13 @@
-# baby cygwin
-
-warn () {
+function warn {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log () {
+function log {
   unset PS4
-  qq=$(( set -x
-         : "$@" )2>&1)
-  warn "${qq:2}"
-  eval "${qq:2}"
+  sx=$((set -x
+    : "$@") 2>&1)
+  warn "${sx:2}"
+  "$@"
 }
 
 set "$PWD"
