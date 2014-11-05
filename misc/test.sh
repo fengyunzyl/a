@@ -1,19 +1,21 @@
-if (( $# != 2 ))
+if (( ! $# ))
 then
-  echo ${0##*/} ITEM1 ITEM2
+  echo test.sh ITEMS
   exit
 fi
 
-for ts in a b c d e f g h k p r s u w x G L N O S
+for ts in a b c d e f g k p r s S t u w x G N
 do
-  [ ! -$ts "$1" ]
-  r1=$?
-  [ ! -$ts "$2" ]
-  r2=$?
-  if (( r1 == r2 ))
-  then
-    echo $ts same
-  else
-    echo $ts different
-  fi
+  printf '%s  ' $ts
+  for each
+  do
+    if [ -$ts "$each" ]
+    then
+      printf T
+    else
+      printf F
+    fi
+    printf '  '
+  done
+  echo
 done
