@@ -1,11 +1,11 @@
 # Binary search algorithm
-warn () {
+function warn {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
 if (( $# != 2 ))
 then
-  echo ${0##*/} GOOD BAD
+  echo bsa.sh GOOD BAD
   exit
 fi
 
