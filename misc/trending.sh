@@ -1,9 +1,10 @@
-if (( $# != 3 ))
+if [ $# != 3 ]
 then
-  echo ${0##*/} PAGE LANGUAGE MAXSIZE
+  echo trending.sh PAGE LANGUAGE MAXSIZE
   exit
 fi
 
+cd /tmp
 # For unauthenticated requests, the rate limit allows you to make up to 5
 # requests per minute.
 curl https://api.github.com/search/repositories?page=$1 -Gso repos.json \
@@ -25,5 +26,3 @@ jq -r '.items[] |
   print substr(v, 0, 79 + 10)
   }' FS='\t' |
   sort -nr
-
-rm repos.json
