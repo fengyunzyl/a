@@ -2,9 +2,8 @@
 sc=$PWD/notepad2-mod
 ds=$PROGRAMFILES/notepad2
 
-# you must do full clone to get correct version
-# number on about page
-git clone git://github.com/XhmikosR/notepad2-mod
+# you must do full clone to get correct version number on about page
+git clone --single-branch git://github.com/XhmikosR/notepad2-mod
 cd "$sc"
 curl -L github.com/XhmikosR/notepad2-mod/commit/48efb00.diff | git apply
 cd "$sc/build"
