@@ -6,14 +6,35 @@ BEGIN {
     exit
   }
   foo = readfile(ARGV[1])
-  bar = "                                                                     \
-  default    lang-none lang-bash lang-c    lang-cs     lang-clj   lang-coffee \
-  lang-css   lang-go   lang-hs   lang-html lang-java   lang-js    lang-json   \
-  lang-latex lang-cl   lang-lua  lang-fs   lang-pascal lang-pl    lang-php    \
-  lang-proto lang-py   lang-r    lang-rb   lang-rc     lang-scala lang-sql    \
-  lang-vhdl  lang-vb   lang-xml                                               \
-  "
-  split(bar, baz)
-  for (qux in baz)
-    printf "%s\n\n<!-- language: %s -->\n\n%s\n", baz[qux], baz[qux], foo
+  bar[++z] = "lang-php"
+  bar[++z] = "lang-rb"
+  bar[++z] = "lang-pl"
+  bar[++z] = "lang-bash"
+  bar[++z] = "lang-c"
+  bar[++z] = "lang-cl"
+  bar[++z] = "lang-clj"
+  bar[++z] = "lang-coffee"
+  bar[++z] = "lang-cs"
+  bar[++z] = "lang-css"
+  bar[++z] = "lang-fs"
+  bar[++z] = "lang-go"
+  bar[++z] = "lang-hs"
+  bar[++z] = "lang-html"
+  bar[++z] = "lang-java"
+  bar[++z] = "lang-js"
+  bar[++z] = "lang-json"
+  bar[++z] = "lang-latex"
+  bar[++z] = "lang-lua"
+  bar[++z] = "lang-pascal"
+  bar[++z] = "lang-proto"
+  bar[++z] = "lang-py"
+  bar[++z] = "lang-r"
+  bar[++z] = "lang-rc"
+  bar[++z] = "lang-scala"
+  bar[++z] = "lang-sql"
+  bar[++z] = "lang-vb"
+  bar[++z] = "lang-vhdl"
+  bar[++z] = "lang-xml"
+  for (baz in bar)
+    printf "%s\n\n<!-- language: %s -->\n\n%s\n", bar[baz], bar[baz], foo
 }
