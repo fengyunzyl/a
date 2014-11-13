@@ -95,7 +95,7 @@ img-get)
   bw 'http://musicbrainz.org/search?type=release&query='"$artist $album"
 ;;
 img-set)
-  magick "$2" -resize x1000 -compress lossless 1000-"$2"
+  convert "$2" -resize x1000 -compress lossless 1000-"$2"
 ;;
 date-get)
   album=$2
