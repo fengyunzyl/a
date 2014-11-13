@@ -8,7 +8,7 @@ function hr {
   ' <<< "$1"
 }
 
-type magick >/dev/null || exit
+type convert >/dev/null || exit
 
 if (( ! $# ))
 then
@@ -83,11 +83,11 @@ do
   else
     resize=
   fi
-  magick "${ia[o]}" $shave -crop ${eg[o]} $resize -gravity center \
+  convert "${ia[o]}" $shave -crop ${eg[o]} $resize -gravity center \
     -extent ${wd[o]}x1080 -compress lossless ~"${ia[o]}"
 done
 
 # combine
 (( dry )) && exit
-magick ~* +append -compress lossless "outfile $ot".jpg
+convert ~* +append -compress lossless "outfile $ot".jpg
 rm ~*
