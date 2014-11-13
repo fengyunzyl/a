@@ -1,10 +1,10 @@
 # stackoverflow.com/q/9027584/how-to-change-the-file-mode-on-github
 
-warn () {
+function warn {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log () {
+function log {
   unset PS4
   sx=$((set -x
     : "$@") 2>&1)
@@ -12,9 +12,9 @@ log () {
   "$@"
 }
 
-if (( $# != 1 ))
+if [ $# != 1 ]
 then
-  echo ${0##*/} FILE
+  echo git chmod.sh FILE
   exit
 fi
 
