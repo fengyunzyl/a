@@ -1,29 +1,17 @@
-# Print Cygwin mirrors
-
-warn () {
-  printf '\e[36m%s\e[m\n' "$*"
+function warn {
+  printf '\e[36m%s\e[m\n' "$*" >&2
 }
 
-log () {
-  warn $*
-  eval $*
-}
+cd /tmp
 
 wget -qO- sourceware.org/cygwin/mirrors.lst |
-  awk '/http/ && /United States/ && NF=1' FS=';' > mirrors.lst
-
+cut -d';' -f1 |
 while read ee
 do
-  if log wget --spider -t1 -T1 -q $ee
+  warn "$ee"
+  if wget --quiet --spider --tries 1 --timeout .1 "$ee"
   then
-    ff+=($ee)
+    echo "${#ee} $ee"
   fi
-done < mirrors.lst
-
-for gg in ${ff[*]}
-do
-  echo "${#gg} $gg"
-done |
-sort
-
-rm mirrors.lst
+done > fast.lst
+sort fast.lst
