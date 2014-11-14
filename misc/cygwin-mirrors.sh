@@ -2,8 +2,6 @@ function warn {
   printf '\e[36m%s\e[m\n' "$*" >&2
 }
 
-cd /tmp
-
 wget -qO- sourceware.org/cygwin/mirrors.lst |
 cut -d';' -f1 |
 while read ee
@@ -13,5 +11,5 @@ do
   then
     echo "${#ee} $ee"
   fi
-done > fast.lst
-sort fast.lst
+done |
+sort
