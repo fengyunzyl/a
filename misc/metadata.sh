@@ -5,19 +5,19 @@
 # BAD
 # 6 14
 
-ic () {
+function ic {
   by=$1
   wd=$((${#by} - 2))
   printf %0${wd}x $((by + sp)) | pc
 }
 
-pc () {
+function pc {
   awk -b '{printf "%c", strtonum("0x" RT)}' RS=..
 }
 
-if (( $# != 1 ))
+if [ $# != 1 ]
 then
-  echo ${0##*/} BYTES
+  echo metadata.sh BYTES
   exit
 fi
 
