@@ -15,6 +15,7 @@ then
   set $(regtool get /user/console/ScreenBufferSize)
   hr "
   ${0##*/} ROWS COLUMNS
+  max rows is 32767
   max columns is 170
   current buffer rows    $(( $1 >> 0x0010 ))
   current buffer columns $(( $1  & 0xFFFF ))
