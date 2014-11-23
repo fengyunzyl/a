@@ -1,32 +1,15 @@
-# Cygwin ports
-
-warn ()
-{
-  printf '\e[36m%s\e[m\n' "$*"
+function warn {
+  printf '\e[36m%s\e[m\n' "$*" >&2
 }
 
-log ()
-{
-  warn $*
-  eval $*
-}
-
-wget sourceware.org/mirrors.html
-set '/^<li>/!d; /http:/!d; s/[^"]*"//; s/".*//; s./$..'
-sed "$1" mirrors.html > mirrors.lst
-
-while read ee
+wget -qO- sourceware.org/mirrors.html |
+awk '/<li>/ && /(ftp|http):/ {print $2}' FS='"' |
+while read each
 do
-  if log wget --spider -t1 -T1 -q $ee
+  warn "$each"
+  if wget --quiet --spider --tries 1 --timeout .1 "$each"
   then
-    ff+=(${ee}/cygwinports)
+    echo "${#each} $each"
   fi
-done < mirrors.lst
-
-for gg in ${ff[*]}
-do
-  echo "${#gg} $gg"
 done |
 sort
-
-rm mirrors.html mirrors.lst
