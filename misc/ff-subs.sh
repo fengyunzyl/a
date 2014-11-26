@@ -21,7 +21,7 @@ function hx {
 
 function bf {
   regtool set /user/console/ScreenBufferSize $(hx 2000 $1)
-  regtool set /user/console/WindowSize       $(hx   25 $1)
+  regtool set /user/console/WindowSize       $(hx   22 $1)
   cygstart bash $2
   kill -7 $$ $PPID
 }
