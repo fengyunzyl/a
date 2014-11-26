@@ -2,7 +2,7 @@ function warn {
   printf '\e[1;35m%s\e[m\n' "$*"
 }
 
-for rp in /git/*/
+for rp in /home/git/*/
 do
   printf '\ec'
   cd "$rp"
