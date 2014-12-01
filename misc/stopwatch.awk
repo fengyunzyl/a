@@ -1,9 +1,9 @@
 #!awk -f
 BEGIN {
   foo = systime()
-  bar = "date +%s.%N"
+  bar = "date +%s.%2N"
   while (bar | getline baz) {
     close(bar)
-    printf "\t%.2f\r", baz - foo
+    printf "\t%s\r", baz - foo
   }
 }
