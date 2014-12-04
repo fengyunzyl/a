@@ -8,86 +8,88 @@ function hr {
   ' <<< "$1"
 }
 
-type convert >/dev/null || exit
+type convert | grep -q bin || exit
 
-if (( ! $# ))
+if [ $# = 0 ]
 then
-  hr "
-  ${0##*/} [-d] [-c crop] [-r resize] [-w width] [-s shave] [files]
+  hr '
+  mosaic.sh [options] [files]
 
-  -d   dry run
-       create pieces only
+  -d          dry run, create pieces only
 
-  -c   comma separated list of crops
-       example   -300,0,+300,0
+  -s shave    how much to shave
+              example  6x6
 
-  -r   comma separated list of resize markers
-       example   yes,yes,yes,no
+  -c crop     comma separated list of crops
+              example  -300,0,+300,0
 
-  -w   comma separated list of widths
-       example   1920,1280,960,640
+  -g gravity  comma separated list of gravities
+              example  north,south,east,southeast
 
-  -s   how much to shave
-       example   6x6
-  "
+  -r resize   comma separated list of resize markers
+              example  yes,yes,yes,no
+
+  -w width    comma separated list of widths
+              example  1920,1280,960,640
+  '
   exit
 fi
 
-while getopts dc:r:w:s: name
+while getopts ds:c:g:r:w: name
 do
   case $name in
-  d) (( dry++ ))            ;;
-  c) eg=(${OPTARG//,/ })    ;;
-  r) rz=(${OPTARG//,/ })    ;;
-  w) wd=(${OPTARG//,/ })    ;;
-  s) shave="-shave $OPTARG" ;;
+  d) (( dry++ )) ;;
+  s) sv=$OPTARG ;;
+  c) IFS=, read -a eg <<< $OPTARG ;;
+  g) IFS=, read -a gv <<< $OPTARG ;;
+  r) IFS=, read -a rz <<< "${OPTARG//no}" ;;
+  w) IFS=, read -a dm <<< $OPTARG ;;
   esac
   ot+=$OPTARG
 done
 shift $((--OPTIND))
 
-[[ $eg ]] || eg=(0 0 0 0 0 0)
-[[ $rz ]] || rz=(yes yes yes yes yes yes)
-[[ $wd ]] || case $(identify -format '%[fx:w/h>1]' "$@") in
-  11) wd=(1920 1920) ;;
-  0101) wd=(640 1280 640 1280) ;;
-  0110) wd=(640 1280 1280 640) ;;
-  1001) wd=(1280 640 640 1280) ;;
-  1010) wd=(1280 640 1280 640) ;;
-  1111) wd=(960 960 960 960) ;;
-  0111) wd=(640 1280 960 960) ;;
-  1011) wd=(1280 640 960 960) ;;
-  1101) wd=(960 960 640 1280) ;;
-  1110) wd=(960 960 1280 640) ;;
-  00001) wd=(640 640 640 640 1280) ;;
-  00010) wd=(640 640 640 1280 640) ;;
-  01000) wd=(640 1280 640 640 640) ;;
-  10000) wd=(1280 640 640 640 640) ;;
-  00011) wd=(640 640 640 960 960) ;;
-  11000) wd=(960 960 640 640 640) ;;
-  000000) wd=(640 640 640 640 640 640) ;;
-  11111111)
-    montage "$@" -geometry x540 -compress lossless outfile.jpg
-    exit
-  ;;
+[[ $dm ]] || case $(identify -format '%[fx:w/h>1]' "$@") in
+  11) dm=({1920,1920}x1080) ;;
+  0101) dm=({640,1280,640,1280}x1080) ;;
+  0110) dm=({640,1280,1280,640}x1080) ;;
+  1001) dm=({1280,640,640,1280}x1080) ;;
+  1010) dm=({1280,640,1280,640}x1080) ;;
+  1111) dm=({960,960,960,960}x1080) ;;
+  0111) dm=({640,1280,960,960}x1080) ;;
+  1011) dm=({1280,640,960,960}x1080) ;;
+  1101) dm=({960,960,640,1280}x1080) ;;
+  1110) dm=({960,960,1280,640}x1080) ;;
+  00001) dm=({640,640,640,640,1280}x1080) ;;
+  00010) dm=({640,640,640,1280,640}x1080) ;;
+  01000) dm=({640,1280,640,640,640}x1080) ;;
+  10000) dm=({1280,640,640,640,640}x1080) ;;
+  00011) dm=({640,640,640,960,960}x1080) ;;
+  11000) dm=({960,960,640,640,640}x1080) ;;
+  000000) dm=({640,640,640,640,640,640}x1080) ;;
+  ????????????) dm=({400,760,760,400,760,760,400,760,760,400,760,760}x540) ;;
 esac
 
-ia=("$@")
+sc=("$@")
 
 # crop images
-for ((o = 0; o < $#; o++))
+for ((o=0; o<$#; o++))
 do
-  if [[ ${rz[o]} = yes ]]
-  then
-    resize="-resize ${wd[o]}x1080^"
-  else
-    resize=
-  fi
-  convert "${ia[o]}" $shave -crop ${eg[o]} $resize -gravity center \
-    -extent ${wd[o]}x1080 -compress lossless ~"${ia[o]}"
+  convert \
+  ${sv+-shave $sv} \
+  ${eg[o]+-crop ${eg[o]}} \
+  ${gv[o]+-gravity ${gv[o]}} \
+  ${rz[o]+-resize ${dm[o]}^} \
+  -extent ${dm[o]} \
+  -compress lossless \
+  {,~}"${sc[o]}"
 done
 
 # combine
 (( dry )) && exit
-convert ~* +append -compress lossless "outfile $ot".jpg
+montage \
+-tile x$(( $# / 7 + 1 )) \
+-geometry -0 \
+-compress lossless \
+~* "outfile $ot".jpg
 rm ~*
