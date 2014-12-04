@@ -45,7 +45,6 @@ do
   r) IFS=, read -a rz <<< "${OPTARG//no}" ;;
   w) IFS=, read -a dm <<< $OPTARG ;;
   esac
-  ot+=$OPTARG
 done
 shift $((--OPTIND))
 
@@ -91,5 +90,5 @@ montage \
 -tile x$(( $# / 7 + 1 )) \
 -geometry -0 \
 -compress lossless \
-~* "outfile $ot".jpg
+~* outfile.jpg
 rm ~*
