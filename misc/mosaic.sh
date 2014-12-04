@@ -79,7 +79,7 @@ do
   ${sv+-shave $sv} \
   ${eg[o]+-crop ${eg[o]}} \
   ${gv[o]+-gravity ${gv[o]}} \
-  ${rz[o]+-resize ${dm[o]}^} \
+  ${rz[o]:+-resize ${dm[o]}^} \
   -extent ${dm[o]} \
   -compress lossless \
   {,~}"${sc[o]}"
