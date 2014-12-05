@@ -30,7 +30,9 @@ then
               example  yes,yes,yes,no
 
   -w width    comma separated list of widths
-              example  1920,1280,960,640
+              examples  1920,1280,960,640
+                        760,760,400
+                        810,370,370,370
   '
   exit
 fi
