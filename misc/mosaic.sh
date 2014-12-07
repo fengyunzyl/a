@@ -27,7 +27,7 @@ then
               example  north,south,east,southeast
 
   -r resize   comma separated list of resize markers
-              example  yes,yes,yes,no
+              example  y,y,y,n
 
   -w width    comma separated list of widths
               examples  1920,1280,960,640
@@ -42,14 +42,15 @@ do
   case $name in
   d) (( dry++ )) ;;
   s) sv=$OPTARG ;;
-  c) IFS=, read -a eg <<< $OPTARG ;;
-  g) IFS=, read -a gv <<< $OPTARG ;;
-  r) IFS=, read -a rz <<< "${OPTARG//no}" ;;
-  w) IFS=, read -a dm <<< $OPTARG ;;
+  c) IFS=, read -a eg <<< "$OPTARG" ;;
+  g) IFS=, read -a gv <<< "$OPTARG" ;;
+  r) IFS=, read -a rz <<< "${OPTARG//n}" ;;
+  w) IFS=, read -a dm <<< "$OPTARG" ;;
   esac
 done
 shift $((--OPTIND))
 
+[[ $rz ]] || rz=("$@")
 [[ $dm ]] || case $(identify -format '%[fx:w/h>1]' "$@") in
   11) dm=({1920,1920}x1080) ;;
   0101) dm=({640,1280,640,1280}x1080) ;;
