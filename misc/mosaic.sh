@@ -15,37 +15,35 @@ then
   hr '
   mosaic.sh [options] [files]
 
-  -d          dry run, create pieces only
+  -d             dry run, create pieces only
 
-  -s shave    how much to shave
-              example  6x6
+  -s shave       how much to shave
+                 example  6x6
 
-  -c crop     comma separated list of crops
-              example  -300,0,+300,0
+  -c crop        comma separated list of crops
+                 example  -300,0,+300,0
 
-  -g gravity  comma separated list of gravities
-              example  north,south,east,southeast
+  -g gravity     comma separated list of gravities
+                 example  north,south,east,southeast
 
-  -r resize   comma separated list of resize markers
-              example  y,y,y,n
+  -r resize      comma separated list of resize markers
+                 example  y,y,y,n
 
-  -w width    comma separated list of widths
-              examples  1920,1280,960,640
-                        760,760,400
-                        810,370,370,370
+  -m dimensions  comma separated list of dimensions
+                 example  1920x1080,1280x1080,960x1080,640x1080
   '
   exit
 fi
 
-while getopts ds:c:g:r:w: name
+while getopts ds:c:g:r:m: name
 do
   case $name in
-  d) (( dry++ )) ;;
+  d) dry=yes ;;
   s) sv=$OPTARG ;;
   c) IFS=, read -a eg <<< "$OPTARG" ;;
   g) IFS=, read -a gv <<< "$OPTARG" ;;
   r) IFS=, read -a rz <<< "$OPTARG" ;;
-  w) IFS=, read -a dm <<< "$OPTARG" ;;
+  m) IFS=, read -a dm <<< "$OPTARG" ;;
   esac
 done
 shift $((--OPTIND))
@@ -79,6 +77,7 @@ then
     00011) dm=({640,640,640,960,960}x1080) ;;
     11000) dm=({960,960,640,640,640}x1080) ;;
     000000) dm=({640,640,640,640,640,640}x1080) ;;
+    110110) dm=(960x{540,540,1080,540,540,1080}) ;;
   esac
 fi
 
@@ -87,8 +86,8 @@ for ((o=0; o<$#; o++))
 do
   convert \
   ${sv+-shave $sv} \
-  ${eg[o]+-crop ${eg[o]}} \
-  ${gv[o]+-gravity ${gv[o]}} \
+  ${eg[o]:+-crop ${eg[o]}} \
+  ${gv[o]:+-gravity ${gv[o]}} \
   ${rz[o]:+-resize ${dm[o]}^} \
   -extent ${dm[o]} \
   -compress lossless \
@@ -96,10 +95,22 @@ do
 done
 
 # combine
-(( dry )) && exit
-montage \
--tile x$(( $# / 7 + 1 )) \
--geometry -0 \
--compress lossless \
-~* outfile.jpg
-rm ~*
+${dry+exit}
+
+set ~*
+if [ $dm = 960x540 ]
+then
+  convert \
+  '(' "$1" "$2" -append ')' \
+  "$3" \
+  '(' "$4" "$5" -append ')' \
+  "$6" \
+  +append -compress lossless outfile.jpg
+else
+  montage \
+  -tile x$(( $# / 7 + 1 )) \
+  -geometry -0 \
+  -compress lossless \
+  "$@" outfile.jpg
+fi
+rm "$@"
