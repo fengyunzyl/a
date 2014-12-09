@@ -61,9 +61,10 @@ else
   rz=("${rz[@]/n}")
 fi
 
+ao=$(identify -format '%[fx:w/h>1]' "$@")
 if [ ${#dm} = 0 ]
 then
-  case $(identify -format '%[fx:w/h>1]' "$@") in
+  case $ao in
     11) dm=({1920,1920}x1080) ;;
     0101) dm=({640,1280,640,1280}x1080) ;;
     0110) dm=({640,1280,1280,640}x1080) ;;
@@ -82,6 +83,7 @@ then
     11000) dm=({960,960,640,640,640}x1080) ;;
     000000) dm=({640,640,640,640,640,640}x1080) ;;
     110110) dm=(960x{540,540,1080,540,540,1080}) ;;
+    0000110) dm=(640x{1080,1080,1080,1080,540,540,1080}) ;;
   esac
 fi
 
@@ -103,15 +105,18 @@ ${dry+exit}
 
 ht=$(identify -format '%h\n' "$@" | mn)
 set ~*
-if [ $dm = 960x540 ]
-then
-  convert \
+case $ao in
+110110) convert \
   '(' "$1" "$2" -append ')' \
   "$3" \
   '(' "$4" "$5" -append ')' \
   "$6" \
-  +append -quality 100 out-$ht.jpg
-else
-  convert +append -quality 100 "$@" out-$ht.jpg
-fi
+  +append -quality 100 out-$ht.jpg ;;
+0000110) convert \
+  "$1" "$2" "$3" "$4" \
+  '(' "$5" "$6" -append ')' \
+  "$7" \
+  +append -quality 100 out-$ht.jpg ;;
+*) convert +append -quality 100 "$@" out-$ht.jpg ;;
+esac
 rm "$@"
