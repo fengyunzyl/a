@@ -8,6 +8,10 @@ function hr {
   ' <<< "$1"
 }
 
+function mn {
+  awk '{do if ($1>$NF) $1=$NF; while (--NF-1)} 1' RS=
+}
+
 type convert | grep -q bin || exit
 
 if [ $# = 0 ]
@@ -97,6 +101,7 @@ done
 # combine
 ${dry+exit}
 
+ht=$(identify -format '%h\n' "$@" | mn)
 set ~*
 if [ $dm = 960x540 ]
 then
@@ -105,12 +110,8 @@ then
   "$3" \
   '(' "$4" "$5" -append ')' \
   "$6" \
-  +append -compress lossless outfile.jpg
+  +append -quality 100 out-$ht.jpg
 else
-  montage \
-  -tile x$(( $# / 7 + 1 )) \
-  -geometry -0 \
-  -compress lossless \
-  "$@" outfile.jpg
+  convert +append -quality 100 "$@" out-$ht.jpg
 fi
 rm "$@"
