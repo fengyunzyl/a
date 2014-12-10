@@ -12,6 +12,18 @@ function mn {
   awk '{do if ($1>$NF) $1=$NF; while (--NF-1)} 1' RS=
 }
 
+function warn {
+  printf '\e[36m%s\e[m\n' "$*"
+}
+
+function log {
+  unset PS4
+  sx=$((set -x
+    : "$@") 2>&1)
+  warn "${sx:2}"
+  "$@"
+}
+
 type convert | grep -q bin || exit
 
 if [ $# = 0 ]
@@ -90,21 +102,21 @@ fi
 # crop images
 for ((o=0; o<$#; o++))
 do
-  convert \
+  log convert \
   ${sv+-shave $sv} \
   ${eg[o]:+-crop ${eg[o]}} \
   ${gv[o]:+-gravity ${gv[o]}} \
   ${rz[o]:+-resize ${dm[o]}^} \
   -extent ${dm[o]} \
-  -compress lossless \
-  {,~}"${sc[o]}"
+  -quality 100 \
+  {,=}"${sc[o]}"
 done
 
 # combine
 ${dry+exit}
 
 ht=$(identify -format '%h\n' "$@" | mn)
-set ~*
+set =*
 case $ao in
 110110) convert \
   '(' "$1" "$2" -append ')' \
