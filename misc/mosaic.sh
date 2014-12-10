@@ -102,13 +102,12 @@ fi
 # crop images
 for ((o=0; o<$#; o++))
 do
-  log convert \
+  log convert -quality 100 \
   ${sv+-shave $sv} \
   ${eg[o]:+-crop ${eg[o]}} \
   ${gv[o]:+-gravity ${gv[o]}} \
   ${rz[o]:+-resize ${dm[o]}^} \
   -extent ${dm[o]} \
-  -quality 100 \
   {,=}"${sc[o]}"
 done
 
@@ -118,17 +117,17 @@ ${dry+exit}
 ht=$(identify -format '%h\n' "$@" | mn)
 set =*
 case $ao in
-110110) convert \
-  '(' "$1" "$2" -append ')' \
+110110) log convert -quality 100 +append \
+  '(' -append "$1" "$2" ')' \
   "$3" \
-  '(' "$4" "$5" -append ')' \
+  '(' -append "$4" "$5" ')' \
   "$6" \
-  +append -quality 100 out-$ht.jpg ;;
-0000110) convert \
+  out-$ht.jpg ;;
+0000110) log convert -quality 100 +append \
   "$1" "$2" "$3" "$4" \
   '(' "$5" "$6" -append ')' \
   "$7" \
-  +append -quality 100 out-$ht.jpg ;;
-*) convert +append -quality 100 "$@" out-$ht.jpg ;;
+  out-$ht.jpg ;;
+*) log convert -quality 100 +append "$@" out-$ht.jpg ;;
 esac
 rm "$@"
