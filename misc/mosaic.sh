@@ -9,7 +9,7 @@ function hr {
 }
 
 function mn {
-  awk '{do if ($1>$NF) $1=$NF; while (--NF-1)} 1' RS=
+  awk '{for (;NF-1;NF--) if ($1>$NF) $1=$NF} 1' RS=
 }
 
 function warn {
