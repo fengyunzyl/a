@@ -1,10 +1,8 @@
-# make an image sequence from a video
-
-warn () {
+function warn {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
-log () {
+function log {
   unset PS4
   sx=$((set -x
     : "$@") 2>&1)
@@ -12,12 +10,12 @@ log () {
   "$@"
 }
 
-if (( $# != 3 ))
+if [ $# != 3 ]
 then
   echo make an image sequence from a video
   echo
-  echo ${0##*/} START DURATION FILE
+  echo ff-sequence.sh START DURATION FILE
   exit
 fi
 
-log ffmpeg -ss $1 -i $3 -t $2 %d.png
+log ffmpeg -hide_banner -ss $1 -i "$3" -t $2 -q 1 %d.jpg
