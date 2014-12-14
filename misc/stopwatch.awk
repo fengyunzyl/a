@@ -1,4 +1,4 @@
-#!awk -f
+#!/usr/bin/awk -f
 func z() {
   getline < y
   close(y)
