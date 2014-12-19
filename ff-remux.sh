@@ -64,14 +64,14 @@ while getopts c:ua:t: name
 do
   case $name in
   c) ci=$OPTARG ;;
-  u) (( fd++ )) ;;
+  u) let fd++   ;;
   a) ai=$OPTARG ;;
   t) te=$OPTARG ;;
   esac
 done
 shift $((--OPTIND))
 
-(( $# )) || ug
+let $# || ug
 seq ${#ga[*]} | grep -qx "$ci" || ug
 up=${ga[ci-1]}
 [[ $up =~ artist ]] && [[ ! $ai ]] && ug
@@ -83,7 +83,7 @@ do
   ie=${ip##*.}
   oe=${up##*.}
   ae[0]=$ip
-  if (( fd ))
+  if let fd
   then
     ae[1]=$(cut --de "-" --ou " " --fi "$ai" <<< "$ip")
     ae[2]=$(cut --de "-" --ou " " --fi "$te" <<< "$ip")
@@ -95,7 +95,7 @@ do
   ae[3]=$ib
   [[ $oe = $ie ]] && ae[3]+='~'
   printf -v stage2 "$up" "${ae[@]}"
-  (( oc++ )) && ao+=("echo")
+  let oc++ && ao+=("echo")
   ao+=("log $stage2 -hide_banner")
 done
 ao+=("warn Press any key to continue...")
