@@ -1,4 +1,4 @@
-#!awk -f
+#!/usr/bin/awk -f
 @include "readfile"
 BEGIN {
   if (ARGC != 2) {

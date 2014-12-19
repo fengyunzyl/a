@@ -1,4 +1,4 @@
-#!awk -f
+#!/usr/bin/awk -f
 BEGIN {
   if (ARGC != 2) {
     print "git-describe-remote.awk https://github.com/stedolan/jq"
