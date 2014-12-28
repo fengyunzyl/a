@@ -1,3 +1,23 @@
+
+grep -r --exclude-dir .git -I '((' /home/git
+
+- fix net framework
+- fix velour
+- convert vcproj files
+- switch from atomicparsley to mp4v2
+- stackoverflow.com/q/26470537/recursive-hard-link
+- stackoverflow.com/q/4894858/download-just-visual-studio-command-prompt
+- rebuild notepad2
+  - MSVC 2013 Update 3
+  - awk script
+  - github.com/XhmikosR/notepad2-mod/issues/97
+- awk function highlighting http://stackoverflow.com/a/26835821
+- apt-spy
+- suede
+- torrent.sh print sorted table of torrent attributes
+- get 2 TB hard drive
+- reinstall Windows
+
 FIX LINKS
 http://ffmpeg.org/ffmpeg-codecs.html#AC_002d3-Metadata
 
