@@ -18,11 +18,14 @@ get_withdraws_without_replacement () {
   gwwr_ret=("${r[@]}")
 }
 
-if (( $# < 3 ))
+mapfile usage <<+
+variable.sh WORD LENGTH [ALL] FILE
+
+if you use "ALL", "aeilou" will be included
++
+if [ $# -lt 3 ]
 then
-  echo ${0##*/} WORD LENGTH [ALL] FILE
-  echo
-  echo 'if you use "ALL", "aeilou" will be included'
+  printf %s "${usage[@]}"
   exit
 fi
 
@@ -43,7 +46,10 @@ shopt -s nocasematch
 for each in ${gwwr_ret[*]}
 do
   case $c1$each in
-    ar | cc | cp | dc | pg | pr ) continue ;;
+    ar|cc|cp|dc|pg|pr)
+      echo $c1$each is a command
+      continue
+    ;;
   esac
   if [[ $afi =~ $c1$each ]]
   then
