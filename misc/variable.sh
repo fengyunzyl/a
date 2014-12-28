@@ -46,7 +46,7 @@ shopt -s nocasematch
 for each in ${gwwr_ret[*]}
 do
   case $c1$each in
-    ar|cc|cp|dc|pg|pr)
+    ar|cc|cp|dc|pg|pr|ps)
       echo $c1$each is a command
       continue
     ;;
