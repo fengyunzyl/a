@@ -1,12 +1,26 @@
 # A mosaic in digital imaging is a plurality of non-overlapping images, arranged
 # in some tessellation.
-function hr {
-  sed '
-  1d
-  $d
-  s/  //
-  ' <<< "$1"
-}
+mapfile usage <<+
+mosaic.sh [options] [files]
+
+-d             dry run, create pieces only
+
+-s shave       how much to shave
+               example  6x6
+
+-c crop        comma separated list of crops
+               example  -300,0,+300,0
+
+-g gravity     comma separated list of gravities
+               example  north,south,east,southeast
+
+-r resize      comma separated list of resize markers
+               example  y,y,y,n
+
+-m dimensions  comma separated list of dimensions
+               example  1920x1080,1280x1080,960x1080,640x1080
++
+readonly usage
 
 function mn {
   awk '{for (;NF-1;NF--) if ($1>$NF) $1=$NF} 1' RS=
@@ -28,26 +42,7 @@ type convert | grep -q bin || exit
 
 if [ $# = 0 ]
 then
-  hr '
-  mosaic.sh [options] [files]
-
-  -d             dry run, create pieces only
-
-  -s shave       how much to shave
-                 example  6x6
-
-  -c crop        comma separated list of crops
-                 example  -300,0,+300,0
-
-  -g gravity     comma separated list of gravities
-                 example  north,south,east,southeast
-
-  -r resize      comma separated list of resize markers
-                 example  y,y,y,n
-
-  -m dimensions  comma separated list of dimensions
-                 example  1920x1080,1280x1080,960x1080,640x1080
-  '
+  printf %s "${usage[@]}"
   exit
 fi
 
