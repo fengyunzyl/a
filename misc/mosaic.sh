@@ -124,6 +124,9 @@ case $ao in
   '(' "$5" "$6" -append ')' \
   "$7" \
   out-$ht.jpg ;;
-*) log convert -quality 100 +append "$@" out-$ht.jpg ;;
+*)
+  log convert -quality 100 +append "$@" out
+  mv out{,-$ht.jpg}
+;;
 esac
 rm "$@"
