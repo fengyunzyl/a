@@ -90,6 +90,7 @@ then
     00011) dm=({640,640,640,960,960}x1080) ;;
     11000) dm=({960,960,640,640,640}x1080) ;;
     000000) dm=({640,640,640,640,640,640}x1080) ;;
+    000110) dm=(640x1080 640x1080 640x1080 960x540 960x540 960x1080) ;;
     110110) dm=(960x{540,540,1080,540,540,1080}) ;;
     0000110) dm=(640x{1080,1080,1080,1080,540,540,1080}) ;;
   esac
@@ -113,19 +114,24 @@ ${dry+exit}
 ht=$(identify -format '%h\n' "$@" | mn)
 set =*
 case $ao in
-110110) log convert -quality 100 +append \
-  '(' -append "$1" "$2" ')' \
-  "$3" \
-  '(' -append "$4" "$5" ')' \
+000110) log convert \
+  "$1" "$2" "$3" \
+  '(' "$4" "$5" -append ')' \
   "$6" \
-  out-$ht.jpg ;;
-0000110) log convert -quality 100 +append \
+  +append -quality 100 out-$ht.jpg ;;
+110110) log convert \
+  '(' "$1" "$2" -append ')' \
+  "$3" \
+  '(' "$4" "$5" -append ')' \
+  "$6" \
+  +append -quality 100 out-$ht.jpg ;;
+0000110) log convert \
   "$1" "$2" "$3" "$4" \
   '(' "$5" "$6" -append ')' \
   "$7" \
-  out-$ht.jpg ;;
+  +append -quality 100 out-$ht.jpg ;;
 *)
-  log convert -quality 100 +append "$@" out
+  log convert "$@" +append -quality 100 out
   mv out{,-$ht.jpg}
 ;;
 esac
