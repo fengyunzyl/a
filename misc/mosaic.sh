@@ -115,21 +115,14 @@ ht=$(identify -format '%h\n' "$@" | mn)
 set =*
 case $ao in
 000110) log convert \
-  "$1" "$2" "$3" \
-  '(' "$4" "$5" -append ')' \
-  "$6" \
-  +append -quality 100 out-$ht.jpg ;;
+  "$1" "$2" "$3" '(' "$4" "$5" -append ')' "$6" +append \
+  -quality 100 out-$ht.jpg ;;
 110110) log convert \
-  '(' "$1" "$2" -append ')' \
-  "$3" \
-  '(' "$4" "$5" -append ')' \
-  "$6" \
-  +append -quality 100 out-$ht.jpg ;;
+  '(' "$1" "$2" -append ')' "$3" '(' "$4" "$5" -append ')' "$6" +append \
+  -quality 100 out-$ht.jpg ;;
 0000110) log convert \
-  "$1" "$2" "$3" "$4" \
-  '(' "$5" "$6" -append ')' \
-  "$7" \
-  +append -quality 100 out-$ht.jpg ;;
+  "$1" "$2" "$3" "$4" '(' "$5" "$6" -append ')' "$7" +append \
+  -quality 100 out-$ht.jpg ;;
 *)
   log convert "$@" +append -quality 100 out
   mv out{,-$ht.jpg}
