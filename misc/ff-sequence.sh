@@ -10,12 +10,12 @@ function log {
   "$@"
 }
 
-if [ $# != 3 ]
+if [ $# != 4 ]
 then
   echo make an image sequence from a video
   echo
-  echo ff-sequence.sh START DURATION FILE
+  echo 'ff-sequence.sh START DURATION FILE <png|jpg>'
   exit
 fi
 
-log ffmpeg -hide_banner -ss $1 -i "$3" -t $2 -q 1 %d.jpg
+log ffmpeg -hide_banner -ss $1 -i "$3" -t $2 -q 1 %d.$4
