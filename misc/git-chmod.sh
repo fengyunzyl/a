@@ -5,10 +5,8 @@ function warn {
 }
 
 function log {
-  unset PS4
-  sx=$((set -x
-    : "$@") 2>&1)
-  warn "${sx:2}"
+  sx=$(bash -xc ': "$@"' . "$@" 2>&1)
+  warn "${sx:4}"
   "$@"
 }
 
