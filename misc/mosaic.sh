@@ -36,7 +36,11 @@ function log {
   "$@"
 }
 
-type convert | grep -q bin || exit
+if ! type convert | grep -q bin
+then
+  echo convert not found
+  exit
+fi
 
 if [ $# = 0 ]
 then
