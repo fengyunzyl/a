@@ -1,19 +1,13 @@
+#!/bin/sh
 # fix audio stream using FFmpeg
-function hr {
-  sed '
-  1d
-  $d
-  s/  //
-  ' <<< "$1"
-}
+mapfile usage <<+
+gain.sh FILES
 
-if (( ! $# ))
+Apply max noclip gain
++
+if [ $# = 0 ]
 then
-  hr "
-  ${0##*/} FILES
-
-  Apply max noclip gain
-  "
+  printf '%s\n' "${usage[@]}"
   exit
 fi
 
