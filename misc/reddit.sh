@@ -8,8 +8,8 @@ fi
 # download
 lynx -dump -listonly -nonumbers "$@" |
 awk '/Hidden/ {$1=""; print}' RS='\n\n' FS='\n' OFS='\n' |
-youtube-dl --add-metadata --format bestaudio --download-archive \
-%-download.txt --output '%(title)s.%(ext)s' --batch-file -
+youtube-dl --add-metadata --format bestaudio \
+--download-archive %-download.txt --output '%(title)s.%(ext)s' --batch-file -
 
 touch %-fixup.txt
 
