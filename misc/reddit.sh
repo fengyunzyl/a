@@ -15,6 +15,10 @@ touch %-fixup.txt
 
 for each in *.m4a *.mp3
 do
+  if [ ! -e "$each" ]
+  then
+    continue
+  fi
   if fgrep "$each" %-fixup.txt
   then
     continue
