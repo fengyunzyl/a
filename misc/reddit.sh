@@ -28,7 +28,7 @@ do
   aacgain -k -r -s s -m 10 "$each"
 
   # faststart
-  if file --brief --mime-type "$each" | grep audio/x-m4a
+  if file --brief --mime-type "$each" | grep video/mp4
   then
     ffmpeg -hide_banner -i "$each" -c copy -movflags faststart outfile.m4a
     mv outfile.m4a "$each"
