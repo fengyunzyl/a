@@ -11,6 +11,8 @@ awk '/Hidden/ {$1=""; print}' RS='\n\n' FS='\n' OFS='\n' |
 youtube-dl --format bestaudio --download-archive %-download.txt \
 --output '%(title)s.%(ext)s' --batch-file -
 
+touch %-fixup.txt
+
 for each in *.m4a *.mp3
 do
   if fgrep "$each" %-fixup.txt
