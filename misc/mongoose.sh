@@ -22,7 +22,7 @@ git clone --depth 1 git://github.com/cesanta/mongoose
 cd mongoose/examples/web_server
 make polarssl CFLAGS_EXTRA='-s -lws2_32 -liphlpapi' CC=$cc POLARSSL_PATH=$prefix
 upx -9 web_server.exe
-mv certs/cert.pem .
+cp certs/cert.pem .
 cat > mongoose.bat <<+
 @echo off
 start web_server -listening_port ssl://2:cert.pem
@@ -30,4 +30,4 @@ start https://127.0.0.1:2
 +
 vr=$(./web_server - |& awk 'NR==1 {print $3}')
 # this is smaller than ‘-9’
-zip mongoose-"$vr".zip web_server.exe cert.pem mongoose.bat
+zip mongoose-ssl-"$vr".zip web_server.exe cert.pem mongoose.bat
