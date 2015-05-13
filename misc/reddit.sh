@@ -23,7 +23,7 @@ do
   # download
   youtube-dl --add-metadata --format m4a/mp3 --output '%(title)s.%(ext)s' \
     --youtube-skip-dash-manifest "$golf" | tee %-bravo.txt
-  kilo=$(awk '$1 ~ /download/ {print $2; exit}' FS=': ' %-bravo.txt)
+  kilo=$(awk '/Destination/ {print $2}' FS=': ' %-bravo.txt)
 
   # gain
   aacgain -k -r -s s -m 10 "$kilo"
