@@ -5,34 +5,36 @@ then
   exit
 fi
 
+touch %-alpha.txt
+
 # download
 lynx -dump -listonly -nonumbers "$@" |
-awk '/Hidden/ {$1=""; print}' RS='\n\n' FS='\n' OFS='\n' |
-youtube-dl --add-metadata --download-archive %-download.txt --format m4a/mp3 \
---output '%(title)s.%(ext)s' --youtube-skip-dash-manifest --batch-file -
-
-touch %-fixup.txt
-
-for each in *.m4a *.mp3
+awk '/Hidden/ {z=1; next} ! $0 {z=0} z' |
+while read golf
 do
-  if [ ! -e "$each" ]
+  let charlie++ && echo
+  kilo=$(awk '$1==golf {print $2}' FS='\t' golf="$golf" %-alpha.txt)
+  if [ "$kilo" ]
   then
+    printf '%s\nhas already been recorded in archive\n' "$kilo"
     continue
   fi
-  if fgrep -q "$each" %-fixup.txt
-  then
-    continue
-  fi
+
+  # download
+  youtube-dl --add-metadata --format m4a/mp3 --output '%(title)s.%(ext)s' \
+    --youtube-skip-dash-manifest "$golf" | tee %-bravo.txt
+  kilo=$(awk '$1 ~ /download/ {print $2; exit}' FS=': ' %-bravo.txt)
 
   # gain
-  aacgain -k -r -s s -m 10 "$each"
+  aacgain -k -r -s s -m 10 "$kilo"
 
   # faststart
-  if file --brief --mime-type "$each" | grep -q audio/x-m4a
+  if file --brief --mime-type "$kilo" | grep -q audio/x-m4a
   then
-    ffmpeg -hide_banner -i "$each" -c copy -movflags faststart outfile.m4a
-    mv outfile.m4a "$each"
+    ffmpeg -nostdin -hide_banner -v warning -i "$kilo" -c copy \
+      -movflags faststart outfile.m4a
+    mv outfile.m4a "$kilo"
   fi
 
-  echo "$each" >> %-fixup.txt
+  printf '%s\t%s\n' "$golf" "$kilo" >> %-alpha.txt
 done
