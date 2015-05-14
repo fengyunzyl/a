@@ -1,6 +1,6 @@
 #!/bin/sh
 host=x86_64-w64-mingw32
-prefix=/usr/x86_64-w64-mingw32/sys-root/mingw
+prefix=/usr/$host/sys-root/mingw
 # automake > autoreconf > autogen.sh
 # diffutils > cmp > configure
 # libtool > autoreconf > autogen.sh
@@ -8,6 +8,7 @@ prefix=/usr/x86_64-w64-mingw32/sys-root/mingw
 # mingw64-x86_64-gcc-g++ > x86_64-w64-mingw32-g++
 # yasm > x264
 apt-cyg install automake diffutils libtool make mingw64-x86_64-gcc-g++ yasm
+apt-cyg install --nodeps git
 
 # fdk-aac
 git clone --depth 1 git://github.com/mstorsjo/fdk-aac
