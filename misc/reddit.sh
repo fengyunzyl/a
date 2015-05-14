@@ -32,6 +32,8 @@ then
   exit
 fi
 
+touch %.txt
+
 {
   pa "$@" |
     grep -v reddit
@@ -39,10 +41,7 @@ fi
     grep reddit |
     lynx -dump -listonly -nonumbers - '' |
     awk '/Hidden/ {z=1; next} ! $0 {z=0} z'
-} > /tmp/1.txt
-
-touch %.txt
-
+} |
 while read golf
 do
   let bravo++ && bk
@@ -56,8 +55,8 @@ do
   # download
   youtube-dl --add-metadata --format m4a/mp3 --youtube-skip-dash-manifest \
     --output '%(upload_date)s %(title)s.%(ext)s' "$golf" |
-    iconv -f cp1252 | tee /tmp/2.txt
-  kilo=$(awk '/Destination/ {print $2}' FS=': ' /tmp/2.txt)
+    iconv -f cp1252 | tee /tmp/%.txt
+  kilo=$(awk '/Destination/ {print $2}' FS=': ' /tmp/%.txt)
   lima="${kilo/???? / }"
   mv "$kilo" "$lima"
 
@@ -74,4 +73,4 @@ do
   aacgain -k -r -s s -m 10 "$lima"
 
   printf '%s\t%s\n' "$golf" "$lima" >> %.txt
-done < /tmp/1.txt
+done
