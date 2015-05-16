@@ -1,13 +1,30 @@
-if (( $# != 1 ))
+#!/bin/sh
+mapfile -t usage <<+
+NAME
+  date.sh
+
+SYNOPSIS
+  date.sh [date]
+
+EXAMPLE
+  date.sh 2015-5-15
++
+
+function pa {
+  printf '%s\n' "$@"
+}
+
+if [ $# != 1 ]
 then
-  echo date.sh DATE
+  pa "${usage[@]}"
   exit
 fi
 
-sq=(%H%M%S '%b %-d %Y'
-    %a %b %c %d %e    %g %h    %j %k %l %m    %p %r %s    %u    %w %x %y %z
-    %A %B %C %D    %F %G %H %I          %M %N %P %R %S %T %U %V %W %X %Y %Z
-    %:z %::z %:::z)
+sq=(
+  %a %b %c %d %e %g %h %j %k %l %m %p %r %s %u %w %x %y %z
+  %A %B %C %D %F %G %H %I %M %N %P %R %S %T %U %V %W %X %Y %Z %:z %::z %:::z
+  %Y%m%d %H%M%S '%b %-d %Y'
+)
 
 for each in "${sq[@]}"
 do
