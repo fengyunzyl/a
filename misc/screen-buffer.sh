@@ -1,27 +1,21 @@
-function hr {
-  sed '
-  1d
-  $d
-  s/  //
-  ' <<< "$1"
-}
+#!/bin/sh
+if [ $# != 2 ]
+then
+  regtool get /user/console/ScreenBufferSize | awk '
+  {
+    print "screen-buffer.sh ROWS COLUMNS"
+    print "max rows is 32767"
+    print "max columns is 170"
+    print "current buffer rows", rshift($0, 0x0010)
+    print "current buffer columns", and($0, 0xFFFF)
+  }
+  '
+  exit
+fi
 
 function hx {
   printf 0x%04x%04x $*
 }
-
-if (( $# != 2 ))
-then
-  set $(regtool get /user/console/ScreenBufferSize)
-  hr "
-  ${0##*/} ROWS COLUMNS
-  max rows is 32767
-  max columns is 170
-  current buffer rows    $(( $1 >> 0x0010 ))
-  current buffer columns $(( $1  & 0xFFFF ))
-  "
-  exit
-fi
 
 regtool set /user/console/ScreenBufferSize $(hx $1 $2)
 regtool set /user/console/WindowSize       $(hx 22 $2)
