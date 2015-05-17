@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # find unused variable names
 get_withdraws_without_replacement () {
   local n=$1 h r=()
