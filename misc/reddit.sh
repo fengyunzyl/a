@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 mapfile -t usage <<+
 NAME
   reddit.sh
@@ -17,11 +17,12 @@ function pa {
 }
 
 function bk {
-  awk '
+  awk -v z="$*" '
   BEGIN {
-    OFS = "░"
-    NF = 80
-    printf "\033[1;35m%s\033[m\n", $0
+    y = 79 - length(z)
+    x = int(y / 2)
+    w = y - x
+    printf "\033[1;45m%*s%s%*s\033[m\n", w, "", z, x, ""
   }
   '
 }
@@ -32,7 +33,15 @@ then
   exit
 fi
 
-touch %.txt
+if ! type aacgain ffmpeg jq youtube-dl >/dev/null
+then
+  exit
+fi
+
+mkdir -p %-new %-old
+touch %-new/%.txt
+set -o igncr
+cd /tmp
 
 {
   pa "$@" |
@@ -42,35 +51,50 @@ touch %.txt
     lynx -dump -listonly -nonumbers - '' |
     awk '/Hidden/ {z=1; next} ! $0 {z=0} z'
 } |
-while read golf
+while read bra
 do
-  let bravo++ && bk
-  kilo=$(awk '$1==golf {print $2}' FS='\t' golf="$golf" %.txt)
-  if [ "$kilo" ]
+  let char++
+  if [ $char -ge 2 ]
   then
-    printf '%s\nhas already been recorded in archive\n' "$kilo"
+    bk starting link $char
+  fi
+  del=$(awk '$1==bra {print $2}' FS='\t' bra="$bra" ~-/%-new/%.txt)
+  if [ "$del" ]
+  then
+    printf '%s\nhas already been recorded in archive\n' "$del"
     continue
   fi
 
   # download
-  youtube-dl --add-metadata --format m4a/mp3 --youtube-skip-dash-manifest \
-    --output '%(upload_date)s %(title)s.%(ext)s' "$golf" |
-    iconv -f cp1252 | tee /tmp/%.txt
-  kilo=$(awk '/Destination/ {print $2}' FS=': ' /tmp/%.txt)
-  lima="${kilo/???? / }"
-  mv "$kilo" "$lima"
+  rm -f *.info.json
+  youtube-dl --add-metadata --format m4a/mp3 --output '%(title)s.%(ext)s' \
+    --write-info-json --youtube-skip-dash-manifest "$bra"
+  jq -r '
+  {upload_date, title, _filename, ext} |
+  to_entries |
+  map("\(.key)=\(.value | @sh)") |
+  .[]
+  ' *.info.json > info.sh
+  . info.sh
 
   # faststart
-  if [ "${lima##*.}" = m4a ]
+  if [ $ext = m4a ]
   then
     echo '[ffmpeg] moving the moov atom to the beginning of the file'
-    ffmpeg -nostdin -v warning -i "$lima" -c copy -movflags faststart \
-      -flags global_header outfile.m4a
-    mv outfile.m4a "$lima"
+    ffmpeg -nostdin -v warning -i "$_filename" -c copy -movflags faststart \
+      -flags global_header temp.m4a
+    mv temp.m4a "$_filename"
   fi
 
   # gain
-  aacgain -k -r -s s -m 10 "$lima"
+  aacgain -k -r -s s -m 10 "$_filename"
 
-  printf '%s\t%s\n' "$golf" "$lima" >> %.txt
+  fox=$(date -d '-1 year' +%Y%m%d)
+  if [ $upload_date -gt $fox ]
+  then
+    mv "$_filename" ~-/%-new
+  else
+    mv "$_filename" ~-/%-old
+  fi
+  printf '%s\t%s\n' "$bra" "$title" >> ~-/%-new/%.txt
 done
