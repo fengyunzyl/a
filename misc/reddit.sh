@@ -42,7 +42,6 @@ bra=$(date -d '-1 year' +%Y%m%d)
 mkdir -p %-new %-old
 touch %-new/%.txt
 set -o igncr
-cd /tmp
 
 {
   pa "$@" |
@@ -59,7 +58,7 @@ do
   then
     bk starting link $char
   fi
-  if fgrep -q "$wu" ~-/%-new/%.txt
+  if fgrep -q "$wu" %-new/%.txt
   then
     printf '%s\nhas already been recorded in archive\n' "$wu"
     continue
@@ -76,6 +75,7 @@ do
   .[]
   ' *.info.json > vars.sh
   . vars.sh
+  rm *.info.json vars.sh
 
   # faststart
   if [ $ext = m4a ]
@@ -97,12 +97,10 @@ do
     dest=0
     delta=%-old
   fi
-  mv "$_filename" ~-/"$delta"
+  mv "$_filename" "$delta"
   set "$wu" "$upload_date" "$dest" "$_filename"
-  printf '%s\t%s\t%s\t%s\n' "$@" >> ~-/%-new/%.txt
+  printf '%s\t%s\t%s\t%s\n' "$@" >> %-new/%.txt
 done
-
-cd ~-
 
 while IFS=$'\t' read wu upload_date source _filename
 do
@@ -120,6 +118,7 @@ do
   then
     continue
   fi
+  bk "$_filename"
   echo '[mv] file is now old, moving'
   mv %-new/"$_filename" %-old
   awk -i inplace '
