@@ -1,45 +1,17 @@
-function browse {
-  case $OSTYPE in
-  linux-gnu) xdg-open "$1" ;;
-  cygwin)    cygstart "$1" ;;
-  esac
-}
+#!/bin/sh
+mapfile -t al <<+
+NAME
+  torrent.sh
 
-function hr {
-  sed '
-  1d
-  $d
-  s/  //
-  ' <<< "$1"
-}
+SYNOPSIS
+  torrent.sh <search> <sort> <category>
 
-function warn {
-  printf '\e[36m%s\e[m\n' "$*"
-}
-
-function log {
-  unset PS4
-  sx=$((set -x
-    : "$@") 2>&1)
-  warn "${sx:2}"
-  "$@"
-}
-
-function exp {
-  printf 'BEGIN {print %s}' "$1" | awk -f-
-}
-
-if (( $# != 3 ))
-then
-  hr '
-  torrent.sh SEARCH SORT CATEGORY
-
-  SORT
+SORT
   3  date ↓
   6  size ↑
   7  seeders ↓
 
-  CATEGORY
+CATEGORY
   100  Audio
   104  Audio FLAC
   201  Video Movies
@@ -47,7 +19,36 @@ then
   207  Video HD Movies
   208  Video HD TV shows
   301  Applications Windows
-  '
++
+
+function pa {
+  printf '%s\n' "$@"
+}
+
+function browse {
+  case $OSTYPE in
+  linux-gnu) xdg-open "$1" ;;
+  cygwin)    cygstart "$1" ;;
+  esac
+}
+
+function warn {
+  printf '\e[36m%s\e[m\n' "$*"
+}
+
+function log {
+  sx=$(bash -xc ': "$@"' . "$@" 2>&1)
+  warn "${sx:4}"
+  "$@"
+}
+
+function exp {
+  printf 'BEGIN {print %s}' "$1" | awk -f-
+}
+
+if [ $# != 3 ]
+then
+  pa "${al[@]}"
   exit
 fi
 
@@ -55,7 +56,7 @@ sc=$1
 sr=$2
 cg=$3
 
-if (( cg != 207 ))
+if [ "$cg" != 207 ]
 then
   browse "http://thepiratebay.se/search/$sc/0/$sr/$cg"
   exit
