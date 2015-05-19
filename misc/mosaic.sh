@@ -1,3 +1,4 @@
+#!/bin/sh
 # A mosaic in digital imaging is a plurality of non-overlapping images, arranged
 # in some tessellation.
 mapfile usage <<+
@@ -36,9 +37,15 @@ function log {
   "$@"
 }
 
-if ! type convert | grep -q bin
+if ! convert -version &>/dev/null
 then
   echo convert not found
+  exit
+fi
+
+if ! identify -version &>/dev/null
+then
+  echo identify not found
   exit
 fi
 
