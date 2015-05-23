@@ -1,80 +1,61 @@
 #!/bin/sh
+# foreground black:  30
+# foreground red:    31
+# foreground green:  32
+# foreground yellow: 33
+# foreground blue:   34
+# foreground purple: 35
+# foreground cyan:   36
+# foreground white:  37
+
+# background black:  40
+# background red:    41
+# background green:  42
+# background yellow: 43
+# background blue:   44
+# background purple: 45
+# background cyan:   46
+# background white:  47
+
+# bold foreground: 1
+# bold background: 5
+
 al=(
-         # foreground   background
-  '0;30' # reg black    reg black
-  '0;31' # reg red      reg black
-  '0;32' # reg green    reg black
-  '0;33' # reg yellow   reg black
-  '0;34' # reg blue     reg black
-  '0;35' # reg purple   reg black
-  '0;36' # reg cyan     reg black
-  '0;37' # reg white    reg black
-  '1;30' # bold black   reg black
-  '1;31' # bold red     reg black
-  '1;32' # bold green   reg black
-  '1;33' # bold yellow  reg black
-  '1;34' # bold blue    reg black
-  '1;35' # bold purple  reg black
-  '1;36' # bold cyan    reg black
-  '1;37' # bold white   reg black
-  '5;30' # reg black    bold black
-  '5;31' # reg red      bold black
-  '5;32' # reg green    bold black
-  '5;33' # reg yellow   bold black
-  '5;34' # reg blue     bold black
-  '5;35' # reg purple   bold black
-  '5;36' # reg cyan     bold black
-  '5;37' # reg white    bold black
-
-  '7;31' # reg black    reg red
-  '4;41' # reg cyan     reg red
-  '0;41' # reg white    reg red
-  '1;41' # bold white   reg red
-  '5;41' # reg white    bold red
-
-  '7;32' # reg black    reg green
-  '4;42' # reg cyan     reg green
-  '0;42' # reg white    reg green
-  '1;42' # bold white   reg green
-  '5;42' # reg white    bold green
-
-  '7;33' # reg black    reg yellow
-  '4;43' # reg cyan     reg yellow
-  '0;43' # reg white    reg yellow
-  '1;43' # bold white   reg yellow
-  '5;43' # reg white    bold yellow
-
-  '7;34' # reg black    reg blue
-  '4;44' # reg cyan     reg blue
-  '0;44' # reg white    reg blue
-  '1;44' # bold white   reg blue
-  '5;44' # reg white    bold blue
-
-  '7;35' # reg black    reg purple
-  '4;45' # reg cyan     reg purple
-  '0;45' # reg white    reg purple
-  '1;45' # bold white   reg purple
-  '5;45' # reg white    bold purple
-
-  '7;36' # reg black    reg cyan
-  '4;46' # reg cyan     reg cyan
-  '0;46' # reg white    reg cyan
-  '1;46' # bold white   reg cyan
-  '5;46' # reg white    bold cyan
-
-  '7;40' # reg black    reg white
-  '7;41' # reg red      reg white
-  '7;42' # reg green    reg white
-  '7;43' # reg yellow   reg white
-  '7;44' # reg blue     reg white
-  '7;45' # reg purple   reg white
-  '7;46' # reg cyan     reg white
-  '7;47' # reg white    reg white
-  '1;47' # bold white   reg white
-  '5;47' # reg white    bold white
+  '30' '30;41' '30;42' '30;43' '30;44' '30;45' '30;46' '30;47'
+  '31' '31;41' '31;42' '31;43' '31;44' '31;45' '31;46' '31;47'
+  '32' '32;41' '32;42' '32;43' '32;44' '32;45' '32;46' '32;47'
+  '33' '33;41' '33;42' '33;43' '33;44' '33;45' '33;46' '33;47'
+  '34' '34;41' '34;42' '34;43' '34;44' '34;45' '34;46' '34;47'
+  '35' '35;41' '35;42' '35;43' '35;44' '35;45' '35;46' '35;47'
+  '36' '36;41' '36;42' '36;43' '36;44' '36;45' '36;46' '36;47'
+  '' '41' '42' '43' '44' '45' '46' '47'
+  '1;30' '1;30;41' '1;30;42' '1;30;43' '1;30;44' '1;30;45' '1;30;46' '1;30;47'
+  '1;31' '1;31;41' '1;31;42' '1;31;43' '1;31;44' '1;31;45' '1;31;46' '1;31;47'
+  '1;32' '1;32;41' '1;32;42' '1;32;43' '1;32;44' '1;32;45' '1;32;46' '1;32;47'
+  '1;33' '1;33;41' '1;33;42' '1;33;43' '1;33;44' '1;33;45' '1;33;46' '1;33;47'
+  '1;34' '1;34;41' '1;34;42' '1;34;43' '1;34;44' '1;34;45' '1;34;46' '1;34;47'
+  '1;35' '1;35;41' '1;35;42' '1;35;43' '1;35;44' '1;35;45' '1;35;46' '1;35;47'
+  '1;36' '1;36;41' '1;36;42' '1;36;43' '1;36;44' '1;36;45' '1;36;46' '1;36;47'
+  '1' '1;41' '1;42' '1;43' '1;44' '1;45' '1;46' '1;47'
+  '5;30' '5;30;41' '5;30;42' '5;30;43' '5;30;44' '5;30;45' '5;30;46' '5;30;47'
+  '5;31' '5;31;41' '5;31;42' '5;31;43' '5;31;44' '5;31;45' '5;31;46' '5;31;47'
+  '5;32' '5;32;41' '5;32;42' '5;32;43' '5;32;44' '5;32;45' '5;32;46' '5;32;47'
+  '5;33' '5;33;41' '5;33;42' '5;33;43' '5;33;44' '5;33;45' '5;33;46' '5;33;47'
+  '5;34' '5;34;41' '5;34;42' '5;34;43' '5;34;44' '5;34;45' '5;34;46' '5;34;47'
+  '5;35' '5;35;41' '5;35;42' '5;35;43' '5;35;44' '5;35;45' '5;35;46' '5;35;47'
+  '5;36' '5;36;41' '5;36;42' '5;36;43' '5;36;44' '5;36;45' '5;36;46' '5;36;47'
+  '5' '5;41' '5;42' '5;43' '5;44' '5;45' '5;46' '5;47'
+  '1;5;30' '1;5;30;41' '1;5;30;42' '1;5;30;43' '1;5;30;44' '1;5;30;45' '1;5;30;46' '1;5;30;47'
+  '1;5;31' '1;5;31;41' '1;5;31;42' '1;5;31;43' '1;5;31;44' '1;5;31;45' '1;5;31;46' '1;5;31;47'
+  '1;5;32' '1;5;32;41' '1;5;32;42' '1;5;32;43' '1;5;32;44' '1;5;32;45' '1;5;32;46' '1;5;32;47'
+  '1;5;33' '1;5;33;41' '1;5;33;42' '1;5;33;43' '1;5;33;44' '1;5;33;45' '1;5;33;46' '1;5;33;47'
+  '1;5;34' '1;5;34;41' '1;5;34;42' '1;5;34;43' '1;5;34;44' '1;5;34;45' '1;5;34;46' '1;5;34;47'
+  '1;5;35' '1;5;35;41' '1;5;35;42' '1;5;35;43' '1;5;35;44' '1;5;35;45' '1;5;35;46' '1;5;35;47'
+  '1;5;36' '1;5;36;41' '1;5;36;42' '1;5;36;43' '1;5;36;44' '1;5;36;45' '1;5;36;46' '1;5;36;47'
+  '1;5' '1;5;41' '1;5;42' '1;5;43' '1;5;44' '1;5;45' '1;5;46' '1;5;47'
 )
 
 for bra in "${al[@]}"
 do
-  printf '%s fg [\e[%bm██\e[m] bg [\e[%bm  \e[m]\n' "$bra"{,,}
+  printf '%9s fg [\e[%bm██\e[m] bg [\e[%bm  \e[m]\n' "$bra"{,,}
 done
