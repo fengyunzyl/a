@@ -1,9 +1,8 @@
 #!/bin/bash
 # Find large files in git repo, that dont exist in HEAD
-
-if (( $# != 1 ))
+if [ $# != 1 ]
 then
-  echo git large.sh SIZE
+  echo 'git large.sh [size]'
   exit
 fi
 
@@ -15,7 +14,7 @@ while read commit
 do
   while read bits type sha size path
   do
-    if (( size > $1 ))
+    if [ "$size" -gt "$1" ]
     then
       big_files[$sha]="$sha $size $path"
     fi
