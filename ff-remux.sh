@@ -1,3 +1,4 @@
+#!/bin/sh
 function warn {
   printf '\e[36m%s\e[m\n' "$*"
 }
