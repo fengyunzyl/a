@@ -5,7 +5,7 @@ wget -qO- sourceware.org/cygwin/mirrors.lst | % {
   }
   $alpha = $_.split(';')[0]
   $alpha
-  wget --quiet --spider --tries 1 --timeout .1 $alpha
+  wget --quiet --spider --tries 1 --timeout .2 $alpha
   if ($?) {
     $bravo += ,$alpha
   }
