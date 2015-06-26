@@ -18,14 +18,11 @@ BEGIN {
   z["2014 06"] =  861
   PROCINFO["sorted_in"] = "@ind_num_desc"
   for (y in z) {
-    if (z[y] >= 1000) {
+    if (z[y] >= 1000)
       x = ARGV[2] * z[y]
-      printf "%s: $%.0f\n", y, x
-    }
-    else {
+    else
       x = ARGV[1] * z[y]
-      printf "%s: $%.0f\n", y, x
-    }
+    printf "%s: $%.0f\n", y, x
     tot += x
   }
   printf "total with deposit: $%.0f\n", tot + ARGV[3]
