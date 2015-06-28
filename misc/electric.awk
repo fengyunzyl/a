@@ -13,7 +13,6 @@ BEGIN {
   z["2014 08"] = 1035
   z["2014 07"] =  954
   z["2014 06"] =  861
-  PROCINFO["sorted_in"] = "@ind_num_desc"
 }
 NR == 1 {
   for (y=1; y<=NF; y++) {
@@ -31,12 +30,17 @@ NR == 1 {
 }
 $rt == "Fixed" {
   tot = 0
-  for (x in z) {
-    if (z[x] >= 1000)
-      w = $p1000 * z[x]
+  for (y in z) {
+    if (z[y] >= 1000)
+      x = $p1000 * z[y]
     else
-      w = $p500 * z[x]
-    tot += w
+      x = $p500 * z[y]
+    tot += x
   }
-  printf "%.0f - %s - %s\n", tot, $rc, $pn
+  w[$rc " - " $pn] = tot
+}
+END {
+  PROCINFO["sorted_in"] = "@val_num_asc"
+  for (v in w)
+    printf "$%.0f - %s\n", w[v], v
 }
