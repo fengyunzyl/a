@@ -22,8 +22,6 @@ NR == 1 {
       p1000 = y
     if ($y == "RepCompany")
       rc = y
-    if ($y == "Plan Name")
-      pn = y
     if ($y == "Rate Type")
       rt = y
   }
@@ -37,10 +35,14 @@ $rt == "Fixed" {
       x = $p500 * z[y]
     tot += x
   }
-  w[$rc " - " $pn] = tot
+  w[1][NR] = tot
+  w[2][NR] = $rc
+  w[3][NR] = $p500
+  w[4][NR] = $p1000
 }
 END {
   PROCINFO["sorted_in"] = "@val_num_asc"
-  for (v in w)
-    printf "$%.0f - %s\n", w[v], v
+  for (s in w[1])
+    printf "$%.0f - %s - 500 kWh %s - 1000 kWh %s\n",
+    w[1][s], w[2][s], w[3][s], w[4][s]
 }
