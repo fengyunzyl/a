@@ -1,9 +1,5 @@
 #!/usr/bin/awk --file
 BEGIN {
-  if (ARGC != 2) {
-    print "electric.awk [file]"
-    exit
-  }
   FS = ","
   z["2015 05"] =  417
   z["2015 04"] =  457
