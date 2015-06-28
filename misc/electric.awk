@@ -1,9 +1,10 @@
-#!/usr/bin/awk -f
+#!/usr/bin/awk --file
 BEGIN {
-  if (ARGC != 4) {
-    print "electric.awk [500 kWh] [1000 kWh] [deposit]"
+  if (ARGC != 2) {
+    print "electric.awk [file]"
     exit
   }
+  FS = ","
   z["2015 05"] =  417
   z["2015 04"] =  457
   z["2015 03"] =  940
@@ -17,13 +18,29 @@ BEGIN {
   z["2014 07"] =  954
   z["2014 06"] =  861
   PROCINFO["sorted_in"] = "@ind_num_desc"
-  for (y in z) {
-    if (z[y] >= 1000)
-      x = ARGV[2] * z[y]
-    else
-      x = ARGV[1] * z[y]
-    printf "%s: $%.0f\n", y, x
-    tot += x
+}
+NR == 1 {
+  for (y=1; y<=NF; y++) {
+    if ($y == "Price/kWh 500")
+      p500 = y
+    if ($y == "Price/kWh 1000")
+      p1000 = y
+    if ($y == "RepCompany")
+      rc = y
+    if ($y == "Plan Name")
+      pn = y
+    if ($y == "Rate Type")
+      rt = y
   }
-  printf "total with deposit: $%.0f\n", tot + ARGV[3]
+}
+$rt == "Fixed" {
+  tot = 0
+  for (x in z) {
+    if (z[x] >= 1000)
+      w = $p1000 * z[x]
+    else
+      w = $p500 * z[x]
+    tot += w
+  }
+  printf "%.0f - %s - %s\n", tot, $rc, $pn
 }
