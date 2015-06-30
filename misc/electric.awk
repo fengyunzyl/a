@@ -13,36 +13,52 @@ BEGIN {
   z["2014 08"] = 1035
   z["2014 07"] =  954
   z["2014 06"] =  861
+
+  y["4CHANGE ENERGY"] # M-F 9-5
+  y["DISCOUNT POWER"] # M-F 830-530
+  y["FRONTIER UTILITIES"] # hours not listed
+  y["PENNYWISE POWER"] y["PENNYWISE POWER "] # M-F 8-5
+  y["POWER EXPRESS"] # $2/mo for manual bill pay
+  y["SPARK ENERGY LLC"] # 2 stars
+
+  # new customers only
+  x["Gexa Choice Conserve 5"]
+  x["Smart Saver 6"]
+  x["Reliant Conservation (SM) 12 plan"]
+  x["6 Month Usage Bill Credit"]
+  x["Reliant Conservation (SM) 9 plan"]
+  x["Pollution Free Conserve 12 Choice"]
+  x["Smart Saver 3"]
+  x["Gexa Choice 6"]
+  x["Pollution Free Conserve 6 Choice"]
 }
 NR == 1 {
-  for (y=1; y<=NF; y++) {
-    if ($y == "Price/kWh 500")
-      p500 = y
-    if ($y == "Price/kWh 1000")
-      p1000 = y
-    if ($y == "RepCompany")
-      rc = y
-    if ($y == "Rate Type")
-      rt = y
-  }
+  for (i=1; i<=NF; i++)
+    w[$i] = i
 }
-$rt == "Fixed" {
+$w["Rate Type"] == "Fixed" {
+  for (i in y)
+    if ($w["RepCompany"] == i)
+      next
+  for (i in x)
+    if ($w["Plan Name"] == i)
+      next
   tot = 0
-  for (y in z) {
-    if (z[y] >= 1000)
-      x = $p1000 * z[y]
+  for (i in z) {
+    if (z[i] >= 1000)
+      v = $w["Price/kWh 1000"] * z[i]
     else
-      x = $p500 * z[y]
-    tot += x
+      v = $w["Price/kWh 500"] * z[i]
+    tot += v
   }
-  w[1][NR] = tot
-  w[2][NR] = $rc
-  w[3][NR] = $p500
-  w[4][NR] = $p1000
+  t[1][NR] = tot
+  t[2][NR] = $w["RepCompany"]
+  t[3][NR] = $w["Price/kWh 500"]
+  t[4][NR] = $w["Price/kWh 1000"]
 }
 END {
   PROCINFO["sorted_in"] = "@val_num_asc"
-  for (s in w[1])
+  for (i in t[1])
     printf "$%.0f - %s - 500 kWh %s - 1000 kWh %s\n",
-    w[1][s], w[2][s], w[3][s], w[4][s]
+    t[1][i], t[2][i], t[3][i], t[4][i]
 }
