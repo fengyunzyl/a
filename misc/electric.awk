@@ -44,13 +44,11 @@ $w["Rate Type"] == "Fixed" {
     if ($w["Plan Name"] == i)
       next
   tot = 0
-  for (i in z) {
+  for (i in z)
     if (z[i] >= 1000)
-      v = $w["Price/kWh 1000"] * z[i]
+      tot += $w["Price/kWh 1000"] * z[i]
     else
-      v = $w["Price/kWh 500"] * z[i]
-    tot += v
-  }
+      tot += $w["Price/kWh 500"] * z[i]
   t[1][NR] = tot
   t[2][NR] = $w["RepCompany"]
   t[3][NR] = $w["Price/kWh 500"]
