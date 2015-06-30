@@ -14,23 +14,11 @@ BEGIN {
   z["2014 07"] =  954
   z["2014 06"] =  861
 
-  y["4CHANGE ENERGY"] # M-F 9-5
-  y["DISCOUNT POWER"] # M-F 830-530
-  y["FRONTIER UTILITIES"] # hours not listed
-  y["PENNYWISE POWER"] y["PENNYWISE POWER "] # M-F 8-5
-  y["POWER EXPRESS"] # $2/mo for manual bill pay
-  y["SPARK ENERGY LLC"] # 2 stars
+  # exclude company
+  # y["4CHANGE ENERGY"]
 
-  # new customers only
-  x["Gexa Choice Conserve 5"]
-  x["Smart Saver 6"]
-  x["Reliant Conservation (SM) 12 plan"]
-  x["6 Month Usage Bill Credit"]
-  x["Reliant Conservation (SM) 9 plan"]
-  x["Pollution Free Conserve 12 Choice"]
-  x["Smart Saver 3"]
-  x["Gexa Choice 6"]
-  x["Pollution Free Conserve 6 Choice"]
+  # exclude plan
+  # x["Gexa Choice Conserve 5"]
 }
 NR == 1 {
   for (i=1; i<=NF; i++)
