@@ -1,12 +1,11 @@
+#!/bin/sh
 function warn {
   printf '\e[36m%s\e[m\n' "$*"
 }
 
 function log {
-  unset PS4
-  sx=$((set -x
-    : "$@") 2>&1)
-  warn "${sx:2}"
+  sx=$(bash -xc ': "$@"' . "$@" 2>&1)
+  warn "${sx:4}"
   "$@"
 }
 
