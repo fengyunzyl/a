@@ -1,4 +1,5 @@
 #!/bin/sh
+mirror=https://thepiratebay.vg
 mapfile -t al <<+
 NAME
   torrent.sh
@@ -58,20 +59,20 @@ cg=$3
 
 if [ "$cg" != 207 ]
 then
-  browse "http://thepiratebay.se/search/$sc/0/$sr/$cg"
+  browse "$mirror/search/$sc/0/$sr/$cg"
   exit
 fi
 
 cd /tmp
 rm -f *.htm
 upper=$(exp '3 * 1024 ^ 3')
-log curl --com -so search.htm "thepiratebay.se/search/$sc/0/$sr/$cg"
+log curl --com -so search.htm "$mirror/search/$sc/0/$sr/$cg"
 
 awk '$2 == "torrent" {print $3}' FS=/ search.htm |
 while read each
 do
   printf '%8d\t' $each
-  curl --com -so $each.htm thepiratebay.se/torrent/$each
+  curl --com -so $each.htm $mirror/torrent/$each
   # check size
   sz=$(awk '/Bytes/ {print $NF}' FPAT=[[:digit:]]+ $each.htm)
   if (( sz > upper ))
@@ -105,12 +106,12 @@ do
   fi
   # check seeders
   sd=$(awk '/Seeders/ {print RT}' RS=[[:digit:]]+ $each.htm)
-  # thepiratebay.se/torrent/9941270
+  # $mirror/torrent/9941270
   if (( sd < 1 ))
   then
     echo low seeders
     continue
   fi
   echo good
-  browse http://thepiratebay.se/torrent/$each
+  browse $mirror/torrent/$each
 done
