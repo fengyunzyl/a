@@ -10,5 +10,8 @@ BEGIN {
   # age in days
   x = y / (60 * 60 * 24)
 
-  printf "input: %d views / %d days = %d\n", ARGV[1], x, ARGV[1] / x
+  printf "%d views / %d days\n", ARGV[1], x
+  printf "= %d per day\n", ARGV[1] / x
+  printf "= %d per hour\n", ARGV[1] / (x * 24)
+  printf "= %d per minute\n", ARGV[1] / (x * 24 * 60)
 }
