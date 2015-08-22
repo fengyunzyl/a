@@ -23,13 +23,14 @@ END {
   # get age in seconds
   x = systime() - mktime(gensub("[/:]", " ", "g", y))
 
-  # age in days
-  w = x / (60 * 60 * 24)
-  
-  printf "%d views / %d days\n", z, w
-  printf "%d per day\n", z / w
-  printf "%d per hour\n", z / (w * 24)
-  printf "%d per minute\n", z / (w * 24 * 60)
+  x /= 60 * 60 * 24
+  printf "%d views / %d days = %d\n", z, x, z/x
+
+  x *= 24
+  printf "%d views / %d hours = %d\n", z, x, z/x
+
+  x *= 60
+  printf "%d views / %d minutes = %d\n", z, x, z/x
 }
 ' /tmp/alpha.htm
 
