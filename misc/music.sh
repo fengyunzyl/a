@@ -5,9 +5,6 @@ then
   exit
 fi
 
-wget --output-document /tmp/alpha.htm "$1"
-printf '\e[1;33m'
-
 case "$1" in
 *soundcloud*)
   v='
@@ -37,6 +34,9 @@ case "$1" in
   '
 ;;
 esac
+
+wget --output-document /tmp/alpha.htm "$1"
+printf '\e[1;33m'
 
 awk "$v"'
 END {
