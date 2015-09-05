@@ -39,14 +39,17 @@ wget --output-document /tmp/alpha.htm "$1"
 printf '\e[1;33m'
 
 awk "$v"'
+func t(u) {
+  printf "%\047d views / %\047d %s = %\047d\n", z, x, u, z/x
+}
 END {
   x = systime() - mktime(y)
   x /= 60 * 60 * 24
-  printf "%d views / %d days = %d\n", z, x, z/x
+  t("days")
   x *= 24
-  printf "%d views / %d hours = %d\n", z, x, z/x
+  t("hours")
   x *= 60
-  printf "%d views / %d minutes = %d\n", z, x, z/x
+  t("minutes")
 }
 ' /tmp/alpha.htm
 
