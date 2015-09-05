@@ -16,7 +16,7 @@ case "$1" in
     z = $2
   }
   /created_at/ {
-    y = gensub("[/:]", " ", "g", $2)
+    y = gensub(/[[:alpha:][:punct:]]/, " ", "g", $2)
   }
   '
 ;;
