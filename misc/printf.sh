@@ -18,4 +18,4 @@ else
   printf -vy '{w="%s"}' "$1"
 fi
 
-printf '%s\n' "${z[@]}" | awk "$y"'{printf "%s\t" $0 "\n", $0, w}'
+printf '%s\n' "${z[@]}" | awk "$y"'{printf "%" $0 "\t" $0 "\n", w}'
