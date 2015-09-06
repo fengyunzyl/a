@@ -1,33 +1,25 @@
-function hr {
-  sed '
-  1d
-  $d
-  s/  //
-  ' <<< "$1"
-}
-
-if (( $# != 2 ))
+#!/bin/sh
+if [ $# = 0 ]
 then
-  hr '
-  printf.sh <E|S> INPUT
-  E expression
-  S string
-  '
+  echo 'printf.sh [-e] [input]'
+  echo '-e   treat input as expression instead of string'
   exit
 fi
 
-ag=$2
-if [[ $1 = S ]]
-then
-  printf -v ag '"%s"' "$2"
-fi
-
-bar=(
+z=(
   %a %b %d %e %.0f %.7f
   %g %h %i %j %k %l %m %n %o %p %q %r %s %t %u %v %w %x %y %z
 )
 
-for foo in ${bar[*]}
+if [ "$1" = -e ]
+then
+  y='BEGIN {w=%s}'
+  shift
+else
+  y='BEGIN {w="%s"}'
+fi
+
+for x in "${z[@]}"
 do
-  awk "BEGIN {printf \"%$foo\t$foo\n\", $ag}"
-done
+  printf "$y"'BEGIN {printf "%%%s\t%s\\n", w}' "$1" "$x" "$x"
+done | awk -f-
