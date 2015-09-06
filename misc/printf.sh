@@ -13,13 +13,9 @@ z=(
 
 if [ "$1" = -e ]
 then
-  y='BEGIN {w=%s}'
-  shift
+  printf -vy '{w=%s}' "$2"
 else
-  y='BEGIN {w="%s"}'
+  printf -vy '{w="%s"}' "$1"
 fi
 
-for x in "${z[@]}"
-do
-  printf "$y"'BEGIN {printf "%%%s\t%s\\n", w}' "$1" "$x" "$x"
-done | awk -f-
+printf '%s\n' "${z[@]}" | awk "$y"'{printf "%s\t" $0 "\n", $0, w}'
