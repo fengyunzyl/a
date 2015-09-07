@@ -18,21 +18,21 @@ grep -r --exclude-dir .git -I '((' /home/git
 - get 2 TB hard drive
 - reinstall Windows
 
-FIX LINKS
+# FIX LINKS
 http://ffmpeg.org/ffmpeg-codecs.html#AC_002d3-Metadata
 
-OTHER STUFF
-http://forum.doom9.org/showthread.php?t=166797
-http://networkedmediatank.com/showthread.php?tid=49045#pid458740
-http://github.com/FFmpeg/FFmpeg/blob/2dcaa1b/libavcodec/ac3.h#L58
-http://github.com/FFmpeg/FFmpeg/blob/2dcaa1b/libavutil/mathematics.h#L52
+# OTHER STUFF
+- http://forum.doom9.org/showthread.php?t=166797
+- http://networkedmediatank.com/showthread.php?tid=49045#pid458740
+- http://github.com/FFmpeg/FFmpeg/blob/2dcaa1b/libavcodec/ac3.h#L58
+- http://github.com/FFmpeg/FFmpeg/blob/2dcaa1b/libavutil/mathematics.h#L52
 
-Yet Another FAT Sorter
+# Yet Another FAT Sorter
 http://luisrios.eti.br/public/en_us/projects/yafs
 
-720p-mp4-h264
-replace these with new ones
-put in metadata too
+# 720p-mp4-h264
+- replace these with new ones
+- put in metadata too
 
-http://opendirective.net/blog/2014/04/
+# http://opendirective.net/blog/2014/04/
 success-firefox-os-1-4-built-and-running-on-zte-open
