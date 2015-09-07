@@ -5,7 +5,8 @@ ds=$PROGRAMFILES/notepad2
 # you must do full clone to get correct version number on about page
 git clone --single-branch git://github.com/XhmikosR/notepad2-mod
 cd "$sc"
-curl -L github.com/XhmikosR/notepad2-mod/commit/48efb00.diff | git apply
+git fetch origin pull/81/head:81
+git checkout 81
 cd "$sc/build"
 cmd /c build_vs2013 build x64
 
