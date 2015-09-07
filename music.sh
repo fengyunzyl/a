@@ -1,5 +1,7 @@
 #!/bin/sh
-# <!--Shuffler-oq1a600157-->
+: '
+<!--Shuffler-oq1a600157-->
+'
 if [ $# != 1 ]
 then
   echo 'music.sh [URL]'
