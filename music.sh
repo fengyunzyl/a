@@ -1,5 +1,5 @@
 #!/bin/sh
-# Shuffler vl4d3a0nc8
+# Shuffler-vl4d3a0nc8
 if [ $# != 1 ]
 then
   echo 'music.sh [URL]'
