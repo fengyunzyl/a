@@ -12,8 +12,7 @@ apt-cyg install --nodeps git
 # need full clone for autoreconf
 git clone --single-branch git://github.com/stedolan/jq
 cd jq
-git fetch origin pull/939/head:939
-git checkout 939
+git pull origin pull/939/head
 autoreconf --install
 ./configure --host x86_64-w64-mingw32
 make --jobs 4 LDFLAGS='-s -lshlwapi'
