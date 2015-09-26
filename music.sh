@@ -39,17 +39,19 @@ wget --output-document /tmp/alpha.htm "$1"
 printf '\e[1;33m'
 
 awk "$v"'
-func t(u) {
-  printf "%\047.0f views / %\047.0f %s = %\047.0f\n", z, x, u, z/x
+func s(t, u) {
+  printf "%\047.0f views / %\047.*f %s = %\047.0f\n", z, u, x, t, z/x
 }
 END {
   x = systime() - mktime(y)
-  x /= 60 * 60 * 24
-  t("days")
+  x /= 60 * 60 * 24 * 365
+  s("years", 3)
+  x *= 365
+  s("days")
   x *= 24
-  t("hours")
+  s("hours")
   x *= 60
-  t("minutes")
+  s("minutes")
 }
 ' /tmp/alpha.htm
 
