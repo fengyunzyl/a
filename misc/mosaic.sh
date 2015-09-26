@@ -77,9 +77,9 @@ else
   rz=("${rz[@]/n}")
 fi
 
-ao=$(identify -format '%[fx:w/h>1]' "$@")
 if [ ${#dm} = 0 ]
 then
+  ao=$(identify -format '%[fx:w/h>1]' "$@")
   case $ao in
     11) dm=({1920,1920}x1080) ;;
     001) dm=({960,960,1920}x1080) ;;
