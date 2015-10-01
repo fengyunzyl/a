@@ -34,5 +34,5 @@ http://luisrios.eti.br/public/en_us/projects/yafs
 - replace these with new ones
 - put in metadata too
 
-# http://opendirective.net/blog/2014/04/
+http://opendirective.net/blog/2014/04/
 success-firefox-os-1-4-built-and-running-on-zte-open
