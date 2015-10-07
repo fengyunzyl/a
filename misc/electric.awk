@@ -43,7 +43,7 @@ $w["Rate Type"] == "Fixed" {
   t[4][NR] = $w["Price/kWh 1000"]
 }
 END {
-  PROCINFO["sorted_in"] = "@val_num_asc"
+  PROCINFO["sorted_in"] = "@val_num_desc"
   for (i in t[1])
     printf "$%.0f - %s - 500 kWh %s - 1000 kWh %s\n",
     t[1][i], t[2][i], t[3][i], t[4][i]
