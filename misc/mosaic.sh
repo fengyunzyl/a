@@ -32,7 +32,7 @@ function warn {
 }
 
 function log {
-  sx=$(bash -xc ': "$@"' . "$@" 2>&1)
+  sx=$(sh -xc ': "$@"' . "$@" 2>&1)
   warn "${sx:4}"
   "$@"
 }
