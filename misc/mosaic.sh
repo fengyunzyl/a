@@ -70,11 +70,6 @@ shift $((--OPTIND))
 
 sc=("$@")
 
-if [ ${#gv[*]} = 0 ]
-then
-  gv=(center{,,,,,})
-fi
-
 if [ ${#rz[*]} = 0 ]
 then
   rz=("$@")
@@ -119,15 +114,15 @@ then
   esac
 fi
 
-# crop images
+# extent must come after resize
 for ((o=0; o<$#; o++))
 do
   log convert -quality 100 \
   ${sv+-shave $sv} \
   ${eg[o]:+-crop ${eg[o]}} \
-  ${gv[o]:+-gravity ${gv[o]}} \
   ${rz[o]:+-resize ${dm[o]}^} \
   -extent ${dm[o]} \
+  -gravity ${gv[o]:-center} \
   {,=}"${sc[o]}"
 done
 
