@@ -70,6 +70,11 @@ shift $((--OPTIND))
 
 sc=("$@")
 
+if [ ${#gv[*]} = 0 ]
+then
+  gv=(center{,,,,,})
+fi
+
 if [ ${#rz[*]} = 0 ]
 then
   rz=("$@")
