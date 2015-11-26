@@ -130,33 +130,33 @@ done
 # combine
 ${dry+exit}
 
-ht=$(identify -format '%h\n' "$@" | mn)
 set =*
 case $ao in
 000011) log convert \
   "$1" "$2" "$3" "$4" '(' "$5" "$6" -append ')' +append \
-  -quality 100 out-$ht.jpg ;;
+  -quality 100 out ;;
 000110) log convert \
   "$1" "$2" "$3" '(' "$4" "$5" -append ')' "$6" +append \
-  -quality 100 out-$ht.jpg ;;
+  -quality 100 out ;;
 011011) log convert \
   "$1" '(' "$2" "$3" -append ')' "$4" '(' "$5" "$6" -append ')' +append \
-  -quality 100 out-$ht.jpg ;;
+  -quality 100 out ;;
 110000) log convert \
   '(' "$1" "$2" -append ')' "$3" "$4" "$5" "$6" +append \
-  -quality 100 out-$ht.jpg ;;
+  -quality 100 out ;;
 110011) log convert \
   '(' "$1" "$2" -append ')' "$3" "$4" '(' "$5" "$6" -append ')' +append \
-  -quality 100 out-$ht.jpg ;;
+  -quality 100 out ;;
 110110) log convert \
   '(' "$1" "$2" -append ')' "$3" '(' "$4" "$5" -append ')' "$6" +append \
-  -quality 100 out-$ht.jpg ;;
+  -quality 100 out ;;
 0000110) log convert \
   "$1" "$2" "$3" "$4" '(' "$5" "$6" -append ')' "$7" +append \
-  -quality 100 out-$ht.jpg ;;
-*)
-  log convert "$@" +append -quality 100 out
-  mv out{,-$ht.jpg}
-;;
+  -quality 100 out ;;
+*) log convert "$@" +append -quality 100 out ;;
 esac
-rm "$@"
+
+sn=$(basename ~+)
+ht=$(identify -format '%h\n' "$@" | mn)
+log mv out "s $sn h $ht".jpg
+log rm "$@"
