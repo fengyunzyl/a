@@ -35,7 +35,6 @@ yankee
 zulu
 +
 # length of variable name - november is longest
-# FIXME variable names need to be same length
 var_leng=
 while [ $((var_leng+=1)) -le 8 ]
 do
@@ -43,12 +42,18 @@ do
   sta_lett=
   while [ $((sta_lett+=1)) -le 26 ]
   do
+    end_lett=$((sta_lett+num_vars-1))
+    if [ $end_lett -gt 26 ]
+    then
+      continue
+    fi
     awk '
-    NR >= x && NR < x+y {
+    NR == x, NR == y {
+      if (length < z) exit 1
       print substr($0, 1, z)
     }
-    ' x=$sta_lett y=$num_vars z=$var_leng /tmp/nfa_file >/tmp/pat_file
-    if [ $((26-sta_lett+1)) -lt $num_vars ]
+    ' x=$sta_lett y=$end_lett z=$var_leng /tmp/nfa_file >/tmp/pat_file
+    if [ $? = 1 ]
     then
       continue
     fi
