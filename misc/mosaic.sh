@@ -130,6 +130,8 @@ done
 
 # combine
 ${dry+exit}
+# this needs to be here otherwise you are measuring the wrong height
+ht=$(identify -format '%h\n' "$@" | mn)
 
 set =*
 case $ao in
@@ -158,6 +160,5 @@ case $ao in
 esac
 
 sn=$(basename ~+)
-ht=$(identify -format '%h\n' "$@" | mn)
 log mv out "s $sn h $ht".jpg
 log rm "$@"
