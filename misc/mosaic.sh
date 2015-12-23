@@ -109,6 +109,7 @@ then
     110011) dm=(960x540 960x540 960x1080 960x1080 960x540 960x540) ;;
     110110) dm=(960x{540,540,1080,540,540,1080}) ;;
     0000110) dm=(640x{1080,1080,1080,1080,540,540,1080}) ;;
+    11111111) dm=(960x540{,,,,,,,}) ;;
     *)
       echo cannot automatically set dimensions
       exit
@@ -135,26 +136,22 @@ ht=$(identify -format '%h\n' "$@" | mn)
 
 set =*
 case $ao in
-000011) log convert \
-  "$1" "$2" "$3" "$4" '(' "$5" "$6" -append ')' +append \
+000011) log convert "$1" "$2" "$3" "$4" '(' "$5" "$6" -append ')' +append \
   -quality 100 out ;;
-000110) log convert \
-  "$1" "$2" "$3" '(' "$4" "$5" -append ')' "$6" +append \
+000110) log convert "$1" "$2" "$3" '(' "$4" "$5" -append ')' "$6" +append \
   -quality 100 out ;;
-011011) log convert \
-  "$1" '(' "$2" "$3" -append ')' "$4" '(' "$5" "$6" -append ')' +append \
+011011) log convert "$1" '(' "$2" "$3" -append ')' "$4" \
+  '(' "$5" "$6" -append ')' +append -quality 100 out ;;
+110000) log convert '(' "$1" "$2" -append ')' "$3" "$4" "$5" "$6" +append \
   -quality 100 out ;;
-110000) log convert \
-  '(' "$1" "$2" -append ')' "$3" "$4" "$5" "$6" +append \
-  -quality 100 out ;;
-110011) log convert \
-  '(' "$1" "$2" -append ')' "$3" "$4" '(' "$5" "$6" -append ')' +append \
-  -quality 100 out ;;
-110110) log convert \
-  '(' "$1" "$2" -append ')' "$3" '(' "$4" "$5" -append ')' "$6" +append \
-  -quality 100 out ;;
-0000110) log convert \
-  "$1" "$2" "$3" "$4" '(' "$5" "$6" -append ')' "$7" +append \
+110011) log convert '(' "$1" "$2" -append ')' "$3" "$4" \
+  '(' "$5" "$6" -append ')' +append -quality 100 out ;;
+110110) log convert '(' "$1" "$2" -append ')' "$3" \
+  '(' "$4" "$5" -append ')' "$6" +append -quality 100 out ;;
+0000110) log convert "$1" "$2" "$3" "$4" \
+  '(' "$5" "$6" -append ')' "$7" +append -quality 100 out ;;
+11111111) log convert '(' "$1" "$2" -append ')' '(' "$3" "$4" -append ')' \
+  '(' "$5" "$6" -append ')' '(' "$7" "$8" -append ')' +append \
   -quality 100 out ;;
 *) log convert "$@" +append -quality 100 out ;;
 esac
