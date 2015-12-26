@@ -7,7 +7,7 @@ fi
 num_vars=$1
 inp_file=$2
 cat >/tmp/nfa_file <<+
-alpha
+alfa
 bravo
 charlie
 delta
