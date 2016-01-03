@@ -1,5 +1,5 @@
 #!/bin/sh
-mapfile -t usage <<+
+usage="\
 NAME
   date.sh
 
@@ -8,15 +8,11 @@ SYNOPSIS
 
 EXAMPLE
   date.sh 2015-5-15
-+
-
-function pa {
-  printf '%s\n' "$@"
-}
+"
 
 if [ $# != 1 ]
 then
-  pa "${usage[@]}"
+  printf "$usage"
   exit
 fi
 

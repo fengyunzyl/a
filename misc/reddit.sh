@@ -1,5 +1,5 @@
 #!/bin/bash
-mapfile -t usage <<+
+usage="\
 NAME
   reddit.sh
 
@@ -16,7 +16,15 @@ OPERATIONS
     sync files to target flash drive, and record all files transferred. If
     sync is run without a target, list available flash drives and changes since
     last sync.
-+
+
+FIXME
+1. change name of reddit.sh
+   reason is because if script supports youtube playlists, that has nothing to
+   do with reddit
+2. reddit.sh support youtube playlists
+3. reddit.sh folder for each year
+4. use 'history' or 'basename' instead of 'pa'
+"
 
 function pa {
   for each
@@ -182,6 +190,6 @@ case "$1" in
   snc "$@"
 ;;
 *)
-  pa "${usage[@]}"
+  printf "$usage"
 ;;
 esac

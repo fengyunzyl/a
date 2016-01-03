@@ -1,7 +1,7 @@
 #!/bin/sh
 # A mosaic in digital imaging is a plurality of non-overlapping images, arranged
 # in some tessellation.
-mapfile usage <<+
+usage="\
 mosaic.sh [options] [files]
 
 -d             dry run, create pieces only
@@ -20,8 +20,7 @@ mosaic.sh [options] [files]
 
 -m dimensions  comma separated list of dimensions
                example  1920x1080,1280x1080,960x1080,640x1080
-+
-readonly usage
+"
 
 function mn {
   awk '{for (;NF-1;NF--) if ($1>$NF) $1=$NF} 1' RS=
@@ -51,7 +50,7 @@ fi
 
 if [ $# = 0 ]
 then
-  printf %s "${usage[@]}"
+  printf "$usage"
   exit
 fi
 

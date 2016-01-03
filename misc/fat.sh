@@ -1,5 +1,5 @@
 #!/bin/sh
-mapfile -t usage <<+
+usage="\
 NAME
   fat.sh
 
@@ -8,15 +8,11 @@ SYNOPSIS
 
 EXAMPLE
   fat.sh E:
-+
-
-function pa {
-  printf '%s\n' "$@"
-}
+"
 
 if [ $# != 1 ]
 then
-  pa "${usage[@]}"
+  printf "$usage"
   exit
 fi
 

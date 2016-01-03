@@ -1,11 +1,4 @@
-function hr {
-  sed '
-  1d
-  $d
-  s/  //
-  ' <<< "$1"
-}
-
+#!/bin/sh
 function bw {
   case $OSTYPE in
   linux-gnu) xdg-open "$1" ;;
@@ -64,25 +57,27 @@ function jo {
   jq -r "$@" | sed 's.\r..'
 }
 
+usage="\
+musicbrainz.sh date-get <album>  <date>
+musicbrainz.sh  img-get <artist> <album>
+musicbrainz.sh  img-set <image>
+
+date must be this format: 1982-12
+
+when adding release, make sure to include
+- release title
+- artist
+- type
+- status
+- date
+- format
+- track titles
+- track lengths
+"
+
 case "$1" in
 '')
-  hr '
-  musicbrainz.sh date-get <album>  <date>
-  musicbrainz.sh  img-get <artist> <album>
-  musicbrainz.sh  img-set <image>
-  
-  date must be this format: 1982-12
-
-  when adding release, make sure to include
-  - release title
-  - artist
-  - type
-  - status
-  - date
-  - format
-  - track titles
-  - track lengths
-  '
+  printf "$usage"
   exit
 ;;
 img-get)

@@ -1,6 +1,6 @@
 #!/bin/sh
 mirror=https://thepiratebay.vg
-mapfile -t al <<+
+al="\
 NAME
   torrent.sh
 
@@ -20,11 +20,7 @@ CATEGORY
   207  Video HD Movies
   208  Video HD TV shows
   301  Applications Windows
-+
-
-function pa {
-  printf '%s\n' "$@"
-}
+"
 
 function browse {
   case $OSTYPE in
@@ -49,7 +45,7 @@ function exp {
 
 if [ $# != 3 ]
 then
-  pa "${al[@]}"
+  printf "$al"
   exit
 fi
 
