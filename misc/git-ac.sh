@@ -1,19 +1,22 @@
-git diff --cached --quiet && git add -A "$@"
+#!/bin/sh
+if git diff --cached --quiet
+then
+  git add --all "$@"
+fi
 
 # print first added line if found, else print first removed line
-mg=$(git diff --cached --color | awk '
-/^\033\[3[12]m/ {
-  cr=$4
-  if (cr==1 && rd) next
-  gsub(/\033[^m]+m/, "")
-  sub(/./, "")
-  if (match($0, "^(/\\*|-)")) next
-  rd=$0
-  if (cr==2 && rd) exit
+git diff --cached | awk '
+/^i/ {
+  y = NR
+}
+/^[-+]/ && NR>y+2 {
+  if (/^-/ && z) next
+  if (/#/) next
+  z = $0
+  if (/^+/ && z) exit
 }
 END {
-  print rd
+  print substr(z, 2)
 }
-' FPAT=.)
-
-git commit -m "$mg"
+' |
+git commit --file -
