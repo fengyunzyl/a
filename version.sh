@@ -34,6 +34,6 @@ END {
   if (que >= 100) rom = "major"
   else if (que >= 10) rom = "minor"
   else rom = "patch"
-  printf "%d / %d = %.0f% = %s\n", osc, pap, que, rom
+  printf "%d / %d = %d% = %s\n", osc, pap, que, rom
 }
 '
