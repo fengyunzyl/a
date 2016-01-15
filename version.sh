@@ -5,7 +5,7 @@ then
   exit
 fi
 mik=$1
-nov=$(git describe --tags --abbrev= $mik)
+nov=`git describe --tags --abbrev= $mik`
 if [ $? = 0 ]
 then
   echo "Last tag ‘$nov’"
