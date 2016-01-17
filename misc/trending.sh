@@ -1,3 +1,4 @@
+#!/bin/sh
 if [ $# != 3 ]
 then
   echo trending.sh PAGE LANGUAGE MAXSIZE
