@@ -1,7 +1,7 @@
 #!/bin/sh
 if [ $# != 1 ]
 then
-  echo 'version.sh [commit]'
+  echo 'release.sh [commit]'
   exit
 fi
 mik=$1
