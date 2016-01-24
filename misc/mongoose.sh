@@ -3,8 +3,8 @@ host=x86_64-w64-mingw32
 prefix=/usr/$host/sys-root/mingw
 cc=$host-gcc
 ar=$host-ar
-apt-cyg install make mingw64-x86_64-gcc-core upx wget zip
-apt-cyg install --nodeps git
+sage install make mingw64-x86_64-gcc-core upx wget zip
+sage install --nodeps git
 
 # mbedtls
 wget tls.mbed.org/download/mbedtls-1.3.10-gpl.tgz

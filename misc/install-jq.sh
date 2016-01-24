@@ -1,14 +1,14 @@
 #!/bin/sh
-type apt-cyg >/dev/null || exit
+type sage >/dev/null || exit
 # automake < autoreconf
 # bison < yacc < make
 # diffutils < cmp < configure
 # flex < make
 # libtool < autoreconf
 # mingw64-x86_64-gcc-core < x86_64-w64-mingw32-gcc < configure
-apt-cyg install automake bison diffutils flex libtool \
+sage install automake bison diffutils flex libtool \
   make mingw64-x86_64-gcc-core upx zip
-apt-cyg install --nodeps git
+sage install --nodeps git
 # need full clone for autoreconf
 git clone --single-branch git://github.com/stedolan/jq
 cd jq

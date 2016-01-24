@@ -7,8 +7,8 @@ prefix=/usr/$host/sys-root/mingw
 # make > make
 # mingw64-x86_64-gcc-g++ > x86_64-w64-mingw32-g++
 # yasm > x264
-apt-cyg install automake diffutils libtool make mingw64-x86_64-gcc-g++ yasm
-apt-cyg install --nodeps git
+sage install automake diffutils libtool make mingw64-x86_64-gcc-g++ yasm
+sage install --nodeps git
 
 # fdk-aac
 git clone --depth 1 git://github.com/mstorsjo/fdk-aac
