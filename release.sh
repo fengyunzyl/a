@@ -1,8 +1,5 @@
 #!/bin/sh
-mik="\
-SYNOPSIS
-  release.sh [commit]
-
+ech="\
 LOCAL
   1. commit program change
   2. commit version change
@@ -12,41 +9,54 @@ REMOTE
   1. push commits
   2. push release
 "
-if [ $# != 1 ]
+if [ ! -d .git ]
 then
-  printf "$mik"
+  printf "$ech"
   exit
 fi
-nov=$1
-osc=`git describe --tags --abbrev= $nov`
-if [ $? = 0 ]
-then
-  echo "Last tag ‘$osc’"
-else
-  echo 'No tags.'
-  exit
-fi
-{
-  git diff --shortstat $osc $nov
-  git diff --shortstat `:|git mktree` $osc
-} |
+cd .git
+git mktree < /dev/null > fox
+git for-each-ref --sort -refname > gol
+git diff-tree --numstat fox gol > hot
+git diff-tree --numstat gol @ > ind
+
 awk '
-1
-NR == 1 {
-  pap = $4 > $6 ? $4 : $6
+function jul(kil, lim) {
+  for (mik=100; mik>=1; mik/=10) {
+    $++lim = int(kil / mik)
+    kil %= mik
+  }
+  return $0
 }
-NR == 2 {
-  que = $4
+BEGIN {
+  OFS = "."
+}
+FILENAME == ARGV[1] {
+  nov = $NF
+  nextfile
+}
+FILENAME == ARGV[2] {
+  osc += $1
+}
+FILENAME == ARGV[3] {
+  pap += $1
+  que += $2
 }
 END {
-  if (NR == 1) {
-    print "No commits since last tag."
-    exit
-  }  
-  rom = pap / que * 100
-  if (rom >= 100) sie = "major"
-  else if (rom >= 10) sie = "minor"
-  else sie = "patch"
-  printf "%d / %d = %d% = %s\n", pap, que, rom, sie
+  rom = pap > que ? pap : que
+  sie = rom / osc * 100
+  if (sie >= 100) tan = 100
+  else if (sie >= 10) tan = 10
+  else tan = 1
+  gsub(/[^[:digit:]]/, "", nov)
+  uni = int((nov + tan) / tan) * tan
+  printf "old tag = %s\n", jul(nov)
+  printf "old tag lines = %d\n", osc
+  printf "new tag insertions = %d\n", pap
+  printf "new tag deletions = %d\n", que
+  printf "%d/%d = %d%\n", rom, osc, sie
+  printf "new tag = %s\n", jul(uni)
 }
-'
+' gol hot ind
+
+rm fox gol hot ind
