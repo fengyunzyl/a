@@ -1,24 +1,22 @@
 #!/bin/sh
 # get compiler prefix
-warn() {
-  printf '\033[36m%s\033[m\n' "$*"
-}
-
 if [ $# != 1 ]
 then
   echo 'prefix.sh [compiler]'
   exit
 fi
+qu=$1
 
-touch foo.c
+touch /tmp/ro.c
 
-warn INCLUDE
-$1 -v foo.c |& egrep '^ [^ ]+$' | while read -r ic
+echo INCLUDE
+$qu -v /tmp/ro.c 2>&1 | egrep '^ [^ ]+$' |
+while read -r si
 do
-  if [ -a $ic ]
+  if [ -d $si ]
   then
-    cd $ic
-    until ! [[ $PWD =~ include ]]
+    cd $si
+    while echo $PWD | grep -q include
     do
       cd ..
     done
@@ -29,18 +27,18 @@ done | sed '
 s/^/--prefix /
 ' | sort -u
 
-warn LIB
-$1 -\#\#\# foo.c |& sed '
+echo LIB
+$qu '-###' /tmp/ro.c 2>&1 | sed '
 /LIBRARY_PATH=/!d
 s///
 y/:/\n/
 ' |
-while read -r lb
+while read -r ta
 do
-  if [ -a $lb ]
+  if [ -d $ta ]
   then
-    cd $lb
-    until ! [[ $PWD =~ lib ]]
+    cd $ta
+    while echo $PWD | grep -q lib
     do
       cd ..
     done
@@ -50,5 +48,3 @@ done | sed '
 /\./d
 s/^/--prefix /
 ' | sort -u
-
-rm -f foo.c foo.o
