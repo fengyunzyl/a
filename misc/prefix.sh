@@ -1,15 +1,15 @@
+#!/bin/sh
 # get compiler prefix
+warn() {
+  printf '\033[36m%s\033[m\n' "$*"
+}
 
-usage () {
-  echo usage: ${0##*/} COMPILER
+if [ $# != 1 ]
+then
+  echo 'prefix.sh [compiler]'
   exit
-}
+fi
 
-warn () {
-  printf '\e[36m%s\e[m\n' "$*"
-}
-
-(( $# )) || usage
 touch foo.c
 
 warn INCLUDE
