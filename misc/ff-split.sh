@@ -1,36 +1,41 @@
+#!/bin/dash
 # split album flac file
+# FIXME minutes must be 59 or less
 
-function warn {
-  printf '\e[36m%s\e[m\n' "$*"
-}
-
-function log {
-  unset PS4
-  sx=$((set -x
-    : "$@") 2>&1)
-  warn "${sx:2}"
-  "$@"
-}
-
-if (( $# != 2 ))
+if [ $# != 1 ]
 then
-  echo ff-split.sh CUE AUDIO
+  echo 'ff-split.sh [cue file]'
   exit
 fi
 
-ce=$1
-ao=$2
-
-# fpcalc cannot read files with commas, good game
-log shntool split -f "$ce" -t %n-%t -m ' -&-(-)-,-/-;-' -o flac "$ao"
-
-# mux to m4a
-dr=$(basename "$PWD")
-mkdir "$dr"
-for each in *.flac
+awk '
+$1 == "FILE" {
+  split($0, i, /"/)
+  infile = i[2]
+}
+$1 == "TITLE" && infile {
+  split($0, i, /"/)
+  outfile[++j] = i[2]
+}
+$1 == "INDEX" && $2 {
+  split($3, i, ":")
+  start[j] = i[1] ":" sprintf("%06.3f", i[2] + i[3]/75)
+}
+END {
+  for (each in outfile) {
+    print infile
+    print outfile[each] ".m4a"
+    print start[each]
+    print each == j ? "80:00.000" : start[each+1]
+  }
+}
+' "$1" |
+while
+  read infile
+  read outfile
+  read start
+  read stop
 do
-  [[ $each = $ao ]] && continue
-  warn "$each"
-  ffmpeg -hide_banner -i "$each" -b:a 256k \
-    -movflags faststart "$dr"/"${each%.*}".m4a
+  ffmpeg -nostdin -hide_banner -i "$infile" -ss $start -to $stop \
+    -map_metadata -1 -b:a 256k -movflags faststart "$outfile"
 done
