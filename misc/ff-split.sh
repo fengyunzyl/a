@@ -1,6 +1,9 @@
 #!/bin/dash
 # split album flac file
-# FIXME minutes must be 59 or less
+# FIXME Invalid duration specification for to: 80:00.000
+# FIXME write metadata
+# FIXME print seek times
+# FIXME track number in file name
 
 if [ $# != 1 ]
 then
@@ -19,7 +22,7 @@ $1 == "TITLE" && infile {
 }
 $1 == "INDEX" && $2 {
   split($3, i, ":")
-  start[j] = i[1] ":" sprintf("%06.3f", i[2] + i[3]/75)
+  start[j] = sprintf("%d:%02d:%06.3f", i[1]/60, i[1]%60, i[2]+i[3]/75)
 }
 END {
   for (each in outfile) {
