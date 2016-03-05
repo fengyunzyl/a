@@ -1,3 +1,4 @@
+#!/bin/sh
 # find current files with most commits, including renames
 
 git ls-files |
