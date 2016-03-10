@@ -40,7 +40,7 @@ printf '\e[1;33m'
 
 awk "$v"'
 func s(t, u) {
-  printf "%\047.0f views / %\047.*f %s = %\047.0f\n", z, u, x, t, z/x
+  printf "%\47.0f views / %\47.*f %s = %\47.0f\n", z, u, x, t, z/x
 }
 END {
   x = systime() - mktime(y)

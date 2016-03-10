@@ -18,7 +18,7 @@ printf '\e[1;32m%s\e[m\n' "star count and size of $2 repos under $3 kB"
 jq -r '.items[] |
   "\(.stargazers_count)\t\(.size)\t\(.language)\t\(.html_url)\t\(.description)"' repos.json |
   awk '{
-  v = sprintf("%s %s %s \033[1;31m%s\033[m %s",
+  v = sprintf("%s %s %s \33[1;31m%s\33[m %s",
     $1,
     $2,
     $3,

@@ -39,7 +39,7 @@ function bk {
     y = 79 - length(z)
     x = int(y / 2)
     w = y - x
-    printf "\033[1;45m%*s%s%*s\033[m\n", w, "", z, x, ""
+    printf "\33[1;45m%*s%s%*s\33[m\n", w, "", z, x, ""
   }
   '
 }
@@ -148,9 +148,9 @@ function snc {
     fd > %/c.txt
     echo CHANGES SINCE LAST SYNC
     if ! git diff --color %/{f,c}.txt | awk '
-    BEGIN           {z = 1}
-    /^\033\[3[12]m/ {z = 0; print}
-    END             {exit z}
+    BEGIN          {z = 1}
+    /^\33\[3[12]m/ {z = 0; print}
+    END            {exit z}
     '
     then
       echo no changes since last sync
