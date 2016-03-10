@@ -13,7 +13,7 @@ xc() {
         printf z[j] ~ /[^[:alnum:]%+,./:=@_-]/ ? x z[j] x : z[j]
         if (j < y) printf "\\" x
       }
-      printf i == ARGC - 1 ? "\33[m" RS : FS
+      printf i == ARGC - 1 ? "\33[m\n" : FS
     }
   }
   ' "$@" | fmt -80
