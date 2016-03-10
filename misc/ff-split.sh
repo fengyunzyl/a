@@ -1,9 +1,24 @@
 #!/bin/dash
 # split album flac file
-# FIXME Invalid duration specification for to: 80:00.000
 # FIXME write metadata
-# FIXME print seek times
-# FIXME track number in file name
+
+xc() {
+  awk '
+  BEGIN {
+    x = "\47"
+    printf "\33[36m"
+    while (++i < ARGC) {
+      y = split(ARGV[i], z, x)
+      for (j in z) {
+        printf z[j] ~ /[^[:alnum:]%+,./:=@_-]/ ? x z[j] x : z[j]
+        if (j < y) printf "\\" x
+      }
+      printf i == ARGC - 1 ? "\33[m" RS : FS
+    }
+  }
+  ' "$@" | fmt -80
+  "$@"
+}
 
 if [ $# != 1 ]
 then
@@ -14,31 +29,34 @@ fi
 awk '
 $1 == "FILE" {
   split($0, i, /"/)
-  infile = i[2]
+  file = i[2]
 }
-$1 == "TITLE" && infile {
+$1 == "TRACK" {
+  tracks[++j] = $2
+}
+$1 == "TITLE" && j {
   split($0, i, /"/)
-  outfile[++j] = i[2]
+  titles[j] = i[2]
 }
 $1 == "INDEX" && $2 {
   split($3, i, ":")
-  start[j] = sprintf("%d:%02d:%06.3f", i[1]/60, i[1]%60, i[2]+i[3]/75)
+  indexes[j] = sprintf("%d:%02d:%06.3f", i[1]/60, i[1]%60, i[2]+i[3]/75)
 }
 END {
-  for (each in outfile) {
-    print infile
-    print outfile[each] ".m4a"
-    print start[each]
-    print each == j ? "80:00.000" : start[each+1]
+  for (each in tracks) {
+    print file
+    print tracks[each] FS titles[each] ".m4a"
+    print indexes[each]
+    print indexes[each+1]
   }
 }
 ' "$1" |
 while
-  read infile
-  read outfile
+  read in
+  read out
   read start
   read stop
 do
-  ffmpeg -nostdin -hide_banner -i "$infile" -ss $start -to $stop \
-    -map_metadata -1 -b:a 256k -movflags faststart "$outfile"
+  xc ffmpeg -nostdin -v warning -stats -i "$in" -ss $start ${stop:+-to $stop} \
+    -b:a 256k -movflags faststart -map_metadata -1 "$out"
 done
