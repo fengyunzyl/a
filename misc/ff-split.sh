@@ -1,6 +1,5 @@
 #!/bin/dash
 # split album flac file
-# FIXME write metadata
 
 xc() {
   awk '
@@ -45,18 +44,21 @@ $1 == "INDEX" && $2 {
 END {
   for (each in tracks) {
     print file
-    print tracks[each] FS titles[each] ".m4a"
+    print tracks[each]
+    print titles[each]
     print indexes[each]
     print indexes[each+1]
   }
 }
 ' "$1" |
 while
-  read in
-  read out
+  read file
+  read track
+  read title
   read start
   read stop
 do
-  xc ffmpeg -nostdin -v warning -stats -i "$in" -ss $start ${stop:+-to $stop} \
-    -b:a 256k -movflags faststart -map_metadata -1 "$out"
+  xc ffmpeg -nostdin -v warning -stats -i "$file" \
+  -ss $start ${stop:+-to $stop} -b:a 256k -movflags faststart \
+  -metadata track=$track -metadata title="$title" "$track $title".m4a
 done
