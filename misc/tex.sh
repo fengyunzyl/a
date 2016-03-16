@@ -1,15 +1,19 @@
-# http://w32tex.org
+#!/bin/sh
 
-# latex.tar.xz  LaTeX 2011/06/27
-# mftools.tar.xz  mktexmf, mktextfm, mktexpk and ps2pk
-# platex.tar.xz  pLaTeX by ASCII MEDIA WORKS corp.
-# ptex-w32.tar.xz  pTeX by ASCII MEDIA WORKS corp.
-# web2c-lib.tar.xz  Basic library files of TeX
-# web2c-w32.tar.xz  Binary files of TeX and its friends
-set $HOMEDRIVE/tex ctan.ijs.si/mirror/w32tex/current
-mkdir -p $1
-cd $1
+if [ $# != 1 ]
+then
+  echo 'tex.sh [tex file]'
+  exit
+fi
 
-# pdflatex.exe
-wget $2/pdftex-w32.tar.xz
-# firefox
+pdflatex -output-directory /tmp "$1" |
+sed '
+/Output/ {
+  s/^/\x1b[1;32m/
+  s/$/\x1b[m/
+}
+/Fatal\|Warning\|Overfull\|Underfull/ {
+  s/^/\x1b[1;31m/
+  s/$/\x1b[m/
+}
+'
