@@ -11,14 +11,22 @@
 \newcommand\vehicleNum{VICTO56789R012345}
 \newcommand\zr[1]{\ifnum #1 < 10 0\fi #1}
 \documentclass{article}
-\usepackage{geometry}
 \usepackage[utf8]{inputenc}
-\geometry{nomarginpar, nofoot, includehead, margin = 30pt, headsep = 10pt}
 \renewcommand\familydefault{phv}
 \renewcommand\arraystretch{1.4}
 \pagestyle{headings}
 \pagenumbering{gobble}
 \markright{\hfill\bf TEXAS LIABILITY INSURANCE CARD\hfill}
+\pdfpagewidth 8.5in
+\pdfpageheight 11in
+\marginparwidth 0pt
+\marginparsep 0pt
+\footskip 0pt
+\headsep 10pt
+\oddsidemargin -40pt
+\textwidth\dimexpr \pdfpagewidth -2in -2\oddsidemargin
+\topmargin -40pt
+\textheight\dimexpr \pdfpageheight -2in -2\topmargin -\headheight -\headsep
 \begin{document}
 \ifnum\day > 28
   \day 28
