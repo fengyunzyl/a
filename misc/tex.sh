@@ -1,12 +1,16 @@
 #!/bin/sh
 
-if [ $# != 1 ]
+if [ $# != 2 ]
 then
-  echo 'tex.sh [tex file]'
+  echo 'tex.sh [in file] [out file]'
   exit
 fi
 
-pdflatex -output-directory /tmp "$1" |
+pa=$1
+qu=$(dirname "$2")
+ro=$(basename "$2")
+
+pdflatex -halt-on-error -output-directory "$qu" -jobname "$ro" "$pa" |
 sed '
 /Output/ {
   s/^/\x1b[1;32m/

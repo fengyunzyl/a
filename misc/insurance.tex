@@ -7,14 +7,12 @@
 \newcommand\agentName{QUEBEC ROMEO}
 \newcommand\agentPhone{(456) 789-0123}
 \newcommand\policyNum{45 SIE - 678901234}
-\newcommand\effDate{2016-03-14}
-\newcommand\expDate{2016-04-14}
 \newcommand\makeModel{2016 TANGO UNIFORM}
 \newcommand\vehicleNum{VICTO56789R012345}
+\newcommand\zr[1]{\ifnum #1 < 10 0\fi #1}
 \documentclass{article}
 \usepackage{fancyhdr}
 \usepackage{geometry}
-\usepackage{tabularx}
 \usepackage[utf8]{inputenc}
 \geometry{nomarginpar, nofoot, includehead, margin = 30pt, headsep = 10pt}
 \pagestyle{fancy}
@@ -22,108 +20,119 @@
 \chead{\bf TEXAS LIABILITY INSURANCE CARD}
 \renewcommand\headrulewidth{0pt}
 \renewcommand\familydefault{phv}
+\renewcommand\arraystretch{1.4}
 \begin{document}
-\noindent
-\begin{tabularx}\textwidth{|X|X|}
+\ifnum\day > 28
+  \day 28
+\fi
+\newcount\xr
+\xr 12
+\newdimen\ya
+\ya \dimexpr .5\textwidth - 2\tabcolsep
+\loop \ifnum\xr > 0
+\noindent\begin{tabular}{|p{\ya}|p{\ya}|}
 \hline
-\bf Name and Address of Insured \newline
+\bf Name and Address of Insured \par
 Nombre y Direction del Asegurado &
-\bf Insurance Company - Compania de Seguro \newline
+\bf Insurance Company -- Compania de Seguro \par
 \companyOne \\
 \hline
-\driverName \newline
+\driverName \par
 \addressOne &
-\companyTwo \newline
+\companyTwo \par
 \companyPhone \\
 \hline
 \addressTwo &
-Agent - Agente \newline
-\agentName ~ Phone \# : \agentPhone \\
+Agent -- Agente \par
+\agentName \qquad Phone \#: \agentPhone \\
 \hline
-Policy Number - Numero de Poliza &
+Policy Number -- Numero de Poliza &
 \policyNum \\
 \hline
-Effective Date - Fecha Efectiva &
-\effDate \\
+Effective Date -- Fecha Efectiva &
+\the\year-\zr{\the\month}-\zr{\the\day} \\
 \hline
-Expiration Date - Fecha de Expiration &
-\expDate ~ - 12:01 A.M. \\
+Expiration Date -- Fecha de Expiration &
+\global\advance\month 1
+\ifnum\month > 12
+  \global\advance\year 1
+  \global\month 1
+\fi
+\the\year-\zr{\the\month}-\zr{\the\day} \qquad -- \qquad 12:01 A.M. \\
 \hline
-Vehicle Make/Model Year \newline
-Marca de Vahiculo/Modele Ane &
-\makeModel \newline
-\vehicleNum \\
+\bf Vehicle Year / Make / Model \par
+Vehiculo Ane / Marca / Modele &
+\makeModel \qquad\qquad \vehicleNum \\
 \hline
-This policy provides at least the minimum amounts of liability \newline
-insurance required by the Texas Motor Vehicle Safety \newline
-Responsibility Act for the specified vehicle and named \newline
-insured and that provided coverage for other persons and \newline
-other vehicles as provided by the insurance policy &
-Esta poliza provee por lo menos la cantidad minima de \newline
-seguro de responsabilided requerida por ley (Texas \newline
-Motor Vehicle Safety Responsibility Act) para el vehiculo \newline
-especificado y para los asegurados nombrados, y \newline
-puede proveer cobertura para lotras personas y otros \newline
-vehiculuos segun provisto en la poliza de seguro. \\
+\raggedright This policy provides at least the minimum amounts of liability
+insurance required by the Texas Motor Vehicle Safety Responsibility Act for the
+specified vehicle and named insured and that provided coverage for other persons
+and other vehicles as provided by the insurance policy. &
+\raggedright Esta poliza provee por lo menos la cantidad minima de seguro de
+responsabilidad requerida por ley (Texas Motor Vehicle Safety Responsibility
+Act) para el vehiculo especificado y para los asegurados nombrados, y puede
+proveer cobertura para lotras personas y otros vehiculuos segun provisto en la
+poliza de seguro. \tabularnewline
 \hline
-\multicolumn{2}{|X|}{
+\multicolumn{2}{|p{\ya}|}{
   \medskip
   \bf Driver Name(s)
 } \\
 \hline
-\multicolumn{2}{|X|}{
-  1 \driverName
+\multicolumn{2}{|p{\ya}|}{
   \bigskip
-  \bigskip
-  \bigskip
-  \bigskip
+  \qquad 1 \qquad\qquad \driverName
   \bigskip
   \bigskip
   \bigskip
   \bigskip
 } \\
 \hline
-Texas Liability \newline
-Insurance Card \newline
-Keep this Card \newline
-Important: This card or a copy of your insurance policy \newline
-must be shown when you apply for or renew your:
+\begin{center}
+\bf Texas Liability \\
+Insurance Card \bigskip
+
+Keep this Card
+\end{center}
+\textbf{Important:} This card or a copy of your insurance policy must be shown
+when you apply for or renew your:
 \begin{itemize}
   \item motor vehichle registration
   \item driver’s license
   \item motor vehicle safety inspection sticker
 \end{itemize}
-You also may be asked to show this card or your policy if \newline
-you have an accident or if a police office asks to see it. \newline
-All drivers in Texas must carry liability insurance on their \newline
-vehicles or otherwise meet legal requirements for financial \newline
-responsibility. Failure to do so could result in fines up to \newline
-\$1,000, suspension of your driver’s license and motor \newline
-vehicle registration, and impoundment of your vehicle for \newline
-up to 180 days (at a cost of \$15 per day). &
-Tarjeta de Seguro de \newline
-Responsabilidad de Texas \newline
-Guarde esta tarjeta \newline
-Importantre: Esta tarjeta o una copia de su poliza de \newline
-seguro debe ser mostrada cuando usted solicite o renueve \newline
-su:
+You also may be asked to show this card or your policy if you have an accident
+or if a police officer asks to see it. \bigskip
+
+\raggedright All drivers in Texas must carry liability insurance on their
+vehicles or otherwise meet legal requirements for financial responsibility.
+Failure to do so could result in fines up to \$1,000, suspension of your
+driver’s license and motor vehicle registration, and impoundment of your vehicle
+for up to 180 days (at a cost of \$15 per day). &
+\begin{center}
+\bf Tarjeta de Seguro de \\
+Responsabilidad de Texas \bigskip
+
+Guarde esta tarjeta
+\end{center}
+\raggedright\textbf{Importantre:} Esta tarjeta o una copia de su poliza de
+seguro debe ser mostrada cuando usted solicite o renueve su:
 \begin{itemize}
   \item registro de vehiculo de motor
   \item licencia para conducir
-  \item etiqueta de inspeccion de seguidad para su \newline
-        vehiculo
+  \item etiqueta de inspeccion de seguidad para su vehiculo
 \end{itemize}
-Puede que usted tenga tambien que mostrar esta tarjeta o \newline
-su poliza de sequro si tiene un accidente o si un oficial de \newline
-la paz se la pide. \newline
-Todos los conductors in Texas deben de tener seguro de \newline
-responsabilidad para sus vehiculos, o de otra manera \newline
-llenar los requisitos legales de responsabilidad civil. Fallo \newline
-en llenar este requisito pudiera resultar en multas de hasta \newline
-\$1,000, suspension de su licencia para conducir y su \newline
-registro de vehiculo de motor, y la retencion de su vehiculo \newline
-por un periodo de hasta 180 dias (a un costo de \$15 por \newline
-dia). \\
+Puede que usted tenga tambien que mostrar esta tarjeta o su poliza de sequro si
+tiene un accidente o si un oficial de la paz se la pide. \bigskip
+
+Todos los conductors in Texas deben de tener seguro de responsabilidad para sus
+vehiculos, o de otra manera llenar los requisitos legales de responsabilidad
+civil. Fallo en llenar este requisito pudiera resultar en multas de hasta
+\$1,000, suspension de su licencia para conducir y su registro de vehiculo de
+motor, y la retencion de su vehiculo por un periodo de hasta 180 dias (a un
+costo de \$15 por dia). \tabularnewline
 \hline
-\end{tabularx}
+\end{tabular} \newpage
+\advance\xr -1
+\repeat
 \end{document}
