@@ -11,16 +11,14 @@
 \newcommand\vehicleNum{VICTO56789R012345}
 \newcommand\zr[1]{\ifnum #1 < 10 0\fi #1}
 \documentclass{article}
-\usepackage{fancyhdr}
 \usepackage{geometry}
 \usepackage[utf8]{inputenc}
 \geometry{nomarginpar, nofoot, includehead, margin = 30pt, headsep = 10pt}
-\pagestyle{fancy}
-\fancyhf{}
-\chead{\bf TEXAS LIABILITY INSURANCE CARD}
-\renewcommand\headrulewidth{0pt}
 \renewcommand\familydefault{phv}
 \renewcommand\arraystretch{1.4}
+\pagestyle{headings}
+\pagenumbering{gobble}
+\markright{\hfill\bf TEXAS LIABILITY INSURANCE CARD\hfill}
 \begin{document}
 \ifnum\day > 28
   \day 28
