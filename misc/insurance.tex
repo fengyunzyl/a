@@ -12,21 +12,13 @@
 \newcommand\zr[1]{\ifnum #1 < 10 0\fi #1}
 \documentclass{article}
 \usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{nomarginpar, nofoot, includehead, margin=.4in, headsep=.2in}
 \renewcommand\familydefault{phv}
 \renewcommand\arraystretch{1.4}
 \pagestyle{headings}
 \pagenumbering{gobble}
 \markright{\hfill\bf TEXAS LIABILITY INSURANCE CARD\hfill}
-\pdfpagewidth 8.5in
-\pdfpageheight 11in
-\marginparwidth 0pt
-\marginparsep 0pt
-\footskip 0pt
-\headsep 10pt
-\oddsidemargin\dimexpr .4in -1in
-\textwidth\dimexpr \pdfpagewidth -2\oddsidemargin -2in
-\topmargin\dimexpr .4in -1in
-\textheight\dimexpr \pdfpageheight -2\topmargin -\headheight -\headsep -2in
 \begin{document}
 \ifnum\day > 28
   \day 28
