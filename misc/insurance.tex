@@ -23,11 +23,11 @@
 \ifnum\day > 28
   \day 28
 \fi
-\newcount\xr
-\xr 12
-\newdimen\ya
-\ya \dimexpr .5\textwidth - 2\tabcolsep
-\loop \ifnum\xr > 0
+\newcounter{xr}
+\setcounter{xr}{12}
+\newlength\ya
+\setlength\ya{\dimexpr .5\textwidth -2\tabcolsep}
+\loop \ifnum\value{xr} > 0
 \noindent\begin{tabular}{|p{\ya}|p{\ya}|}
 \hline
 \bf Name and Address of Insured \par
@@ -131,6 +131,6 @@ motor, y la retencion de su vehiculo por un periodo de hasta 180 dias (a un
 costo de \$15 por dia). \tabularnewline
 \hline
 \end{tabular} \newpage
-\advance\xr -1
+\addtocounter{xr}{-1}
 \repeat
 \end{document}
