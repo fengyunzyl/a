@@ -18,7 +18,7 @@ do
   then
     echo OK
     lw=$up
-    : $((up *= 2))
+    up=$((up * 2))
   else
     echo Not Found
     break
@@ -27,7 +27,7 @@ done
 
 while :
 do
-  : $((k = (lw + up) / 2))
+  k=$(((lw + up) / 2))
   if [ $k = $lw ]
   then
     break
