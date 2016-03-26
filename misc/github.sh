@@ -11,12 +11,18 @@ fi
 url=https://github.com/$1/$2/commits?page=
 up=1
 
-while wget -q --spider $url$up
+while :
 do
   printf '%s%d\t' $url $up
-  echo OK
-  lw=$up
-  : $((up *= 2))
+  if wget -q --spider $url$up
+  then
+    echo OK
+    lw=$up
+    : $((up *= 2))
+  else
+    echo Not Found
+    break
+  fi
 done
 
 while :
