@@ -35,7 +35,7 @@ case "$1" in
 ;;
 esac
 
-wget --output-document /tmp/alpha.htm "$1"
+wget --output-document /tmp/alfa.htm "$1"
 printf '\e[1;33m'
 
 awk "$v"'
@@ -53,6 +53,6 @@ END {
   x *= 60
   s("minutes")
 }
-' /tmp/alpha.htm
+' /tmp/alfa.htm
 
 printf '\e[m'

@@ -3,11 +3,11 @@ wget -qO- sourceware.org/cygwin/mirrors.lst | % {
   if ($_ -notmatch 'http') {
     return
   }
-  $alpha = $_.split(';')[0]
-  $alpha
-  wget --quiet --spider --tries 1 --timeout .2 $alpha
+  $alfa = $_.split(';')[0]
+  $alfa
+  wget --quiet --spider --tries 1 --timeout .2 $alfa
   if ($?) {
-    $bravo += ,$alpha
+    $bravo += ,$alfa
   }
 }
 "`nGOOD MIRRORS"
