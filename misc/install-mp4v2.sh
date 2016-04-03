@@ -2,8 +2,6 @@
 sage install automake git libtool make mingw64-i686-gcc-g++
 git clone git://github.com/svnpenn/mp4v2
 cd mp4v2
-git clean -fdx
-git checkout .
 autoreconf --install --verbose
 ./configure --host i686-w64-mingw32
 make --jobs 5 LDFLAGS=-all-static \
