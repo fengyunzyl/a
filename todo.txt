@@ -3,8 +3,6 @@ grep -r --exclude-dir .git -I '((' /home/git
 
 - fix net framework
 - fix velour
-- convert vcproj files
-- switch from atomicparsley to mp4v2
 - stackoverflow.com/q/26470537/recursive-hard-link
 - stackoverflow.com/q/4894858/download-just-visual-studio-command-prompt
 - rebuild notepad2
