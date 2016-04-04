@@ -1,32 +1,24 @@
+#!/bin/bash
 # Set thumbnail for MP4 video
 
-warn () {
-  printf '\e[36m%s\e[m\n' "$*"
-}
-
-log () {
-  unset PS4
-  qq=$(( set -x
-         : "$@" )2>&1)
-  warn "${qq:2}"
-  eval "${qq:2}"
-}
-
-unquote () {
+unquote() {
   # need quotes for github
   read -r $1 <<< "${!1//\"}"
 }
 
-warn 'Careful, screencaps will dump in current directory.
+echo 'Careful, screencaps will dump in current directory.
 Drag video here, then press enter (backslashes ok).'
-read -r if
-(( ${#if} )) || exit
-unquote if
-cd "$(dirname '$if')"
-if=$(basename "$if")
-log atomicparsley "$if" --artwork REMOVE_ALL --overWrite || exit
-. <(ffprobe -v 0 -show_streams -of flat=h=0:s=_ "$if")
 
+read -r j
+if [ -z "$j" ]
+then
+  exit
+fi
+unquote j
+cd "$(dirname '$j')"
+j=$(basename "$j")
+mp4art --remove "$j"
+. <(ffprobe -v 0 -show_streams -of flat=h=0:s=_ "$j")
 awk "BEGIN {
   w = $stream_0_width
   h = $stream_0_height
@@ -42,13 +34,16 @@ awk "BEGIN {
 while read ss
 do
   printf '%g\r' $ss
-  ffmpeg -ss $ss -i "$if" -frames 1 -v error -nostdin $ss.png
+  ffmpeg -nostdin -v error -ss $ss -i "$j" -frames 1 $ss.jpg
 done
 
-warn 'Drag picture here, then press enter (backslashes ok).'
+echo 'Drag picture here, then press enter (backslashes ok).'
 read -r pc
-(( ${#pc} )) || exit
+if [ -z "$pc" ]
+then
+  exit
+fi
 unquote pc
 # moov could be anywhere in the file, so we cannot use "dd"
-log atomicparsley "$if" --artwork "$pc" --overWrite
-rm *.png
+mp4art --add "$pc" "$j"
+rm *.jpg
