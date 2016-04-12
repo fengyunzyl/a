@@ -15,7 +15,7 @@ then
   exit
 fi
 unquote j
-cd "$(dirname '$j')"
+cd "$(dirname "$j")"
 j=$(basename "$j")
 mp4art --remove "$j"
 . <(ffprobe -v 0 -show_streams -of flat=h=0:s=_ "$j")
