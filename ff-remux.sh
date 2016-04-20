@@ -1,43 +1,40 @@
 #!/bin/sh
-function warn {
-  printf '\e[36m%s\e[m\n' "$*"
-}
-
-function log {
-  unset PS4
-  sx=$((set -x
-    : "$@") 2>&1)
-  warn "${sx:2}"
+xc() {
+  awk '
+  BEGIN {
+    x = "\47"
+    printf "\33[36m"
+    while (++i < ARGC) {
+      y = split(ARGV[i], z, x)
+      for (j in z) {
+        printf z[j] ~ /[^[:alnum:]%+,./:=@_-]/ ? x z[j] x : z[j]
+        if (j < y) printf "\\" x
+      }
+      printf i == ARGC - 1 ? "\33[m\n" : FS
+    }
+  }
+  ' "$@"
   "$@"
 }
 
-function hx {
+hx() {
   printf 0x%04x%04x $*
 }
 
-function bf {
+bf() {
   regtool set /user/console/ScreenBufferSize $(hx 2000 $1)
   regtool set /user/console/WindowSize       $(hx   22 $1)
   cygstart bash $2
   kill -7 $$ $PPID
 }
 
-function hr {
-  sed '
-  1d
-  $d
-  s/  //
-  ' <<< "$1"
-}
+ug() {
+  printf 'ff-remux.sh [-c choice] [-u] [-a artist] [-t title] [files]
 
-function ug {
-  hr '
-  ff-remux.sh [-c choice] [-u] [-a artist] [-t title] [files]
+-u\tinstead of literal metadata, interpret ‘-a’ and ‘-t’ values as fields
+\tfor ‘cut’ of input filename
 
-  -u  instead of literal metadata, interpret "-a" and "-t" values as fields for
-      "cut" of input filename
-
-  '
+'
   for each in "${ga[@]}"
   do
     printf '%2s  %s\n' $((++bar)) "$each"
@@ -97,12 +94,12 @@ do
   [[ $oe = $ie ]] && ae[3]+='~'
   printf -v stage2 "$up" "${ae[@]}"
   let oc++ && ao+=("echo")
-  ao+=("log $stage2 -hide_banner")
+  ao+=("xc $stage2 -hide_banner")
 done
-ao+=("warn Press any key to continue...")
+ao+=("echo Press any key to continue...")
 ao+=("read")
 ao+=("rm rx.sh")
 ao+=("bf 80")
 printf '%s\n' "${ao[@]}" > rx.sh
-export -f bf hx log warn
+export -f bf hx xc
 bf 88 rx.sh
