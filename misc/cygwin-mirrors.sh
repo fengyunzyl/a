@@ -31,13 +31,14 @@ function isort(ech,   fox, golf, hot) {
 BEGIN {
   FS = ";"
 }
-/http/ {
-  a[++j] = $1
+{
+  a[NR] = $1
 }
 END {
   isort(a)
-  for(b = 1; b <= 13; b++)
-    print a[b]
+  for (b = 1; b <= 13; b++)
+    if (a[b] ~ /http/)
+      print a[b]
 }
 ' /tmp/mirrors.lst |
 while read each
