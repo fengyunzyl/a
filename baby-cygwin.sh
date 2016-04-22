@@ -1,33 +1,35 @@
-function new {
-  set "$pn/baby-cygwin/$1"
-  mkdir -p "$1"
-  cd "$1"
+#!/bin/dash
+new() {
+  mkdir -p "$pn/$1"
+  cd "$pn/$1"
 }
-pn=~+
+pn=`mktemp -d -p "$PWD"`
 new
 
 # /
-echo 'bin/bash -l' > cygwin.ps1
-chmod +x cygwin.ps1
-DATE=$(date)
-CYGWIN_VERSION=$(uname -r | cut -d'(' -f1)
-sed 's/$/\r/' > README.txt <<+
+echo 'start bin/bash -l' > cygwin.bat
+date=`date`
+cygwin_version=`uname -r | cut -d '(' -f 1`
+sed 's/$/\r/' > readme.txt <<+
 Baby Cygwin by Steven Penny
 
-Steven’s Home Page: http://svnpenn.github.io
+Steven’s Home Page: http://github.com/svnpenn
 
-Today’s date $DATE
+Today’s date $date
 
 The build script for this build can be found at
   http://github.com/svnpenn/a
 
 Included with this package
-  Cygwin $CYGWIN_VERSION
+  Cygwin $cygwin_version
 
 OPERATING INSTRUCTIONS
   Put any scripts into /usr/local/bin
-  Right click cygwin.ps1
+  Double click cygwin.bat
 +
+
+# /tmp
+new tmp
 
 # /dev
 new dev
@@ -36,26 +38,22 @@ new dev
 new etc
 cat > profile <<'+'
 PATH=/usr/bin:/usr/local/bin:$PATH
-PS1='\e];\a\n\e[33m\w\n\e[m$ '
-[ -d ~ ] || mkdir -p ~
-[ -a ~/.bash_history ] || echo cd > ~/.bash_history
-[ -a /bin/awk ] || ln -s /bin/gawk /bin/awk
-[ -a /dev/fd ] || ln -s /proc/self/fd /dev/fd
+PS1='\033];\a\n\033[33m\w\n\033[m$ '
+[ -e ~ ] || mkdir -p ~
+[ -e ~/.bash_history ] || echo cd > ~/.bash_history
+[ -e /bin/awk ] || ln -s /bin/gawk /bin/awk
+[ -e /dev/fd ] || ln -s /proc/self/fd /dev/fd
 cd
 +
 
 # /usr/bin
-deps=(
-  /bin/bash     /bin/cat     /bin/chmod /bin/cp     /bin/cut   /bin/date
-  /bin/diff     /bin/dirname /bin/du    /bin/dumper /bin/expr  /bin/file
-  /bin/find     /bin/gawk    /bin/grep  /bin/ln     /bin/ls    /bin/mkdir
-  /bin/mkpasswd /bin/mount   /bin/mv    /bin/printf /bin/ps    /bin/rm
-  /bin/rmdir    /bin/sed     /bin/sh    /bin/sleep  /bin/sort  /bin/stat
-  /bin/tee      /bin/tr      /bin/uname /bin/uniq   /bin/wget  /bin/xargs
-)
+j=`mktemp`
+printf '/bin/%s\n' bash cat chmod cp cut date dirname du dumper expr file find \
+gawk grep ln ls mkdir mkpasswd mount mv printf ps rm rmdir sed sh sleep sort \
+stat tee tr uname uniq wget xargs > $j
 new bin
-cp ${deps[*]} .
-ldd ${deps[*]} | awk '/usr/ && ! aa[$0]++ {print $3}' | xargs cp -t.
+xargs cp -t . < $j
+xargs ldd < $j | awk '/usr/ && ! br[$0]++ {print $3}' | xargs cp -t .
 
 # /usr/local/bin
 new usr/local/bin
@@ -65,8 +63,6 @@ new usr/share
 cp -r /usr/share/terminfo .
 
 # archive
-gt=$(dirname "$0")
-cd "$gt"
-BABY_VERSION=$(git log --follow --oneline "$0" | wc -l)
+baby_version=1.0.0
 new
-7za a baby-cygwin-${BABY_VERSION}.zip *
+zip baby-cygwin-$baby_version.zip *
