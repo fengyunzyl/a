@@ -65,4 +65,4 @@ cp -r /usr/share/terminfo .
 # archive
 baby_version=1.0.0
 new
-zip baby-cygwin-$baby_version.zip *
+zip -r baby-cygwin-$baby_version.zip *
