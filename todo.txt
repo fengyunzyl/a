@@ -1,4 +1,14 @@
 
+any mv should be used with mktemp
+
+/tmp is bad - use mktemp instead
+
+stop setting variables with set
+
+grep -r --color --exclude-dir .git '\\e[][c]' /Git/a /Git/dotfiles/bash
+
+use ! instead of return
+
 grep -r --exclude-dir .git -I '((' /home/git
 
 - fix net framework
