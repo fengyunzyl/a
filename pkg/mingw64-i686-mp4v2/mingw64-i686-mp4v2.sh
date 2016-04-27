@@ -1,5 +1,5 @@
-#!/bin/sh
-sage install automake git libtool make mingw64-i686-gcc-g++ zip
+#!/bin/dash -e
+# github.com/cygwinports/lz4/blob/master/lz4.cygport
 git clone git://github.com/svnpenn/mp4v2
 cd mp4v2
 autoreconf --install --verbose
