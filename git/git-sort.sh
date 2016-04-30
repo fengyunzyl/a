@@ -1,49 +1,37 @@
 #!/bin/dash
-
-sort_size() {
-  find -type f -printf '%s\t%f\n' | sort -nr
+cm=`mktemp`
+sz=`mktemp`
+dt=`mktemp`
+ob=`mktemp`
+for pa in *
+do
+  printf . >&2
+  git log --follow --format=%% "$pa" | wc --lines >> $cm
+  stat --format %s "$pa" >> $sz
+  git log --follow --max-count=1 --diff-filter=AM --date=short \
+  --format='%at %ad' "$pa" >> $dt
+  echo "$pa" >> $ob
+done
+echo
+awk '
+BEGIN {
+  OFS = "\t"
 }
-
-sort_date() {
-  qu=`mktemp`
-  for pa in *
-  do
-    printf . >&2
-    git log -1 --follow --diff-filter=AM --format="%ai%x09$pa" "$pa"
-  done > $qu
-  echo
-  sort -r $qu
+FILENAME == ARGV[1] {
+  cm[FNR] = $0
 }
-
-sort_commits() {
-  qu=`mktemp`
-  for pa in *
-  do
-    printf . >&2
-    git log --follow --format=format:"$pa" "$pa" | awk 'END {print NR "\t" $0}'
-  done > $qu
-  echo
-  sort -nr $qu
+FILENAME == ARGV[2] {
+  sz[FNR] = $0
 }
-
-case "$1" in
-size) sort_size ;;
-date) sort_date ;;
-commits) sort_commits ;;
-*)
-  cat <<+
-SYNOPSIS
-  git sort.sh [key]
-
-KEYS
-  size
-    sort by file size
-
-  date
-    sort by date of last commit, not including renames
-
-  commits
-    sort by number of commits, including renames
-+
-;;
-esac
+FILENAME == ARGV[3] {
+  at[FNR] = $1
+  ad[FNR] = $2
+}
+FILENAME == ARGV[4] {
+  ob[FNR] = $0
+}
+END {
+  while (++j <= FNR)
+    print cm[j] * sz[j] * at[j], cm[j], sz[j], ad[j], ob[j]
+}
+' $cm $sz $dt $ob
