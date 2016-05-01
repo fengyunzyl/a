@@ -1,5 +1,4 @@
 #!/bin/dash
-# FIXME msg goes away after a minute?!
 if [ $# = 0 ]
 then
   cat <<+
@@ -47,9 +46,11 @@ query)
 create)
   if [ "$2" = once ]
   then
-    schtasks /create /tn "$4" /tr "msg * $4" /st "$3" /sc once
+    schtasks /create /tn "$4" /tr "msg * /time 1000 $4" /st "$3" \
+    /sc once
   else
-    schtasks /create /tn "$4" /tr "msg * $4" /st "$3" /sc weekly /d "$2"
+    schtasks /create /tn "$4" /tr "msg * /time 1000 $4" /st "$3" \
+    /sc weekly /d "$2"
   fi
 ;;
 delete)
