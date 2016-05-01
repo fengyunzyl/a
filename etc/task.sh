@@ -1,7 +1,7 @@
 #!/bin/dash
 if [ $# = 0 ]
 then
-cat <<+
+  cat <<+
 SYNOPSIS
   task.sh query
   task.sh create <schedule> <start time> <message>
