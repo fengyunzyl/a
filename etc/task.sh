@@ -1,4 +1,5 @@
 #!/bin/dash
+# FIXME msg goes away after a minute?!
 if [ $# = 0 ]
 then
   cat <<+
@@ -18,7 +19,30 @@ START TIME
 fi
 case "$1" in
 query)
-  schtasks | awk '!/Folder: \\Microsoft/' RS='\n\n'
+  schtasks /query /v /fo list |
+  awk '
+  BEGIN {
+    FS = ":"
+  }
+  $1 == "HostName" {
+    wh++
+  }
+  {
+    xr[$1][wh] = $0
+  }
+  END {
+    for (wh in xr["TaskName"]) {
+      if (xr["TaskName"][wh] !~ "Microsoft") {
+        if (ya++) print ""
+        print xr["TaskName"][wh]
+        print xr["Schedule Type"][wh]
+        print xr["Start Time"][wh]
+        print xr["Start Date"][wh]
+        print xr["Days"][wh]
+      }
+    }
+  }
+  '
 ;;
 create)
   if [ "$2" = once ]
