@@ -1,12 +1,13 @@
 #!/bin/dash
-if [ $# != 3 ]
+if [ $# != 3 -o "$3" -gt 1000000000 ]
 then
-  echo 'trending.sh [page] [language] [maxsize]'
-  exit
-fi
-if [ "$3" -ge 10000000000 ]
-then
-  echo 'maxsize too high'
+  cat <<+
+SYNOPSIS
+  trending.sh [page] [language] [maxsize]
+
+MAXSIZE
+  1 - 1000000000
++
   exit
 fi
 
