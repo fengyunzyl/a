@@ -9,6 +9,7 @@ SYNOPSIS
 
 SCHEDULE
   once
+  hourly
   sun,tue,thu
 
 START TIME
@@ -31,7 +32,7 @@ query)
   }
   END {
     for (wh in xr["TaskName"]) {
-      if (xr["TaskName"][wh] !~ "Microsoft") {
+      if (xr["TaskName"][wh] !~ "Microsoft|WPD") {
         if (ya++) print ""
         print xr["TaskName"][wh]
         print xr["Schedule Type"][wh]
@@ -44,14 +45,20 @@ query)
   '
 ;;
 create)
-  if [ "$2" = once ]
-  then
+  case "$2" in
+  hourly)
+    schtasks /create /tn "$4" /tr "msg * /time 1000 $4" /st "$3" \
+    /sc hourly
+  ;;
+  once)
     schtasks /create /tn "$4" /tr "msg * /time 1000 $4" /st "$3" \
     /sc once
-  else
+  ;;
+  *)
     schtasks /create /tn "$4" /tr "msg * /time 1000 $4" /st "$3" \
     /sc weekly /d "$2"
-  fi
+  ;;
+  esac
 ;;
 delete)
   schtasks /delete /tn "$2"
