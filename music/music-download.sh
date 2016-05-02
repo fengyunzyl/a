@@ -1,4 +1,5 @@
 #!/bin/bash
+# FIXME you-get?
 usage="\
 NAME
   reddit.sh
