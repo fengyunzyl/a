@@ -2,18 +2,13 @@
 if [ $# = 0 ]
 then
   cat <<+
-SYNOPSIS
-  task.sh query
-  task.sh create <schedule> <start time> <message>
-  task.sh delete <name>
+task.sh query
 
-SCHEDULE
-  once
-  hourly
-  sun,tue,thu
+task.sh create minute 45 'hello world'
+task.sh create once 23:59 'hello world'
+task.sh create sun,tue,thu 23:59 'hello world'
 
-START TIME
-  23:59
+task.sh delete 'hello world'
 +
   exit
 fi
@@ -22,7 +17,7 @@ query)
   schtasks /query /v /fo list |
   awk '
   BEGIN {
-    FS = ":"
+    FS = ":  "
   }
   $1 == "HostName" {
     wh++
@@ -35,10 +30,10 @@ query)
       if (xr["TaskName"][wh] !~ "Microsoft|WPD") {
         if (ya++) print ""
         print xr["TaskName"][wh]
-        print xr["Schedule Type"][wh]
         print xr["Start Time"][wh]
         print xr["Start Date"][wh]
         print xr["Days"][wh]
+        print xr["Repeat: Every"][wh]
       }
     }
   }
@@ -46,17 +41,17 @@ query)
 ;;
 create)
   case "$2" in
-  hourly)
-    schtasks /create /tn "$4" /tr "msg * /time 1000 $4" /st "$3" \
-    /sc hourly
+  minute)
+    schtasks /create /tn "$4" /tr "msg * /time 1000 $4" \
+    /sc minute /mo "$3"
   ;;
   once)
-    schtasks /create /tn "$4" /tr "msg * /time 1000 $4" /st "$3" \
-    /sc once
+    schtasks /create /tn "$4" /tr "msg * /time 1000 $4" \
+    /sc once /st "$3"
   ;;
   *)
-    schtasks /create /tn "$4" /tr "msg * /time 1000 $4" /st "$3" \
-    /sc weekly /d "$2"
+    schtasks /create /tn "$4" /tr "msg * /time 1000 $4" \
+    /sc weekly /st "$3" /d "$2"
   ;;
   esac
 ;;
