@@ -1,7 +1,7 @@
 #!/bin/sh
 # Git remove sensitive data
 # help.github.com/articles/remove-sensitive-data
-if [ $# != 1 ]
+if [ "$#" != 1 ]
 then
   echo 'git remove.sh [file]'
   exit
