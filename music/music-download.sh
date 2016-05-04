@@ -27,14 +27,14 @@ FIXME
 4. use 'history' or 'basename' instead of 'pa'
 "
 
-function pa {
+pa() {
   for each
   do
     echo "$each"
   done
 }
 
-function bk {
+bk() {
   awk -v z="$*" '
   BEGIN {
     y = 79 - length(z)
@@ -45,7 +45,7 @@ function bk {
   '
 }
 
-function dwn {
+dwn() {
   if ! type aacgain ffmpeg jq youtube-dl >/dev/null
   then
     exit
@@ -135,13 +135,13 @@ function dwn {
   done < %/h.txt
 }
 
-function snc {
+snc() {
   if ! type git rsync >/dev/null
   then
     exit
   fi
   mr
-  if [ $# = 0 ]
+  if [ "$#" = 0 ]
   then
     fd > %/c.txt
     echo CHANGES SINCE LAST SYNC
@@ -169,11 +169,11 @@ function snc {
   fi
 }
 
-function fd {
+fd() {
   find %-{new,old} -type f -printf '%f\n'
 }
 
-function mr {
+mr() {
   mkdir -p %{,-new,-old}
   touch %/{h,f,c}.txt
 }

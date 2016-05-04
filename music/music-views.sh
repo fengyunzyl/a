@@ -1,5 +1,5 @@
 #!/bin/sh
-if [ $# != 1 ]
+if [ "$#" != 1 ]
 then
   echo 'music.sh [URL]'
   exit

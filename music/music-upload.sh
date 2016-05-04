@@ -1,3 +1,4 @@
+#!/bin/sh
 # create high quality video from song and picture
 # site:musicbrainz.org acoustid -site:forums.musicbrainz.org
 # http://github.com/stedolan/jq/issues/105
@@ -9,34 +10,44 @@ blog.musicbrainz.org/2013/09/03/
 changes-for-upcoming-schema-change-release-2013-10-14
 '
 
-function JQ {
+JQ() {
   jq -r "$@" .json | sed 's/\r//'
 }
 
-function warn {
+warn() {
   printf '\e[36m%s\e[m\n' "$*" >&2
 }
 
-function log {
-  unset PS4
-  sx=$((set -x
-    : "$@") 2>&1)
-  warn "${sx:2}"
+xc() {
+  awk '
+  BEGIN {
+    x = "\47"
+    printf "\33[36m"
+    while (++i < ARGC) {
+      y = split(ARGV[i], z, x)
+      for (j in z) {
+        printf z[j] ~ /[^[:alnum:]%+,./:=@_-]/ ? x z[j] x : z[j]
+        if (j < y) printf "\\" x
+      }
+      printf i == ARGC - 1 ? "\33[m\n" : FS
+    }
+  }
+  ' "$@"
   "$@"
 }
 
-function querystring {
+querystring() {
   sed 'y/ /&/' <<< ${qs[*]}
 }
 
-function show {
+show() {
   for bb
   do
     echo ${bb^}: ${!bb}
   done
 }
 
-function readu {
+readu() {
   while :
   do
     show $1
@@ -57,7 +68,7 @@ function readu {
   done
 }
 
-function exten {
+exten() {
   sed "
   s/[^.]*$//
   s/[^[:alnum:]]//g
@@ -65,19 +76,23 @@ function exten {
   " <<< ${!1}
 }
 
-function bf {
+bf() {
   regtool set /user/console/ScreenBufferSize $(hx 2000 $1)
   regtool set /user/console/WindowSize       $(hx   22 $1)
   cygstart bash $2
   kill -7 $$ $PPID
 }
 
-if (( $# < 2 ))
+if [ "$#" -lt 2 ]
 then
-  echo ${0##*/} PICTURE SONGS
-  echo
-  echo Script will use files to create high quality videos,
-  echo then upload videos to YouTube.
+  cat <<+
+SYNOPSIS
+  music-upload.sh [picture] [songs]
+
+DESCRIPTION
+  Script will use files to create high quality videos, then upload videos to
+  YouTube.
++
   exit
 fi
 
@@ -144,7 +159,7 @@ do
   # Adding "-preset" would only make small difference in size or speed.
   # "-shortest" can mess up duration. Adding "-analyzeduration" would only
   # suppress warning, not change file.
-  log ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -t `JQ .format.duration` \
+  xc ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -t `JQ .format.duration` \
     -qp 0 -filter:v 'scale=trunc(oh*a/2)*2:720' -b:a 384k -v error \
     -stats `exten song mp4`
 done
@@ -155,7 +170,7 @@ type google || exit
 for song in "${songs[@]}"
 do
   # category is case sensitive
-  log google youtube post `exten song mp4` Music \
+  xc google youtube post `exten song mp4` Music \
     -n "${artists[$song]}, ${titles[$song]}" -s `exten song txt` \
     -t "$tags" -u svnpenn
 done
