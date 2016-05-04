@@ -1,6 +1,6 @@
 #!/bin/sh
 # get compiler prefix
-if [ $# != 1 ]
+if [ "$#" != 1 ]
 then
   echo 'prefix.sh [compiler]'
   exit

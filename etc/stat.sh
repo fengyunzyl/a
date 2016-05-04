@@ -1,6 +1,7 @@
-if (( $# != 1 ))
+#!/bin/sh
+if [ "$#" != 1 ]
 then
-  echo ${0##*/} ITEM
+  echo 'stat.sh [item]'
   exit
 fi
 

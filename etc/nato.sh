@@ -1,5 +1,5 @@
 #!/bin/dash
-if [ $# != 2 ]
+if [ "$#" != 2 ]
 then
   echo 'nato.sh [# of variables] [file]'
   exit

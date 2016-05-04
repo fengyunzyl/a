@@ -1,6 +1,5 @@
 #!/bin/sh
-
-if [ $# != 2 ]
+if [ "$#" != 2 ]
 then
   echo 'tex.sh [in file] [out file]'
   exit

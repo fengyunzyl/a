@@ -20,13 +20,13 @@ function proxy {
   printf 'request %s... ' "$msg" >&2
   while :
   do
-    if (( ! $# ))
+    if [ "$#" = 0 ]
     then
       touch $dt
       mapfile -t pool < $dt
       set -- "${pool[@]}"
     fi
-    if (( ! $# ))
+    if [ "$#" = 0 ]
     then
       wget -q -O $dt txt.proxyspy.net/$dt
     fi

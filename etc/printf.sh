@@ -1,5 +1,5 @@
 #!/bin/sh
-if [ $# = 0 ]
+if [ "$#" = 0 ]
 then
   echo 'printf.sh [-e] [input]'
   echo '-e   treat input as expression instead of string'

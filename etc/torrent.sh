@@ -43,7 +43,7 @@ function exp {
   printf 'BEGIN {print %s}' "$1" | awk -f-
 }
 
-if [ $# != 3 ]
+if [ "$#" != 3 ]
 then
   printf "$al"
   exit

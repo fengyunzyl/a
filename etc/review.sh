@@ -1,13 +1,14 @@
-function browse {
+#!/bin/sh
+browse() {
   case $OSTYPE in
   linux-gnu) xdg-open "$1" ;;
   cygwin)    cygstart "$1" ;;
   esac
 }
 
-if [ ! $# ]
+if [ "$#" = 0 ]
 then
-  echo ${0##*/} ARTIST
+  echo 'review.sh [artist]'
   exit
 fi
 

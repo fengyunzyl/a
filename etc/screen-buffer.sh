@@ -1,5 +1,5 @@
 #!/bin/sh
-if [ $# != 2 ]
+if [ "$#" != 2 ]
 then
   regtool get /user/console/ScreenBufferSize | awk '
   {

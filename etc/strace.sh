@@ -1,5 +1,5 @@
 #!/bin/dash
-if [ $# = 0 ]
+if [ "$#" = 0 ]
 then
   echo 'strace.sh [dash script] [args]'
   exit

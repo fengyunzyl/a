@@ -10,7 +10,7 @@ EXAMPLE
   date.sh 2015-5-15
 "
 
-if [ $# != 1 ]
+if [ "$#" != 1 ]
 then
   printf "$usage"
   exit

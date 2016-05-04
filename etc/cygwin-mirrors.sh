@@ -1,5 +1,5 @@
 #!/bin/dash
-if [ $# != 1 ]
+if [ "$#" != 1 ]
 then
   echo 'mirror.sh [timeout]'
   exit

@@ -1,5 +1,5 @@
 #!/bin/dash
-if [ $# != 3 -o "$3" -gt 1000000000 ]
+if [ "$#" != 3 -o "$3" -gt 1000000000 ]
 then
   cat <<+
 SYNOPSIS

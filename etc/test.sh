@@ -1,6 +1,7 @@
-if (( ! $# ))
+#!/bin/sh
+if [ "$#" = 0 ]
 then
-  echo test.sh ITEMS
+  echo 'test.sh [items]'
   exit
 fi
 

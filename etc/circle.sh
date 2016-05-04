@@ -1,5 +1,5 @@
 #!/bin/sh
-if [ $# != 6 ]
+if [ "$#" != 6 ]
 then
   echo 'circle.sh [in radius] [x] [y] [in file] [out radius] [out file]'
   exit

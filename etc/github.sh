@@ -1,7 +1,7 @@
 #!/bin/dash
 # Binary search algorithm
 
-if [ $# != 2 ]
+if [ "$#" != 2 ]
 then
   echo 'github.sh [user] [repo]'
   exit

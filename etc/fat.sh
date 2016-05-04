@@ -1,18 +1,13 @@
 #!/bin/sh
-usage="\
-NAME
-  fat.sh
-
+if [ "$#" != 1 ]
+then
+  cat <<+
 SYNOPSIS
   fat.sh [drive]
 
 EXAMPLE
   fat.sh E:
-"
-
-if [ $# != 1 ]
-then
-  printf "$usage"
++
   exit
 fi
 
