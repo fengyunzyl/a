@@ -60,7 +60,7 @@ then
   exit
 fi
 
-if [ $# = 0 ]
+if [ "$#" = 0 ]
 then
   printf "$usage"
   exit
@@ -134,7 +134,7 @@ fi
 
 # extent must come after resize
 go=0
-while [ $go -lt $# ]
+while [ "$go" -lt "$#" ]
 do
   xc convert -quality 100 \
   ${sv+-shave $sv} \
