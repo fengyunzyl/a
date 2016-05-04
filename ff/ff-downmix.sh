@@ -1,29 +1,36 @@
-function warn {
-  printf '\e[36m%s\e[m\n' "$*"
-}
-
-function log {
-  unset PS4
-  sx=$((set -x
-    : "$@") 2>&1)
-  warn "${sx:2}"
+#!/bin/sh
+xc() {
+  awk '
+  BEGIN {
+    x = "\47"
+    printf "\33[36m"
+    while (++i < ARGC) {
+      y = split(ARGV[i], z, x)
+      for (j in z) {
+        printf z[j] ~ /[^[:alnum:]%+,./:=@_-]/ ? x z[j] x : z[j]
+        if (j < y) printf "\\" x
+      }
+      printf i == ARGC - 1 ? "\33[m\n" : FS
+    }
+  }
+  ' "$@"
   "$@"
 }
 
-function hx {
+hx() {
   printf 0x%04x%04x $*
 }
 
-function bf {
+bf() {
   regtool set /user/console/ScreenBufferSize $(hx 2000 $1)
   regtool set /user/console/WindowSize       $(hx   22 $1)
   cygstart bash $2
   kill -7 $$ $PPID
 }
 
-if (( $# != 1 ))
+if [ "$#" != 1 ]
 then
-  echo ${0##*/} FILE
+  echo 'ff-downmix.sh [file]'
   exit
 fi
 sc=$1
@@ -34,9 +41,9 @@ wget -q rawgit.com/FFmpeg/FFmpeg/master/libswresample/options.c || exit
 awk '/center_mix_level/ && /C_30DB/ {exit 1}' swresample.c
 bad=$?
 rm swresample.c
-if (( ! bad ))
+if [ $bad = 0 ]
 then
-  warn Good downmix available, fix script
+  echo Good downmix available, fix script
   exit
 fi
 
@@ -62,22 +69,22 @@ ag=(
 case ${#c2}${#c6} in
 01)
   ao+=("echo One 5.1 stream, use my downmix")
-  ao+=("log ffmpeg ${ag[*]} mn-'$sc'")
+  ao+=("xc ffmpeg ${ag[*]} mn-'$sc'")
 ;;
 10)
   ao+=("echo One stereo stream, reject file")
 ;;
 11)
   ao+=("echo Dual audio, use my downmix on 5.1 stream")
-  ao+=("log ffmpeg ${ag[*]} mn-'$sc'")
+  ao+=("xc ffmpeg ${ag[*]} mn-'$sc'")
 ;;
 esac
-ao+=("warn Press any key to continue . . .")
+ao+=("echo Press any key to continue . . .")
 ao+=("read")
 ao+=("rm rx.sh")
 ao+=("bf 80")
 printf '%s\n' "${ao[@]}" > rx.sh
-export -f bf hx log warn
+export -f bf hx xc
 bf 88 rx.sh
 
 # if i am going to be transcoding anyway, i might as well use ffmpeg for the

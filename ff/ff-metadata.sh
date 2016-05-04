@@ -1,3 +1,4 @@
+#!/bin/sh
 # http://xhelmboyx.tripod.com/formats/mp4-layout.txt
 # GOOD
 # 0 1 2 3 4 5 7 8 9 10 11 12 13
@@ -5,19 +6,19 @@
 # BAD
 # 6 14
 
-function ic {
+ic() {
   by=$1
   wd=$((${#by} - 2))
   printf %0${wd}x $((by + sp)) | pc
 }
 
-function pc {
+pc() {
   awk -b '{printf "%c", strtonum("0x" RT)}' RS=..
 }
 
-if [ $# != 1 ]
+if [ "$#" != 1 ]
 then
-  echo metadata.sh BYTES
+  echo 'metadata.sh [bytes]'
   exit
 fi
 
@@ -76,9 +77,9 @@ mv $$ $sp.m4a
 
 exit
 
-if (( $# != 2 ))
+if [ "$#" != 2 ]
 then
-  echo ${0##*/} BASENAME_A BASENAME_B
+  echo 'ff-metadata.sh [basename a] [basename b]'
   exit
 fi
 

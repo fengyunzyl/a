@@ -1,34 +1,31 @@
-function warn {
-  printf '\e[36m%s\e[m\n' "$*"
-}
-
-function say {
+#!/bin/sh
+say() {
   unset PS4
   sx=$((set -x
     : "$@") 2>&1)
   echo "${sx:2}"
 }
 
-function log {
+log() {
   sy=$(say "$@")
   warn "$sy"
   "$@"
 }
 
-function hx {
+hx() {
   printf 0x%04x%04x $*
 }
 
-function bf {
+bf() {
   regtool set /user/console/ScreenBufferSize $(hx 2000 $1)
   regtool set /user/console/WindowSize       $(hx   22 $1)
   cygstart bash $2
   kill -7 $$ $PPID
 }
 
-if (( $# != 2 ))
+if [ "$#" != 2 ]
 then
-  echo ${0##*/} VIDEO SUB
+  echo 'ff-subs.sh [video] [sub]'
   exit
 fi
 
@@ -40,7 +37,7 @@ ib=${1%.*}
   echo buffer 
 } > bf.sh
 
-export -f buffer log say warn
+export -f buffer log say
 buffer bf.sh
 
 # Invalid UTF-8 in decoded subtitles text; maybe missing -sub_charenc option

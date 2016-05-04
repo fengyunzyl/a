@@ -19,7 +19,7 @@ xc() {
   "$@"
 }
 
-if [ $# != 1 ]
+if [ "$#" != 1 ]
 then
   echo 'ff-split.sh [cue file]'
   exit
