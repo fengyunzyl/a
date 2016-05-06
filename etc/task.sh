@@ -42,15 +42,15 @@ query)
 create)
   case "$2" in
   minute)
-    schtasks /create /tn "$4" /tr "msg * /time 1000 $4" \
+    schtasks /create /tn "$4" /tr "msg * /time 2000 $4" \
     /sc minute /mo "$3"
   ;;
   once)
-    schtasks /create /tn "$4" /tr "msg * /time 1000 $4" \
+    schtasks /create /tn "$4" /tr "msg * /time 2000 $4" \
     /sc once /st "$3"
   ;;
   *)
-    schtasks /create /tn "$4" /tr "msg * /time 1000 $4" \
+    schtasks /create /tn "$4" /tr "msg * /time 2000 $4" \
     /sc weekly /st "$3" /d "$2"
   ;;
   esac
