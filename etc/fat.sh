@@ -1,5 +1,5 @@
 #!/bin/sh
-# luisrios.eti.br/public/en_us/projects/yafs
+# www.luisrios.eti.br/public/en_us/projects/yafs
 
 if [ "$#" != 1 ]
 then
