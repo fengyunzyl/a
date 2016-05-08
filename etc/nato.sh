@@ -53,7 +53,7 @@ do
       print substr($0, 1, z)
     }
     ' x=$sta_lett y=$end_lett z=$var_leng /tmp/nfa_file >/tmp/pat_file
-    if [ $? = 1 ]
+    if [ "$?" = 1 ]
     then
       continue
     fi
