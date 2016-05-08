@@ -35,9 +35,6 @@ http://ffmpeg.org/ffmpeg-codecs.html#AC_002d3-Metadata
 - http://github.com/FFmpeg/FFmpeg/blob/2dcaa1b/libavcodec/ac3.h#L58
 - http://github.com/FFmpeg/FFmpeg/blob/2dcaa1b/libavutil/mathematics.h#L52
 
-# Yet Another FAT Sorter
-http://luisrios.eti.br/public/en_us/projects/yafs
-
 # 720p-mp4-h264
 - replace these with new ones
 - put in metadata too
