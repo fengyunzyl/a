@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/dash
 # Git remove sensitive data
 # help.github.com/articles/remove-sensitive-data
 if [ "$#" != 1 ]
