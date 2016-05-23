@@ -5,7 +5,8 @@ fo=$(lynx -dump -listonly -nonumbers "$ec" |
 ho=$(basename "$fo")
 cd /tmp
 wget -nc "$fo"
-unzip -n "$ho" convert.exe magic.xml
+unzip -n "$ho" convert.exe
 chmod +x convert
-ln -f convert magic.xml /usr/local/bin
+ln -f convert /usr/local/bin
 ln -f convert /usr/local/bin/identify
+touch /usr/local/bin/magic.xml
