@@ -12,7 +12,7 @@ task.sh delete 'hello world'
 +
   exit
 fi
-case "$1" in
+case $1 in
 query)
   schtasks /query /v /fo list |
   awk '
@@ -40,7 +40,7 @@ query)
   '
 ;;
 create)
-  case "$2" in
+  case $2 in
   minute)
     schtasks /create /tn "$4" /tr "msg * /time 2000 $4" \
     /sc minute /mo "$3"
