@@ -152,7 +152,7 @@ ${dry+exit}
 ht=$(identify -format '%h\n' "$@" | mn)
 
 set =*
-case "$ao" in
+case $ao in
 000011) xc convert "$1" "$2" "$3" "$4" '(' "$5" "$6" -append ')' +append \
   -quality 100 "$ao" ;;
 000110) xc convert "$1" "$2" "$3" '(' "$4" "$5" -append ')' "$6" +append \
