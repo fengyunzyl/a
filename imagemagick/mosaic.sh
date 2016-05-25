@@ -152,28 +152,27 @@ ${dry+exit}
 ht=$(identify -format '%h\n' "$@" | mn)
 
 set =*
-br=`mktemp`
-case $ao in
+case "$ao" in
 000011) xc convert "$1" "$2" "$3" "$4" '(' "$5" "$6" -append ')' +append \
-  -quality 100 "$br" ;;
+  -quality 100 "$ao" ;;
 000110) xc convert "$1" "$2" "$3" '(' "$4" "$5" -append ')' "$6" +append \
-  -quality 100 "$br" ;;
+  -quality 100 "$ao" ;;
 011011) xc convert "$1" '(' "$2" "$3" -append ')' "$4" \
-  '(' "$5" "$6" -append ')' +append -quality 100 "$br" ;;
+  '(' "$5" "$6" -append ')' +append -quality 100 "$ao" ;;
 110000) xc convert '(' "$1" "$2" -append ')' "$3" "$4" "$5" "$6" +append \
-  -quality 100 "$br" ;;
+  -quality 100 "$ao" ;;
 110011) xc convert '(' "$1" "$2" -append ')' "$3" "$4" \
-  '(' "$5" "$6" -append ')' +append -quality 100 "$br" ;;
+  '(' "$5" "$6" -append ')' +append -quality 100 "$ao" ;;
 110110) xc convert '(' "$1" "$2" -append ')' "$3" \
-  '(' "$4" "$5" -append ')' "$6" +append -quality 100 "$br" ;;
+  '(' "$4" "$5" -append ')' "$6" +append -quality 100 "$ao" ;;
 0000110) xc convert "$1" "$2" "$3" "$4" \
-  '(' "$5" "$6" -append ')' "$7" +append -quality 100 "$br" ;;
+  '(' "$5" "$6" -append ')' "$7" +append -quality 100 "$ao" ;;
 11111111) xc convert '(' "$1" "$2" -append ')' '(' "$3" "$4" -append ')' \
   '(' "$5" "$6" -append ')' '(' "$7" "$8" -append ')' +append \
-  -quality 100 "$br" ;;
-*) xc convert "$@" +append -quality 100 "$br" ;;
+  -quality 100 "$ao" ;;
+*) xc convert "$@" +append -quality 100 "$ao" ;;
 esac
 
 sn=$(basename ~+)
-xc mv "$br" "s $sn h $ht".jpg
+xc mv "$ao" "s $sn h $ht".jpg
 xc rm "$@"
