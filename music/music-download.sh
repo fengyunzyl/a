@@ -178,7 +178,7 @@ mr() {
   touch %/{h,f,c}.txt
 }
 
-case "$1" in
+case $1 in
 'download')
   shift
   dwn "$@"

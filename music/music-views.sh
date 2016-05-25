@@ -5,7 +5,7 @@ then
   exit
 fi
 
-case "$1" in
+case $1 in
 *soundcloud*)
   v='
   BEGIN {
