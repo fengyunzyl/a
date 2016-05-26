@@ -6,8 +6,8 @@
 }
 END {
   go = \
-  fo["mon-am"] + fo["mon-pm"] + fo["tue-am"] + fo["tue-pm"] + fo["wed-am"] + \
-  fo["wed-pm"] + fo["thu-am"] + fo["thu-pm"] + fo["fri-am"] + fo["fri-pm"]
+  fo["mon-am"] + fo["tue-am"] + fo["wed-am"] + fo["thu-am"] + fo["fri-am"] + \
+  fo["mon-pm"] + fo["tue-pm"] + fo["wed-pm"] + fo["thu-pm"] + fo["fri-pm"]
   ho = fo["rent"] * 80 * 60 / fo["paycheck"]
   printf "weekday = %d\n", go * 4
   printf "rent = %d\n", ho
