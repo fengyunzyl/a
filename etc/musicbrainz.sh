@@ -1,17 +1,17 @@
 #!/bin/sh
-function bw {
+bw() {
   case $OSTYPE in
   linux-gnu) xdg-open "$1" ;;
   cygwin)    cygstart "$1" ;;
   esac
 }
 
-function jn {
+jn() {
   # parse json
   awk '$1 ~ key {print $2}' RS='([{}]|"?, ?")' FS='": ?"?' key="$1" "$2"
 }
 
-function proxy {
+proxy() {
   local msg url dt pool px cn
   msg=$1
   url=$2
@@ -53,11 +53,13 @@ function proxy {
   printf '%s\n' "$@" > $dt
 }
 
-function jo {
+jo() {
   jq -r "$@" | sed 's.\r..'
 }
 
-usage="\
+case $1 in
+'')
+  cat <<+
 musicbrainz.sh date-get <album>  <date>
 musicbrainz.sh  img-get <artist> <album>
 musicbrainz.sh  img-set <image>
@@ -73,11 +75,7 @@ when adding release, make sure to include
 - format
 - track titles
 - track lengths
-"
-
-case "$1" in
-'')
-  printf "$usage"
++
   exit
 ;;
 img-get)
