@@ -17,11 +17,11 @@ xc() {
   "$@"
 }
 
-if [ "$#" != 1 ]
+if [ "$#" != 3 ]
 then
   cat <<+
 SYNOPSIS
-  ff-sequence.sh [file]
+  ff-sequence.sh [start] [duration] [file]
 
 DESCRIPTION
   Make an image sequence from a video
@@ -29,5 +29,5 @@ DESCRIPTION
   exit
 fi
 
-xc ffmpeg -hide_banner -i "$1" -vf "select='eq(pict_type,I)'" -vsync vfr \
--q 1 %d.jpg
+xc ffmpeg -hide_banner -ss "$1" -i "$3" -t "$2" \
+-vf "select='eq(pict_type,I)'" -vsync vfr -q 1 %d.jpg
