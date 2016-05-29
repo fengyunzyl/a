@@ -12,7 +12,7 @@ tar xf mbedtls-1.3.10-gpl.tgz
 cd mbedtls-1.3.10
 make lib AR=$ar CC=$cc
 make install DESTDIR=$prefix
-cd -
+cd ..
 
 # polar
 git clone git://github.com/cesanta/polar
