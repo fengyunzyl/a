@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/dash -e
 if [ "$#" != 2 ]
 then
   echo 'tex.sh [in file] [out file]'
