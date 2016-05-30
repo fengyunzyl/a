@@ -1,33 +1,4 @@
-#!/bin/sh
-xc() {
-  awk '
-  BEGIN {
-    x = "\47"
-    printf "\33[36m"
-    while (++i < ARGC) {
-      y = split(ARGV[i], z, x)
-      for (j in z) {
-        printf z[j] ~ /[^[:alnum:]%+,./:=@_-]/ ? x z[j] x : z[j]
-        if (j < y) printf "\\" x
-      }
-      printf i == ARGC - 1 ? "\33[m\n" : FS
-    }
-  }
-  ' "$@"
-  "$@"
-}
-
-hx() {
-  printf 0x%04x%04x $*
-}
-
-bf() {
-  regtool set /user/console/ScreenBufferSize $(hx 2000 $1)
-  regtool set /user/console/WindowSize       $(hx   22 $1)
-  cygstart bash $2
-  kill -7 $$ $PPID
-}
-
+#!/bin/sh -e
 if [ "$#" != 1 ]
 then
   echo 'ff-downmix.sh [file]'
@@ -41,7 +12,7 @@ wget -q rawgit.com/FFmpeg/FFmpeg/master/libswresample/options.c || exit
 awk '/center_mix_level/ && /C_30DB/ {exit 1}' swresample.c
 bad=$?
 rm swresample.c
-if [ $bad = 0 ]
+if [ "$bad" = 0 ]
 then
   echo Good downmix available, fix script
   exit
@@ -68,24 +39,17 @@ ag=(
 
 case ${#c2}${#c6} in
 01)
-  ao+=("echo One 5.1 stream, use my downmix")
-  ao+=("xc ffmpeg ${ag[*]} mn-'$sc'")
+  echo 'One 5.1 stream, use my downmix'
+  ffmpeg "${ag[@]}" mn-"$sc"
 ;;
 10)
-  ao+=("echo One stereo stream, reject file")
+  echo 'One stereo stream, reject file'
 ;;
 11)
-  ao+=("echo Dual audio, use my downmix on 5.1 stream")
-  ao+=("xc ffmpeg ${ag[*]} mn-'$sc'")
+  echo 'Dual audio, use my downmix on 5.1 stream'
+  ffmpeg "${ag[@]}" mn-"$sc"
 ;;
 esac
-ao+=("echo Press any key to continue . . .")
-ao+=("read")
-ao+=("rm rx.sh")
-ao+=("bf 80")
-printf '%s\n' "${ao[@]}" > rx.sh
-export -f bf hx xc
-bf 88 rx.sh
 
 # if i am going to be transcoding anyway, i might as well use ffmpeg for the
 # volume too
