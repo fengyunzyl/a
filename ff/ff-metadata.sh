@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/dash -e
 # http://xhelmboyx.tripod.com/formats/mp4-layout.txt
 # GOOD
 # 0 1 2 3 4 5 7 8 9 10 11 12 13
@@ -70,7 +70,9 @@ ic 0x02 | dd conv=notrunc of=$sp.m4a bs=1 seek=$((0x20B))
 
 (
   head -c $((0x20E))
-  (( sp )) && printf %0$((sp*2))x 0x00 | pc
+  if [ "$sp" ]
+  then printf %0$((sp*2))x 0x00 | pc
+  fi
   cat
 ) < $sp.m4a > $$
 mv $$ $sp.m4a
