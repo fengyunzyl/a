@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/dash
 if [ "$#" != 1 ]
 then
   echo 'music.sh [URL]'
@@ -36,10 +36,10 @@ case $1 in
 esac
 
 wget --output-document /tmp/alfa.htm "$1"
-printf '\e[1;33m'
+printf '\33[1;33m'
 
 awk "$v"'
-func s(t, u) {
+function s(t, u) {
   printf "%\47.0f views / %\47.*f %s = %\47.0f\n", z, u, x, t, z/x
 }
 END {
@@ -55,4 +55,4 @@ END {
 }
 ' /tmp/alfa.htm
 
-printf '\e[m'
+printf '\33[m'
