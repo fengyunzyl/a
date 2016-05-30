@@ -5,7 +5,7 @@ tags: Windows
 ---
 
 ~~~ bash
-#!/bin/sh
+#!/bin/dash
 # support.microsoft.com?id=269269
 # Grant full control of aero.msstyles
 cd /c/Windows/Resources/Themes/Aero
