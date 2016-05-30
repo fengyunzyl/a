@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/dash -e
 # strip metadata and chapters
 xc() {
   awk '
@@ -24,9 +24,9 @@ then
   exit
 fi
 
-arg_in=${1}
-arg_out=strip.${1/*.}
+j=$1
+k=strip.${1##*.}
 
 # "-analyzeduration" doesnt do anything other than remove the warning
-xc ffmpeg -hide_banner -i "$arg_in" \
-  -vn -c copy -map_metadata -1 -map_chapters -1 "$arg_out"
+xc ffmpeg -hide_banner -i "$j" \
+  -vn -c copy -map_metadata -1 -map_chapters -1 "$k"
