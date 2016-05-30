@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/dash -e
 # FIXME you-get?
 usage="\
 NAME
@@ -46,10 +46,6 @@ bk() {
 }
 
 dwn() {
-  if ! type aacgain ffmpeg jq youtube-dl >/dev/null
-  then
-    exit
-  fi
   bra=$(date -d '-1 year' +%Y%m%d)
   mr
   set -o igncr
@@ -63,7 +59,7 @@ dwn() {
   } |
   while read wu
   do
-    let char++
+    char=$((char+1))
     if [ $char -ge 2 ]
     then
       bk starting link $char
@@ -110,7 +106,7 @@ dwn() {
     set "$wu" "$upload_date" "$dest" "$_filename"
     printf '%s\t%s\t%s\t%s\n' "$@" >> %/h.txt
   done
-  while IFS=$'\t' read wu upload_date source _filename
+  while IFS=$(printf '\t') read wu upload_date source _filename
   do
     if [ ! -e %-new/"$_filename" ]
     then
@@ -136,16 +132,12 @@ dwn() {
 }
 
 snc() {
-  if ! type git rsync >/dev/null
-  then
-    exit
-  fi
   mr
   if [ "$#" = 0 ]
   then
     fd > %/c.txt
     echo CHANGES SINCE LAST SYNC
-    if ! git diff --color %/{f,c}.txt | awk '
+    if ! git diff --color %/f.txt %/c.txt | awk '
     BEGIN          {z = 1}
     /^\33\[3[12]m/ {z = 0; print}
     END            {exit z}
@@ -164,18 +156,18 @@ snc() {
       echo no flash drives found
     fi
   else
-    rsync --archive --delete --verbose --modify-window 2 %-{new,old} "$1"
+    rsync --archive --delete --verbose --modify-window 2 %-new %-old "$1"
     fd > %/f.txt
   fi
 }
 
 fd() {
-  find %-{new,old} -type f -printf '%f\n'
+  find %-new %-old -type f -printf '%f\n'
 }
 
 mr() {
-  mkdir -p %{,-new,-old}
-  touch %/{h,f,c}.txt
+  mkdir -p % %-new %-old
+  touch %/h.txt %/f.txt %/c.txt
 }
 
 case $1 in
