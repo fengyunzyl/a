@@ -1,10 +1,8 @@
-#!/bin/sh
+#!/bin/dash -e
 host=x86_64-w64-mingw32
 prefix=/usr/$host/sys-root/mingw
 cc=$host-gcc
 ar=$host-ar
-sage install make mingw64-x86_64-gcc-core upx wget zip
-sage install --nodeps git
 
 # mbedtls
 wget tls.mbed.org/download/mbedtls-1.3.10-gpl.tgz
@@ -28,6 +26,6 @@ cat > mongoose.bat <<+
 start web_server -listening_port ssl://2:cert.pem
 start https://127.0.0.1:2
 +
-vr=$(./web_server - |& awk 'NR==1 {print $3}')
+vr=$(./web_server - 2>&1 | awk 'NR==1 {print $3}')
 # this is smaller than ‘-9’
 zip mongoose-ssl-"$vr".zip web_server.exe cert.pem mongoose.bat
