@@ -1,16 +1,16 @@
-#!/bin/sh
+#!/bin/dash
 if [ "$#" = 0 ]
 then
   echo 'test.sh [items]'
   exit
 fi
 
-for ts in a b c d e f g h L k p r s S t u w x O G N
+for y in a b c d e f g h L k p r s S t u w x O G N
 do
-  printf '  -%s  ' $ts
-  for each
+  printf '  -%s  ' "$y"
+  for z
   do
-    if [ -$ts "$each" ]
+    if [ -"$y" "$z" ]
     then
       printf T
     else
@@ -19,10 +19,10 @@ do
     printf '  '
   done
   echo
-  printf '! -%s  ' $ts
-  for each
+  printf '! -%s  ' "$y"
+  for z
   do
-    if [ ! -$ts "$each" ] 2>/dev/null
+    if [ ! -"$y" "$z" ] 2>/dev/null
     then
       printf T
     else
