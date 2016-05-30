@@ -1,13 +1,9 @@
-#!/bin/sh
-function warn {
-  printf '\e[1;35m%s\e[m\n' "$*"
-}
-
-for rp in /Git/*/
+#!/bin/dash -e
+for j in /Git/*/
 do
-  printf '\ec'
-  cd "$rp"
+  printf '\33c'
+  cd "$j"
   git status
-  warn "${rp%/}"
-  read
+  printf '\33[1;35m%s\33[m\n' "${j%/}"
+  read k
 done
