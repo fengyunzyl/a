@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -e
 # create high quality video from song and picture
 # site:musicbrainz.org acoustid -site:forums.musicbrainz.org
 # http://github.com/stedolan/jq/issues/105
@@ -12,10 +12,6 @@ changes-for-upcoming-schema-change-release-2013-10-14
 
 JQ() {
   jq -r "$@" .json | sed 's/\r//'
-}
-
-warn() {
-  printf '\e[36m%s\e[m\n' "$*" >&2
 }
 
 xc() {
@@ -51,7 +47,7 @@ readu() {
   while :
   do
     show $1
-    warn [y,e,q]?
+    echo '[y,e,q]?'
     read line
     case $line in
     y) break
@@ -62,9 +58,9 @@ readu() {
     q) exit
        ;;
     esac
-    warn y - accept
-    warn e - edit
-    warn q - quit
+    echo 'y - accept'
+    echo 'e - edit'
+    echo 'q - quit'
   done
 }
 
@@ -74,13 +70,6 @@ exten() {
   s/[^[:alnum:]]//g
   s/$/.$2/
   " <<< ${!1}
-}
-
-bf() {
-  regtool set /user/console/ScreenBufferSize $(hx 2000 $1)
-  regtool set /user/console/WindowSize       $(hx   22 $1)
-  cygstart bash $2
-  kill -7 $$ $PPID
 }
 
 if [ "$#" -lt 2 ]
@@ -103,7 +92,7 @@ declare -A artists titles
 
 for song in "${songs[@]}"
 do
-  warn $song
+  echo "$song"
   . <(fpcalc "$song" | sed 1d)
   qs=(
     client=8XaBELgH
@@ -111,33 +100,33 @@ do
     fingerprint=$FINGERPRINT
     meta=recordings+sources
   )
-  warn connect to acoustid.org...
+  echo 'connect to acoustid.org...'
   curl -s api.acoustid.org/v2/lookup?`querystring` | jq .results[0] > .json
-  warn acoustid `JQ .id`
+  echo "AcoustID $(JQ .id)"
   set .sources "($DURATION - (.duration // 0) | length)"
   rid=$(JQ ".recordings | max(.2 * $1 - .8 * $2).id")
   # FIXME allow edit of recording id
-  warn musicbrainz recording id $rid
+  echo "musicbrainz recording id $rid"
   # hit musicbrainz API for entire album
-  if ! (( ${#date} ))
+  if [ ! "$date" ]
   then
     qs=(
       fmt=json
       inc=artist-credits+labels+discids+recordings
       recording=$rid
     )
-    warn connect to musicbrainz.org...
+    echo 'connect to musicbrainz.org...'
     set '(.media[0].discs | length)' '.["cover-art-archive"].count'
     curl -s musicbrainz.org/ws/2/release?`querystring` |
       jq ".releases | max(.3 * $1 + .7 * $2)" > .json
-    warn musicbrainz release id `JQ .id`
+    echo "Musicbrainz relead ID $(JQ .id)"
     cp .json rls.json
     tags=$(JQ '.["artist-credit"][0].name')
-    album=`JQ .title`
+    album=$(JQ .title)
     show album
     label=$(JQ '.["label-info"][0].label.name')
     show label
-    date=`JQ .date`
+    date=$(JQ .date)
     readu date
   fi
   # must leave "media" open
@@ -145,7 +134,7 @@ do
   jq ".media[].tracks[] | select(.recording.id == \"$rid\")" rls.json > .json
   artist=$(JQ '[.["artist-credit"][] | .name, .joinphrase] | add')
   show artist
-  title=`JQ .title`
+  title=$(JQ .title)
   readu title
   show title album artist label date > `exten song txt`
   titles[$song]=$title
@@ -164,8 +153,10 @@ do
     -stats `exten song mp4`
 done
 
-(( ${#album} <= 30 )) && tags+=,$album
-type google || exit
+if [ "${#album}" -lt 30 ]
+then
+  tags+=,$album
+fi
 
 for song in "${songs[@]}"
 do
@@ -174,5 +165,3 @@ do
     -n "${artists[$song]}, ${titles[$song]}" -s `exten song txt` \
     -t "$tags" -u svnpenn
 done
-
-buffer 80
