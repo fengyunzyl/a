@@ -1,23 +1,25 @@
-#!/bin/sh
+#!/bin/dash -e
 if [ "$#" != 2 ]
 then
-  regtool get /user/console/ScreenBufferSize | awk '
-  {
-    print "screen-buffer.sh ROWS COLUMNS"
-    print "max rows is 32767"
-    print "max columns is 170"
-    print "current buffer rows", rshift($0, 0x0010)
-    print "current buffer columns", and($0, 0xFFFF)
-  }
-  '
+  ju=$(reg query 'hkcu\console' /v screenBufferSize | awk '$0=$3')
+  cat <<+
+screen-buffer.sh [rows] [columns]
+max rows is 32767
+max columns is 170
+current buffer rows $((ju >> 0x0010))
+current buffer columns $((ju & 0xFFFF))
++
   exit
 fi
+ki=$1
+li=$2
 
-function hx {
-  printf 0x%04x%04x $*
+mi() {
+  printf '0x%04x%04x' "$@"
 }
 
-regtool set /user/console/ScreenBufferSize $(hx $1 $2)
-regtool set /user/console/WindowSize       $(hx 22 $2)
-cygstart bash
-kill -7 $PPID
+reg add 'hkcu\console' /f /v screenBufferSize /t reg_dword \
+  /d "$(mi "$ki" "$li")"
+reg add 'hkcu\console' /f /v windowSize /t reg_dword \
+  /d "$(mi 22 "$li")"
+echo 'you must close shell to apply changes'
