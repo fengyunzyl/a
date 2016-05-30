@@ -1,11 +1,4 @@
-#!/bin/sh
-bw() {
-  case $OSTYPE in
-  linux-gnu) xdg-open "$1" ;;
-  cygwin)    cygstart "$1" ;;
-  esac
-}
-
+#!/bin/sh -e
 jn() {
   # parse json
   awk '$1 ~ key {print $2}' RS='([{}]|"?, ?")' FS='": ?"?' key="$1" "$2"
@@ -22,21 +15,21 @@ proxy() {
   do
     if [ "$#" = 0 ]
     then
-      touch $dt
-      mapfile -t pool < $dt
+      touch "$dt"
+      mapfile -t pool < "$dt"
       set -- "${pool[@]}"
     fi
     if [ "$#" = 0 ]
     then
-      wget -q -O $dt txt.proxyspy.net/$dt
+      wget -q -O "$dt" txt.proxyspy.net/"$dt"
     fi
-    read px cn <<< $1
-    if [[ ! $px =~ : ]]
+    read px cn <<< "$1"
+    if [[ ! "$px" =~ : ]]
     then
       shift
       continue
     fi
-    if ! wget -q -T 2 -t 1 -O web.json -e http_proxy=$px "$url"
+    if ! wget -q -T 2 -t 1 -O web.json -e http_proxy="$px" "$url"
     then
       shift
       continue
@@ -50,7 +43,7 @@ proxy() {
     fi
   done
   printf '%s\n' "$px" >&2
-  printf '%s\n' "$@" > $dt
+  printf '%s\n' "$@" > "$dt"
 }
 
 jo() {
@@ -81,11 +74,11 @@ when adding release, make sure to include
 img-get)
   artist=$2
   album=$3
-  bw 'http://google.com/search?tbm=isch&q='"$artist $album"
-  bw 'http://fanart.tv/api/getdata.php?type=2&s='"$artist"
-  bw 'http://discogs.com/search?q='"$artist $album"
-  bw 'http://wikipedia.org/w/index.php?search='"${artist// /+}+${album// /+}"
-  bw 'http://musicbrainz.org/search?type=release&query='"$artist $album"
+  cygstart 'http://google.com/search?tbm=isch&q='"$artist $album"
+  cygstart 'http://fanart.tv/api/getdata.php?type=2&s='"$artist"
+  cygstart 'http://discogs.com/search?q='"$artist $album"
+  cygstart 'http://wikipedia.org/w/index.php?search='"${artist// /+}+${album// /+}"
+  cygstart 'http://musicbrainz.org/search?type=release&query='"$artist $album"
 ;;
 img-set)
   convert "$2" -resize x1000 -compress lossless 1000-"$2"
@@ -99,10 +92,12 @@ date-get)
   do
     fd="$date-$each"
     qy="%22$album%22 $fd"
-    [ $each -eq 1 ] && bw 'http://google.com/search?q='"$qy"
+    if [ "$each" -eq 1 ]
+    then cygstart 'http://google.com/search?q='"$qy"
+    fi
     proxy "$fd" "ajax.googleapis.com/ajax/services/search/web?v=1.0&q=$qy"
     count=$(jo .responseData.cursor.resultCount web.json)
-    printf '%s\t%s\n' $count "$fd"
+    printf '%s\t%s\n' "$count" "$fd"
   done |
   sort -nr
 ;;
