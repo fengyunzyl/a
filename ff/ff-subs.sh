@@ -1,28 +1,4 @@
-#!/bin/sh
-say() {
-  unset PS4
-  sx=$((set -x
-    : "$@") 2>&1)
-  echo "${sx:2}"
-}
-
-log() {
-  sy=$(say "$@")
-  warn "$sy"
-  "$@"
-}
-
-hx() {
-  printf 0x%04x%04x $*
-}
-
-bf() {
-  regtool set /user/console/ScreenBufferSize $(hx 2000 $1)
-  regtool set /user/console/WindowSize       $(hx   22 $1)
-  cygstart bash $2
-  kill -7 $$ $PPID
-}
-
+#!/bin/dash
 if [ "$#" != 2 ]
 then
   echo 'ff-subs.sh [video] [sub]'
@@ -31,14 +7,8 @@ fi
 
 ib=${1%.*}
 
-{
-  say log ffmpeg -stats -v warning -i "$1" -i "$2" -c:v copy -c:a copy \
-    -c:s mov_text "$ib"-subs.mp4
-  echo buffer 
-} > bf.sh
-
-export -f buffer log say
-buffer bf.sh
+ffmpeg -stats -v warning -i "$1" -i "$2" -c:v copy -c:a copy \
+-c:s mov_text "$ib"-subs.mp4
 
 # Invalid UTF-8 in decoded subtitles text; maybe missing -sub_charenc option
 
