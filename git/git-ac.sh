@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/dash -e
 if git diff --cached --quiet
 then
   git add --all "$@"
