@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 # Set thumbnail for MP4 video
 
 unquote() {
