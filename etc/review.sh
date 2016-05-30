@@ -1,19 +1,15 @@
-#!/bin/sh
-browse() {
-  case $OSTYPE in
-  linux-gnu) xdg-open "$1" ;;
-  cygwin)    cygstart "$1" ;;
-  esac
-}
-
-if [ "$#" = 0 ]
+#!/bin/dash -e
+if [ "$#" != 1 ]
 then
   echo 'review.sh [artist]'
   exit
 fi
 
-ARTIST=$*
-browse "http://allmusic.com/search/all/$ARTIST"
-browse "http://metacritic.com/search/all/${ARTIST// /+}/results"
-browse "http://pitchfork.com/search/?query=$ARTIST"
-browse "http://albumoftheyear.org/search.php?q=${ARTIST// /+}"
+{
+  sed 's/ /+/g' | xargs -l cygstart
+} <<+
+http://allmusic.com/search/all/$1
+http://metacritic.com/search/all/$1/results
+http://pitchfork.com/search/?query=$1
+http://albumoftheyear.org/search.php?q=$1
++
