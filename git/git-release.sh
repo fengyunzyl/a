@@ -1,5 +1,7 @@
-#!/bin/sh
-ech="\
+#!/bin/dash
+if [ ! -d .git ]
+then
+  cat <<+
 LOCAL
   1. commit program change
   2. commit version change
@@ -8,10 +10,7 @@ LOCAL
 REMOTE
   1. push commits
   2. push release
-"
-if [ ! -d .git ]
-then
-  printf "$ech"
++
   exit
 fi
 cd .git
