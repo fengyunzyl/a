@@ -21,5 +21,5 @@ mi() {
 reg add 'hkcu\console' /f /v screenBufferSize /t reg_dword \
   /d "$(mi "$ki" "$li")"
 reg add 'hkcu\console' /f /v windowSize /t reg_dword \
-  /d "$(mi 22 "$li")"
+  /d "$(mi 24 "$li")"
 echo 'you must close shell to apply changes'
