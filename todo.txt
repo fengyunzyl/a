@@ -43,6 +43,3 @@ http://ffmpeg.org/ffmpeg-codecs.html#AC_002d3-Metadata
 # 720p-mp4-h264
 - replace these with new ones
 - put in metadata too
-
-http://opendirective.net/blog/2014/04/
-success-firefox-os-1-4-built-and-running-on-zte-open
