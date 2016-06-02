@@ -50,6 +50,12 @@ jo() {
   jq -r "$@" | sed 's.\r..'
 }
 
+if [ ! "$BROWSER" ]
+then
+  echo 'BROWSER not set or not exported'
+  exit
+fi
+
 case $1 in
 '')
   cat <<+
@@ -74,11 +80,11 @@ when adding release, make sure to include
 img-get)
   artist=$2
   album=$3
-  cygstart 'http://google.com/search?tbm=isch&q='"$artist $album"
-  cygstart 'http://fanart.tv/api/getdata.php?type=2&s='"$artist"
-  cygstart 'http://discogs.com/search?q='"$artist $album"
-  cygstart 'http://wikipedia.org/w/index.php?search='"${artist// /+}+${album// /+}"
-  cygstart 'http://musicbrainz.org/search?type=release&query='"$artist $album"
+  "$BROWSER" 'http://google.com/search?tbm=isch&q='"$artist $album"
+  "$BROWSER" 'http://fanart.tv/api/getdata.php?type=2&s='"$artist"
+  "$BROWSER" 'http://discogs.com/search?q='"$artist $album"
+  "$BROWSER" 'http://wikipedia.org/w/index.php?search='"${artist// /+}+${album// /+}"
+  "$BROWSER" 'http://musicbrainz.org/search?type=release&query='"$artist $album"
 ;;
 img-set)
   convert "$2" -resize x1000 -compress lossless 1000-"$2"
@@ -93,7 +99,7 @@ date-get)
     fd="$date-$each"
     qy="%22$album%22 $fd"
     if [ "$each" -eq 1 ]
-    then cygstart 'http://google.com/search?q='"$qy"
+    then "$BROWSER" 'http://google.com/search?q='"$qy"
     fi
     proxy "$fd" "ajax.googleapis.com/ajax/services/search/web?v=1.0&q=$qy"
     count=$(jo .responseData.cursor.resultCount web.json)
