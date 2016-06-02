@@ -1,6 +1,4 @@
 
-- unix.stackexchange.com/q/213367/editor-pager-browser-environment-variables
-
 - stackoverflow.com/q/37395576/ffmpeg-how-to-determine-frame-rate-automatically
 - askubuntu.com/q/110264/how-to-find-frames-per-second-of-any-video-file
 
