@@ -5,6 +5,12 @@ exp() {
   printf 'BEGIN {print %s}' "$1" | awk -f-
 }
 
+if [ ! "$BROWSER" ]
+then
+  echo 'BROWSER not set or not exported'
+  exit
+fi
+
 if [ "$#" != 3 ]
 then
   cat <<+
@@ -37,7 +43,7 @@ cg=$3
 
 if [ "$cg" != 207 ]
 then
-  cygstart "$mirror/search/$sc/0/$sr/$cg"
+  "$BROWSER" "$mirror/search/$sc/0/$sr/$cg"
   exit
 fi
 
@@ -91,5 +97,5 @@ do
     continue
   fi
   echo 'good'
-  cygstart "$mirror/torrent/$each"
+  "$BROWSER" "$mirror/torrent/$each"
 done
