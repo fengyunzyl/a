@@ -1,4 +1,9 @@
 #!/bin/dash -e
+if [ ! "$BROWSER" ]
+then
+  echo 'BROWSER not set or not exported'
+  exit
+fi
 if [ "$#" != 1 ]
 then
   echo 'review.sh [artist]'
@@ -6,7 +11,7 @@ then
 fi
 
 {
-  sed 's/ /+/g' | xargs -l cygstart
+  sed 's/ /+/g' | xargs -l "$BROWSER"
 } <<+
 http://allmusic.com/search/all/$1
 http://metacritic.com/search/all/$1/results
