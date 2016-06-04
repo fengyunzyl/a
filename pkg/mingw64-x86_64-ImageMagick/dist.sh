@@ -5,7 +5,6 @@ awk '/x64.zip$/ {fo = $0} END {print fo}')
 wget -nc "$ec"
 unzip -n "$(basename "$ec")" convert.exe
 chmod +x convert.exe
-ln -f convert.exe identify.exe
 touch magic.xml
 go=$(./convert -version | awk '{print $3; exit}')
-zip imageMagick-"$go".zip *.exe magic.xml
+zip imageMagick-"$go".zip convert.exe magic.xml
