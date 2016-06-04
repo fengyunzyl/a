@@ -1,13 +1,11 @@
 #!/bin/dash -e
-pacman -Sy mingw-w64-x86_64-imagemagick
-
-cd /mingw64/bin
-al=$(mktemp -d)
-ln convert identify "$al"
-ldd convert |
-awk 'br[$0]++ {next} /mingw64/ {print $3}' |
-xargs ln -t "$al"
-
-cd "$al"
-ch=$(convert -version | awk 'NR == 1 {print $3}')
-bsdtar acf imageMagick-"$ch".zip *
+cd /tmp
+ec=$(lynx -dump -listonly -nonumbers imagemagick.org/download/binaries |
+awk '/x64.zip$/ {fo = $0} END {print fo}')
+wget -nc "$ec"
+unzip -n "$(basename "$ec")" convert.exe
+chmod +x convert.exe
+ln -f convert.exe identify.exe
+touch magic.xml
+go=$(./convert -version | awk '{print $3; exit}')
+zip imageMagick-"$go".zip *.exe magic.xml
