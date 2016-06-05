@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/bin/dash -e
 # Git remove sensitive data
 # help.github.com/articles/remove-sensitive-data
 if [ "$#" != 1 ]
@@ -8,7 +8,7 @@ then
 fi
 
 git filter-branch --index-filter "git rm --cached --ignore-unmatch '$1'" \
-  --prune-empty --tag-name-filter cat -- --all || exit
+  --prune-empty --tag-name-filter cat -- --all
 
 # Cleanup and reclaming space
 rm -r .git/refs/original
