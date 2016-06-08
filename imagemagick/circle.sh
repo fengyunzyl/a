@@ -1,12 +1,7 @@
-#!/bin/dash
+#!/bin/dash -e
 if [ "$#" != 6 ]
 then
   echo 'circle.sh [in radius] [x] [y] [in file] [out radius] [out file]'
-  exit
-fi
-if ! convert -version 2>&1 >/dev/null
-then
-  echo 'convert not found'
   exit
 fi
 
