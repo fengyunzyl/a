@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -e
 # A mosaic in digital imaging is a plurality of non-overlapping images, arranged
 # in some tessellation.
 usage="\
@@ -47,18 +47,6 @@ xc() {
   ' "$@" | fmt -80
   "$@"
 }
-
-if ! convert -version 2>&1 >/dev/null
-then
-  echo convert not found
-  exit
-fi
-
-if ! identify -version 2>&1 >/dev/null
-then
-  echo identify not found
-  exit
-fi
 
 if [ "$#" = 0 ]
 then
