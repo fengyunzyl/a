@@ -101,7 +101,7 @@ do
     meta=recordings+sources
   )
   echo 'connect to acoustid.org...'
-  curl -s api.acoustid.org/v2/lookup?`querystring` | jq .results[0] > .json
+  curl -s api.acoustid.org/v2/lookup?"$(querystring)" | jq .results[0] > .json
   echo "AcoustID $(JQ .id)"
   set .sources "($DURATION - (.duration // 0) | length)"
   rid=$(JQ ".recordings | max(.2 * $1 - .8 * $2).id")
@@ -117,7 +117,7 @@ do
     )
     echo 'connect to musicbrainz.org...'
     set '(.media[0].discs | length)' '.["cover-art-archive"].count'
-    curl -s musicbrainz.org/ws/2/release?`querystring` |
+    curl -s musicbrainz.org/ws/2/release?"$(querystring)" |
       jq ".releases | max(.3 * $1 + .7 * $2)" > .json
     echo "Musicbrainz relead ID $(JQ .id)"
     cp .json rls.json
@@ -136,7 +136,7 @@ do
   show artist
   title=$(JQ .title)
   readu title
-  show title album artist label date > `exten song txt`
+  show title album artist label date > "$(exten song txt)"
   titles[$song]=$title
   artists[$song]=$artist
 done
@@ -148,9 +148,9 @@ do
   # Adding "-preset" would only make small difference in size or speed.
   # "-shortest" can mess up duration. Adding "-analyzeduration" would only
   # suppress warning, not change file.
-  xc ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -t `JQ .format.duration` \
+  xc ffmpeg -loop 1 -r 1 -i "$img" -i "$song" -t "$(JQ .format.duration)" \
     -qp 0 -filter:v 'scale=trunc(oh*a/2)*2:720' -b:a 384k -v error \
-    -stats `exten song mp4`
+    -stats "$(exten song mp4)"
 done
 
 if [ "${#album}" -lt 30 ]
@@ -161,7 +161,7 @@ fi
 for song in "${songs[@]}"
 do
   # category is case sensitive
-  xc google youtube post `exten song mp4` Music \
-    -n "${artists[$song]}, ${titles[$song]}" -s `exten song txt` \
+  xc google youtube post "$(exten song mp4)" Music \
+    -n "${artists[$song]}, ${titles[$song]}" -s "$(exten song txt)" \
     -t "$tags" -u svnpenn
 done

@@ -3,13 +3,13 @@ new() {
   mkdir -p "$pn/$1"
   cd "$pn/$1"
 }
-pn=`mktemp -d -p "$PWD"`
+pn=$(mktemp -d -p "$PWD")
 new
 
 # /
 echo 'start bin/bash -l' > cygwin.bat
-date=`date`
-cygwin_version=`uname -r | cut -d '(' -f 1`
+date=$(date)
+cygwin_version=$(uname -r | cut -d '(' -f 1)
 sed 's/$/\r/' > readme.txt <<+
 Baby Cygwin by Steven Penny
 
@@ -47,7 +47,7 @@ cd
 +
 
 # /usr/bin
-j=`mktemp`
+j=$(mktemp)
 printf '/bin/%s\n' bash cat chmod cp cut date dirname du dumper expr file find \
 gawk grep ln ls mkdir mkpasswd mount mv printf ps rm rmdir sed sh sleep sort \
 stat tee tr uname uniq wget xargs > $j

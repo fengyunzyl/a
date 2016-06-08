@@ -7,6 +7,6 @@ autoreconf --install --verbose
 make --jobs 5 LDFLAGS='-s -all-static' \
   DEFS='-DMP4V2_USE_STATIC_LIB -D__STDC_CONSTANT_MACROS'
 # FIXME doc
-q=`git describe --tags`
+q=$(git describe --tags)
 zip mp4v2-$q.zip *.exe
 hub release create -a *.zip $q

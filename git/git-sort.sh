@@ -1,8 +1,8 @@
-#!/bin/dash
-cm=`mktemp`
-sz=`mktemp`
-dt=`mktemp`
-ob=`mktemp`
+#!/bin/dash -e
+cm=$(mktemp)
+sz=$(mktemp)
+dt=$(mktemp)
+ob=$(mktemp)
 for pa in *
 do
   printf . >&2

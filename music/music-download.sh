@@ -125,7 +125,7 @@ dwn() {
     bk "$_filename"
     echo '[mv] file is now old, moving'
     mv %-new/"$_filename" %-old
-    go=`mktemp`
+    go=$(mktemp)
     awk '$1 == wu {$3 = 0} 1' FS='\t' OFS='\t' wu="$wu" %/h.txt > "$go"
     mv "$go" %/h.txt
   done < %/h.txt
