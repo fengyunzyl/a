@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/bin/dash -e
 if [ ! -d .git ]
 then
   cat <<+
