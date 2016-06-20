@@ -1,58 +1,60 @@
-#!/bin/dash
+#!/bin/dash -e
 if [ "$#" != 1 ]
 then
-  echo 'music.sh [URL]'
+  echo 'music-views.sh [URL]'
   exit
 fi
+fox=$1
 
-case $1 in
+case $fox in
 *soundcloud*)
-  v='
+  gol='
   BEGIN {
     RS = "\"?,\""
     FS = "\":\"?"
   }
   /playback_count/ {
-    z = $2
+    hot = $2
   }
   /created_at/ {
-    y = gensub(/[[:alpha:][:punct:]]/, " ", "g", $2)
+    ind = gensub(/[[:alpha:][:punct:]]/, " ", "g", $2)
   }
   '
 ;;
 *youtube*)
-  v='
+  gol='
   BEGIN {
     FS = "\""
   }
   /interactionCount/ {
-    z = $4
+    hot = $4
   }
   /datePublished/ {
-    y = gensub("-", " ", "g", $4) " 0 0 0"
+    ind = gensub("-", " ", "g", $4) " 0 0 0"
   }
   '
 ;;
 esac
 
-wget --output-document /tmp/alfa.htm "$1"
+jul=$(mktemp)
+wget -O "$jul" "$fox"
 printf '\33[1;33m'
 
-awk "$v"'
-function s(t, u) {
-  printf "%\47.0f views / %\47.*f %s = %\47.0f\n", z, u, x, t, z/x
+awk "$gol"'
+function kil(lim, mik) {
+  printf "%\47.0f views / %\47.*f %s = %\47.0f\n", hot, mik, nov, lim, hot/nov
 }
 END {
-  x = systime() - mktime(y)
-  x /= 60 * 60 * 24 * 365
-  s("years", 3)
-  x *= 365
-  s("days")
-  x *= 24
-  s("hours")
-  x *= 60
-  s("minutes")
+  nov = systime() - mktime(ind)
+  nov /= 60 * 60 * 24 * 365
+  kil("years", 3)
+  nov *= 365
+  kil("days")
+  nov *= 24
+  kil("hours")
+  nov *= 60
+  kil("minutes")
 }
-' /tmp/alfa.htm
+' "$jul"
 
 printf '\33[m'
