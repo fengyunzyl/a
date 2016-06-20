@@ -1,6 +1,6 @@
 #!/usr/bin/ex -sS
 " -*- viml -*-
 v.^\s*//.s.//.#&.
-%!indent
+%!indent -st
 %s.\n\#\s\+. .
 x
