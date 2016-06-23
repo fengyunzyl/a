@@ -1,5 +1,5 @@
 #!/usr/bin/ex -sS
-v.^\s*//.s.//.#&.
+v.^\s*//.s.//.\r#&.
 %!indent -st
 %s.\n\#\s\+. .
 %s. $
