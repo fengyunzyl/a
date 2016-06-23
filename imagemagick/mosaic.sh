@@ -137,30 +137,31 @@ done
 # combine
 ${dry+exit}
 # this needs to be here otherwise you are measuring the wrong height
-ht=$(identify -format '%h\n' "$@" | mn)
-
+ju=$(identify -format '%h\n' "$@" | mn)
+br=$(mktemp -p .)
 set =*
+
 case $ao in
 000011) xc convert "$1" "$2" "$3" "$4" '(' "$5" "$6" -append ')' +append \
-  -quality 100 "$ao" ;;
+  -quality 100 "$br" ;;
 000110) xc convert "$1" "$2" "$3" '(' "$4" "$5" -append ')' "$6" +append \
-  -quality 100 "$ao" ;;
+  -quality 100 "$br" ;;
 011011) xc convert "$1" '(' "$2" "$3" -append ')' "$4" \
-  '(' "$5" "$6" -append ')' +append -quality 100 "$ao" ;;
+  '(' "$5" "$6" -append ')' +append -quality 100 "$br" ;;
 110000) xc convert '(' "$1" "$2" -append ')' "$3" "$4" "$5" "$6" +append \
-  -quality 100 "$ao" ;;
+  -quality 100 "$br" ;;
 110011) xc convert '(' "$1" "$2" -append ')' "$3" "$4" \
-  '(' "$5" "$6" -append ')' +append -quality 100 "$ao" ;;
+  '(' "$5" "$6" -append ')' +append -quality 100 "$br" ;;
 110110) xc convert '(' "$1" "$2" -append ')' "$3" \
-  '(' "$4" "$5" -append ')' "$6" +append -quality 100 "$ao" ;;
+  '(' "$4" "$5" -append ')' "$6" +append -quality 100 "$br" ;;
 0000110) xc convert "$1" "$2" "$3" "$4" \
-  '(' "$5" "$6" -append ')' "$7" +append -quality 100 "$ao" ;;
+  '(' "$5" "$6" -append ')' "$7" +append -quality 100 "$br" ;;
 11111111) xc convert '(' "$1" "$2" -append ')' '(' "$3" "$4" -append ')' \
   '(' "$5" "$6" -append ')' '(' "$7" "$8" -append ')' +append \
-  -quality 100 "$ao" ;;
-*) xc convert "$@" +append -quality 100 "$ao" ;;
+  -quality 100 "$br" ;;
+*) xc convert "$@" +append -quality 100 "$br" ;;
 esac
 
-sn=$(basename ~+)
-xc mv "$ao" "s $sn h $ht".jpg
+sn=$(basename "$PWD")
+xc mv "$br" "s $sn h $ju".jpg
 xc rm "$@"
