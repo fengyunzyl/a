@@ -5,12 +5,13 @@ v,^\s*//,s,//,\r#&,
 g,\\n.$,s,$,//,
 " 3. decorate bitwise AND
 %s, &\_s, $\&\&,g
+" 4. transform
 %!indent -st
-" 4. undecorate bitwise AND
+" 5. undecorate bitwise AND
 %s,\v\$(\_s*)\&\& ?,\&\1,g
 %s, $
-" 5. undecorate printf format strings
+" 6. undecorate printf format strings
 %s, //$
-" 6. undecorate comments preceded by code
+" 7. undecorate comments preceded by code
 %s,\n#\s\+, ,
 x
