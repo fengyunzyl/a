@@ -1,4 +1,4 @@
-#!/bin/dash -e
+#!/bin/dash
 if [ ! "$BROWSER" ]
 then
   echo 'BROWSER not set or not exported'
