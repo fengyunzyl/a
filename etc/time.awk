@@ -1,4 +1,5 @@
 #!/usr/bin/awk -f
+# FIXME gasoline
 # weekday am = arrive by 730a, average
 # weekday pm = depart at 5p, average
 {
