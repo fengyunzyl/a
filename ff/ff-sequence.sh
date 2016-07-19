@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/bin/dash -e
 xc() {
   awk '
   BEGIN {
