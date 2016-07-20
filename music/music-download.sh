@@ -6,17 +6,6 @@ pa() {
   done
 }
 
-bk() {
-  awk -v z="$*" '
-  BEGIN {
-    y = 79 - length(z)
-    x = int(y / 2)
-    w = y - x
-    printf "\33[1;45m%*s%s%*s\33[m\n", w, "", z, x, ""
-  }
-  '
-}
-
 mr() {
   mkdir -p % %-new %-old
   touch %/h.txt %/f.txt %/c.txt
@@ -53,7 +42,7 @@ do
   char=$((char+1))
   if [ $char -ge 2 ]
   then
-    bk starting link $char
+    echo starting link $char
   fi
   if fgrep -q "$wu" %/h.txt
   then
@@ -114,7 +103,7 @@ do
   then
     continue
   fi
-  bk "$_filename"
+  echo "$_filename"
   echo '[mv] file is now old, moving'
   mv %-new/"$_filename" %-old
   go=$(mktemp)
