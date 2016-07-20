@@ -6,11 +6,6 @@ pa() {
   done
 }
 
-mr() {
-  mkdir -p % %-new %-old
-  touch %/h.txt %/f.txt %/c.txt
-}
-
 if [ $# = 0 ]
 then
   cat <<+
@@ -26,8 +21,8 @@ TARGETS
 fi
 
 bra=$(date -d '-1 year' +%Y%m%d)
-mr
-set -o igncr
+mkdir -p % %-new %-old
+touch %/h.txt %/f.txt %/c.txt
 
 {
   pa "$@" |
