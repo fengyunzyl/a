@@ -1,32 +1,4 @@
 #!/bin/dash -e
-# FIXME you-get?
-usage="\
-NAME
-  reddit.sh
-
-SYNOPSIS
-  reddit.sh [operation] [targets]
-
-OPERATIONS
-  download
-    http://youtube.com/watch?v=qjgnOP8f5NU
-    http://soundcloud.com/greco-roman/roosevelt-night-moves
-    http://reddit.com/r/stationalpha/new
-
-  sync
-    sync files to target flash drive, and record all files transferred. If
-    sync is run without a target, list available flash drives and changes since
-    last sync.
-
-FIXME
-1. change name of reddit.sh
-   reason is because if script supports youtube playlists, that has nothing to
-   do with reddit
-2. reddit.sh support youtube playlists
-3. reddit.sh folder for each year
-4. use 'history' or 'basename' instead of 'pa'
-"
-
 pa() {
   for each
   do
@@ -180,6 +152,20 @@ case $1 in
   snc "$@"
 ;;
 *)
-  printf "$usage"
+  cat <<+
+SYNOPSIS
+  music-download.sh [operation] [targets]
+
+OPERATIONS
+  download
+    http://youtube.com/watch?v=qjgnOP8f5NU
+    http://soundcloud.com/greco-roman/roosevelt-night-moves
+    http://reddit.com/r/stationalpha/new
+
+  sync
+    sync files to target flash drive, and record all files transferred. If
+    sync is run without a target, list available flash drives and changes since
+    last sync.
++
 ;;
 esac
