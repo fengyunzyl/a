@@ -1,10 +1,13 @@
-#!/bin/dash
+#!/bin/dash -e
 if [ "$#" != 1 ]
 then
   echo 'mirror.sh [timeout]'
   exit
 fi
-wget -nc -O /tmp/mirrors.lst cygwin.com/mirrors.lst
+if [ ! -e /tmp/mirrors.lst ]
+then
+  wget -O /tmp/mirrors.lst cygwin.com/mirrors.lst
+fi
 export POSIXLY_CORRECT=1
 awk '
 function dom(url,   a, b, c, d) {
@@ -44,8 +47,8 @@ END {
 while read each
 do
   # dont sort these by length - we want the URL closer to top anyway
-  printf '\t%s\r' $each
-  if wget -q --spider --tries 1 --timeout $1 $each
+  printf '\t%s\r' "$each"
+  if wget -q --spider --tries 1 --timeout "$1" "$each"
   then
     printf '\33[1;32m%s\33[m\n' GOOD
   else
