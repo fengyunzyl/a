@@ -20,3 +20,4 @@ END {
 }
 ' |
 git commit --file -
+git commit --file -
